@@ -459,7 +459,7 @@ Before marking PRD as complete:
 # Step 3: Validate the epic
 *execute-checklist-po
 *shard-doc customer-portal-epic.md ./stories/
-*doc-out && *exit
+*exit
 ```
 
 ### Scenario 2: 📋 Greenfield - With Existing Specs
@@ -474,12 +474,13 @@ Before marking PRD as complete:
 /bmadErpNext:agent:erpnext-architect
 *validate-requirements existing-specs.md
 *check-frappe-patterns    # Ensure specs align with Frappe/ERPNext
+*exit
 
 # Step 3: Create PRD from validated specs
 /bmadErpNext:agent:erpnext-product-owner
 *create-epic              # Use validated specs as input
 *execute-checklist-po     # Quick validation
-*doc-out && *exit
+*exit
 ```
 
 ### Scenario 3: 🏗️ Brownfield - Existing ERPNext App
@@ -491,6 +492,7 @@ Before marking PRD as complete:
 *analyze-app existing-app-name
 *audit-compliance        # Check current code quality
 *identify-integration-points
+*exit
 
 # Step 2: Define enhancement requirements
 /bmadErpNext:agent:erpnext-product-owner
@@ -500,7 +502,7 @@ Before marking PRD as complete:
 # Step 3: Plan integration with existing code
 *validate-story-draft enhancement-requirements.md
 *check-compatibility    # Ensure new features won't break existing
-*doc-out && *exit
+*exit
 ```
 
 ### 🤔 Quick Decision Guide

@@ -19,17 +19,18 @@ As a QA Lead, you ensure the quality of ERPNext implementations through comprehe
 
 ```bash
 # 1. Activate QA Lead Agent
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-qa-lead
+/bmadErpNext:agent:erpnext-qa-lead
 
 # 2. Testing workflow commands
 *create-test-plan story-1-1-user-registration    # Create comprehensive test plan
 *run-tests                                        # Execute automated tests
 *validate-acceptance                              # Check acceptance criteria
 *report-defects                                   # Document found issues
+*exit
 
 # 3. Specialized testing tasks
-npx bmad-method run:task bmad-erpnext-v15 create-unit-tests
-npx bmad-method run:task bmad-erpnext-v15 run-tests
+/bmadErpNext:task:create-unit-tests
+/bmadErpNext:task:run-tests
 ```
 
 ### Command Reference for Each Testing Phase
@@ -37,10 +38,11 @@ npx bmad-method run:task bmad-erpnext-v15 run-tests
 #### Phase 1: Test Planning
 ```bash
 # Create test plans and test cases
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-qa-lead
+/bmadErpNext:agent:erpnext-qa-lead
 *create-test-plan customer-portal-features       # Generate test plan
 *design-test-cases                                # Create detailed test cases
 *setup-test-environment                           # Prepare testing environment
+*exit
 ```
 
 #### Phase 2: Test Execution
@@ -1036,7 +1038,7 @@ Performance Metrics:
 # Review development completion: user-registration-feature/
 
 # Step 2: Create comprehensive test plan
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-qa-lead
+/bmadErpNext:agent:erpnext-qa-lead
 *create-test-plan user-registration-story
 # Follow prompts to create test plan covering:
 # - Functional testing of registration flow
@@ -1129,8 +1131,8 @@ Your feature has passed all quality checks and is ready for production deploymen
 ```bash
 # Move to Stage 6 - Deployment & Project Management
 # Hand off your tested feature to the Project Manager
-# They will use: npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
-# And: npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
+# They will use: /bmadErpNext:agent:bench-operator
+# And: /bmadErpNext:agent:main-dev-coordinator
 ```
 
 ## Resources

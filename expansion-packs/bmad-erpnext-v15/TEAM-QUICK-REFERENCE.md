@@ -58,6 +58,7 @@
 /bmadErpNext:agent:erpnext-product-owner
 *create-epic
 *execute-checklist-po
+*exit
 ```
 
 **Stage 4 - Development:**
@@ -65,6 +66,7 @@
 /bmadErpNext:task:create-vue-spa --app-name my_new_app
 /bmadErpNext:agent:doctype-designer
 *create-doctype Customer_Portal
+*exit
 ```
 
 ### Scenario 2: 📋 Have Specs/Designs
@@ -75,8 +77,10 @@
 /bmadErpNext:task:shard-erpnext-doc existing-specs.md ./requirements/
 /bmadErpNext:agent:erpnext-architect
 *validate-requirements existing-specs.md
+*exit
 /bmadErpNext:agent:erpnext-product-owner
 *create-epic
+*exit
 ```
 
 **Stage 4 - Development:**
@@ -84,6 +88,7 @@
 /bmadErpNext:task:setup-frappe-ui --app-name spec_app
 /bmadErpNext:agent:vue-frontend-architect
 *create-component from-designs
+*exit
 ```
 
 ### Scenario 3: 🏗️ Existing ERPNext App
@@ -94,14 +99,17 @@
 /bmadErpNext:agent:erpnext-architect
 *analyze-app existing-app-name
 *audit-compliance
+*exit
 /bmadErpNext:agent:erpnext-product-owner
 *document-enhancement
+*exit
 ```
 
 **Stage 4 - Enhancement:**
 ```bash
 /bmadErpNext:agent:frappe-compliance-validator
 *validate-code
+*exit
 /bmadErpNext:task:create-api-endpoint --app existing-app
 ```
 
@@ -142,6 +150,7 @@
 ```bash
 /bmadErpNext:agent:business-analyst
 *analyze-requirements
+*exit
 /bmadErpNext:agent:erpnext-product-owner
 *create-epic
 *exit
@@ -161,15 +170,18 @@
 # Backend
 /bmadErpNext:agent:doctype-designer
 *create-doctype
+*exit
 
 # API
 /bmadErpNext:agent:api-developer  
 *create-api
+*exit
 
 # Frontend
 /bmadErpNext:task:create-vue-spa
 /bmadErpNext:agent:vue-frontend-architect
 *setup-vue-spa
+*exit
 ```
 
 ### Stage 5: QA Testing

@@ -21,19 +21,21 @@ As a Project Manager, you orchestrate the entire ERPNext implementation project 
 
 ```bash
 # 1. Activate Main Development Coordinator (Project Manager Agent)
-npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
+/bmadErpNext:agent:main-dev-coordinator
 
 # 2. Project coordination commands
 *coordinate-team                    # Coordinate development team activities
 *status-report                      # Generate project status reports
 *track-milestones                   # Monitor project milestones
 *manage-resources                   # Allocate team resources
+*exit
 
 # 3. Deployment and operations
-npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
+/bmadErpNext:agent:bench-operator
 *install-app customer_portal       # Deploy to production
 *run-migrations                     # Apply database updates
 *deploy-production                  # Complete production deployment
+*exit
 ```
 
 ### Command Reference for Each Project Phase
@@ -41,11 +43,12 @@ npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
 #### Phase 1: Project Setup & Planning
 ```bash
 # Initial project setup
-npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
+/bmadErpNext:agent:main-dev-coordinator
 *setup-project                      # Initialize project structure
 *plan-resources                     # Plan team resources
 *create-milestones                  # Define project milestones
 *establish-communication            # Setup communication channels
+*exit
 ```
 
 #### Phase 2: Development Coordination
@@ -69,7 +72,7 @@ npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
 #### Phase 4: Deployment & Launch
 ```bash
 # Production deployment and launch
-npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
+/bmadErpNext:agent:bench-operator
 *install-app customer_portal      # Install app on production
 *run-migrations                    # Apply database migrations
 *deploy-production                 # Complete production deployment
@@ -79,16 +82,18 @@ npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
 *conduct-go-live                   # Conduct go-live activities
 *monitor-performance               # Monitor system performance
 *collect-feedback                  # Collect user feedback
+*exit
 ```
 
 #### Phase 5: Project Closure
 ```bash
 # Project closure activities
-npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
+/bmadErpNext:agent:main-dev-coordinator
 *generate-final-report             # Generate project completion report
 *conduct-retrospective             # Conduct team retrospective
 *document-lessons-learned          # Document lessons learned
 *handoff-maintenance               # Hand off to maintenance team
+*exit
 ```
 
 ## Project Lifecycle Management
@@ -895,7 +900,7 @@ Risk Metrics:
 
 ```bash
 # PHASE 1: PROJECT INITIATION
-npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
+/bmadErpNext:agent:main-dev-coordinator
 *setup-project customer-portal
 *plan-resources
 # Team: 1 PO, 1 BA, 1 SM, 3 Devs, 1 QA Lead
@@ -926,21 +931,23 @@ npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
 # Monitor QA Lead testing all features
 # Ensure defect resolution
 *validate-milestones development-complete
+*exit
 
 # PHASE 5: DEPLOYMENT & GO-LIVE
-npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
+/bmadErpNext:agent:bench-operator
 *install-app customer_portal
 *run-migrations
 *deploy-production
 *monitor-deployment
 
 # Back to project coordination
-npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
 *conduct-go-live
 *monitor-performance
 *collect-feedback
+*exit
 
 # PHASE 6: PROJECT CLOSURE
+/bmadErpNext:agent:main-dev-coordinator
 *generate-final-report
 *conduct-retrospective
 *document-lessons-learned
@@ -981,7 +988,7 @@ After project completion:
 ```bash
 # Apply lessons learned to next project
 # Start new project with Stage 1 Product Owner
-# npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+# /bmadErpNext:agent:erpnext-product-owner
 ```
 
 ## Resources

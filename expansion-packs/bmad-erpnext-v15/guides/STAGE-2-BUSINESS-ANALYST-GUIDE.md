@@ -34,26 +34,29 @@ As a Business Analyst, you transform high-level product requirements into action
 #### Step 1: PRD Analysis
 ```bash
 # Analyze the incoming PRD
-npx bmad-method activate:agent bmad-erpnext-v15 business-analyst
+/bmadErpNext:agent:business-analyst
 *analyze-requirements prd-document.md
 *identify-patterns      # Find common patterns in requirements
 *map-dependencies      # Create dependency map
+*exit
 ```
 
 #### Step 2: Epic Creation
 ```bash
 # Use Product Owner agent to create epics from PRD analysis
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+/bmadErpNext:agent:erpnext-product-owner
 *create-epic           # Create epic from your analysis
 *shard-doc large-prd.md ./epics/  # Break large PRD into epic-sized chunks
+*exit
 ```
 
 #### Step 3: Technical Validation
 ```bash
 # Review with architect for technical feasibility
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-architect
+/bmadErpNext:agent:erpnext-architect
 *review-requirements   # Technical feasibility review
 *validate-architecture # Ensure architecture supports requirements
+*exit
 ```
 
 ## Epic Creation Process
@@ -111,10 +114,11 @@ PRD: "Customer Portal"
 #### 💻 BMAD Command: Create Epic Document
 ```bash
 # Create epic using ERPNext epic template
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+/bmadErpNext:agent:erpnext-product-owner
 *create-epic
 # Follow prompts based on erpnext-epic-template.yaml
 # The agent will guide you through epic creation process
+*exit
 ```
 
 #### Epic Document Template
@@ -514,13 +518,14 @@ Before epic handoff:
 # Review customer-portal-prd.md
 
 # Step 2: Analyze and decompose requirements
-npx bmad-method activate:agent bmad-erpnext-v15 business-analyst
+/bmadErpNext:agent:business-analyst
 *analyze-requirements customer-portal-prd.md
 *identify-patterns
 *map-dependencies
+*exit
 
 # Step 3: Create epics based on analysis
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+/bmadErpNext:agent:erpnext-product-owner
 *create-epic
 # Epic 1: "User Account Management"
 # - User registration
@@ -538,15 +543,16 @@ npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
 # - Submit support tickets
 # - View knowledge base
 # - Chat integration
+*exit
 
 # Step 4: Validate technical feasibility
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-architect
+/bmadErpNext:agent:erpnext-architect
 *review-requirements
 *validate-architecture
+*exit
 
 # Step 5: Document and hand off to Scrum Master
-npx bmad-method run:task bmad-erpnext-v15 document-erpnext-project
-*exit
+/bmadErpNext:task:document-erpnext-project
 ```
 
 ### Ready for Handoff ✅
@@ -567,7 +573,7 @@ After epic approval:
 ```bash
 # Move to Stage 3 - Sprint Planning
 # Hand off your completed epics to the Scrum Master
-# They will use: npx bmad-method activate:agent bmad-erpnext-v15 erpnext-scrum-master
+# They will use: /bmadErpNext:agent:erpnext-scrum-master
 ```
 
 ## Templates

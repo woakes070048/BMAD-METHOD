@@ -19,16 +19,17 @@ As a Scrum Master, you facilitate the transformation of epics into actionable us
 
 ```bash
 # 1. Activate the Scrum Master Agent
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-scrum-master
+/bmadErpNext:agent:erpnext-scrum-master
 
 # 2. Create stories from epics
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+/bmadErpNext:agent:erpnext-product-owner
 *create-story    # Create individual stories from epic
 *validate-story-draft story.md    # Validate story format
+*exit
 
 # 3. Review and validate stories
-npx bmad-method run:task bmad-erpnext-v15 review-erpnext-story
-npx bmad-method run:task bmad-erpnext-v15 validate-erpnext-story
+/bmadErpNext:task:review-erpnext-story
+/bmadErpNext:task:validate-erpnext-story
 ```
 
 ### Command Reference for Each Step
@@ -36,15 +37,17 @@ npx bmad-method run:task bmad-erpnext-v15 validate-erpnext-story
 #### Step 1: Epic Analysis & Story Creation
 ```bash
 # Analyze epics from Business Analyst
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-scrum-master
+/bmadErpNext:agent:erpnext-scrum-master
 *analyze-epic epic-document.md
 *identify-stories          # Extract story opportunities
 *estimate-complexity      # Add story point estimates
+*exit
 
 # Create detailed stories
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+/bmadErpNext:agent:erpnext-product-owner
 *create-story            # Create story using template
 *validate-story-draft    # Validate story completeness
+*exit
 ```
 
 #### Step 2: Sprint Planning
@@ -660,13 +663,14 @@ Swimlanes:
 # Review epic documents: user-account-management.md, order-self-service.md
 
 # Step 2: Break epics into stories
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-scrum-master
+/bmadErpNext:agent:erpnext-scrum-master
 *analyze-epic user-account-management.md
 *identify-stories
 # Identifies: User Registration, Profile Management, Password Reset
+*exit
 
 # Create detailed stories
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+/bmadErpNext:agent:erpnext-product-owner
 *create-story
 # Story 1.1: User Registration
 # Story 1.2: Profile Management
@@ -676,13 +680,14 @@ npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
 # Story 2.1: View Order History
 # Story 2.2: Track Shipments
 # Story 2.3: Download Invoices
+*exit
 
 # Step 3: Validate stories
-npx bmad-method run:task bmad-erpnext-v15 review-erpnext-story
-npx bmad-method run:task bmad-erpnext-v15 validate-erpnext-story
+/bmadErpNext:task:review-erpnext-story
+/bmadErpNext:task:validate-erpnext-story
 
 # Step 4: Sprint planning
-npx bmad-method activate:agent bmad-erpnext-v15 erpnext-scrum-master
+/bmadErpNext:agent:erpnext-scrum-master
 *plan-sprint
 # Sprint 1: Stories 1.1, 1.2 (User Account Foundation)
 # Sprint 2: Stories 1.3, 2.1 (Extended Features)
@@ -718,9 +723,9 @@ After sprint planning:
 # Move to Stage 4 - Development
 # Hand off your sprint plan to the Development Team
 # They will use various agents like:
-# npx bmad-method activate:agent bmad-erpnext-v15 doctype-designer
-# npx bmad-method activate:agent bmad-erpnext-v15 api-developer
-# npx bmad-method activate:agent bmad-erpnext-v15 vue-frontend-architect
+# /bmadErpNext:agent:doctype-designer
+# /bmadErpNext:agent:api-developer
+# /bmadErpNext:agent:vue-frontend-architect
 ```
 
 ## Resources
