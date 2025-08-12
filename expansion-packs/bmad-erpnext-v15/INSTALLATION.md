@@ -44,6 +44,20 @@ python3 --version # Check Python version
 
 ### 🚀 Fastest Installation (2 minutes)
 
+#### Method 1: Install via BMAD Method Installer (Recommended)
+
+```bash
+# Install BMAD Method with the ERPNext expansion pack
+npx bmad-method install --full --expansion-packs bmad-erpnext-v15
+
+# The installer will:
+# 1. Install BMAD Method core framework
+# 2. Install the ERPNext v15 expansion pack
+# 3. Set up all agents, templates, and workflows
+```
+
+#### Method 2: Clone the Repository
+
 ```bash
 # Clone THIS fork that includes the ERPNext expansion pack
 git clone https://github.com/woakes070048/BMAD-METHOD.git
@@ -57,9 +71,10 @@ npm install
 # Ready to use!
 ```
 
-### ⚠️ Important: Use the Correct Repository
-- ✅ **Use THIS fork**: `https://github.com/woakes070048/BMAD-METHOD.git` (includes ERPNext expansion pack)
-- ❌ **NOT the official**: `https://github.com/bmadcode/bmad-method.git` (doesn't have this expansion pack)
+### ⚠️ Important: Repository Information
+- ✅ **This fork includes**: The ERPNext v15 expansion pack
+- 📦 **Available via installer**: `npx bmad-method install --full --expansion-packs bmad-erpnext-v15`
+- 🔄 **List available packs**: `npx bmad-method list:expansions`
 
 ### Using in Web UI (Gemini Gem or CustomGPT)
 
@@ -92,13 +107,28 @@ npm run build:team
 
 ## Installation Methods
 
-### Method 1: Install in Your ERPNext Project
+### Method 1: Install via BMAD Method Installer (Recommended)
 
 ```bash
 # Go to your ERPNext app directory
 cd /home/frappe/frappe-bench/apps/your-app-name
 
-# Install BMAD-METHOD from THIS fork
+# Install BMAD Method with the ERPNext expansion pack
+npx bmad-method install --full --expansion-packs bmad-erpnext-v15
+
+# The installer handles everything automatically:
+# - Installs BMAD Method core
+# - Installs the ERPNext v15 expansion pack
+# - Sets up agents, templates, and workflows
+```
+
+### Method 2: Install in Your ERPNext Project (Manual)
+
+```bash
+# Go to your ERPNext app directory
+cd /home/frappe/frappe-bench/apps/your-app-name
+
+# Clone THIS fork that includes the ERPNext expansion pack
 git clone https://github.com/woakes070048/BMAD-METHOD.git .bmad-temp
 cd .bmad-temp
 npm install
@@ -110,21 +140,6 @@ npm run install:bmad
 # Clean up
 cd ..
 rm -rf .bmad-temp
-```
-
-### Method 2: Use Official BMAD + Add This Expansion Pack
-
-```bash
-# Install official BMAD-METHOD (without ERPNext pack)
-cd /home/frappe/frappe-bench/apps/your-app-name
-npx bmad-method install
-
-# Then manually add the ERPNext expansion pack
-git clone https://github.com/woakes070048/BMAD-METHOD.git /tmp/bmad-fork
-cp -r /tmp/bmad-fork/expansion-packs/bmad-erpnext-v15 .bmad-core/expansion-packs/
-rm -rf /tmp/bmad-fork
-
-# Now you have BMAD with the ERPNext expansion pack
 ```
 
 ### Method 3: Direct Use Without Installation

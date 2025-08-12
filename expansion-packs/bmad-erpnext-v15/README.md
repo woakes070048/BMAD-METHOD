@@ -14,27 +14,46 @@ Complete BMAD expansion pack for comprehensive ERPNext v15 development including
 - 🔧 **Multi-Environment Support** - Development, staging, and production workflows
 
 ## Prerequisites
-- Existing ERPNext v15 installation
+- Node.js v20+ (for BMAD Method installer)
+- Existing ERPNext v15 installation (for implementing generated code)
 - Frappe Framework v15.75.0+
 - Active Frappe bench environment
-- Claude Code with BMAD-METHOD support
 
-## Quick Start
+## Installation
+
+### Method 1: Install via BMAD Method Installer (Recommended)
 ```bash
-# Clone BMAD-METHOD repository
-git clone https://github.com/bmad-code-org/BMAD-METHOD.git
+# Navigate to your ERPNext app directory
+cd /home/frappe/frappe-bench/apps/your-app-name
+
+# Install BMAD Method with the ERPNext expansion pack
+npx bmad-method install --full --expansion-packs bmad-erpnext-v15
+
+# The installer automatically:
+# - Installs BMAD Method core framework
+# - Installs the ERPNext v15 expansion pack
+# - Sets up all agents, templates, and workflows
+```
+
+### Method 2: Clone Repository
+```bash
+# Clone the repository with the expansion pack
+git clone https://github.com/woakes070048/BMAD-METHOD.git
 cd BMAD-METHOD
 
-# Navigate to the expansion pack
-cd expansion-packs/bmad-erpnext-v15
+# The expansion pack is included at:
+# expansion-packs/bmad-erpnext-v15/
 
 # Configure for your environment
+cd expansion-packs/bmad-erpnext-v15
 cp config.yaml.example config.yaml
 # Edit config.yaml with your bench path and site details
+```
 
-# Use with Claude Code
-claude
-*expansion-pack bmad-erpnext-v15*
+### List Available Expansion Packs
+```bash
+# See all available expansion packs
+npx bmad-method list:expansions
 ```
 
 ## Specialized Agents
