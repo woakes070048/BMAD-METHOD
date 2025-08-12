@@ -194,6 +194,9 @@ templates:
     - "vue-spa-template.yaml"
     - "api-module-template.yaml"
     - "frappe-ui-component-template.yaml"
+  coordination:
+    - "task-assignment-template.yaml"
+    - "handoff-template.yaml"
   automation:
     - "n8n-to-erpnext-template.yaml"
   migration:
