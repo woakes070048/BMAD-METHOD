@@ -1,0 +1,1109 @@
+name: "erpnext-requirements-template"
+title: "ERPNext Requirements Documentation Template"
+description: "Comprehensive template for documenting functional and non-functional requirements for ERPNext implementations, including use cases, acceptance criteria, and technical specifications"
+version: "1.0.0"
+
+parameters:
+  project_name:
+    type: "string"
+    required: true
+    description: "Name of the ERPNext implementation project"
+  requirement_type:
+    type: "string"
+    required: true
+    description: "Type of requirement (Functional, Non-Functional, Integration, Data)"
+  module_focus:
+    type: "string"
+    required: false
+    description: "Primary ERPNext module for this requirement"
+  stakeholder_group:
+    type: "string"
+    required: true
+    description: "Primary stakeholder group for this requirement"
+
+templates:
+  functional_requirement: |
+    # {{project_name}} - Functional Requirements
+
+    ## Document Information
+    - **Project**: {{project_name}}
+    - **Module**: {{module_focus}}
+    - **Version**: 1.0
+    - **Date**: {{current_date}}
+    - **Author**: Business Analyst
+    - **Stakeholder**: {{stakeholder_group}}
+    - **Status**: Draft
+
+    ## Requirement Overview
+
+    ### Business Context
+    This document specifies the functional requirements for the {{module_focus}} module implementation in {{project_name}}. These requirements are derived from stakeholder interviews, business process analysis, and ERPNext capability assessment.
+
+    ### Requirement Categories
+    ```yaml
+    requirement_structure:
+      user_stories:
+        description: "Feature requirements from user perspective"
+        format: "As a [role], I want [functionality] so that [benefit]"
+        
+      business_rules:
+        description: "Business logic and constraints"
+        format: "System shall enforce business rules"
+        
+      integration_requirements:
+        description: "External system interactions"
+        format: "System shall integrate with external systems"
+        
+      data_requirements:
+        description: "Data management and migration needs"
+        format: "System shall manage data according to specifications"
+    ```
+
+    ## Functional Requirements
+
+    ### FR-001: Customer Management
+    **Priority**: Must Have
+    **Module**: CRM/Selling
+    **Epic**: Customer Relationship Management
+
+    #### User Story
+    ```
+    As a Sales Representative, I want to manage customer information 
+    in a centralized system so that I can access complete customer 
+    history and provide better service.
+    ```
+
+    #### Acceptance Criteria
+    ```yaml
+    acceptance_criteria:
+      customer_creation:
+        - "User can create new customer with required fields"
+        - "System validates email format and phone number"
+        - "Customer code is auto-generated based on naming series"
+        - "Customer group and territory are mandatory fields"
+        
+      customer_information:
+        - "System stores multiple addresses (billing, shipping, other)"
+        - "System tracks customer credit limit and payment terms"
+        - "System maintains customer contact persons"
+        - "System records customer communication history"
+        
+      data_validation:
+        - "System prevents duplicate customer creation based on email"
+        - "System validates tax identification numbers"
+        - "System enforces credit limit checks during order creation"
+        - "System maintains audit trail of customer changes"
+    ```
+
+    #### ERPNext Implementation Details
+    ```yaml
+    erpnext_configuration:
+      doctype: "Customer"
+      custom_fields:
+        - field_name: "customer_classification"
+          field_type: "Select"
+          options: "Retail\\nWholesale\\nDistributor\\nDirect"
+          mandatory: true
+          
+        - field_name: "preferred_payment_method"
+          field_type: "Link"
+          options: "Mode of Payment"
+          
+        - field_name: "sales_rep_primary"
+          field_type: "Link"
+          options: "Employee"
+          
+      business_rules:
+        - "Credit limit must be approved by Finance Manager if > $50,000"
+        - "Customer group determines default pricing list"
+        - "Territory assignment affects tax calculations"
+        
+      permissions:
+        - "Sales User: Read, Write (own customers)"
+        - "Sales Manager: Read, Write, Delete (all customers)"
+        - "Accounts User: Read only"
+    ```
+
+    #### Integration Requirements
+    ```yaml
+    external_integrations:
+      crm_system:
+        direction: "Bi-directional sync"
+        frequency: "Real-time"
+        data_points: ["Customer basic info", "Contact details", "Activity log"]
+        
+      accounting_system:
+        direction: "ERPNext to External"
+        frequency: "Daily"
+        data_points: ["Customer master", "Credit terms", "Outstanding balances"]
+    ```
+
+    #### Test Scenarios
+    ```yaml
+    test_cases:
+      TC-001:
+        description: "Create new customer with complete information"
+        steps:
+          - "Navigate to Customer List"
+          - "Click New Customer"
+          - "Fill all mandatory fields"
+          - "Save customer"
+        expected_result: "Customer created successfully with auto-generated code"
+        
+      TC-002:
+        description: "Prevent duplicate customer creation"
+        steps:
+          - "Attempt to create customer with existing email"
+        expected_result: "System displays error message and prevents creation"
+        
+      TC-003:
+        description: "Customer credit limit validation"
+        steps:
+          - "Create sales order exceeding customer credit limit"
+        expected_result: "System warns about credit limit and requires approval"
+    ```
+
+    ### FR-002: Sales Order Processing
+    **Priority**: Must Have
+    **Module**: Selling
+    **Epic**: Order Management
+
+    #### User Story
+    ```
+    As a Sales Representative, I want to create and manage sales orders 
+    efficiently so that I can process customer requests quickly and 
+    accurately track order fulfillment.
+    ```
+
+    #### Acceptance Criteria
+    ```yaml
+    acceptance_criteria:
+      order_creation:
+        - "User can create sales order from quotation or directly"
+        - "System auto-populates customer details and pricing"
+        - "System calculates taxes based on customer location"
+        - "System checks item availability and reserves stock"
+        
+      order_management:
+        - "User can modify order before confirmation"
+        - "System tracks order status throughout lifecycle"
+        - "System prevents modification of confirmed orders without approval"
+        - "System generates order confirmation documents"
+        
+      workflow_integration:
+        - "Orders above threshold require manager approval"
+        - "System sends notifications at each workflow stage"
+        - "System maintains complete audit trail"
+        - "System integrates with delivery and invoicing processes"
+    ```
+
+    #### ERPNext Implementation Details
+    ```yaml
+    erpnext_configuration:
+      doctype: "Sales Order"
+      workflow_states:
+        - "Draft"
+        - "Pending Approval" 
+        - "Approved"
+        - "In Production"
+        - "Ready to Deliver"
+        - "Completed"
+        - "Cancelled"
+        
+      custom_fields:
+        - field_name: "customer_po_number"
+          field_type: "Data"
+          label: "Customer PO Number"
+          
+        - field_name: "special_instructions"
+          field_type: "Text"
+          label: "Special Delivery Instructions"
+          
+        - field_name: "sales_rep_commission"
+          field_type: "Currency"
+          label: "Sales Representative Commission"
+          
+      business_rules:
+        - "Orders > $25,000 require Sales Manager approval"
+        - "New customers require Finance approval for credit orders"
+        - "Back-ordered items automatically create purchase requisitions"
+        
+      automation:
+        - "Auto-email order confirmation to customer"
+        - "Auto-create delivery note when items available"
+        - "Auto-update customer last order date"
+    ```
+
+    ### FR-003: Inventory Management
+    **Priority**: Must Have
+    **Module**: Stock
+    **Epic**: Warehouse Operations
+
+    #### User Story
+    ```
+    As a Warehouse Manager, I want to track inventory levels in real-time 
+    across multiple locations so that I can optimize stock levels and 
+    prevent stockouts.
+    ```
+
+    #### Acceptance Criteria
+    ```yaml
+    acceptance_criteria:
+      inventory_tracking:
+        - "System tracks stock levels by item and warehouse"
+        - "System maintains perpetual inventory records"
+        - "System supports multiple units of measure per item"
+        - "System tracks batch numbers and expiry dates"
+        
+      stock_movements:
+        - "System records all stock movements with source documents"
+        - "System supports stock transfers between warehouses"
+        - "System handles stock adjustments with approval"
+        - "System maintains complete stock movement history"
+        
+      reporting_alerting:
+        - "System provides real-time stock level reports"
+        - "System alerts for low stock levels"
+        - "System identifies slow-moving and obsolete inventory"
+        - "System generates cycle counting schedules"
+    ```
+
+    ## Non-Functional Requirements
+
+    ### NFR-001: Performance Requirements
+    **Category**: Performance
+    **Priority**: Must Have
+
+    #### Response Time Requirements
+    ```yaml
+    performance_criteria:
+      page_load_times:
+        - "Standard pages: < 3 seconds"
+        - "Report pages: < 10 seconds"
+        - "Dashboard load: < 5 seconds"
+        - "Search results: < 2 seconds"
+        
+      api_response_times:
+        - "CRUD operations: < 1 second"
+        - "Complex queries: < 5 seconds"
+        - "Bulk operations: < 30 seconds"
+        - "File uploads: < 10 seconds for 10MB files"
+        
+      throughput_requirements:
+        - "Support 100 concurrent users"
+        - "Process 1000 transactions per hour"
+        - "Handle 10,000 records in bulk operations"
+        - "Support 500 page views per minute"
+    ```
+
+    #### Scalability Requirements
+    ```yaml
+    scalability_targets:
+      user_growth:
+        - "Current: 50 users"
+        - "Year 1: 100 users"
+        - "Year 3: 200 users"
+        
+      data_growth:
+        - "Current: 100GB database"
+        - "Annual growth: 50GB"
+        - "5-year projection: 350GB"
+        
+      transaction_volume:
+        - "Current: 500 transactions/day"
+        - "Peak: 2000 transactions/day"
+        - "Growth: 20% annually"
+    ```
+
+    ### NFR-002: Security Requirements
+    **Category**: Security
+    **Priority**: Must Have
+
+    #### Authentication and Authorization
+    ```yaml
+    security_requirements:
+      authentication:
+        - "Integration with Active Directory/LDAP"
+        - "Multi-factor authentication for admin users"
+        - "Password complexity requirements"
+        - "Session timeout after 30 minutes inactivity"
+        
+      authorization:
+        - "Role-based access control (RBAC)"
+        - "Field-level permissions"
+        - "Document-level permissions"
+        - "IP address restrictions for admin access"
+        
+      data_protection:
+        - "Encryption in transit (TLS 1.3)"
+        - "Encryption at rest for sensitive data"
+        - "Database access logging"
+        - "Personal data anonymization capabilities"
+    ```
+
+    ## Integration Requirements
+
+    ### INT-001: Accounting System Integration
+    **System**: QuickBooks Enterprise
+    **Type**: Bi-directional
+    **Priority**: Must Have
+
+    #### Data Flow Specifications
+    ```yaml
+    integration_details:
+      erpnext_to_quickbooks:
+        frequency: "Daily (11 PM)"
+        data_entities:
+          - "Customer master data"
+          - "Vendor master data" 
+          - "Sales invoices"
+          - "Purchase invoices"
+          - "Payment entries"
+          
+      quickbooks_to_erpnext:
+        frequency: "Daily (6 AM)"
+        data_entities:
+          - "Chart of accounts updates"
+          - "Payment confirmations"
+          - "Bank reconciliation data"
+          
+      error_handling:
+        - "Failed records logged in error queue"
+        - "Email notifications for integration failures"
+        - "Retry mechanism with exponential backoff"
+        - "Manual retry capability for failed records"
+    ```
+
+    ## Data Requirements
+
+    ### DR-001: Master Data Migration
+    **Category**: Data Migration
+    **Priority**: Must Have
+
+    #### Migration Scope
+    ```yaml
+    migration_requirements:
+      customer_data:
+        source: "Legacy CRM + Excel files"
+        volume: "~5,000 customers"
+        data_quality_issues:
+          - "Duplicate customer records"
+          - "Inconsistent address formats"
+          - "Missing contact information"
+        cleansing_rules:
+          - "Merge duplicates based on email/phone"
+          - "Standardize address formats"
+          - "Validate email addresses"
+          
+      product_catalog:
+        source: "Multiple Excel spreadsheets"
+        volume: "~2,500 products"
+        transformation_requirements:
+          - "Create product hierarchy"
+          - "Standardize product codes"
+          - "Map to ERPNext item groups"
+          - "Set up pricing rules"
+          
+      historical_transactions:
+        scope: "2 years of sales/purchase data"
+        volume: "~50,000 transactions"
+        purpose: "Reporting continuity and analytics"
+    ```
+
+    ## Acceptance Criteria Framework
+
+    ### Definition of Done
+    ```yaml
+    completion_criteria:
+      functional_completeness:
+        - "All acceptance criteria met and tested"
+        - "Business rules implemented and validated"
+        - "Error handling implemented"
+        - "User permissions configured and tested"
+        
+      technical_completeness:
+        - "Code reviewed and approved"
+        - "Unit tests written and passing"
+        - "Integration tests successful"
+        - "Performance criteria met"
+        
+      documentation_completeness:
+        - "User documentation updated"
+        - "Technical documentation complete"
+        - "Training materials prepared"
+        - "Support procedures documented"
+        
+      stakeholder_acceptance:
+        - "Business stakeholder sign-off"
+        - "User acceptance testing completed"
+        - "Performance testing passed"
+        - "Security review completed"
+    ```
+
+    ## Requirements Traceability
+
+    ### Traceability Matrix
+    ```yaml
+    traceability_mapping:
+      FR-001:
+        business_need: "Centralized customer management"
+        stakeholder: "Sales Team"
+        epic: "Customer Relationship Management"
+        test_cases: ["TC-001", "TC-002", "TC-003"]
+        design_document: "Customer Module Design v1.2"
+        
+      FR-002:
+        business_need: "Efficient order processing"
+        stakeholder: "Sales and Operations Teams"
+        epic: "Order Management"
+        test_cases: ["TC-010", "TC-011", "TC-012"]
+        design_document: "Sales Order Workflow Design v1.1"
+    ```
+
+    ## Change Management
+
+    ### Requirements Change Process
+    ```yaml
+    change_control:
+      change_request_process:
+        - "Submit change request with business justification"
+        - "Impact assessment (scope, timeline, cost)"
+        - "Change review board evaluation"
+        - "Stakeholder approval if approved"
+        - "Requirements document update"
+        
+      change_categories:
+        minor_changes:
+          description: "Field additions, validation changes"
+          approval_required: "Business Analyst"
+          
+        major_changes:
+          description: "New features, workflow changes"
+          approval_required: "Change Review Board"
+          
+        critical_changes:
+          description: "Architecture changes, scope modifications"
+          approval_required: "Steering Committee"
+    ```
+
+    ## Review and Approval
+
+    ### Review Process
+    ```yaml
+    review_workflow:
+      technical_review:
+        reviewer: "Technical Architect"
+        criteria: "Feasibility, ERPNext alignment, technical accuracy"
+        
+      business_review:
+        reviewer: "Business Stakeholders"
+        criteria: "Business value, completeness, usability"
+        
+      final_approval:
+        approver: "Project Sponsor"
+        criteria: "Overall alignment with project objectives"
+    ```
+
+    ### Approval Matrix
+    | Requirement Type | Business Review | Technical Review | Final Approval |
+    |------------------|----------------|------------------|----------------|
+    | Functional | ✓ | ✓ | Project Manager |
+    | Non-Functional | ○ | ✓ | Technical Lead |
+    | Integration | ✓ | ✓ | IT Director |
+    | Data Migration | ✓ | ✓ | Data Owner |
+
+    ---
+
+    **Document Control**
+    - Version: 1.0
+    - Last Updated: {{current_date}}
+    - Next Review: {{next_review_date}}
+    - Approval Required: Business Stakeholders, Technical Team
+
+  non_functional_requirement: |
+    # {{project_name}} - Non-Functional Requirements
+
+    ## Document Information
+    - **Project**: {{project_name}}
+    - **Category**: {{requirement_type}}
+    - **Version**: 1.0
+    - **Date**: {{current_date}}
+    - **Author**: System Architect
+    - **Status**: Draft
+
+    ## Performance Requirements
+
+    ### System Response Time
+    ```yaml
+    response_time_requirements:
+      user_interface:
+        page_load_standard: "< 3 seconds for 95% of requests"
+        page_load_complex: "< 8 seconds for complex reports"
+        form_submission: "< 2 seconds for data entry"
+        search_results: "< 2 seconds for typical queries"
+        
+      api_performance:
+        crud_operations: "< 1 second for single record operations"
+        bulk_operations: "< 30 seconds for 1000 records"
+        report_generation: "< 30 seconds for standard reports"
+        data_export: "< 60 seconds for 10,000 records"
+    ```
+
+    ### Throughput Requirements
+    ```yaml
+    throughput_specifications:
+      concurrent_users:
+        normal_operations: "100 concurrent users"
+        peak_load: "150 concurrent users"
+        administrative_tasks: "10 concurrent admin users"
+        
+      transaction_volume:
+        sales_orders: "500 orders per day"
+        inventory_transactions: "2000 movements per day"
+        financial_entries: "1000 entries per day"
+        
+      data_processing:
+        batch_jobs: "Process 100,000 records in 4 hours"
+        backup_operations: "Complete backup in 2 hours"
+        integration_sync: "Sync 10,000 records in 30 minutes"
+    ```
+
+    ## Scalability Requirements
+
+    ### Horizontal Scaling
+    ```yaml
+    scaling_capabilities:
+      application_tier:
+        current_capacity: "2 application servers"
+        scaling_trigger: "80% CPU utilization"
+        maximum_servers: "6 application servers"
+        auto_scaling: "Enabled with 5-minute monitoring"
+        
+      database_tier:
+        read_replicas: "2 read-only replicas for reporting"
+        connection_pooling: "Maximum 200 connections"
+        query_optimization: "Index optimization for key queries"
+        
+      storage_requirements:
+        current_size: "100 GB"
+        growth_rate: "50 GB annually"
+        maximum_size: "1 TB (5-year projection)"
+        backup_storage: "3x primary storage for retention"
+    ```
+
+    ## Security Requirements
+
+    ### Authentication and Access Control
+    ```yaml
+    security_specifications:
+      authentication_methods:
+        primary: "Username/password with complexity requirements"
+        two_factor: "TOTP or SMS for privileged users"
+        single_sign_on: "SAML integration with corporate directory"
+        session_management: "30-minute timeout, secure tokens"
+        
+      authorization_model:
+        role_based_access: "ERPNext role permission system"
+        field_level_security: "Sensitive field restrictions"
+        document_permissions: "Owner-based and role-based access"
+        ip_restrictions: "Admin access limited to corporate network"
+    ```
+
+    ### Data Protection
+    ```yaml
+    data_security:
+      encryption_requirements:
+        data_in_transit: "TLS 1.3 minimum"
+        data_at_rest: "AES-256 encryption for database"
+        key_management: "Automated key rotation every 90 days"
+        
+      privacy_controls:
+        personal_data_handling: "GDPR compliance for EU customers"
+        data_anonymization: "Capability to anonymize personal data"
+        data_retention: "Automated deletion per retention policies"
+        audit_logging: "Complete audit trail for sensitive data access"
+    ```
+
+    ## Availability and Reliability
+
+    ### Uptime Requirements
+    ```yaml
+    availability_targets:
+      business_hours:
+        uptime_target: "99.9% (8 AM - 6 PM local time)"
+        maximum_downtime: "8 hours annually during business hours"
+        
+      maintenance_windows:
+        scheduled_maintenance: "Saturday 10 PM - 2 AM"
+        emergency_maintenance: "Maximum 4 hours notice"
+        
+      disaster_recovery:
+        rto_target: "4 hours (Recovery Time Objective)"
+        rpo_target: "1 hour (Recovery Point Objective)"
+        backup_frequency: "Hourly incremental, daily full"
+        offsite_backup: "Geographic separation minimum 100 miles"
+    ```
+
+    ## Usability Requirements
+
+    ### User Experience Standards
+    ```yaml
+    usability_criteria:
+      interface_design:
+        responsive_design: "Support desktop, tablet, mobile devices"
+        browser_compatibility: "Chrome, Firefox, Safari, Edge (latest 2 versions)"
+        accessibility: "WCAG 2.1 AA compliance"
+        
+      user_interaction:
+        navigation_depth: "Maximum 3 clicks to reach any function"
+        error_messaging: "Clear, actionable error descriptions"
+        help_system: "Context-sensitive help and documentation"
+        keyboard_shortcuts: "Support for power users"
+        
+      mobile_requirements:
+        offline_capability: "Core functions available offline"
+        touch_optimization: "Touch-friendly interface design"
+        reduced_bandwidth: "Optimized for 3G/4G connections"
+    ```
+
+    ## Compliance and Regulatory
+
+    ### Regulatory Compliance
+    ```yaml
+    compliance_requirements:
+      financial_regulations:
+        sox_compliance: "SOX controls for financial data"
+        audit_trails: "Immutable audit logs for financial transactions"
+        segregation_of_duties: "Approval workflows and role separation"
+        
+      data_privacy:
+        gdpr_compliance: "Full GDPR compliance for EU operations"
+        data_subject_rights: "Support for data access and deletion requests"
+        consent_management: "Track and manage data processing consent"
+        
+      industry_standards:
+        iso_27001: "Information security management alignment"
+        pci_dss: "If handling payment card data"
+        hipaa: "If applicable for healthcare data"
+    ```
+
+    ## Integration and Compatibility
+
+    ### System Integration Requirements
+    ```yaml
+    integration_standards:
+      api_requirements:
+        rest_api_compliance: "RESTful API design standards"
+        authentication: "OAuth 2.0 or API key based"
+        rate_limiting: "100 requests per minute per client"
+        versioning: "API versioning strategy"
+        
+      data_exchange:
+        supported_formats: "JSON, XML, CSV"
+        real_time_sync: "Webhook support for real-time updates"
+        batch_processing: "Scheduled batch integration capabilities"
+        error_handling: "Comprehensive error reporting and retry logic"
+    ```
+
+    ---
+
+    **Acceptance Criteria**
+    All non-functional requirements must be validated through:
+    - Performance testing with realistic load scenarios
+    - Security testing and vulnerability assessments
+    - Usability testing with representative users
+    - Compliance audits and certifications
+
+  integration_requirement: |
+    # {{project_name}} - Integration Requirements
+
+    ## Document Information
+    - **Project**: {{project_name}}
+    - **Integration Type**: {{requirement_type}}
+    - **Version**: 1.0
+    - **Date**: {{current_date}}
+    - **Author**: Integration Architect
+    - **Status**: Draft
+
+    ## Integration Overview
+
+    ### Integration Landscape
+    ```yaml
+    integration_architecture:
+      erpnext_core:
+        role: "Central business system"
+        capabilities: "Master data, transactions, workflows"
+        
+      external_systems:
+        - name: "Legacy Accounting System"
+          purpose: "Financial data synchronization"
+          integration_type: "Bi-directional"
+          
+        - name: "E-commerce Platform"
+          purpose: "Order and inventory synchronization"
+          integration_type: "Real-time bi-directional"
+          
+        - name: "CRM System"
+          purpose: "Customer data and activity sync"
+          integration_type: "Uni-directional to ERPNext"
+    ```
+
+    ## Specific Integration Requirements
+
+    ### INT-001: Accounting System Integration
+    **External System**: QuickBooks Enterprise
+    **Integration Pattern**: Scheduled Batch Sync
+    **Priority**: Must Have
+
+    #### Data Flow Specification
+    ```yaml
+    data_synchronization:
+      erpnext_to_quickbooks:
+        schedule: "Daily at 11:00 PM"
+        data_entities:
+          customers:
+            mapping: "ERPNext Customer → QuickBooks Customer"
+            fields: ["name", "email", "phone", "address", "credit_limit"]
+            business_rules: "Only active customers with transactions"
+            
+          invoices:
+            mapping: "ERPNext Sales Invoice → QuickBooks Invoice"
+            fields: ["invoice_number", "customer", "line_items", "taxes", "total"]
+            filters: "Only submitted and unpaid invoices"
+            
+          payments:
+            mapping: "ERPNext Payment Entry → QuickBooks Payment"
+            fields: ["payment_date", "amount", "payment_method", "reference"]
+            
+      quickbooks_to_erpnext:
+        schedule: "Daily at 6:00 AM"
+        data_entities:
+          chart_of_accounts:
+            purpose: "Synchronize account structure changes"
+            frequency: "Weekly"
+            
+          bank_transactions:
+            purpose: "Import bank reconciliation data"
+            frequency: "Daily"
+    ```
+
+    #### Technical Specifications
+    ```yaml
+    technical_details:
+      connectivity:
+        protocol: "HTTPS REST API"
+        authentication: "OAuth 2.0"
+        rate_limits: "100 requests per minute"
+        
+      data_format:
+        request_format: "JSON"
+        response_format: "JSON"
+        encoding: "UTF-8"
+        
+      error_handling:
+        retry_logic: "Exponential backoff (3 attempts)"
+        failure_notification: "Email to integration team"
+        logging: "Comprehensive request/response logging"
+        
+      security:
+        encryption: "TLS 1.3"
+        api_key_rotation: "Every 90 days"
+        audit_logging: "All integration activities logged"
+    ```
+
+    ### INT-002: E-commerce Platform Integration
+    **External System**: Shopify
+    **Integration Pattern**: Real-time Webhook + Scheduled Sync
+    **Priority**: Must Have
+
+    #### Real-time Integration
+    ```yaml
+    webhook_configuration:
+      shopify_to_erpnext:
+        triggers:
+          - "Order created"
+          - "Order updated" 
+          - "Order cancelled"
+          - "Payment received"
+          
+        webhook_endpoint: "https://erp.company.com/api/webhooks/shopify"
+        authentication: "HMAC-SHA256 signature verification"
+        retry_policy: "Shopify standard retry (48 hours)"
+        
+        data_mapping:
+          order_creation:
+            source: "Shopify Order"
+            target: "ERPNext Sales Order"
+            transformation_rules:
+              - "Map Shopify customer to ERPNext customer"
+              - "Convert line items to ERPNext items"
+              - "Calculate taxes based on delivery location"
+              - "Set delivery date based on shipping method"
+    ```
+
+    #### Scheduled Sync
+    ```yaml
+    batch_synchronization:
+      erpnext_to_shopify:
+        schedule: "Every 15 minutes"
+        data_entities:
+          inventory_levels:
+            purpose: "Update Shopify stock levels"
+            mapping: "ERPNext Stock Balance → Shopify Inventory"
+            business_rules:
+              - "Only sync items marked for e-commerce"
+              - "Reserve safety stock (10% of available)"
+              - "Update variants individually"
+              
+          product_catalog:
+            schedule: "Daily at 2:00 AM"
+            purpose: "Sync product information and pricing"
+            mapping: "ERPNext Item → Shopify Product"
+            includes: ["name", "description", "images", "price", "variants"]
+    ```
+
+    ### INT-003: CRM System Migration
+    **External System**: Salesforce
+    **Integration Pattern**: One-time Migration + Ongoing Sync
+    **Priority**: Should Have
+
+    #### Migration Requirements
+    ```yaml
+    data_migration:
+      migration_scope:
+        accounts:
+          volume: "~3,000 accounts"
+          mapping: "Salesforce Account → ERPNext Customer"
+          data_quality: "95% complete data required"
+          
+        contacts:
+          volume: "~8,000 contacts"
+          mapping: "Salesforce Contact → ERPNext Contact"
+          relationships: "Maintain account-contact relationships"
+          
+        opportunities:
+          volume: "~5,000 opportunities"
+          mapping: "Salesforce Opportunity → ERPNext Opportunity"
+          historical_data: "Last 2 years only"
+          
+        activities:
+          volume: "~50,000 activities"
+          mapping: "Salesforce Task/Event → ERPNext ToDo/Event"
+          cutoff_date: "Last 6 months only"
+    ```
+
+    #### Ongoing Synchronization
+    ```yaml
+    ongoing_sync:
+      sync_direction: "Salesforce → ERPNext (Read-only)"
+      schedule: "Daily at 8:00 AM"
+      scope: "New/updated records from previous day"
+      
+      conflict_resolution:
+        strategy: "Salesforce wins (read-only sync)"
+        notification: "Email notification for sync conflicts"
+        manual_review: "Weekly review of failed records"
+    ```
+
+    ## Integration Architecture
+
+    ### Integration Middleware
+    ```yaml
+    middleware_requirements:
+      integration_platform:
+        recommendation: "ERPNext built-in integration tools + custom scripts"
+        alternatives: ["Zapier", "n8n", "Custom Python scripts"]
+        
+      message_queuing:
+        purpose: "Handle high-volume, asynchronous processing"
+        technology: "Redis Queue (built into ERPNext)"
+        capacity: "10,000 messages per hour"
+        
+      monitoring:
+        integration_dashboard: "Real-time status of all integrations"
+        alerting: "Email/SMS alerts for failed integrations"
+        logging: "Centralized logging for troubleshooting"
+    ```
+
+    ### Error Handling Framework
+    ```yaml
+    error_management:
+      error_classification:
+        temporary_errors:
+          examples: ["Network timeouts", "Rate limit exceeded"]
+          handling: "Automatic retry with exponential backoff"
+          
+        data_errors:
+          examples: ["Invalid data format", "Missing required fields"]
+          handling: "Log error, notify administrator, manual correction"
+          
+        system_errors:
+          examples: ["External system unavailable", "Authentication failure"]
+          handling: "Immediate notification, manual intervention required"
+          
+      error_reporting:
+        notification_channels: ["Email", "Slack", "SMS for critical"]
+        escalation_matrix: "30 min → Team Lead, 2 hours → Manager"
+        error_dashboard: "Real-time view of integration health"
+    ```
+
+    ## Data Mapping and Transformation
+
+    ### Data Mapping Standards
+    ```yaml
+    mapping_specifications:
+      field_mapping:
+        standard_fields:
+          customer_name: "Direct mapping with data validation"
+          email_address: "Format validation and normalization"
+          phone_number: "Format standardization (E.164)"
+          
+        custom_fields:
+          external_id: "Store external system record ID"
+          sync_timestamp: "Track last synchronization time"
+          sync_status: "Track synchronization success/failure"
+          
+      data_transformation:
+        date_formats: "Convert all dates to ISO 8601"
+        currency_codes: "Standardize to 3-letter ISO codes"
+        address_formatting: "Normalize to company standard format"
+        
+      data_validation:
+        required_field_checks: "Validate all mandatory fields"
+        data_type_validation: "Ensure correct data types"
+        business_rule_validation: "Apply business logic constraints"
+    ```
+
+    ## Security and Compliance
+
+    ### Integration Security
+    ```yaml
+    security_requirements:
+      authentication:
+        api_authentication: "OAuth 2.0 or API key based"
+        certificate_management: "Automated certificate renewal"
+        credential_storage: "Encrypted credential vault"
+        
+      authorization:
+        api_permissions: "Principle of least privilege"
+        rate_limiting: "Prevent API abuse"
+        ip_whitelisting: "Restrict access by IP address"
+        
+      data_protection:
+        encryption_in_transit: "TLS 1.3 for all API calls"
+        data_masking: "Mask sensitive data in logs"
+        audit_trail: "Complete audit log of all integrations"
+        
+      compliance:
+        data_privacy: "GDPR compliance for EU customer data"
+        audit_requirements: "SOX compliance for financial data"
+        retention_policies: "Automated data retention enforcement"
+    ```
+
+    ## Performance and Monitoring
+
+    ### Performance Requirements
+    ```yaml
+    performance_specifications:
+      throughput:
+        real_time_sync: "Process 100 webhooks per minute"
+        batch_sync: "Process 10,000 records per hour"
+        api_response_time: "< 5 seconds for standard operations"
+        
+      scalability:
+        concurrent_connections: "Support 10 concurrent API connections"
+        queue_capacity: "Handle 50,000 queued messages"
+        peak_load_handling: "2x normal load capacity"
+        
+      reliability:
+        uptime_target: "99.9% availability"
+        data_accuracy: "99.99% data accuracy"
+        recovery_time: "< 15 minutes for integration restoration"
+    ```
+
+    ### Monitoring and Alerting
+    ```yaml
+    monitoring_framework:
+      integration_health:
+        status_dashboard: "Real-time integration status"
+        performance_metrics: "Response times, throughput, error rates"
+        historical_reporting: "Weekly and monthly integration reports"
+        
+      alerting_rules:
+        error_threshold: "Alert if error rate > 5%"
+        performance_degradation: "Alert if response time > 10 seconds"
+        system_unavailable: "Immediate alert for system failures"
+        
+      notification_channels:
+        immediate_alerts: "Slack channel for integration team"
+        escalation: "Email to management after 2 hours"
+        status_page: "Public status page for planned maintenance"
+    ```
+
+    ## Testing and Validation
+
+    ### Integration Testing Strategy
+    ```yaml
+    testing_approach:
+      unit_testing:
+        scope: "Individual integration components"
+        coverage: "90% code coverage minimum"
+        automation: "Automated unit test execution"
+        
+      integration_testing:
+        scope: "End-to-end data flow testing"
+        test_data: "Sanitized production data subset"
+        scenarios: "Happy path, error conditions, edge cases"
+        
+      performance_testing:
+        load_testing: "Normal and peak load scenarios"
+        stress_testing: "System limits and failure points"
+        endurance_testing: "24-hour continuous operation"
+        
+      user_acceptance_testing:
+        stakeholder_validation: "Business user testing"
+        data_validation: "Verify data accuracy and completeness"
+        workflow_testing: "End-to-end business process validation"
+    ```
+
+    ## Implementation Plan
+
+    ### Phased Implementation
+    ```yaml
+    implementation_phases:
+      phase_1_foundation:
+        duration: "4 weeks"
+        scope: "Core integration infrastructure"
+        deliverables:
+          - "Integration middleware setup"
+          - "Security framework implementation"
+          - "Monitoring and logging systems"
+          
+      phase_2_critical_integrations:
+        duration: "6 weeks"
+        scope: "Accounting and e-commerce integrations"
+        deliverables:
+          - "QuickBooks integration live"
+          - "Shopify integration live"
+          - "Error handling and monitoring active"
+          
+      phase_3_additional_integrations:
+        duration: "4 weeks"
+        scope: "CRM migration and other systems"
+        deliverables:
+          - "Salesforce data migration complete"
+          - "All integrations optimized"
+          - "Documentation and training complete"
+    ```
+
+    ---
+
+    **Validation Checklist**
+    - [ ] All integration requirements mapped to business needs
+    - [ ] Technical specifications complete and feasible
+    - [ ] Security requirements aligned with company standards
+    - [ ] Performance requirements realistic and measurable
+    - [ ] Error handling comprehensive and tested
+    - [ ] Monitoring and alerting framework defined
+
+    **Approval Required**: IT Director, Business Stakeholders, Security Team

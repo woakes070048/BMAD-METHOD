@@ -143,7 +143,70 @@ bench --site your-site.com add-system-manager your-email@domain.com
 #### ❌ Vue/Frontend build failures
 **Symptoms**: Frontend compilation errors, missing dependencies
 
-**Solutions**:
+**Common Frontend Errors & Solutions**:
+
+**Module resolution errors:**
+```bash
+Error: Failed to resolve import "frappe-ui" from "src/main.js"
+
+# Solution:
+# Check if frappe-ui is installed
+yarn list frappe-ui
+
+# Reinstall if missing
+yarn add frappe-ui
+
+# Clear cache and rebuild
+rm -rf node_modules/.vite
+yarn dev
+```
+
+**Build fails with "Cannot resolve module":**
+```bash
+ERROR: [vite:esbuild] Transform failed with 1 error:
+node_modules/frappe-ui/src/index.js:1:7: ERROR: No loader is configured for ".vue" files
+
+# Solution - vite.config.js - ensure Vue plugin is configured:
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()],
+  optimizeDeps: {
+    include: ['frappe-ui']
+  }
+})
+```
+
+**CSRF Token Issues - 403 Forbidden on API calls:**
+```javascript
+POST http://localhost:8000/api/method/your_app.api.test 403 (Forbidden)
+
+// For development - add to site_config.json
+{
+  "ignore_csrf": 1
+}
+
+// For production - ensure CSRF token is available
+// main.js
+import { setConfig, frappeRequest } from 'frappe-ui'
+
+frappeRequest.configure({
+  headers: {
+    'X-Frappe-CSRF-Token': window.csrf_token || ''
+  }
+})
+```
+
+**Router Issues - Routes not working in production:**
+```python
+# hooks.py - ensure SPA routing is configured
+website_route_rules = [
+    {"from_route": "/your_app/<path:app_path>", "to_route": "your_app"},
+]
+```
+
+**General Diagnostics**:
 ```bash
 # Check Node.js version
 node --version  # Should be 18+
@@ -206,7 +269,24 @@ bench --site your-site.com set-admin-password newpassword
 #### ❌ API authentication failures
 **Symptoms**: 403 Forbidden, authentication errors
 
-**Solutions**:
+**API Permission Errors:**
+```python
+frappe.exceptions.PermissionError: No permission for Customer
+
+# Solution - Check user permissions in API method:
+@frappe.whitelist()
+def your_api_method():
+    # Debug permissions
+    user = frappe.session.user
+    roles = frappe.get_roles(user)
+    print(f"User: {user}, Roles: {roles}")
+    
+    # Check specific permission
+    if not frappe.has_permission("Customer", "read"):
+        frappe.throw("No permission to read customers")
+```
+
+**General API Diagnostics:**
 ```bash
 # Check API key configuration
 *agent api-architect*
@@ -257,7 +337,21 @@ telnet external-service.com 443
 #### ❌ Slow page loads
 **Symptoms**: ERPNext pages load slowly, timeouts
 
-**Solutions**:
+**Frontend Performance Issues:**
+
+**Large bundle size causing slow loading:**
+```javascript
+// Implement code splitting
+const Dashboard = () => import('@/pages/Dashboard.vue')
+const CustomerList = () => import('@/pages/CustomerList.vue')
+
+const routes = [
+  { path: '/dashboard', component: Dashboard },
+  { path: '/customers', component: CustomerList }
+]
+```
+
+**General Performance Diagnostics:**
 ```bash
 # Check system resources
 top

@@ -449,7 +449,7 @@ app_include_css = [
 
 # Website route rules for SPA
 website_route_rules = [
-    {"from_route": "/your-app/<path:app_path>", "to_route": "/your-app"},
+    {"from_route": "/{{app_name}}/<path:app_path>", "to_route": "/{{app_name}}"},
 ]
 
 # Build hook
@@ -623,8 +623,8 @@ print_status "Copying assets to public directory..."
 cd ../../..  # Back to bench root
 
 if [ -d "$FRONTEND_DIR/dist" ]; then
-    mkdir -p "$PUBLIC_DIR/dist"
-    cp -r "$FRONTEND_DIR/dist"/* "$PUBLIC_DIR/dist/"
+    mkdir -p "$PUBLIC_DIR/{{app_name}}"
+    cp -r "$FRONTEND_DIR/dist"/* "$PUBLIC_DIR/{{app_name}}/"
     print_status "✅ Assets copied successfully"
 else
     print_error "❌ Build output not found"
@@ -633,9 +633,9 @@ fi
 
 # Generate build report
 print_status "Generating build report..."
-BUILD_SIZE=$(du -sh "$PUBLIC_DIR/dist" | cut -f1)
-JS_COUNT=$(find "$PUBLIC_DIR/dist" -name "*.js" | wc -l)
-CSS_COUNT=$(find "$PUBLIC_DIR/dist" -name "*.css" | wc -l)
+BUILD_SIZE=$(du -sh "$PUBLIC_DIR/{{app_name}}" | cut -f1)
+JS_COUNT=$(find "$PUBLIC_DIR/{{app_name}}" -name "*.js" | wc -l)
+CSS_COUNT=$(find "$PUBLIC_DIR/{{app_name}}" -name "*.css" | wc -l)
 
 echo ""
 echo "📊 Build Summary:"

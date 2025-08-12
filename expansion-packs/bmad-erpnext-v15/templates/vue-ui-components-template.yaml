@@ -1,0 +1,841 @@
+name: "vue-ui-components-template"
+title: "Vue UI Components Template for ERPNext Apps"
+description: "Complete set of reusable Vue components following frappe-ui patterns"
+version: "2.0.0"
+
+parameters:
+  app_name:
+    type: "string"
+    required: true
+    description: "Name of the ERPNext app (snake_case)"
+  app_title:
+    type: "string"
+    required: true
+    description: "Display title of the app"
+
+templates:
+  app_sidebar: |
+    <template>
+      <div
+        :class="[
+          'fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200 transition-all duration-200',
+          open ? 'w-64' : 'w-20',
+        ]"
+      >
+        <!-- Logo Section -->
+        <div class="flex items-center justify-center h-16 border-b border-gray-200">
+          <router-link to="/app/dashboard" class="flex items-center space-x-3">
+            <img
+              src="/assets/{{app_name}}/logo.svg"
+              alt="{{app_title}}"
+              :class="[
+                'transition-all duration-200',
+                open ? 'h-8 w-8' : 'h-6 w-6'
+              ]"
+            >
+            <span
+              v-show="open"
+              class="text-lg font-semibold text-gray-900 transition-opacity duration-200"
+            >
+              {{app_title}}
+            </span>
+          </router-link>
+        </div>
+
+        <!-- Navigation Items -->
+        <nav class="mt-6">
+          <div class="px-3">
+            <SidebarItem
+              v-for="item in items"
+              :key="item.route"
+              :item="item"
+              :collapsed="!open"
+              :active="$route.path.startsWith(item.route)"
+            />
+          </div>
+        </nav>
+
+        <!-- User Section -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
+          <UserMenu :collapsed="!open" />
+        </div>
+      </div>
+      
+      <!-- Overlay for mobile -->
+      <div
+        v-if="open"
+        class="fixed inset-0 z-40 bg-gray-600 bg-opacity-75 lg:hidden"
+        @click="$emit('update:open', false)"
+      />
+    </template>
+
+    <script setup>
+    import { defineEmits } from 'vue'
+    import SidebarItem from './SidebarItem.vue'
+    import UserMenu from './UserMenu.vue'
+
+    const props = defineProps({
+      open: {
+        type: Boolean,
+        default: true,
+      },
+      items: {
+        type: Array,
+        default: () => [],
+      },
+    })
+
+    defineEmits(['update:open'])
+    </script>
+
+  sidebar_item: |
+    <template>
+      <router-link
+        :to="item.route"
+        :class="[
+          'flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150',
+          active
+            ? 'bg-primary text-white'
+            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+          collapsed ? 'justify-center' : 'justify-start',
+        ]"
+        :title="collapsed ? item.label : ''"
+      >
+        <Icon
+          :name="item.icon"
+          :class="[
+            'flex-shrink-0',
+            collapsed ? 'h-5 w-5' : 'h-4 w-4 mr-3',
+          ]"
+        />
+        <span v-show="!collapsed" class="transition-opacity duration-200">
+          {{ item.label }}
+        </span>
+        <Badge
+          v-if="item.badge && !collapsed"
+          :variant="item.badgeVariant || 'secondary'"
+          class="ml-auto"
+        >
+          {{ item.badge }}
+        </Badge>
+      </router-link>
+    </template>
+
+    <script setup>
+    import { Icon, Badge } from 'frappe-ui'
+
+    defineProps({
+      item: {
+        type: Object,
+        required: true,
+      },
+      collapsed: {
+        type: Boolean,
+        default: false,
+      },
+      active: {
+        type: Boolean,
+        default: false,
+      },
+    })
+    </script>
+
+  app_header: |
+    <template>
+      <header class="bg-white border-b border-gray-200 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <!-- Left side -->
+          <div class="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              @click="$emit('toggle-sidebar')"
+            >
+              <Icon name="menu" class="h-5 w-5" />
+            </Button>
+
+            <!-- Breadcrumbs -->
+            <Breadcrumbs :items="breadcrumbs" />
+          </div>
+
+          <!-- Right side -->
+          <div class="flex items-center space-x-4">
+            <!-- Search -->
+            <div class="relative">
+              <Button
+                variant="ghost"
+                size="sm"
+                @click="showCommandPalette"
+                class="flex items-center space-x-2"
+              >
+                <Icon name="search" class="h-4 w-4" />
+                <span class="hidden sm:inline text-xs text-gray-500">
+                  ⌘K
+                </span>
+              </Button>
+            </div>
+
+            <!-- Notifications -->
+            <NotificationBell />
+
+            <!-- User Avatar -->
+            <UserAvatar />
+          </div>
+        </div>
+      </header>
+    </template>
+
+    <script setup>
+    import { computed } from 'vue'
+    import { useRoute } from 'vue-router'
+    import { Button, Icon } from 'frappe-ui'
+    import Breadcrumbs from './Breadcrumbs.vue'
+    import NotificationBell from './NotificationBell.vue'
+    import UserAvatar from './UserAvatar.vue'
+
+    defineEmits(['toggle-sidebar'])
+
+    const route = useRoute()
+
+    const breadcrumbs = computed(() => {
+      const pathSegments = route.path.split('/').filter(Boolean)
+      const crumbs = []
+      
+      pathSegments.forEach((segment, index) => {
+        const path = '/' + pathSegments.slice(0, index + 1).join('/')
+        crumbs.push({
+          label: segment.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+          route: path,
+        })
+      })
+      
+      return crumbs
+    })
+
+    function showCommandPalette() {
+      // Emit event to show command palette
+      window.dispatchEvent(new CustomEvent('show-command-palette'))
+    }
+    </script>
+
+  command_palette: |
+    <template>
+      <Dialog v-model="open" :options="{ size: '2xl' }">
+        <template #body>
+          <div class="p-0">
+            <!-- Search Input -->
+            <div class="p-4 border-b border-gray-200">
+              <div class="relative">
+                <Icon
+                  name="search"
+                  class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400"
+                />
+                <input
+                  ref="searchInput"
+                  v-model="query"
+                  type="text"
+                  placeholder="Search for commands, pages, or documents..."
+                  class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  @keydown="handleKeydown"
+                />
+              </div>
+            </div>
+
+            <!-- Results -->
+            <div class="max-h-96 overflow-y-auto">
+              <div v-if="filteredCommands.length === 0 && query" class="p-4 text-center text-gray-500">
+                No results found for "{{ query }}"
+              </div>
+              
+              <div v-else>
+                <!-- Recent Commands (when no query) -->
+                <div v-if="!query && recentCommands.length > 0">
+                  <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide bg-gray-50">
+                    Recent
+                  </div>
+                  <CommandItem
+                    v-for="(command, index) in recentCommands"
+                    :key="command.id"
+                    :command="command"
+                    :selected="selectedIndex === index"
+                    @click="executeCommand(command)"
+                  />
+                </div>
+
+                <!-- Search Results -->
+                <div v-if="query">
+                  <div
+                    v-for="(group, groupName) in groupedResults"
+                    :key="groupName"
+                  >
+                    <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide bg-gray-50">
+                      {{ groupName }}
+                    </div>
+                    <CommandItem
+                      v-for="(command, index) in group"
+                      :key="command.id"
+                      :command="command"
+                      :selected="selectedIndex === getGlobalIndex(groupName, index)"
+                      @click="executeCommand(command)"
+                    />
+                  </div>
+                </div>
+
+                <!-- Default Commands (when no query) -->
+                <div v-if="!query">
+                  <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide bg-gray-50">
+                    Commands
+                  </div>
+                  <CommandItem
+                    v-for="(command, index) in defaultCommands"
+                    :key="command.id"
+                    :command="command"
+                    :selected="selectedIndex === index"
+                    @click="executeCommand(command)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </Dialog>
+    </template>
+
+    <script setup>
+    import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
+    import { useRouter } from 'vue-router'
+    import { Dialog, Icon } from 'frappe-ui'
+    import CommandItem from './CommandItem.vue'
+
+    const props = defineProps({
+      open: {
+        type: Boolean,
+        default: false,
+      },
+    })
+
+    const emit = defineEmits(['update:open'])
+
+    const router = useRouter()
+    const searchInput = ref(null)
+    const query = ref('')
+    const selectedIndex = ref(0)
+    const recentCommands = ref([])
+
+    const defaultCommands = [
+      {
+        id: 'dashboard',
+        title: 'Dashboard',
+        description: 'Go to dashboard',
+        icon: 'home',
+        action: () => router.push('/app/dashboard'),
+        group: 'Navigation',
+      },
+      {
+        id: 'new-customer',
+        title: 'New Customer',
+        description: 'Create a new customer',
+        icon: 'plus',
+        action: () => router.push('/app/customer/new'),
+        group: 'Create',
+      },
+      {
+        id: 'settings',
+        title: 'Settings',
+        description: 'Open settings',
+        icon: 'settings',
+        action: () => router.push('/app/settings'),
+        group: 'Navigation',
+      },
+    ]
+
+    const filteredCommands = computed(() => {
+      if (!query.value) return []
+      
+      const searchTerm = query.value.toLowerCase()
+      return defaultCommands.filter(
+        command =>
+          command.title.toLowerCase().includes(searchTerm) ||
+          command.description.toLowerCase().includes(searchTerm)
+      )
+    })
+
+    const groupedResults = computed(() => {
+      const groups = {}
+      filteredCommands.value.forEach(command => {
+        if (!groups[command.group]) {
+          groups[command.group] = []
+        }
+        groups[command.group].push(command)
+      })
+      return groups
+    })
+
+    function getGlobalIndex(groupName, localIndex) {
+      let globalIndex = 0
+      for (const [name, group] of Object.entries(groupedResults.value)) {
+        if (name === groupName) {
+          return globalIndex + localIndex
+        }
+        globalIndex += group.length
+      }
+      return globalIndex
+    }
+
+    function executeCommand(command) {
+      if (command.action) {
+        command.action()
+      }
+      
+      // Add to recent commands
+      const existingIndex = recentCommands.value.findIndex(c => c.id === command.id)
+      if (existingIndex !== -1) {
+        recentCommands.value.splice(existingIndex, 1)
+      }
+      recentCommands.value.unshift(command)
+      recentCommands.value = recentCommands.value.slice(0, 5) // Keep only 5 recent
+      
+      emit('update:open', false)
+    }
+
+    function handleKeydown(event) {
+      const commands = query.value ? filteredCommands.value : defaultCommands
+      
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault()
+          selectedIndex.value = Math.min(selectedIndex.value + 1, commands.length - 1)
+          break
+        case 'ArrowUp':
+          event.preventDefault()
+          selectedIndex.value = Math.max(selectedIndex.value - 1, 0)
+          break
+        case 'Enter':
+          event.preventDefault()
+          if (commands[selectedIndex.value]) {
+            executeCommand(commands[selectedIndex.value])
+          }
+          break
+        case 'Escape':
+          emit('update:open', false)
+          break
+      }
+    }
+
+    function showCommandPalette() {
+      emit('update:open', true)
+    }
+
+    watch(
+      () => props.open,
+      async (isOpen) => {
+        if (isOpen) {
+          query.value = ''
+          selectedIndex.value = 0
+          await nextTick()
+          searchInput.value?.focus()
+        }
+      }
+    )
+
+    onMounted(() => {
+      window.addEventListener('show-command-palette', showCommandPalette)
+    })
+
+    onUnmounted(() => {
+      window.removeEventListener('show-command-palette', showCommandPalette)
+    })
+    </script>
+
+  command_item: |
+    <template>
+      <div
+        :class="[
+          'flex items-center px-4 py-3 cursor-pointer transition-colors',
+          selected ? 'bg-primary text-white' : 'hover:bg-gray-50',
+        ]"
+        @click="$emit('click')"
+      >
+        <Icon
+          :name="command.icon"
+          :class="[
+            'h-4 w-4 mr-3',
+            selected ? 'text-white' : 'text-gray-400',
+          ]"
+        />
+        <div class="flex-1 min-w-0">
+          <div :class="['text-sm font-medium', selected ? 'text-white' : 'text-gray-900']">
+            {{ command.title }}
+          </div>
+          <div
+            v-if="command.description"
+            :class="['text-xs', selected ? 'text-gray-200' : 'text-gray-500']"
+          >
+            {{ command.description }}
+          </div>
+        </div>
+        <div
+          v-if="command.shortcut"
+          :class="[
+            'text-xs px-2 py-1 rounded border',
+            selected
+              ? 'bg-white/20 text-white border-white/30'
+              : 'bg-gray-100 text-gray-500 border-gray-200',
+          ]"
+        >
+          {{ command.shortcut }}
+        </div>
+      </div>
+    </template>
+
+    <script setup>
+    import { Icon } from 'frappe-ui'
+
+    defineProps({
+      command: {
+        type: Object,
+        required: true,
+      },
+      selected: {
+        type: Boolean,
+        default: false,
+      },
+    })
+
+    defineEmits(['click'])
+    </script>
+
+  user_menu: |
+    <template>
+      <DropdownMenu>
+        <template #trigger>
+          <div
+            :class="[
+              'flex items-center cursor-pointer transition-colors rounded-md p-2',
+              collapsed ? 'justify-center' : 'justify-start hover:bg-gray-100',
+            ]"
+          >
+            <Avatar
+              :image="userImage"
+              :name="userFullName"
+              size="sm"
+            />
+            <div v-show="!collapsed" class="ml-3 flex-1 min-w-0">
+              <div class="text-sm font-medium text-gray-900 truncate">
+                {{ userFullName }}
+              </div>
+              <div class="text-xs text-gray-500 truncate">
+                {{ userEmail }}
+              </div>
+            </div>
+            <Icon
+              v-show="!collapsed"
+              name="chevron-up"
+              class="h-4 w-4 text-gray-400 ml-2"
+            />
+          </div>
+        </template>
+
+        <template #content>
+          <div class="py-1">
+            <DropdownMenuItem @click="goToProfile">
+              <Icon name="user" class="h-4 w-4 mr-2" />
+              Profile
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem @click="goToSettings">
+              <Icon name="settings" class="h-4 w-4 mr-2" />
+              Settings
+            </DropdownMenuItem>
+            
+            <DropdownMenuSeparator />
+            
+            <DropdownMenuItem @click="logout">
+              <Icon name="log-out" class="h-4 w-4 mr-2" />
+              Sign out
+            </DropdownMenuItem>
+          </div>
+        </template>
+      </DropdownMenu>
+    </template>
+
+    <script setup>
+    import { computed } from 'vue'
+    import { useRouter } from 'vue-router'
+    import { useAuthStore } from '@/stores/auth'
+    import {
+      Avatar,
+      Icon,
+      DropdownMenu,
+      DropdownMenuItem,
+      DropdownMenuSeparator,
+    } from 'frappe-ui'
+
+    defineProps({
+      collapsed: {
+        type: Boolean,
+        default: false,
+      },
+    })
+
+    const router = useRouter()
+    const authStore = useAuthStore()
+
+    const userFullName = computed(() => authStore.userFullName)
+    const userEmail = computed(() => authStore.user?.email || '')
+    const userImage = computed(() => authStore.userImage)
+
+    function goToProfile() {
+      router.push('/app/profile')
+    }
+
+    function goToSettings() {
+      router.push('/app/settings')
+    }
+
+    function logout() {
+      authStore.logout()
+    }
+    </script>
+
+  notification_bell: |
+    <template>
+      <DropdownMenu>
+        <template #trigger>
+          <Button variant="ghost" size="sm" class="relative">
+            <Icon name="bell" class="h-5 w-5" />
+            <Badge
+              v-if="unreadCount > 0"
+              :value="unreadCount"
+              variant="error"
+              class="absolute -top-1 -right-1 h-5 w-5 text-xs"
+            />
+          </Button>
+        </template>
+
+        <template #content>
+          <div class="w-80">
+            <div class="p-4 border-b border-gray-200">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-medium">Notifications</h3>
+                <Button
+                  v-if="unreadCount > 0"
+                  variant="ghost"
+                  size="sm"
+                  @click="markAllAsRead"
+                >
+                  Mark all as read
+                </Button>
+              </div>
+            </div>
+
+            <div class="max-h-96 overflow-y-auto">
+              <div v-if="notifications.length === 0" class="p-4 text-center text-gray-500">
+                No notifications
+              </div>
+              
+              <NotificationItem
+                v-for="notification in notifications"
+                :key="notification.id"
+                :notification="notification"
+                @click="handleNotificationClick(notification)"
+                @mark-read="markAsRead(notification.id)"
+              />
+            </div>
+
+            <div class="p-2 border-t border-gray-200">
+              <Button
+                variant="ghost"
+                size="sm"
+                class="w-full"
+                @click="goToAllNotifications"
+              >
+                View all notifications
+              </Button>
+            </div>
+          </div>
+        </template>
+      </DropdownMenu>
+    </template>
+
+    <script setup>
+    import { ref, computed, onMounted } from 'vue'
+    import { useRouter } from 'vue-router'
+    import { createResource } from 'frappe-ui'
+    import {
+      Button,
+      Icon,
+      Badge,
+      DropdownMenu,
+    } from 'frappe-ui'
+    import NotificationItem from './NotificationItem.vue'
+
+    const router = useRouter()
+    const notifications = ref([])
+
+    const unreadCount = computed(() => 
+      notifications.value.filter(n => !n.read).length
+    )
+
+    const notificationsResource = createResource({
+      url: '{{app_name}}.api.notifications.get_user_notifications',
+      auto: false,
+      onSuccess(data) {
+        notifications.value = data
+      },
+    })
+
+    const markReadResource = createResource({
+      url: '{{app_name}}.api.notifications.mark_as_read',
+      auto: false,
+    })
+
+    function handleNotificationClick(notification) {
+      if (!notification.read) {
+        markAsRead(notification.id)
+      }
+      
+      if (notification.route) {
+        router.push(notification.route)
+      }
+    }
+
+    async function markAsRead(notificationId) {
+      try {
+        await markReadResource.submit({ notification_id: notificationId })
+        const notification = notifications.value.find(n => n.id === notificationId)
+        if (notification) {
+          notification.read = true
+        }
+      } catch (error) {
+        console.error('Failed to mark notification as read:', error)
+      }
+    }
+
+    async function markAllAsRead() {
+      try {
+        const unreadIds = notifications.value
+          .filter(n => !n.read)
+          .map(n => n.id)
+        
+        await markReadResource.submit({ notification_ids: unreadIds })
+        notifications.value.forEach(n => {
+          if (!n.read) n.read = true
+        })
+      } catch (error) {
+        console.error('Failed to mark all notifications as read:', error)
+      }
+    }
+
+    function goToAllNotifications() {
+      router.push('/app/notifications')
+    }
+
+    onMounted(() => {
+      notificationsResource.fetch()
+    })
+    </script>
+
+  user_avatar: |
+    <template>
+      <DropdownMenu>
+        <template #trigger>
+          <Avatar
+            :image="userImage"
+            :name="userFullName"
+            size="sm"
+            class="cursor-pointer hover:ring-2 hover:ring-primary hover:ring-offset-2 transition-all"
+          />
+        </template>
+
+        <template #content>
+          <div class="py-1 w-48">
+            <div class="px-4 py-2 border-b border-gray-200">
+              <div class="text-sm font-medium text-gray-900">{{ userFullName }}</div>
+              <div class="text-xs text-gray-500">{{ userEmail }}</div>
+            </div>
+            
+            <DropdownMenuItem @click="goToProfile">
+              <Icon name="user" class="h-4 w-4 mr-2" />
+              Your Profile
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem @click="goToSettings">
+              <Icon name="settings" class="h-4 w-4 mr-2" />
+              Settings
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem @click="toggleTheme">
+              <Icon :name="isDark ? 'sun' : 'moon'" class="h-4 w-4 mr-2" />
+              {{ isDark ? 'Light' : 'Dark' }} Mode
+            </DropdownMenuItem>
+            
+            <DropdownMenuSeparator />
+            
+            <DropdownMenuItem @click="logout" class="text-red-600">
+              <Icon name="log-out" class="h-4 w-4 mr-2" />
+              Sign out
+            </DropdownMenuItem>
+          </div>
+        </template>
+      </DropdownMenu>
+    </template>
+
+    <script setup>
+    import { computed } from 'vue'
+    import { useRouter } from 'vue-router'
+    import { useAuthStore } from '@/stores/auth'
+    import { useThemeStore } from '@/stores/theme'
+    import {
+      Avatar,
+      Icon,
+      DropdownMenu,
+      DropdownMenuItem,
+      DropdownMenuSeparator,
+    } from 'frappe-ui'
+
+    const router = useRouter()
+    const authStore = useAuthStore()
+    const themeStore = useThemeStore()
+
+    const userFullName = computed(() => authStore.userFullName)
+    const userEmail = computed(() => authStore.user?.email || '')
+    const userImage = computed(() => authStore.userImage)
+    const isDark = computed(() => themeStore.isDark)
+
+    function goToProfile() {
+      router.push('/app/profile')
+    }
+
+    function goToSettings() {
+      router.push('/app/settings')
+    }
+
+    function toggleTheme() {
+      themeStore.toggle()
+    }
+
+    function logout() {
+      authStore.logout()
+    }
+    </script>
+
+instructions:
+  setup:
+    - "Create components directory: mkdir -p frontend/src/components"
+    - "Copy component templates to frontend/src/components/"
+    - "Import and register components in main layout"
+    - "Add component styles to index.css if needed"
+  
+  integration:
+    - "Components follow frappe-ui patterns and styling"
+    - "Proper TypeScript support with defineProps and defineEmits"
+    - "Responsive design with mobile-first approach"
+    - "Keyboard navigation and accessibility features"
+    - "Integration with Pinia stores for state management"
+  
+  customization:
+    - "Modify sidebar items based on app permissions"
+    - "Customize notification handling for app-specific events"
+    - "Add app-specific commands to command palette"
+    - "Style components to match brand colors"

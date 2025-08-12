@@ -24,7 +24,7 @@ This task guides you through creating Vue 3 components using the Composition API
 #### Navigate to Frontend Directory
 ```bash
 # Go to your app's frontend directory (created via doppio method)
-cd /path/to/frappe-bench/apps/your_app/frontend
+cd /path/to/frappe-bench/apps/{{app_name}}/frontend
 
 # Verify doppio structure
 ls -la

@@ -113,6 +113,8 @@ site/
 *.bak
 *.backup
 *.orig
+config.yaml.backup*
+config.yaml.bak*
 
 # Test Files (if not meant to be committed)
 test-output/

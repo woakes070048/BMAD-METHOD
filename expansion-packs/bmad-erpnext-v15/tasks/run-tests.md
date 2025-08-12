@@ -58,7 +58,7 @@ bench --site test.localhost set-config allow_tests true
 pip install pytest pytest-cov pytest-xdist coverage
 
 # Install Node.js testing dependencies (if applicable)
-cd apps/your_app/frontend
+cd apps/{{app_name}}/frontend
 npm install --dev jest @testing-library/vue
 ```
 

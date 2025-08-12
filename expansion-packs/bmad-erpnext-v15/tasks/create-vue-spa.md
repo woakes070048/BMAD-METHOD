@@ -78,8 +78,8 @@ export default defineConfig({
   server: {
     port: 8080, // Doppio standard port
     proxy: {
-      // Proxy all non-frontend requests to Frappe
-      '^/((?!frontend).)*$': {
+      // Proxy all non-app requests to Frappe
+      '^/((?!{{app_name}}).)*$': {
         target: 'http://{{site_name}}:8000',
         ws: true,
         router: function (req) {
@@ -97,9 +97,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  base: '/frontend/', // Important: matches Frappe routing
+  base: '/{{app_name}}/', // Important: matches Frappe routing
   build: {
-    outDir: '../{{app_name}}/public/frontend',
+    outDir: '../{{app_name}}/public/{{app_name}}',
     emptyOutDir: true,
   }
 })
@@ -108,7 +108,7 @@ export default defineConfig({
 ### 5. Set Up Frappe Backend Integration
 
 #### 5.1 Create Backend Web Page
-Create `{{app_name}}/www/frontend.html`:
+Create `{{app_name}}/www/{{app_name}}.html`:
 ```html
 {% extends "templates/web.html" %}
 
@@ -127,8 +127,8 @@ Create `{{app_name}}/www/frontend.html`:
 
 {% block content %}
     <div id="app"></div>
-    <script type="module" src="/assets/{{app_name}}/frontend/index.js"></script>
-    <link rel="stylesheet" type="text/css" href="/assets/{{app_name}}/frontend/index.css">
+    <script type="module" src="/assets/{{app_name}}/{{app_name}}/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/{{app_name}}/{{app_name}}/index.css">
 {% endblock %}
 ```
 
@@ -137,7 +137,7 @@ Add to your `{{app_name}}/hooks.py`:
 ```python
 # Website routing
 website_route_rules = [
-    {"from_route": "/frontend/<path:app_path>", "to_route": "frontend"},
+    {"from_route": "/{{app_name}}/<path:app_path>", "to_route": "{{app_name}}"},
 ]
 
 # Optional: Add to Frappe desk
@@ -146,7 +146,7 @@ add_to_apps_screen = [
         "name": "{{app_name}}",
         "logo": "/assets/{{app_name}}/logo.svg",
         "title": "{{app_title}}",
-        "route": "/frontend",
+        "route": "/{{app_name}}",
         "has_permission": "{{app_name}}.api.permission.has_app_permission"
     }
 ]
@@ -179,7 +179,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory('/frontend/'),
+  history: createWebHistory('/{{app_name}}/'),
   routes
 })
 
@@ -276,8 +276,8 @@ yarn dev
 ```
 
 #### 7.2 Access Your Application
-- **Development**: http://{{site_name}}:8080/frontend
-- **Production**: http://{{site_name}}:8000/frontend
+- **Development**: http://{{site_name}}:8080/{{app_name}}
+- **Production**: http://{{site_name}}:8000/{{app_name}}
 
 #### 7.3 Development Features
 - ✅ Hot reload enabled
@@ -294,7 +294,7 @@ cd apps/{{app_name}}/frontend
 yarn build
 ```
 
-This creates production files in `../{{app_name}}/public/frontend/`
+This creates production files in `../{{app_name}}/public/{{app_name}}/`
 
 #### 8.2 Production Configuration
 1. **Remove development CSRF bypass** from site_config.json:
@@ -317,11 +317,11 @@ This creates production files in `../{{app_name}}/public/frontend/`
 - [ ] ✅ Doppio template cloned successfully
 - [ ] ✅ Dependencies installed (`yarn install` completed)
 - [ ] ✅ Development server starts (`yarn dev` works)
-- [ ] ✅ Can access app at http://{{site_name}}:8080/frontend
+- [ ] ✅ Can access app at http://{{site_name}}:8080/{{app_name}}
 - [ ] ✅ API calls work (test with the ping button)
 - [ ] ✅ Build process works (`yarn build` succeeds)
 - [ ] ✅ Backend routing configured in hooks.py
-- [ ] ✅ Frontend.html template created
+- [ ] ✅ {{app_name}}.html template created
 
 #### 9.2 Verify Doppio Features
 The doppio template includes:
@@ -333,18 +333,18 @@ The doppio template includes:
 
 ## Troubleshooting Common Issues
 
-### Issue 1: "Cannot GET /frontend"
+### Issue 1: "Cannot GET /{{app_name}}"
 **Problem**: Backend routing not configured
 **Solution**: 
 1. Add `website_route_rules` to hooks.py
-2. Create frontend.html in www/ directory
+2. Create {{app_name}}.html in www/ directory
 3. Restart bench: `bench restart`
 
 ### Issue 2: CSRF Token Errors
 **Problem**: CSRF protection interfering in development
 **Solution**:
 - Development: Add `"ignore_csrf": 1` to site_config.json
-- Production: Remove this setting and ensure frontend.html includes csrf_token
+- Production: Remove this setting and ensure {{app_name}}.html includes csrf_token
 
 ### Issue 3: API Calls Failing
 **Problem**: Proxy configuration or CORS issues
@@ -363,7 +363,7 @@ The doppio template includes:
 ### Issue 5: Build Failures
 **Problem**: Path or configuration issues
 **Solution**:
-1. Verify build output directory: `../{{app_name}}/public/frontend`
+1. Verify build output directory: `../{{app_name}}/public/{{app_name}}`
 2. Check that parent directory exists
 3. Ensure proper permissions on directories
 
@@ -375,7 +375,7 @@ The doppio template includes:
 cd apps/{{app_name}}/frontend
 yarn build
 
-# The files are automatically placed in {{app_name}}/public/frontend/
+# The files are automatically placed in {{app_name}}/public/{{app_name}}/
 # Restart your production server
 sudo supervisorctl restart all
 ```
@@ -383,7 +383,7 @@ sudo supervisorctl restart all
 ### 2. Nginx Configuration (if needed)
 ```nginx
 # Usually not needed as Frappe handles asset serving
-location /assets/{{app_name}}/frontend/ {
+location /assets/{{app_name}}/{{app_name}}/ {
     expires 1y;
     add_header Cache-Control "public, immutable";
 }
@@ -391,7 +391,7 @@ location /assets/{{app_name}}/frontend/ {
 
 ### 3. Production Checklist
 - [ ] Remove `"ignore_csrf": 1` from site_config.json
-- [ ] Verify frontend.html includes CSRF token
+- [ ] Verify {{app_name}}.html includes CSRF token
 - [ ] Test app functionality in production
 - [ ] Check browser console for errors
 - [ ] Verify asset loading (CSS/JS files)

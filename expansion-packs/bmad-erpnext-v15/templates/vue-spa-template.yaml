@@ -100,9 +100,9 @@ templates:
           },
         },
       },
-      base: '/frontend/',
+      base: '/{{app_name}}/',
       build: {
-        outDir: '../{{app_name}}/public/frontend',
+        outDir: '../{{app_name}}/public/{{app_name}}',
         emptyOutDir: true,
         sourcemap: true,
         rollupOptions: {
@@ -238,7 +238,7 @@ templates:
     ]
     
     const router = createRouter({
-      history: createWebHistory('/frontend'),
+      history: createWebHistory('/{{app_name}}'),
       routes,
     })
     
@@ -734,21 +734,21 @@ instructions:
   
   development:
     - "Run development server: yarn dev"
-    - "Access at http://{{site_name}}:8080/frontend"
+    - "Access at http://{{site_name}}:8080/{{app_name}}"
     - "Hot reload enabled for Vue components"
     - "API calls proxied to port 8000"
     - "CSRF protection disabled in development"
   
   integration:
-    - "Build outputs to ../{{app_name}}/public/frontend"
-    - "Add to hooks.py: website_route_rules for /frontend routing"
+    - "Build outputs to ../{{app_name}}/public/{{app_name}}"
+    - "Add to hooks.py: website_route_rules for /{{app_name}} routing"
     - "In production, remove 'ignore_csrf' from site_config.json"
     - "Ensure CSRF token available on window object"
   
   hooks_py_addition: |
     # Add to hooks.py
     website_route_rules = [
-        {"from_route": "/frontend/<path:app_path>", "to_route": "frontend"},
+        {"from_route": "/{{app_name}}/<path:app_path>", "to_route": "{{app_name}}"},
     ]
     
     # Optional: Add to desk
@@ -757,7 +757,7 @@ instructions:
             "name": "{{app_name}}",
             "logo": "/assets/{{app_name}}/logo.svg",
             "title": "{{app_title}}",
-            "route": "/frontend",
+            "route": "/{{app_name}}",
             "has_permission": "{{app_name}}.api.permission.has_app_permission"
         }
     ]
@@ -779,8 +779,8 @@ instructions:
     
     {% block content %}
         <div id="app"></div>
-        <script type="module" src="/assets/{{app_name}}/frontend/index.js"></script>
-        <link rel="stylesheet" type="text/css" href="/assets/{{app_name}}/frontend/index.css">
+        <script type="module" src="/assets/{{app_name}}/{{app_name}}/index.js"></script>
+        <link rel="stylesheet" type="text/css" href="/assets/{{app_name}}/{{app_name}}/index.css">
     {% endblock %}
   
   production_checklist:

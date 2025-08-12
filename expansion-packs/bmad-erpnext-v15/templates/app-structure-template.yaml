@@ -3,6 +3,11 @@ title: "Modern ERPNext App Structure Template"
 description: "Template for creating modern ERPNext apps with Vue SPA frontend"
 version: "1.0.0"
 
+templates:
+  app_structure:
+    type: "file_generator"
+    description: "Generates complete ERPNext app structure with modern frontend"
+
 parameters:
   app_name:
     type: "string"
@@ -300,8 +305,8 @@ structure:
               "type": "module",
               "scripts": {
                 "dev": "vite",
-                "build": "vite build --base=/assets/{{app_name}}/frontend/ && yarn copy-html-entry",
-                "copy-html-entry": "cp ../{{app_name}}/public/frontend/index.html ../{{app_name}}/www/{{app_name}}.html",
+                "build": "vite build --base=/assets/{{app_name}}/{{app_name}}/ && yarn copy-html-entry",
+                "copy-html-entry": "cp ../{{app_name}}/public/{{app_name}}/index.html ../{{app_name}}/www/{{app_name}}.html",
                 "serve": "vite preview"
               },
               "dependencies": {
@@ -342,12 +347,12 @@ structure:
                     theme_color: '#ffffff',
                     icons: [
                       {
-                        src: '/assets/{{app_name}}/icon-192.png',
+                        src: '/assets/{{app_name}}/icons/icon-192.png',
                         sizes: '192x192',
                         type: 'image/png'
                       },
                       {
-                        src: '/assets/{{app_name}}/icon-512.png',
+                        src: '/assets/{{app_name}}/icons/icon-512.png',
                         sizes: '512x512',
                         type: 'image/png'
                       }
@@ -361,7 +366,7 @@ structure:
                 }
               },
               build: {
-                outDir: '../{{app_name}}/public/frontend',
+                outDir: '../{{app_name}}/public/{{app_name}}',
                 emptyOutDir: true,
                 target: 'es2015'
               }
@@ -474,17 +479,28 @@ structure:
                         url: '{{app_name}}.api.session.get_session_info',
                         onSuccess(data) {
                           user.value = data
+                        },
+                        onError(error) {
+                          console.error('Session fetch failed:', error)
+                          user.value = null
                         }
                       })
                       
                       function init() {
-                        sessionResource.fetch()
+                        sessionResource.reload()
+                      }
+                      
+                      function logout() {
+                        user.value = null
+                        // Call logout API
                       }
                       
                       return {
                         user,
                         isLoggedIn,
-                        init
+                        init,
+                        logout,
+                        sessionResource
                       }
                     })
           - "pages/":
@@ -502,3 +518,101 @@ structure:
                     </script>
           - "components/":
               - ".gitkeep"
+              - "DataTable.vue":
+                  template: |
+                    <template>
+                      <div class="space-y-4">
+                        <!-- Loading State -->
+                        <div v-if="listResource.loading" class="flex justify-center py-8">
+                          <LoadingIndicator />
+                        </div>
+                        
+                        <!-- Error State -->
+                        <ErrorBanner v-else-if="listResource.error" :error="listResource.error" />
+                        
+                        <!-- Data Table -->
+                        <div v-else-if="listResource.data">
+                          <table class="w-full border-collapse">
+                            <thead>
+                              <tr class="border-b">
+                                <th v-for="field in fields" :key="field.name" class="text-left p-2">
+                                  {{ field.label }}
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="row in listResource.data" :key="row.name" class="border-b hover:bg-gray-50">
+                                <td v-for="field in fields" :key="field.name" class="p-2">
+                                  {{ row[field.name] }}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          
+                          <!-- Pagination -->
+                          <div class="flex justify-between items-center mt-4">
+                            <Button 
+                              :disabled="page === 1"
+                              @click="previousPage"
+                            >
+                              Previous
+                            </Button>
+                            <span>Page {{ page }}</span>
+                            <Button 
+                              :disabled="listResource.data.length < pageSize"
+                              @click="nextPage"
+                            >
+                              Next
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        <!-- Empty State -->
+                        <div v-else class="text-center py-8 text-gray-500">
+                          No data found
+                        </div>
+                      </div>
+                    </template>
+                    
+                    <script setup>
+                    import { createResource, Button, LoadingIndicator, ErrorBanner } from 'frappe-ui'
+                    import { ref, computed } from 'vue'
+                    
+                    const props = defineProps({
+                      doctype: String,
+                      fields: Array,
+                      filters: Object
+                    })
+                    
+                    const page = ref(1)
+                    const pageSize = 20
+                    
+                    const listResource = createResource({
+                      url: 'frappe.client.get_list',
+                      params: computed(() => ({
+                        doctype: props.doctype,
+                        fields: props.fields.map(f => f.name),
+                        filters: props.filters || {},
+                        order_by: 'creation desc',
+                        limit: pageSize,
+                        start: (page.value - 1) * pageSize
+                      })),
+                      auto: true
+                    })
+                    
+                    function nextPage() {
+                      page.value++
+                      listResource.reload()
+                    }
+                    
+                    function previousPage() {
+                      if (page.value > 1) {
+                        page.value--
+                        listResource.reload()
+                      }
+                    }
+                    
+                    defineExpose({
+                      reload: () => listResource.reload()
+                    })
+                    </script>

@@ -89,7 +89,7 @@ import requests
 #### Install Frontend Dependencies
 ```bash
 # If your app has a frontend
-cd apps/your_app/frontend
+cd apps/{{app_name}}/frontend
 
 # Install dependencies
 npm install
@@ -636,7 +636,7 @@ monitor_app_health()
 pip install -r apps/your_app/requirements.txt
 
 # Install Node.js dependencies
-cd apps/your_app/frontend && npm install
+cd apps/{{app_name}}/frontend && npm install
 ```
 
 ### Issue: Database Migration Errors

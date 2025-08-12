@@ -23,6 +23,32 @@ app.use(FrappeUI)
 app.mount('#app')
 ```
 
+## Data Fetching with createResource
+
+The most important utility in frappe-ui is `createResource` for API calls:
+
+```javascript
+import { createResource } from 'frappe-ui'
+
+// Basic usage
+const resource = createResource({
+  url: 'frappe.client.get_list',
+  params: {
+    doctype: 'Customer',
+    fields: ['name', 'customer_name']
+  },
+  auto: true // Fetch on mount
+})
+
+// Access states
+resource.data // Response data
+resource.loading // Loading state
+resource.error // Error state
+resource.reload() // Refresh data
+```
+
+For comprehensive patterns, see [frappe-ui-resource-patterns.md](./frappe-ui-resource-patterns.md)
+
 ## Core Components
 
 ### Button

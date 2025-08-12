@@ -1,0 +1,758 @@
+name: "frontend-testing-template"
+title: "Frontend Testing Setup with Vitest and Playwright"
+description: "Complete testing infrastructure for Vue ERPNext apps"
+version: "2.0.0"
+
+parameters:
+  app_name:
+    type: "string"
+    required: true
+    description: "Name of the ERPNext app (snake_case)"
+  site_name:
+    type: "string"
+    required: true
+    description: "Site name for testing"
+
+templates:
+  vitest_config: |
+    // vitest.config.js
+    import { defineConfig } from 'vitest/config'
+    import vue from '@vitejs/plugin-vue'
+    import path from 'path'
+    
+    export default defineConfig({
+      plugins: [vue()],
+      test: {
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: ['./tests/setup.js'],
+        coverage: {
+          provider: 'v8',
+          reporter: ['text', 'json', 'html'],
+          exclude: [
+            'node_modules/',
+            'tests/',
+            '**/*.d.ts',
+            '**/*.config.js',
+            'dist/',
+          ],
+          thresholds: {
+            global: {
+              branches: 80,
+              functions: 80,
+              lines: 80,
+              statements: 80
+            }
+          }
+        },
+        // Mock API calls
+        server: {
+          deps: {
+            inline: ['frappe-ui']
+          }
+        }
+      },
+      resolve: {
+        alias: {
+          '@': path.resolve(__dirname, './src'),
+        },
+      },
+    })
+
+  vitest_setup: |
+    // tests/setup.js
+    import { vi } from 'vitest'
+    import { config } from '@vue/test-utils'
+    import 'jsdom-global/register'
+    
+    // Mock frappe-ui
+    vi.mock('frappe-ui', () => ({
+      Button: { template: '<button><slot /></button>' },
+      Input: { template: '<input />' },
+      FormControl: { template: '<div><slot /></div>' },
+      Dialog: { template: '<div v-if="modelValue"><slot /></div>' },
+      DropdownMenu: { template: '<div><slot /></div>' },
+      Icon: { template: '<i></i>' },
+      Avatar: { template: '<div></div>' },
+      Badge: { template: '<span><slot /></span>' },
+      Card: { template: '<div><slot /></div>' },
+      createResource: vi.fn(() => ({
+        loading: false,
+        data: null,
+        submit: vi.fn(),
+        fetch: vi.fn(),
+        update: vi.fn(),
+        reload: vi.fn(),
+      })),
+      createListResource: vi.fn(() => ({
+        loading: false,
+        data: [],
+        submit: vi.fn(),
+        fetch: vi.fn(),
+        update: vi.fn(),
+        reload: vi.fn(),
+      })),
+      setConfig: vi.fn(),
+      frappeRequest: {
+        configure: vi.fn(),
+      },
+      FrappeUI: {
+        install: vi.fn(),
+      },
+    }))
+    
+    // Mock socket.io-client
+    vi.mock('socket.io-client', () => ({
+      io: vi.fn(() => ({
+        connected: false,
+        connect: vi.fn(),
+        disconnect: vi.fn(),
+        on: vi.fn(),
+        off: vi.fn(),
+        emit: vi.fn(),
+      })),
+    }))
+    
+    // Mock Vue Router
+    vi.mock('vue-router', () => ({
+      createRouter: vi.fn(() => ({
+        push: vi.fn(),
+        replace: vi.fn(),
+        back: vi.fn(),
+        forward: vi.fn(),
+      })),
+      createWebHistory: vi.fn(),
+      useRouter: vi.fn(() => ({
+        push: vi.fn(),
+        replace: vi.fn(),
+        back: vi.fn(),
+        forward: vi.fn(),
+      })),
+      useRoute: vi.fn(() => ({
+        path: '/test',
+        params: {},
+        query: {},
+        name: 'test',
+      })),
+    }))
+    
+    // Global test utilities
+    global.window = global.window || {}
+    global.window.csrf_token = 'test-token'
+    global.window.showToast = vi.fn()
+    
+    // Global component stubs for testing
+    config.global.stubs = {
+      'router-link': true,
+      'router-view': true,
+    }
+    
+    // Console error handler for tests
+    const originalError = console.error
+    console.error = (...args) => {
+      if (
+        typeof args[0] === 'string' &&
+        args[0].includes('Warning: Function components cannot be given refs')
+      ) {
+        return
+      }
+      originalError.call(console, ...args)
+    }
+
+  component_test_example: |
+    // tests/components/AppHeader.test.js
+    import { describe, it, expect, vi, beforeEach } from 'vitest'
+    import { mount } from '@vue/test-utils'
+    import { createPinia, setActivePinia } from 'pinia'
+    import AppHeader from '@/components/AppHeader.vue'
+    
+    describe('AppHeader', () => {
+      let wrapper
+      let pinia
+    
+      beforeEach(() => {
+        pinia = createPinia()
+        setActivePinia(pinia)
+        
+        wrapper = mount(AppHeader, {
+          global: {
+            plugins: [pinia],
+            stubs: {
+              'router-link': true,
+              'Icon': true,
+              'Button': true,
+              'Breadcrumbs': true,
+              'NotificationBell': true,
+              'UserAvatar': true,
+            },
+          },
+        })
+      })
+    
+      it('renders correctly', () => {
+        expect(wrapper.exists()).toBe(true)
+        expect(wrapper.find('header').exists()).toBe(true)
+      })
+    
+      it('emits toggle-sidebar event when menu button is clicked', async () => {
+        const menuButton = wrapper.find('[data-testid="menu-button"]')
+        if (menuButton.exists()) {
+          await menuButton.trigger('click')
+          expect(wrapper.emitted('toggle-sidebar')).toBeTruthy()
+        }
+      })
+    
+      it('shows search functionality', () => {
+        const searchButton = wrapper.find('[data-testid="search-button"]')
+        expect(searchButton.exists()).toBe(true)
+      })
+    })
+
+  store_test_example: |
+    // tests/stores/auth.test.js
+    import { describe, it, expect, vi, beforeEach } from 'vitest'
+    import { setActivePinia, createPinia } from 'pinia'
+    import { useAuthStore } from '@/stores/auth'
+    
+    // Mock createResource
+    const mockResource = {
+      loading: false,
+      data: null,
+      submit: vi.fn(),
+      fetch: vi.fn(),
+    }
+    
+    vi.mock('frappe-ui', () => ({
+      createResource: vi.fn(() => mockResource),
+    }))
+    
+    describe('Auth Store', () => {
+      let authStore
+    
+      beforeEach(() => {
+        setActivePinia(createPinia())
+        authStore = useAuthStore()
+        vi.clearAllMocks()
+      })
+    
+      it('initializes with default state', () => {
+        expect(authStore.user).toBeNull()
+        expect(authStore.isLoggedIn).toBe(false)
+        expect(authStore.initialized).toBe(false)
+      })
+    
+      it('sets user when login is successful', async () => {
+        mockResource.submit.mockResolvedValue({
+          success: true,
+          user: 'test@example.com',
+          full_name: 'Test User',
+        })
+    
+        const result = await authStore.login('test@example.com', 'password')
+    
+        expect(result.success).toBe(true)
+        expect(authStore.user).toEqual({
+          email: 'test@example.com',
+          full_name: 'Test User',
+        })
+        expect(authStore.isLoggedIn).toBe(true)
+      })
+    
+      it('handles login failure', async () => {
+        mockResource.submit.mockResolvedValue({
+          success: false,
+          message: 'Invalid credentials',
+        })
+    
+        const result = await authStore.login('test@example.com', 'wrong-password')
+    
+        expect(result.success).toBe(false)
+        expect(result.message).toBe('Invalid credentials')
+        expect(authStore.user).toBeNull()
+        expect(authStore.isLoggedIn).toBe(false)
+      })
+    
+      it('clears user data on logout', async () => {
+        // Set initial user
+        authStore.user = { email: 'test@example.com', full_name: 'Test User' }
+        
+        mockResource.submit.mockResolvedValue({})
+        
+        await authStore.logout()
+        
+        expect(authStore.user).toBeNull()
+        expect(authStore.isLoggedIn).toBe(false)
+      })
+    
+      it('checks user roles correctly', () => {
+        authStore.user = {
+          email: 'test@example.com',
+          roles: ['User', 'Customer'],
+        }
+    
+        expect(authStore.hasRole('User')).toBe(true)
+        expect(authStore.hasRole('Admin')).toBe(false)
+        expect(authStore.hasAnyRole(['Admin', 'User'])).toBe(true)
+        expect(authStore.hasAnyRole(['Admin', 'Manager'])).toBe(false)
+      })
+    })
+
+  composable_test_example: |
+    // tests/composables/useDocumentRealtime.test.js
+    import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+    import { nextTick } from 'vue'
+    import { useDocumentRealtime } from '@/composables/useDocumentRealtime'
+    import { useRealtimeStore } from '@/stores/realtime'
+    
+    // Mock the realtime store
+    vi.mock('@/stores/realtime', () => ({
+      useRealtimeStore: vi.fn(() => ({
+        isConnected: true,
+        subscribeToDocument: vi.fn(),
+        unsubscribeFromDocument: vi.fn(),
+      })),
+    }))
+    
+    describe('useDocumentRealtime', () => {
+      let mockRealtimeStore
+      let composable
+    
+      beforeEach(() => {
+        mockRealtimeStore = {
+          isConnected: true,
+          subscribeToDocument: vi.fn(),
+          unsubscribeFromDocument: vi.fn(),
+        }
+        
+        useRealtimeStore.mockReturnValue(mockRealtimeStore)
+        
+        // Mock window event listeners
+        global.window.addEventListener = vi.fn()
+        global.window.removeEventListener = vi.fn()
+        global.window.dispatchEvent = vi.fn()
+      })
+    
+      afterEach(() => {
+        vi.clearAllMocks()
+      })
+    
+      it('subscribes to document on mount when autoSubscribe is true', () => {
+        composable = useDocumentRealtime('Customer', 'CUST-001', {
+          autoSubscribe: true,
+        })
+    
+        expect(mockRealtimeStore.subscribeToDocument).toHaveBeenCalledWith(
+          'Customer',
+          'CUST-001',
+          {}
+        )
+      })
+    
+      it('does not subscribe when autoSubscribe is false', () => {
+        composable = useDocumentRealtime('Customer', 'CUST-001', {
+          autoSubscribe: false,
+        })
+    
+        expect(mockRealtimeStore.subscribeToDocument).not.toHaveBeenCalled()
+      })
+    
+      it('manually subscribes and unsubscribes', () => {
+        composable = useDocumentRealtime('Customer', 'CUST-001', {
+          autoSubscribe: false,
+        })
+    
+        composable.subscribe()
+        expect(mockRealtimeStore.subscribeToDocument).toHaveBeenCalled()
+        expect(composable.isSubscribed.value).toBe(true)
+    
+        composable.unsubscribe()
+        expect(mockRealtimeStore.unsubscribeFromDocument).toHaveBeenCalled()
+        expect(composable.isSubscribed.value).toBe(false)
+      })
+    
+      it('detects edit conflicts', () => {
+        const onConflict = vi.fn()
+        
+        composable = useDocumentRealtime('Customer', 'CUST-001', {
+          detectConflicts: true,
+          currentlyEditing: ['customer_name', 'email'],
+          onConflict,
+        })
+    
+        // Simulate document update with conflicting fields
+        const updateEvent = new CustomEvent('doc-update', {
+          detail: {
+            doctype: 'Customer',
+            name: 'CUST-001',
+            doc: { customer_name: 'New Name' },
+            updated_fields: ['customer_name'],
+          },
+        })
+    
+        // Trigger the event handler directly
+        window.dispatchEvent(updateEvent)
+        
+        expect(composable.conflicts.value).toHaveLength(1)
+        expect(composable.conflicts.value[0].fields).toEqual(['customer_name'])
+      })
+    })
+
+  playwright_config: |
+    // playwright.config.js
+    import { defineConfig, devices } from '@playwright/test'
+    
+    export default defineConfig({
+      testDir: './tests/e2e',
+      fullyParallel: true,
+      forbidOnly: !!process.env.CI,
+      retries: process.env.CI ? 2 : 0,
+      workers: process.env.CI ? 1 : undefined,
+      reporter: [
+        ['html'],
+        ['junit', { outputFile: 'test-results/junit.xml' }],
+      ],
+      use: {
+        baseURL: 'http://{{site_name}}:8080',
+        trace: 'on-first-retry',
+        screenshot: 'only-on-failure',
+        video: 'retain-on-failure',
+      },
+    
+      projects: [
+        {
+          name: 'chromium',
+          use: { ...devices['Desktop Chrome'] },
+        },
+        {
+          name: 'firefox',
+          use: { ...devices['Desktop Firefox'] },
+        },
+        {
+          name: 'webkit',
+          use: { ...devices['Desktop Safari'] },
+        },
+        {
+          name: 'Mobile Chrome',
+          use: { ...devices['Pixel 5'] },
+        },
+        {
+          name: 'Mobile Safari',
+          use: { ...devices['iPhone 12'] },
+        },
+      ],
+    
+      webServer: {
+        command: 'yarn dev',
+        url: 'http://{{site_name}}:8080',
+        reuseExistingServer: !process.env.CI,
+        timeout: 120 * 1000,
+      },
+    })
+
+  e2e_test_example: |
+    // tests/e2e/auth.spec.js
+    import { test, expect } from '@playwright/test'
+    
+    test.describe('Authentication', () => {
+      test.beforeEach(async ({ page }) => {
+        await page.goto('/{{app_name}}')
+      })
+    
+      test('should redirect to login page when not authenticated', async ({ page }) => {
+        await expect(page).toHaveURL(/.*login/)
+      })
+    
+      test('should login with valid credentials', async ({ page }) => {
+        // Navigate to login page
+        await page.goto('/login')
+        
+        // Fill login form
+        await page.fill('input[name="email"]', 'test@example.com')
+        await page.fill('input[name="password"]', 'password')
+        
+        // Submit form
+        await page.click('button[type="submit"]')
+        
+        // Should redirect to dashboard after successful login
+        await expect(page).toHaveURL(/.*dashboard/)
+        
+        // Should show user info in header
+        await expect(page.locator('[data-testid="user-avatar"]')).toBeVisible()
+      })
+    
+      test('should show error for invalid credentials', async ({ page }) => {
+        await page.goto('/login')
+        
+        await page.fill('input[name="email"]', 'invalid@example.com')
+        await page.fill('input[name="password"]', 'wrongpassword')
+        await page.click('button[type="submit"]')
+        
+        // Should show error message
+        await expect(page.locator('.error-message')).toBeVisible()
+        await expect(page.locator('.error-message')).toContainText('Invalid credentials')
+      })
+    
+      test('should logout successfully', async ({ page }) => {
+        // Login first
+        await page.goto('/login')
+        await page.fill('input[name="email"]', 'test@example.com')
+        await page.fill('input[name="password"]', 'password')
+        await page.click('button[type="submit"]')
+        
+        // Wait for dashboard
+        await expect(page).toHaveURL(/.*dashboard/)
+        
+        // Click user avatar to open menu
+        await page.click('[data-testid="user-avatar"]')
+        
+        // Click logout
+        await page.click('[data-testid="logout-button"]')
+        
+        // Should redirect to login
+        await expect(page).toHaveURL(/.*login/)
+      })
+    })
+
+  e2e_list_view_test: |
+    // tests/e2e/list-view.spec.js
+    import { test, expect } from '@playwright/test'
+    
+    test.describe('List View', () => {
+      test.beforeEach(async ({ page }) => {
+        // Login before each test
+        await page.goto('/login')
+        await page.fill('input[name="email"]', 'test@example.com')
+        await page.fill('input[name="password"]', 'password')
+        await page.click('button[type="submit"]')
+        await expect(page).toHaveURL(/.*dashboard/)
+      })
+    
+      test('should display list of customers', async ({ page }) => {
+        await page.goto('/{{app_name}}/app/customer')
+        
+        // Wait for list to load
+        await expect(page.locator('[data-testid="list-view"]')).toBeVisible()
+        
+        // Should show list items
+        await expect(page.locator('[data-testid="list-item"]').first()).toBeVisible()
+        
+        // Should show pagination if needed
+        const listItems = await page.locator('[data-testid="list-item"]').count()
+        if (listItems >= 20) {
+          await expect(page.locator('[data-testid="pagination"]')).toBeVisible()
+        }
+      })
+    
+      test('should filter list items', async ({ page }) => {
+        await page.goto('/{{app_name}}/app/customer')
+        
+        // Open filter dialog
+        await page.click('[data-testid="filter-button"]')
+        
+        // Add filter
+        await page.selectOption('[data-testid="filter-field"]', 'customer_name')
+        await page.selectOption('[data-testid="filter-operator"]', 'like')
+        await page.fill('[data-testid="filter-value"]', 'Test')
+        
+        // Apply filter
+        await page.click('[data-testid="apply-filter"]')
+        
+        // Should show filtered results
+        await expect(page.locator('[data-testid="list-item"]')).toBeVisible()
+        
+        // All visible items should contain "Test"
+        const items = await page.locator('[data-testid="list-item"]').all()
+        for (const item of items) {
+          await expect(item).toContainText('Test')
+        }
+      })
+    
+      test('should create new record', async ({ page }) => {
+        await page.goto('/{{app_name}}/app/customer')
+        
+        // Click new button
+        await page.click('[data-testid="new-customer-button"]')
+        
+        // Should open create dialog
+        await expect(page.locator('[data-testid="create-dialog"]')).toBeVisible()
+        
+        // Fill form
+        await page.fill('[data-testid="customer-name-input"]', 'Test Customer')
+        await page.fill('[data-testid="email-input"]', 'test@customer.com')
+        
+        // Submit form
+        await page.click('[data-testid="save-button"]')
+        
+        // Should redirect to detail view
+        await expect(page).toHaveURL(/.*customer\/CUST-.*/)
+        
+        // Should show success message
+        await expect(page.locator('[data-testid="success-message"]')).toBeVisible()
+      })
+    
+      test('should navigate to detail view on row click', async ({ page }) => {
+        await page.goto('/{{app_name}}/app/customer')
+        
+        // Click first list item
+        await page.click('[data-testid="list-item"]')
+        
+        // Should navigate to detail view
+        await expect(page).toHaveURL(/.*customer\/.*/)
+        
+        // Should show document details
+        await expect(page.locator('[data-testid="document-detail"]')).toBeVisible()
+      })
+    })
+
+  test_utils: |
+    // tests/utils.js
+    import { vi } from 'vitest'
+    import { mount } from '@vue/test-utils'
+    import { createPinia, setActivePinia } from 'pinia'
+    import { createRouter, createWebHistory } from 'vue-router'
+    
+    export function createTestRouter(routes = []) {
+      return createRouter({
+        history: createWebHistory(),
+        routes: [
+          { path: '/', component: { template: '<div>Home</div>' } },
+          { path: '/login', component: { template: '<div>Login</div>' } },
+          { path: '/dashboard', component: { template: '<div>Dashboard</div>' } },
+          ...routes,
+        ],
+      })
+    }
+    
+    export function mountComponent(component, options = {}) {
+      const pinia = createPinia()
+      setActivePinia(pinia)
+      
+      const router = createTestRouter()
+      
+      return mount(component, {
+        global: {
+          plugins: [pinia, router],
+          stubs: {
+            'router-link': true,
+            'router-view': true,
+            'transition': false,
+            ...options.stubs,
+          },
+          ...options.global,
+        },
+        ...options,
+      })
+    }
+    
+    export function createMockResource(overrides = {}) {
+      return {
+        loading: false,
+        data: null,
+        error: null,
+        submit: vi.fn(),
+        fetch: vi.fn(),
+        update: vi.fn(),
+        reload: vi.fn(),
+        reset: vi.fn(),
+        ...overrides,
+      }
+    }
+    
+    export function createMockListResource(overrides = {}) {
+      return {
+        loading: false,
+        data: [],
+        error: null,
+        hasNextPage: false,
+        hasPreviousPage: false,
+        submit: vi.fn(),
+        fetch: vi.fn(),
+        update: vi.fn(),
+        reload: vi.fn(),
+        next: vi.fn(),
+        previous: vi.fn(),
+        reset: vi.fn(),
+        ...overrides,
+      }
+    }
+    
+    export function waitForNextTick(times = 1) {
+      return new Promise(resolve => {
+        const tick = () => {
+          if (times <= 1) {
+            resolve()
+          } else {
+            times--
+            process.nextTick(tick)
+          }
+        }
+        process.nextTick(tick)
+      })
+    }
+    
+    export function mockConsole() {
+      const originalConsole = { ...console }
+      
+      beforeEach(() => {
+        console.log = vi.fn()
+        console.warn = vi.fn()
+        console.error = vi.fn()
+        console.info = vi.fn()
+      })
+      
+      afterEach(() => {
+        Object.assign(console, originalConsole)
+      })
+    }
+
+  package_json_test_scripts: |
+    // Add to package.json scripts
+    {
+      "scripts": {
+        "test": "vitest",
+        "test:run": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "test:ui": "vitest --ui",
+        "test:e2e": "playwright test",
+        "test:e2e:ui": "playwright test --ui",
+        "test:e2e:headed": "playwright test --headed",
+        "test:e2e:debug": "playwright test --debug"
+      },
+      "devDependencies": {
+        "@playwright/test": "^1.40.0",
+        "@vue/test-utils": "^2.4.0",
+        "jsdom": "^23.0.0",
+        "vitest": "^1.0.0",
+        "@vitest/ui": "^1.0.0",
+        "@vitest/coverage-v8": "^1.0.0"
+      }
+    }
+
+instructions:
+  setup:
+    - "Install testing dependencies: yarn add -D @playwright/test @vue/test-utils jsdom vitest @vitest/ui @vitest/coverage-v8"
+    - "Install Playwright browsers: npx playwright install"
+    - "Create tests directory structure: mkdir -p tests/{unit,e2e,components,stores,composables}"
+    - "Add test scripts to package.json"
+    - "Configure GitHub Actions or CI pipeline to run tests"
+  
+  unit_testing:
+    - "Test Vue components with @vue/test-utils"
+    - "Test Pinia stores with proper mocking"
+    - "Test composables and utility functions"
+    - "Mock external dependencies (frappe-ui, socket.io)"
+    - "Achieve 80%+ code coverage"
+  
+  e2e_testing:
+    - "Test complete user workflows with Playwright"
+    - "Test authentication and authorization flows"
+    - "Test CRUD operations and form submissions"
+    - "Test real-time features and WebSocket connections"
+    - "Cross-browser and mobile device testing"
+  
+  best_practices:
+    - "Use data-testid attributes for reliable element selection"
+    - "Mock external APIs and services"
+    - "Test user interactions, not implementation details"
+    - "Keep tests focused and independent"
+    - "Use page object pattern for E2E tests"

@@ -1,0 +1,312 @@
+name: ERPNext Story Document
+description: Template for creating detailed ERPNext user stories with acceptance criteria, tasks, DocType specifications, and specialist assignment
+template:
+  id: erpnext-story-template-v1
+  name: ERPNext Story Document
+  version: 1.0
+  output:
+    format: markdown
+    filename: docs/stories/{{epic_num}}.{{story_num}}.{{story_title_short}}.erpnext-story.md
+    title: "ERPNext Story {{epic_num}}.{{story_num}}: {{story_title_short}}"
+
+workflow:
+  mode: interactive
+  elicitation: erpnext-requirements-elicitation
+  framework: frappe
+
+agent_config:
+  editable_sections: 
+    - Status
+    - Story
+    - Acceptance Criteria
+    - Tasks / Subtasks
+    - Dev Notes
+    - ERPNext Context
+    - Testing
+    - Change Log
+
+sections:
+  - id: status
+    title: Status
+    type: choice
+    choices: [Draft, Approved, InProgress, Review, Done]
+    instruction: Select the current status of the ERPNext story
+    owner: erpnext-scrum-master
+    editors: [erpnext-scrum-master, specialized-dev-agent]
+    
+  - id: story
+    title: Story
+    type: template-text
+    template: |
+      **As a** {{role}} using ERPNext,
+      **I want** {{action}} in the ERPNext system,
+      **so that** {{benefit}} within my ERPNext workflow
+    instruction: Define the ERPNext user story with specific ERPNext context
+    elicit: true
+    owner: erpnext-scrum-master
+    editors: [erpnext-scrum-master]
+    
+  - id: acceptance-criteria
+    title: Acceptance Criteria
+    type: numbered-list
+    instruction: |
+      ERPNext-specific acceptance criteria including:
+      - DocType behavior requirements
+      - Frappe UI compliance requirements
+      - Mobile responsiveness requirements
+      - API security and whitelisting requirements
+      - Multi-app integration requirements (docflow, n8n_integration)
+      - Performance requirements for ERPNext scale
+    elicit: true
+    owner: erpnext-scrum-master
+    editors: [erpnext-scrum-master]
+    
+  - id: tasks-subtasks
+    title: Tasks / Subtasks
+    type: bullet-list
+    instruction: |
+      Break down ERPNext story into specific development tasks:
+      - DocType creation/modification tasks
+      - Controller business logic tasks
+      - Client script tasks
+      - Vue.js frontend component tasks
+      - API endpoint creation tasks
+      - Integration tasks (docflow, n8n_integration)
+      - Testing tasks (unit, integration, UI)
+      - Deployment and migration tasks
+    template: |
+      - [ ] DocType Tasks (AC: # if applicable)
+        - [ ] Create/modify DocType schema
+        - [ ] Configure field types and validations
+        - [ ] Set up relationships and permissions
+      - [ ] Controller Tasks (AC: # if applicable)
+        - [ ] Implement business logic
+        - [ ] Add validation hooks
+        - [ ] Configure workflow integration
+      - [ ] Frontend Tasks (AC: # if applicable)
+        - [ ] Create Vue.js components
+        - [ ] Implement Frappe UI patterns
+        - [ ] Ensure mobile responsiveness
+      - [ ] API Tasks (AC: # if applicable)
+        - [ ] Create whitelisted endpoints
+        - [ ] Implement authentication
+        - [ ] Add input validation
+      - [ ] Integration Tasks (AC: # if applicable)
+        - [ ] Configure docflow workflows
+        - [ ] Set up n8n_integration hooks
+        - [ ] Test multi-app compatibility
+      - [ ] Testing Tasks (AC: # if applicable)
+        - [ ] Write unit tests
+        - [ ] Create integration tests
+        - [ ] Test mobile UI functionality
+    elicit: true
+    owner: erpnext-scrum-master
+    editors: [erpnext-scrum-master, specialized-dev-agent]
+    
+  - id: erpnext-context
+    title: ERPNext Context
+    instruction: |
+      ERPNext-specific technical context and requirements:
+      - DocType specifications and relationships
+      - Frappe Framework constraints and patterns to follow
+      - Integration requirements with existing apps
+      - Mobile-first and PWA considerations
+      - API security and performance requirements
+    elicit: true
+    owner: erpnext-scrum-master
+    editors: [erpnext-scrum-master]
+    sections:
+      - id: doctype-specs
+        title: DocType Specifications
+        instruction: |
+          Detailed DocType requirements:
+          - Field definitions and types
+          - Relationship specifications (Link, Table)
+          - Permission matrix
+          - Naming conventions
+          - Workflow integration points
+        elicit: true
+        owner: erpnext-scrum-master
+        editors: [erpnext-scrum-master]
+        
+      - id: frappe-patterns
+        title: Frappe Framework Patterns
+        instruction: |
+          Required Frappe patterns and constraints:
+          - Frappe-first principle adherence
+          - Built-in capabilities to leverage
+          - Anti-patterns to avoid
+          - Framework conventions to follow
+        elicit: true
+        owner: erpnext-scrum-master
+        editors: [erpnext-scrum-master]
+        
+      - id: integration-requirements
+        title: Integration Requirements
+        instruction: |
+          Multi-app integration specifications:
+          - docflow workflow integration points
+          - n8n_integration automation hooks
+          - Existing app compatibility requirements
+          - Data synchronization needs
+        elicit: true
+        owner: erpnext-scrum-master
+        editors: [erpnext-scrum-master]
+        
+      - id: frontend-specs
+        title: Frontend Specifications
+        instruction: |
+          Vue.js frontend requirements:
+          - Frappe UI component usage
+          - Mobile-first design requirements
+          - PWA features if applicable
+          - Responsive design breakpoints
+          - Accessibility requirements
+        elicit: true
+        owner: erpnext-scrum-master
+        editors: [erpnext-scrum-master]
+        
+  - id: dev-notes
+    title: Dev Notes
+    instruction: |
+      ERPNext development context and guidance:
+      - Relevant ERPNext patterns and examples
+      - Specific Frappe Framework capabilities to use
+      - Integration considerations with existing apps
+      - Performance and security considerations
+      - Mobile and PWA implementation guidance
+    elicit: true
+    owner: erpnext-scrum-master
+    editors: [erpnext-scrum-master]
+    sections:
+      - id: testing-standards
+        title: Testing Standards
+        instruction: |
+          ERPNext-specific testing requirements:
+          - Frappe test framework usage
+          - DocType test patterns
+          - API endpoint testing
+          - Vue.js component testing
+          - Integration testing requirements
+          - Mobile UI testing needs
+        elicit: true
+        owner: erpnext-scrum-master
+        editors: [erpnext-scrum-master]
+        
+      - id: environment-setup
+        title: Environment Setup
+        instruction: |
+          ERPNext development environment requirements:
+          - Bench commands needed
+          - Site configuration requirements
+          - App installation dependencies
+          - Database migration needs
+        elicit: true
+        owner: erpnext-scrum-master
+        editors: [erpnext-scrum-master]
+        
+  - id: change-log
+    title: Change Log
+    type: table
+    columns: [Date, Version, Description, Author]
+    instruction: Track changes made to this ERPNext story document
+    owner: erpnext-scrum-master
+    editors: [erpnext-scrum-master, specialized-dev-agent, erpnext-qa-lead]
+    
+  - id: specialist-assignment
+    title: Specialist Assignment
+    instruction: |
+      Assignment of ERPNext specialists based on story requirements:
+      - Primary specialist assigned
+      - Supporting specialists needed
+      - Coordination requirements
+    owner: main-dev-coordinator
+    editors: [main-dev-coordinator]
+    sections:
+      - id: primary-specialist
+        title: Primary Specialist
+        template: "{{specialist_name}} ({{specialist_role}})"
+        instruction: Primary ERPNext specialist assigned to this story
+        owner: main-dev-coordinator
+        editors: [main-dev-coordinator]
+        
+      - id: supporting-specialists
+        title: Supporting Specialists
+        instruction: Additional ERPNext specialists needed for story completion
+        owner: main-dev-coordinator
+        editors: [main-dev-coordinator]
+        
+  - id: dev-agent-record
+    title: Dev Agent Record
+    instruction: This section is populated by the ERPNext development specialist during implementation
+    owner: specialized-dev-agent
+    editors: [specialized-dev-agent]
+    sections:
+      - id: agent-model
+        title: Agent Model Used
+        template: "{{agent_model_name_version}}"
+        instruction: Record the specific ERPNext specialist agent and version used
+        owner: specialized-dev-agent
+        editors: [specialized-dev-agent]
+        
+      - id: frappe-compliance-notes
+        title: Frappe Compliance Notes
+        instruction: Notes on Frappe Framework pattern adherence and compliance validation
+        owner: specialized-dev-agent
+        editors: [specialized-dev-agent]
+        
+      - id: integration-testing-notes
+        title: Integration Testing Notes
+        instruction: Results of multi-app integration testing and validation
+        owner: specialized-dev-agent
+        editors: [specialized-dev-agent]
+        
+      - id: debug-log-references
+        title: Debug Log References
+        instruction: Reference any debug logs or traces generated during ERPNext development
+        owner: specialized-dev-agent
+        editors: [specialized-dev-agent]
+        
+      - id: completion-notes
+        title: Completion Notes List
+        instruction: Notes about ERPNext task completion and any framework-specific issues encountered
+        owner: specialized-dev-agent
+        editors: [specialized-dev-agent]
+        
+      - id: file-list
+        title: File List
+        instruction: |
+          List all ERPNext files created, modified, or affected:
+          - DocType JSON files
+          - Python controller files
+          - JavaScript client scripts
+          - HTML templates
+          - CSS/SCSS stylesheets
+          - Vue.js components
+          - Migration files
+        owner: specialized-dev-agent
+        editors: [specialized-dev-agent]
+        
+  - id: qa-results
+    title: QA Results
+    instruction: Results from ERPNext QA Lead review of the completed story implementation
+    owner: erpnext-qa-lead
+    editors: [erpnext-qa-lead]
+    sections:
+      - id: frappe-compliance-review
+        title: Frappe Compliance Review
+        instruction: Assessment of Frappe Framework pattern adherence and compliance
+        owner: erpnext-qa-lead
+        editors: [erpnext-qa-lead]
+        
+      - id: integration-validation
+        title: Integration Validation
+        instruction: Multi-app integration testing results and validation
+        owner: erpnext-qa-lead
+        editors: [erpnext-qa-lead]
+        
+      - id: mobile-testing-results
+        title: Mobile Testing Results
+        instruction: Mobile responsiveness and PWA functionality testing results
+        owner: erpnext-qa-lead
+        editors: [erpnext-qa-lead]

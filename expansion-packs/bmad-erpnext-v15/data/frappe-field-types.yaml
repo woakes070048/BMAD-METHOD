@@ -215,6 +215,134 @@ field_types:
       - "GPS coordinates"
     example: "Store Location, Delivery Address"
 
+layout_field_types:
+  section_break:
+    description: "Creates a visual section divider with optional label"
+    use_cases:
+      - "Group related fields"
+      - "Organize form layout"
+      - "Visual hierarchy"
+    properties:
+      - "label: Section heading text"
+      - "collapsible: Make section collapsible"
+      - "collapsible_depends_on: Conditional collapsing"
+    example: "Basic Information, Contact Details, Advanced Settings"
+  
+  column_break:
+    description: "Splits fields into columns within a section"
+    use_cases:
+      - "2-column layouts"
+      - "Side-by-side fields"
+      - "Compact forms"
+    properties:
+      - "No label needed"
+      - "Creates new column in current section"
+    example: "Place after 2-3 fields to create second column"
+  
+  tab_break:
+    description: "Creates tabbed interface for grouping sections"
+    use_cases:
+      - "Organize complex forms"
+      - "Separate concerns"
+      - "Reduce visual clutter"
+    properties:
+      - "label: Tab title (required)"
+      - "depends_on: Conditional display"
+    example: "Details | Accounting | Settings | History"
+  
+  fold:
+    description: "Collapsible section that starts collapsed"
+    use_cases:
+      - "Advanced options"
+      - "Rarely used fields"
+      - "Optional information"
+    properties:
+      - "label: Fold heading"
+      - "fieldname: For referencing"
+    example: "Advanced Configuration, Debug Information"
+  
+  html:
+    description: "Custom HTML content in form"
+    use_cases:
+      - "Instructions"
+      - "Warnings"
+      - "Custom displays"
+    properties:
+      - "options: HTML content"
+    example: "<div class='alert'>Important notice</div>"
+  
+  heading:
+    description: "Styled heading text"
+    use_cases:
+      - "Sub-sections"
+      - "Visual breaks"
+      - "Instructions"
+    properties:
+      - "label: Heading text"
+    example: "Billing Information, System Configuration"
+  
+  page_break:
+    description: "Forces new page in print format"
+    use_cases:
+      - "Print layouts"
+      - "PDF generation"
+      - "Report formatting"
+    example: "Between invoice header and items"
+
+visual_layout_patterns:
+  two_column_layout:
+    structure: |
+      Section Break
+      Field 1
+      Field 2
+      Field 3
+      Column Break
+      Field 4
+      Field 5
+      Field 6
+    description: "Split fields into two equal columns"
+  
+  three_column_layout:
+    structure: |
+      Section Break
+      Field 1
+      Field 2
+      Column Break
+      Field 3
+      Field 4
+      Column Break
+      Field 5
+      Field 6
+    description: "Three column layout for compact forms"
+  
+  tabbed_interface:
+    structure: |
+      Tab Break (General)
+      Fields...
+      Tab Break (Details)
+      Fields...
+      Tab Break (Settings)
+      Fields...
+    description: "Organize complex forms with tabs"
+  
+  accordion_pattern:
+    structure: |
+      Section Break (collapsible=1)
+      Fields...
+      Section Break (collapsible=1)
+      Fields...
+    description: "Collapsible sections for long forms"
+  
+  master_detail_pattern:
+    structure: |
+      Section Break (Header)
+      Key fields...
+      Section Break (Details)
+      Table field
+      Section Break (Summary)
+      Calculated fields...
+    description: "Header-detail-footer pattern"
+
 integration_considerations:
   docflow_compatibility:
     - "Use Link fields for workflow references"

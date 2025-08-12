@@ -1,0 +1,503 @@
+name: "generic-doctype-patterns"
+title: "Generic DocType Pattern Templates"
+description: "Reusable DocType patterns for any business domain - use these as starting points"
+version: "1.0.0"
+
+templates:
+  master_data_pattern: |
+    # Pattern for Master/Reference Data (e.g., Customer, Product, Category, Employee)
+    {
+      "doctype": "DocType",
+      "name": "{{entity_name}}",
+      "module": "{{module_name}}",
+      "naming_rule": "By \"Naming Series\" field",
+      "autoname": "naming_series:",
+      "title_field": "{{entity_display_field}}",
+      "search_fields": "{{entity_display_field}}, {{entity_code_field}}",
+      "sort_field": "modified",
+      "sort_order": "DESC",
+      "track_changes": 1,
+      "field_order": [
+        "identification_section",
+        "naming_series",
+        "{{entity_display_field}}",
+        "{{entity_code_field}}",
+        "column_break_4",
+        "{{entity_type_field}}",
+        "is_active",
+        "details_section",
+        "description",
+        "classification_section",
+        "{{category_field}}",
+        "{{parent_field}}",
+        "tags"
+      ],
+      "fields": [
+        {
+          "fieldname": "identification_section",
+          "fieldtype": "Section Break",
+          "label": "Identification"
+        },
+        {
+          "fieldname": "naming_series",
+          "fieldtype": "Select",
+          "label": "Series",
+          "options": "{{series_prefix}}-.YYYY.-",
+          "reqd": 1
+        },
+        {
+          "fieldname": "{{entity_display_field}}",
+          "fieldtype": "Data",
+          "label": "{{entity_display_label}}",
+          "reqd": 1,
+          "in_list_view": 1,
+          "bold": 1
+        },
+        {
+          "fieldname": "{{entity_code_field}}",
+          "fieldtype": "Data",
+          "label": "{{entity_code_label}}",
+          "unique": 1
+        },
+        {
+          "fieldname": "column_break_4",
+          "fieldtype": "Column Break"
+        },
+        {
+          "fieldname": "{{entity_type_field}}",
+          "fieldtype": "Select",
+          "label": "Type",
+          "options": "{{type_options}}"
+        },
+        {
+          "fieldname": "is_active",
+          "fieldtype": "Check",
+          "label": "Is Active",
+          "default": "1"
+        },
+        {
+          "fieldname": "details_section",
+          "fieldtype": "Section Break",
+          "label": "Details",
+          "collapsible": 1
+        },
+        {
+          "fieldname": "description",
+          "fieldtype": "Text Editor",
+          "label": "Description"
+        },
+        {
+          "fieldname": "classification_section",
+          "fieldtype": "Section Break",
+          "label": "Classification",
+          "collapsible": 1
+        },
+        {
+          "fieldname": "{{category_field}}",
+          "fieldtype": "Link",
+          "label": "Category",
+          "options": "{{category_doctype}}"
+        },
+        {
+          "fieldname": "{{parent_field}}",
+          "fieldtype": "Link",
+          "label": "Parent {{entity_name}}",
+          "options": "{{entity_name}}"
+        },
+        {
+          "fieldname": "tags",
+          "fieldtype": "Data",
+          "label": "Tags"
+        }
+      ],
+      "permissions": [
+        {
+          "role": "{{role_name}}",
+          "read": 1,
+          "write": 1,
+          "create": 1,
+          "delete": 1,
+          "import": 1,
+          "export": 1
+        }
+      ]
+    }
+
+  transaction_pattern: |
+    # Pattern for Transactional Documents (e.g., Order, Invoice, Request, Ticket)
+    {
+      "doctype": "DocType",
+      "name": "{{transaction_name}}",
+      "module": "{{module_name}}",
+      "naming_rule": "By \"Naming Series\" field",
+      "autoname": "naming_series:",
+      "is_submittable": {{is_submittable}},
+      "track_changes": 1,
+      "field_order": [
+        "header_section",
+        "naming_series",
+        "{{reference_field}}",
+        "{{transaction_date_field}}",
+        "column_break_4",
+        "status",
+        "priority",
+        "details_section",
+        "{{items_field}}",
+        "totals_section",
+        "{{total_quantity_field}}",
+        "column_break_12",
+        "{{total_amount_field}}",
+        "additional_info_section",
+        "remarks"
+      ],
+      "fields": [
+        {
+          "fieldname": "header_section",
+          "fieldtype": "Section Break",
+          "label": "Header Information"
+        },
+        {
+          "fieldname": "naming_series",
+          "fieldtype": "Select",
+          "label": "Series",
+          "options": "{{series_prefix}}-.YYYY.-.MM.-.#####",
+          "reqd": 1
+        },
+        {
+          "fieldname": "{{reference_field}}",
+          "fieldtype": "Link",
+          "label": "{{reference_label}}",
+          "options": "{{reference_doctype}}",
+          "reqd": 1
+        },
+        {
+          "fieldname": "{{transaction_date_field}}",
+          "fieldtype": "Date",
+          "label": "{{transaction_date_label}}",
+          "default": "Today",
+          "reqd": 1
+        },
+        {
+          "fieldname": "column_break_4",
+          "fieldtype": "Column Break"
+        },
+        {
+          "fieldname": "status",
+          "fieldtype": "Select",
+          "label": "Status",
+          "options": "Draft\nPending\nIn Progress\nCompleted\nCancelled",
+          "default": "Draft",
+          "in_list_view": 1
+        },
+        {
+          "fieldname": "priority",
+          "fieldtype": "Select",
+          "label": "Priority",
+          "options": "Low\nMedium\nHigh\nUrgent",
+          "default": "Medium"
+        },
+        {
+          "fieldname": "details_section",
+          "fieldtype": "Section Break",
+          "label": "{{items_section_label}}"
+        },
+        {
+          "fieldname": "{{items_field}}",
+          "fieldtype": "Table",
+          "label": "{{items_label}}",
+          "options": "{{child_table_doctype}}"
+        },
+        {
+          "fieldname": "totals_section",
+          "fieldtype": "Section Break",
+          "label": "Totals"
+        },
+        {
+          "fieldname": "{{total_quantity_field}}",
+          "fieldtype": "Float",
+          "label": "Total Quantity",
+          "read_only": 1
+        },
+        {
+          "fieldname": "column_break_12",
+          "fieldtype": "Column Break"
+        },
+        {
+          "fieldname": "{{total_amount_field}}",
+          "fieldtype": "Currency",
+          "label": "Total Amount",
+          "read_only": 1
+        },
+        {
+          "fieldname": "additional_info_section",
+          "fieldtype": "Section Break",
+          "label": "Additional Information",
+          "collapsible": 1
+        },
+        {
+          "fieldname": "remarks",
+          "fieldtype": "Text",
+          "label": "Remarks"
+        }
+      ],
+      "permissions": [
+        {
+          "role": "{{role_name}}",
+          "read": 1,
+          "write": 1,
+          "create": 1,
+          "delete": 1,
+          "submit": 1,
+          "cancel": 1
+        }
+      ]
+    }
+
+  child_table_pattern: |
+    # Pattern for Child Tables (e.g., Order Items, Invoice Lines, Task Steps)
+    {
+      "doctype": "DocType",
+      "name": "{{child_table_name}}",
+      "module": "{{module_name}}",
+      "istable": 1,
+      "field_order": [
+        "{{item_reference_field}}",
+        "{{item_name_field}}",
+        "{{quantity_field}}",
+        "{{rate_field}}",
+        "{{amount_field}}"
+      ],
+      "fields": [
+        {
+          "fieldname": "{{item_reference_field}}",
+          "fieldtype": "Link",
+          "label": "{{item_reference_label}}",
+          "options": "{{item_doctype}}",
+          "reqd": 1,
+          "in_list_view": 1
+        },
+        {
+          "fieldname": "{{item_name_field}}",
+          "fieldtype": "Data",
+          "label": "{{item_name_label}}",
+          "fetch_from": "{{item_reference_field}}.{{item_display_field}}",
+          "read_only": 1,
+          "in_list_view": 1
+        },
+        {
+          "fieldname": "{{quantity_field}}",
+          "fieldtype": "Float",
+          "label": "Quantity",
+          "default": "1",
+          "reqd": 1,
+          "in_list_view": 1
+        },
+        {
+          "fieldname": "{{rate_field}}",
+          "fieldtype": "Currency",
+          "label": "Rate",
+          "in_list_view": 1
+        },
+        {
+          "fieldname": "{{amount_field}}",
+          "fieldtype": "Currency",
+          "label": "Amount",
+          "read_only": 1,
+          "in_list_view": 1
+        }
+      ]
+    }
+
+  settings_single_pattern: |
+    # Pattern for Settings DocType (Single - only one record)
+    {
+      "doctype": "DocType",
+      "name": "{{app_name}} Settings",
+      "module": "{{module_name}}",
+      "issingle": 1,
+      "field_order": [
+        "general_section",
+        "{{enable_feature_field}}",
+        "{{default_value_field}}",
+        "column_break_3",
+        "{{limit_field}}",
+        "{{timeout_field}}",
+        "advanced_section",
+        "{{advanced_config_field}}"
+      ],
+      "fields": [
+        {
+          "fieldname": "general_section",
+          "fieldtype": "Section Break",
+          "label": "General Settings"
+        },
+        {
+          "fieldname": "{{enable_feature_field}}",
+          "fieldtype": "Check",
+          "label": "Enable {{feature_name}}",
+          "default": "0"
+        },
+        {
+          "fieldname": "{{default_value_field}}",
+          "fieldtype": "Data",
+          "label": "Default {{value_name}}"
+        },
+        {
+          "fieldname": "column_break_3",
+          "fieldtype": "Column Break"
+        },
+        {
+          "fieldname": "{{limit_field}}",
+          "fieldtype": "Int",
+          "label": "Maximum {{limit_name}}",
+          "default": "100"
+        },
+        {
+          "fieldname": "{{timeout_field}}",
+          "fieldtype": "Int",
+          "label": "Timeout (seconds)",
+          "default": "30"
+        },
+        {
+          "fieldname": "advanced_section",
+          "fieldtype": "Section Break",
+          "label": "Advanced Settings",
+          "collapsible": 1
+        },
+        {
+          "fieldname": "{{advanced_config_field}}",
+          "fieldtype": "Code",
+          "label": "Configuration",
+          "options": "JSON"
+        }
+      ],
+      "permissions": [
+        {
+          "role": "System Manager",
+          "read": 1,
+          "write": 1
+        }
+      ]
+    }
+
+  tree_doctype_pattern: |
+    # Pattern for Hierarchical/Tree DocTypes (e.g., Account, Territory, Department)
+    {
+      "doctype": "DocType",
+      "name": "{{tree_doctype_name}}",
+      "module": "{{module_name}}",
+      "is_tree": 1,
+      "autoname": "field:{{node_name_field}}",
+      "field_order": [
+        "{{node_name_field}}",
+        "{{parent_node_field}}",
+        "is_group",
+        "column_break_4",
+        "{{node_type_field}}",
+        "disabled"
+      ],
+      "fields": [
+        {
+          "fieldname": "{{node_name_field}}",
+          "fieldtype": "Data",
+          "label": "{{node_label}}",
+          "reqd": 1,
+          "unique": 1
+        },
+        {
+          "fieldname": "{{parent_node_field}}",
+          "fieldtype": "Link",
+          "label": "Parent {{tree_doctype_name}}",
+          "options": "{{tree_doctype_name}}"
+        },
+        {
+          "fieldname": "is_group",
+          "fieldtype": "Check",
+          "label": "Is Group"
+        },
+        {
+          "fieldname": "column_break_4",
+          "fieldtype": "Column Break"
+        },
+        {
+          "fieldname": "{{node_type_field}}",
+          "fieldtype": "Select",
+          "label": "Type",
+          "options": "{{type_options}}"
+        },
+        {
+          "fieldname": "disabled",
+          "fieldtype": "Check",
+          "label": "Disabled"
+        }
+      ],
+      "permissions": [
+        {
+          "role": "{{role_name}}",
+          "read": 1,
+          "write": 1,
+          "create": 1,
+          "delete": 1
+        }
+      ]
+    }
+
+usage_guide: |
+  # How to Use These Patterns
+  
+  ## 1. Choose Your Pattern
+  - master_data_pattern: For entities like Customer, Supplier, Product
+  - transaction_pattern: For documents like Order, Invoice, Request
+  - child_table_pattern: For line items within transactions
+  - settings_single_pattern: For app configuration (one record only)
+  - tree_doctype_pattern: For hierarchical data like categories
+  
+  ## 2. Replace Variables
+  All {{variable}} placeholders should be replaced with your specific values:
+  
+  ### Common Variables:
+  - {{entity_name}}: Your DocType name (e.g., "Product")
+  - {{module_name}}: Module name (e.g., "Stock")
+  - {{series_prefix}}: Naming series prefix (e.g., "PROD")
+  - {{role_name}}: Permission role (e.g., "Stock Manager")
+  
+  ### Field Variables:
+  - {{entity_display_field}}: Main display field (e.g., "product_name")
+  - {{entity_code_field}}: Unique code field (e.g., "product_code")
+  - {{reference_field}}: Link to another DocType (e.g., "customer")
+  
+  ## 3. Customize Fields
+  - Add/remove fields as needed
+  - Change field types based on requirements
+  - Adjust permissions for your roles
+  
+  ## 4. Generate DocType
+  Use bench commands or Frappe UI to create the DocType from JSON
+
+variable_reference:
+  common:
+    app_name: "Name of your app"
+    module_name: "Module within the app"
+    role_name: "User role for permissions"
+    
+  naming:
+    series_prefix: "2-4 letter prefix for naming series"
+    entity_name: "DocType name"
+    entity_display_field: "Field shown in lists"
+    entity_code_field: "Unique identifier field"
+    
+  fields:
+    reference_field: "Link to another DocType"
+    reference_doctype: "DocType being linked to"
+    items_field: "Child table field name"
+    child_table_doctype: "Child DocType name"
+    
+  labels:
+    entity_display_label: "User-friendly field label"
+    reference_label: "Label for reference field"
+    items_label: "Label for child table"
+    
+  options:
+    type_options: "Options separated by \n"
+    category_doctype: "DocType for categories"
+    is_submittable: "0 or 1"
