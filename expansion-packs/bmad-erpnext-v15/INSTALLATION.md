@@ -2,14 +2,11 @@
 
 ## 📋 Table of Contents
 - [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
 - [Installation Methods](#installation-methods)
-- [Method 1: Automated Setup (Recommended)](#method-1-automated-setup-recommended)
-- [Method 2: Manual Configuration](#method-2-manual-configuration)
-- [Method 3: Advanced Installation](#method-3-advanced-installation)
+- [Using the Expansion Pack](#using-the-expansion-pack)
 - [Configuration Guide](#configuration-guide)
-- [Verification & Testing](#verification--testing)
 - [Troubleshooting](#troubleshooting)
-- [Uninstallation](#uninstallation)
 - [Upgrade Instructions](#upgrade-instructions)
 
 ---
@@ -18,138 +15,246 @@
 
 ### ✅ System Requirements
 
-**Required:**
+**For BMAD-METHOD Framework:**
+- **Node.js v20+** (required for BMAD-METHOD)
+- **Git** for repository management
+- **AI Platform** (Gemini Gem, CustomGPT, or compatible IDE)
+
+**For ERPNext Development (if implementing generated code):**
 - **ERPNext v15.x** installed and running
 - **Frappe Framework v15.75.0+**
 - **Active Frappe bench** environment
-- **Claude Code** installed and configured
 - **Python 3.8+**
-- **Node.js v18+** (for modern frontend features)
-- **Git** for repository management
-
-**Optional but Recommended:**
-- **Docker** (for containerized deployments)
-- **nginx** (for production deployments)
-- **Redis** (for caching and background jobs)
 
 ### 🔍 Prerequisites Check
 
-Run these commands to verify your system is ready:
+```bash
+# Check Node.js version (for BMAD-METHOD)
+node --version  # Should be v20+
+
+# If you plan to implement ERPNext code:
+bench version   # Check ERPNext version
+bench --version # Check Frappe Framework version
+python3 --version # Check Python version
+```
+
+---
+
+## Quick Start
+
+### 🚀 Fastest Installation (2 minutes)
 
 ```bash
-# Check ERPNext version
-bench version
+# Clone BMAD-METHOD with the ERPNext expansion pack
+git clone https://github.com/woakes070048/BMAD-METHOD.git
+cd BMAD-METHOD
 
-# Check Frappe Framework version
-bench --version
+# Install BMAD-METHOD
+npm install
 
-# Check Python version
-python3 --version
-
-# Check Node.js version
-node --version
-
-# Check Claude Code installation
-claude --version
-
-# Check if you're in a bench directory
-ls sites/common_site_config.json
+# The expansion pack is already in expansion-packs/bmad-erpnext-v15/
+# Ready to use!
 ```
 
-**Expected Output:**
+### Using in Web UI (Gemini Gem or CustomGPT)
+
+1. **Build the team bundle**:
+```bash
+# Navigate to expansion pack
+cd expansion-packs/bmad-erpnext-v15
+
+# Build team file (coming soon - for now use individual agent files)
+npm run build:team
 ```
-✅ ERPNext: v15.x.x
-✅ Frappe Framework: v15.75.0+
-✅ Python: 3.8+
-✅ Node.js: v18+
-✅ Claude Code: Available
-✅ Bench directory: sites/common_site_config.json found
-```
+
+2. **Create AI Agent**:
+   - Go to Gemini Gem or CustomGPT
+   - Create a new agent/gem
+   - Upload the team bundle or individual agent files
+
+3. **Set Instructions**:
+   ```
+   Your critical operating instructions are attached, do not break character as directed.
+   You are part of the BMAD ERPNext v15 development team.
+   ```
+
+4. **Start Using**:
+   - Type `*help` to see available commands
+   - Use `*agent erpnext-architect` to activate specific agents
+   - Use `*workflow modern-app-development` to start workflows
 
 ---
 
 ## Installation Methods
 
-Choose the installation method that best fits your experience level:
-
-| Method | Best For | Time Required | Technical Level |
-|--------|----------|---------------|-----------------|
-| [Method 1: Automated](#method-1-automated-setup-recommended) | Most users, first-time setup | 5-10 minutes | Beginner |
-| [Method 2: Manual](#method-2-manual-configuration) | Custom setups, learning | 15-20 minutes | Intermediate |
-| [Method 3: Advanced](#method-3-advanced-installation) | Enterprise, custom configs | 30+ minutes | Advanced |
-
----
-
-## Method 1: Automated Setup (Recommended)
-
-### Step 1: Download the Expansion Pack
+### Method 1: Using with BMAD-METHOD Framework
 
 ```bash
-# Option A: Download from existing BMAD-METHOD repo
-cd /path/to/your/development/directory
-git clone https://github.com/bmad-code-org/BMAD-METHOD.git
-cd BMAD-METHOD/expansion-packs/bmad-erpnext-v15
+# If you already have BMAD-METHOD installed in a project:
+cd your-project
+npx bmad-method install
 
-# Option B: Download just the expansion pack (if available)
-# git clone https://github.com/bmad-code-org/bmad-erpnext-v15.git
-# cd bmad-erpnext-v15
+# The installer will detect and install the ERPNext expansion pack
+# from expansion-packs/bmad-erpnext-v15/
 ```
 
-### Step 2: Run Automated Setup
-
-```bash
-# Make setup script executable (if not already)
-chmod +x setup.sh
-
-# Run the automated setup
-./setup.sh
-```
-
-The setup script will:
-- ✅ Check all prerequisites
-- ✅ Auto-detect your bench path and site
-- ✅ Create and configure `config.yaml`
-- ✅ Validate the configuration
-- ✅ Show you next steps
-
-### Step 3: Test Installation
-
-```bash
-# Start Claude Code
-claude
-
-# Load the expansion pack
-*expansion-pack bmad-erpnext-v15*
-
-# Test with a simple agent
-*agent bench-operator*
-"Check system status"
-```
-
-**Success Indicators:**
-- ✅ Setup script completes without errors
-- ✅ `config.yaml` created with your settings
-- ✅ Claude Code loads the expansion pack
-- ✅ Agents respond correctly
-
----
-
-## Method 2: Manual Configuration
-
-### Step 1: Download and Setup
+### Method 2: Direct Repository Usage
 
 ```bash
 # Clone the repository
-cd /path/to/your/development/directory
-git clone https://github.com/bmad-code-org/BMAD-METHOD.git
-cd BMAD-METHOD/expansion-packs/bmad-erpnext-v15
+git clone https://github.com/woakes070048/BMAD-METHOD.git
+cd BMAD-METHOD
 
-# Verify files are present
-ls -la
-# Should see: config.yaml.example, setup.sh, README.md, LICENSE, etc.
+# Install dependencies
+npm install
+
+# The expansion pack is in expansion-packs/bmad-erpnext-v15/
+# Use directly with your AI platform
 ```
 
-### Step 2: Create Configuration File
+### Method 3: IDE Integration
+
+```bash
+# In your ERPNext development project
+cd /path/to/your/erpnext-project
+
+# Install BMAD-METHOD
+npx bmad-method install
+
+# Copy the ERPNext expansion pack
+cp -r /path/to/BMAD-METHOD/expansion-packs/bmad-erpnext-v15 bmad/expansion-packs/
+
+# Configure for your ERPNext environment
+cd bmad/expansion-packs/bmad-erpnext-v15
+cp config.yaml.example config.yaml
+# Edit config.yaml with your ERPNext settings
+```
+
+---
+
+## Using the Expansion Pack
+
+### 🌐 Web UI Usage (Gemini Gem, CustomGPT)
+
+#### Step 1: Prepare Agent Files
+
+```bash
+# Navigate to the expansion pack
+cd expansion-packs/bmad-erpnext-v15
+
+# Agents are in the agents/ directory
+ls agents/
+# Shows: erpnext-architect.yaml, api-developer.yaml, etc.
+```
+
+#### Step 2: Create Your AI Agent
+
+1. **For Gemini Gem**:
+   - Go to [Google AI Studio](https://makersuite.google.com/)
+   - Create a new Gem
+   - Upload agent files from `agents/` directory
+   - Set system instructions
+
+2. **For CustomGPT**:
+   - Go to ChatGPT
+   - Create a new GPT
+   - Upload agent files
+   - Configure instructions
+
+#### Step 3: Agent Instructions Template
+
+```
+You are an expert ERPNext v15 development team member.
+Your operating instructions are defined in the attached files.
+Do not break character as directed.
+
+Available commands:
+*help - Show available commands
+*agent [name] - Switch to specific agent
+*workflow [name] - Start a workflow
+*team [name] - Activate an agent team
+
+You specialize in:
+- ERPNext v15 architecture and development
+- Frappe Framework best practices
+- Vue 3 and modern frontend development
+- Business process automation
+- System migrations and integrations
+```
+
+### 💻 IDE Usage (VS Code, Cursor, etc.)
+
+#### With BMAD-METHOD Core
+
+If you have BMAD-METHOD installed in your project:
+
+```bash
+# Your agents work alongside BMAD core agents
+*agent erpnext-architect
+# Analyzes ERPNext architecture
+
+*workflow modern-app-development  
+# Starts modern app development workflow
+
+*team modern-app-team
+# Activates the modern app development team
+```
+
+#### Standalone Usage
+
+Use the agents directly in your IDE with AI assistants:
+
+1. **Load agent content** into your AI assistant
+2. **Provide context** about your ERPNext project
+3. **Use agent expertise** for development tasks
+
+### 📝 Available Agents
+
+#### Core Development Agents
+- `erpnext-architect` - System architecture and design
+- `bench-operator` - Bench operations and commands
+- `doctype-designer` - DocType creation and modeling
+- `api-developer` - API endpoint development
+- `workflow-specialist` - Workflow implementation
+
+#### Frontend Specialists
+- `vue-spa-architect` - Vue 3 SPA architecture
+- `frappe-ui-developer` - frappe-ui components
+- `pwa-specialist` - PWA implementation
+- `mobile-ui-specialist` - Mobile optimization
+
+#### Business & Migration
+- `business-analyst` - Requirements analysis
+- `n8n-workflow-analyst` - n8n workflow analysis
+- `airtable-analyzer` - Airtable migration
+- `workflow-converter` - Workflow conversion
+
+### 🤝 Available Agent Teams
+
+- **modern-app-team** - Complete modern app development
+- **deployment-team** - Production deployment
+- **workflow-team** - Business process automation
+- **business-analysis-team** - Requirements and analysis
+- **n8n-conversion-team** - n8n to ERPNext conversion
+- **airtable-migration-team** - Airtable migration
+- **automation-team** - Process automation
+- **mobile-team** - Mobile app development
+
+### 🔄 Available Workflows
+
+- `modern-app-development` - Build modern ERPNext apps
+- `business-analysis-to-app` - From analysis to application
+- `n8n-workflow-conversion` - Convert n8n workflows
+- `airtable-to-erpnext-migration` - Migrate from Airtable
+- `enhancement` - Enhance existing systems
+
+---
+
+## Configuration Guide
+
+### Setting Up config.yaml
+
+For ERPNext-specific configuration:
 
 ```bash
 # Copy the example configuration
@@ -157,503 +262,82 @@ cp config.yaml.example config.yaml
 
 # Edit with your preferred editor
 nano config.yaml
-# OR
-code config.yaml
-# OR
-vim config.yaml
 ```
 
-### Step 3: Configure Your Environment
+#### Key Configuration Sections
 
-Edit these key sections in `config.yaml`:
-
-#### 🏠 Environment Settings
 ```yaml
+# ERPNext Environment Settings
 environment:
-  bench_path: "/home/frappe/frappe-bench"          # ← Update this
-  primary_site: "your-site-name.com"               # ← Update this
-  user: "frappe"                                   # ← Update this
-  development_directory: "/path/to/this/directory" # ← Update this
-```
+  bench_path: "/home/frappe/frappe-bench"  # Your bench path
+  primary_site: "your-site.com"            # Your ERPNext site
+  user: "frappe"                           # System user
+  development_directory: "/path/to/dev"    # Development directory
 
-#### 📱 Existing Apps
-```yaml
-existing_apps:
-  installed:
-    - name: "frappe"
-      version: "15.75.0"  # ← Update with your version
-      status: "active"
-    
-    # Add your custom apps here:
-    - name: "your_custom_app"      # ← Add if you have custom apps
-      type: "custom"
-      description: "Your app description"
-```
-
-#### ⚙️ Settings (Optional)
-```yaml
-settings:
-  development:
-    debug_mode: true        # ← Set to false for production
-    log_level: "DEBUG"      # ← Use "INFO" for production
-  
-  frontend:
-    vite_dev_server: true   # ← Enable for development
-    pwa_enabled: true       # ← Enable PWA features
-```
-
-### Step 4: Validate Configuration
-
-```bash
-# Test YAML syntax
-python3 -c "import yaml; yaml.safe_load(open('config.yaml'))"
-
-# Should output nothing if syntax is correct
-echo "✅ Configuration syntax is valid"
-```
-
-### Step 5: Test Installation
-
-```bash
-# Start Claude Code
-claude
-
-# Load expansion pack
-*expansion-pack bmad-erpnext-v15*
-
-# Test basic functionality
-*list-agents*
-*list-workflows*
-```
-
----
-
-## Method 3: Advanced Installation
-
-### For Enterprise/Production Environments
-
-#### Step 1: Environment Preparation
-
-```bash
-# Create dedicated directory structure
-mkdir -p /opt/bmad-erpnext-v15
-cd /opt/bmad-erpnext-v15
-
-# Set proper ownership
-sudo chown -R frappe:frappe /opt/bmad-erpnext-v15
-
-# Clone with specific branch/version
-git clone --branch v2.0.0 https://github.com/bmad-code-org/BMAD-METHOD.git
-cd BMAD-METHOD/expansion-packs/bmad-erpnext-v15
-```
-
-#### Step 2: Multi-Environment Configuration
-
-Create environment-specific configs:
-
-```bash
-# Development config
-cp config.yaml.example config.dev.yaml
-# Edit for development settings
-
-# Staging config  
-cp config.yaml.example config.staging.yaml
-# Edit for staging settings
-
-# Production config
-cp config.yaml.example config.prod.yaml
-# Edit for production settings
-
-# Create symlink to active config
-ln -sf config.dev.yaml config.yaml
-```
-
-#### Step 3: Integration with Existing Systems
-
-```yaml
-# config.yaml - Integration section
-integration:
-  existing_systems:
-    docflow:
-      description: "Workflow management system"
-      integration_points:
-        - "Use docflow for complex approval processes"
-        - "Leverage existing workflow templates"
-    
-    custom_app:
-      description: "Your custom application"
-      integration_points:
-        - "API integration endpoints"
-        - "Shared data models"
-```
-
-#### Step 4: Security Configuration
-
-```bash
-# Set restrictive permissions
-chmod 600 config.yaml
-chmod 600 config.*.yaml
-
-# Create secure backup location
-mkdir -p ~/.bmad-backups
-chmod 700 ~/.bmad-backups
-```
-
-#### Step 5: Docker Integration (Optional)
-
-```bash
-# Create Docker setup
-cat > Dockerfile << EOF
-FROM python:3.10-slim
-WORKDIR /app
-COPY . .
-RUN pip install -r requirements.txt
-CMD ["python", "app.py"]
-EOF
-
-# Build and run
-docker build -t bmad-erpnext-v15 .
-docker run -d --name bmad-expansion bmad-erpnext-v15
-```
-
----
-
-## Configuration Guide
-
-### 🎯 Key Configuration Sections
-
-#### 1. Environment Settings
-```yaml
-environment:
-  bench_path: "/home/frappe/frappe-bench"    # Path to your Frappe bench
-  primary_site: "mysite.com"                 # Your ERPNext site name
-  user: "frappe"                             # System user running ERPNext
-  development_directory: "/home/user/dev"    # Where you're developing
-```
-
-#### 2. Existing Apps Integration
-```yaml
+# Existing Apps Integration
 existing_apps:
   installed:
     - name: "frappe"
       version: "15.75.0"
       status: "active"
     - name: "erpnext"
-      version: "15.20.0"
+      version: "15.x"
       status: "active"
-    - name: "your_custom_app"
-      type: "custom"
-      description: "Your custom application"
-```
+    # Add your custom apps here
 
-#### 3. Development Settings
-```yaml
+# Development Settings
 settings:
   development:
-    auto_reload: true          # Auto-reload during development
-    debug_mode: true           # Enable debug logging
-    log_level: "DEBUG"         # Logging verbosity
+    debug_mode: true      # Set to false for production
+    log_level: "DEBUG"    # Use "INFO" for production
   
   frontend:
-    vite_dev_server: true      # Enable Vite dev server
-    hot_module_replacement: true # Enable HMR
-    pwa_enabled: true          # Enable PWA features
+    vite_dev_server: true # Enable for development
+    pwa_enabled: true     # Enable PWA features
 ```
-
-### 📝 Configuration Templates
-
-#### For Development Environment:
-```yaml
-settings:
-  development:
-    debug_mode: true
-    log_level: "DEBUG"
-    auto_reload: true
-  frontend:
-    vite_dev_server: true
-    hot_module_replacement: true
-```
-
-#### For Production Environment:
-```yaml
-settings:
-  development:
-    debug_mode: false
-    log_level: "INFO"
-    auto_reload: false
-  deployment:
-    backup_before_deploy: true
-    validate_before_deploy: true
-    rollback_on_failure: true
-```
-
----
-
-## Verification & Testing
-
-### 🔍 Installation Verification Checklist
-
-#### 1. File Structure Check
-```bash
-# Verify all required files exist
-ls -la
-# Expected files:
-# ✅ config.yaml
-# ✅ config.yaml.example
-# ✅ setup.sh
-# ✅ LICENSE
-# ✅ README.md
-# ✅ agents/
-# ✅ workflows/
-# ✅ templates/
-```
-
-#### 2. Configuration Validation
-```bash
-# Check config.yaml syntax
-python3 -c "import yaml; print('✅ Valid YAML') if yaml.safe_load(open('config.yaml')) else print('❌ Invalid YAML')"
-
-# Verify paths exist
-# Check if bench_path exists
-ls $(grep "bench_path:" config.yaml | cut -d'"' -f2)
-
-# Check if site exists
-ls $(grep "bench_path:" config.yaml | cut -d'"' -f2)/sites/$(grep "primary_site:" config.yaml | cut -d'"' -f2)
-```
-
-#### 3. Claude Code Integration Test
-```bash
-# Start Claude Code
-claude
-
-# Test expansion pack loading
-*expansion-pack bmad-erpnext-v15*
-# Expected: Successful loading message
-
-# Test agent availability
-*list-agents*
-# Expected: List of all agents
-
-# Test workflow availability  
-*list-workflows*
-# Expected: List of all workflows
-```
-
-#### 4. Agent Functionality Test
-```bash
-# In Claude Code, test basic agents:
-
-# Test bench operations
-*agent bench-operator*
-"Check bench status and show system information"
-
-# Test ERPNext architecture
-*agent erpnext-architect*
-"Analyze current ERPNext installation and show system overview"
-
-# Test modern app capabilities
-*agent vue-spa-architect*
-"Show available Vue 3 and modern frontend capabilities"
-```
-
-#### 5. Workflow Test
-```bash
-# In Claude Code, test workflows:
-
-# Test enhancement workflow
-*workflow enhancement*
-"Plan enhancement for inventory management system"
-
-# Test modern app development workflow
-*workflow modern_app_development*
-"Plan development of customer portal application"
-```
-
-### ✅ Success Indicators
-
-**Installation Successful When:**
-- ✅ All files present in expansion pack directory
-- ✅ `config.yaml` created and customized for your environment
-- ✅ Claude Code loads expansion pack without errors
-- ✅ All agents respond to queries
-- ✅ Workflows can be initiated
-- ✅ No permission or path errors in logs
 
 ---
 
 ## Troubleshooting
 
-### 🚨 Common Installation Issues
+### Common Issues
 
-#### Issue 1: "expansion-pack not found"
-**Symptoms:** Claude Code can't find the expansion pack
+#### Issue: "Cannot find BMAD-METHOD"
+**Solution**:
 ```bash
-*expansion-pack bmad-erpnext-v15*
-# Error: expansion pack not found
+# Ensure you're in the right directory
+ls expansion-packs/bmad-erpnext-v15/
+# Should show: agents/, workflows/, templates/, etc.
 ```
 
-**Solutions:**
+#### Issue: "Agent not loading in Web UI"
+**Solution**:
+- Ensure you uploaded the correct `.yaml` files from `agents/`
+- Check that system instructions reference BMAD-METHOD
+- Verify the agent file syntax is valid YAML
+
+#### Issue: "ERPNext commands not working"
+**Solution**:
 ```bash
-# Check if you're in the right directory
-pwd
-# Should be: /path/to/BMAD-METHOD/expansion-packs/bmad-erpnext-v15
+# The agents provide ERPNext expertise and generate code
+# You still need an actual ERPNext installation to run the code
 
-# Verify config.yaml exists
-ls -la config.yaml
+# Check ERPNext is installed:
+bench version
 
-# Check file permissions
-chmod 644 config.yaml
-
-# Try absolute path
-claude --expansion-pack-path="/absolute/path/to/bmad-erpnext-v15"
+# If not installed, the agents can guide installation:
+*agent erpnext-architect
+"Guide me through ERPNext installation"
 ```
 
-#### Issue 2: "Invalid configuration"
-**Symptoms:** YAML syntax errors in config.yaml
-
-**Solutions:**
+#### Issue: "Workflow not starting"
+**Solution**:
 ```bash
-# Validate YAML syntax
-python3 -c "import yaml; yaml.safe_load(open('config.yaml'))"
+# Workflows coordinate multiple agents
+# Ensure you have the required context:
 
-# Check for common issues:
-# - Missing quotes around paths
-# - Incorrect indentation
-# - Missing colons
-# - Extra spaces
-
-# Reset to example and reconfigure
-cp config.yaml config.yaml.backup
-cp config.yaml.example config.yaml
-# Re-edit config.yaml
-```
-
-#### Issue 3: "Bench path not found"
-**Symptoms:** Can't find or access bench directory
-
-**Solutions:**
-```bash
-# Find your bench directory
-find /home -name "common_site_config.json" 2>/dev/null
-find /opt -name "common_site_config.json" 2>/dev/null
-
-# Update config.yaml with correct path
-nano config.yaml
-# Update bench_path: "/correct/path/to/frappe-bench"
-
-# Check permissions
-ls -la /path/to/frappe-bench/
-# Should be accessible by your user
-```
-
-#### Issue 4: "Site not found"
-**Symptoms:** ERPNext site not accessible
-
-**Solutions:**
-```bash
-# List available sites
-ls /path/to/frappe-bench/sites/
-
-# Check site is active
-bench --site your-site.com doctor
-
-# Update config.yaml with correct site name
-nano config.yaml
-# Update primary_site: "correct-site-name.com"
-```
-
-#### Issue 5: Claude Code not starting
-**Symptoms:** `claude` command not found
-
-**Solutions:**
-```bash
-# Check if Claude Code is installed
-which claude
-
-# Install Claude Code if missing
-# Follow: https://docs.anthropic.com/en/docs/claude-code
-
-# Check PATH
-echo $PATH
-
-# Try with full path
-/usr/local/bin/claude
-```
-
-### 🔧 Advanced Troubleshooting
-
-#### Enable Debug Mode
-```yaml
-# In config.yaml
-settings:
-  development:
-    debug_mode: true
-    log_level: "DEBUG"
-```
-
-#### Check Logs
-```bash
-# Claude Code logs (if available)
-tail -f ~/.claude/logs/debug.log
-
-# System logs
-journalctl -f -u claude
-
-# ERPNext logs
-tail -f /path/to/frappe-bench/logs/*.log
-```
-
-#### Permission Issues
-```bash
-# Fix file permissions
-chmod 755 setup.sh
-chmod 644 config.yaml
-chmod 644 *.md
-
-# Fix directory permissions
-find . -type d -exec chmod 755 {} \;
-find . -type f -exec chmod 644 {} \;
-```
-
----
-
-## Uninstallation
-
-### 🗑️ Complete Removal
-
-#### Method 1: Simple Removal
-```bash
-# Remove expansion pack directory
-rm -rf /path/to/BMAD-METHOD/expansion-packs/bmad-erpnext-v15
-
-# Or remove entire BMAD-METHOD if only using this pack
-rm -rf /path/to/BMAD-METHOD
-```
-
-#### Method 2: Clean Removal
-```bash
-# Backup configuration (optional)
-cp config.yaml ~/.bmad-backup-config.yaml
-
-# Remove symlinks if created
-rm -f ~/.claude/expansion-packs/bmad-erpnext-v15
-
-# Remove directory
-rm -rf /path/to/BMAD-METHOD/expansion-packs/bmad-erpnext-v15
-
-# Clear Claude Code cache (if applicable)
-rm -rf ~/.claude/cache/bmad-erpnext-v15
-```
-
-### 🧹 Cleanup Verification
-```bash
-# Verify removal
-claude
-*list-expansion-packs*
-# bmad-erpnext-v15 should not be listed
-
-# Check no residual files
-find /home -name "*bmad-erpnext-v15*" 2>/dev/null
+*workflow modern-app-development
+# Provide project requirements when prompted
 ```
 
 ---
@@ -671,14 +355,13 @@ cp config.yaml config.yaml.backup-$(date +%Y%m%d)
 tar -czf bmad-erpnext-v15-backup-$(date +%Y%m%d).tar.gz .
 ```
 
-#### Step 2: Download New Version
+#### Step 2: Pull Latest Changes
 ```bash
-# Pull latest changes
+# In BMAD-METHOD directory
 git pull origin main
 
-# Or download new version
-# git fetch --tags
-# git checkout v2.1.0
+# Or update via npm
+npx bmad-method install
 ```
 
 #### Step 3: Update Configuration
@@ -696,78 +379,57 @@ mv config.yaml.new config.yaml
 
 #### Step 4: Test Upgrade
 ```bash
-# Validate configuration
-python3 -c "import yaml; yaml.safe_load(open('config.yaml'))"
+# Test in Web UI or IDE
+*agent erpnext-architect
+"Test system status"
 
-# Test in Claude Code
-claude
-*expansion-pack bmad-erpnext-v15*
-*agent bench-operator*
-"Test upgrade by showing system status"
+# Verify workflows
+*workflow enhancement
+"Test workflow functionality"
 ```
-
-### 📋 Upgrade Checklist
-- ✅ Current installation backed up
-- ✅ New version downloaded
-- ✅ Configuration updated and tested
-- ✅ All agents working correctly
-- ✅ Workflows functioning properly
-- ✅ No errors in Claude Code integration
 
 ---
 
-## 🎉 Next Steps After Installation
+## 🎉 Next Steps
 
-### 1. Explore the Expansion Pack
-```bash
-# Check available documentation
-ls *.md
-# Read: README.md, QUICKSTART.md, TROUBLESHOOTING.md
+### After Installation
 
-# Explore agent capabilities
-*list-agents*
-*agent-info vue-spa-architect*
-```
+1. **Explore Available Agents**:
+   - Review agent capabilities in `agents/` directory
+   - Test different agents for your use case
 
-### 2. Try Your First Project
+2. **Try Example Workflows**:
+   - Start with `modern-app-development` for new apps
+   - Use `enhancement` for existing systems
+   - Try `business-analysis-to-app` for complete projects
+
+3. **Join the Community**:
+   - Report issues on GitHub
+   - Share your experiences
+   - Contribute improvements
+
+### Quick Examples
+
 ```bash
 # Modern app development
-*agent-team modern-app-team*
-"Create a customer portal with Vue 3 SPA frontend"
+*team modern-app-team
+"Create a customer portal with Vue 3 frontend"
 
 # Business process automation
-*agent-team automation-team*
+*team automation-team
 "Automate purchase order approval workflow"
 
 # System migration
-*agent-team airtable-migration-team*
-"Plan migration from Airtable CRM to ERPNext"
+*team airtable-migration-team
+"Migrate CRM from Airtable to ERPNext"
 ```
 
-### 3. Join the Community
-- 📚 Read the complete documentation
-- 🔧 Try the example workflows
-- 💬 Join community discussions
-- 🐛 Report issues on GitHub
-- 🤝 Contribute improvements
-
 ---
 
-## 📞 Getting Help
+**Ready to build amazing ERPNext applications with BMAD-METHOD!** 🚀
 
-### Resources
-- **Documentation**: README.md, QUICKSTART.md, TROUBLESHOOTING.md
-- **GitHub Issues**: Report bugs and request features
-- **Community Forum**: Discuss usage and best practices
-- **Support**: Professional support available
-
-### Before Asking for Help
-1. ✅ Check TROUBLESHOOTING.md
-2. ✅ Verify installation steps
-3. ✅ Test with basic agents first
-4. ✅ Check system logs for errors
-5. ✅ Try with a fresh config.yaml
-
----
-
-**🚀 Ready to build amazing ERPNext applications with BMAD ERPNext v15!**
+For more information:
+- **README.md** - Complete feature overview
+- **QUICKSTART.md** - 5-minute quick start guide
+- **TROUBLESHOOTING.md** - Detailed troubleshooting
+- **GitHub Repository** - https://github.com/woakes070048/BMAD-METHOD
