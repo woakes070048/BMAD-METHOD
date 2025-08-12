@@ -5,7 +5,7 @@ description: >-
   Complete BMAD expansion pack for building modern ERPNext v15 apps with Vue SPA frontend.
   Includes Vue 3, Frappe UI, PWA support, and comprehensive migration tools for Airtable and n8n.
 author: BMAD Team
-slashPrefix: bmadErpNext
+slashPrefix: erpnext
 
 metadata:
   target_framework: "Frappe Framework v15"
