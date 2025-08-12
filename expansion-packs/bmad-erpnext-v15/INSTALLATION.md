@@ -45,16 +45,21 @@ python3 --version # Check Python version
 ### 🚀 Fastest Installation (2 minutes)
 
 ```bash
-# Clone BMAD-METHOD with the ERPNext expansion pack
+# Clone THIS fork that includes the ERPNext expansion pack
 git clone https://github.com/woakes070048/BMAD-METHOD.git
 cd BMAD-METHOD
 
-# Install BMAD-METHOD
+# Install dependencies
 npm install
 
-# The expansion pack is already in expansion-packs/bmad-erpnext-v15/
+# The expansion pack is already included at:
+# expansion-packs/bmad-erpnext-v15/
 # Ready to use!
 ```
+
+### ⚠️ Important: Use the Correct Repository
+- ✅ **Use THIS fork**: `https://github.com/woakes070048/BMAD-METHOD.git` (includes ERPNext expansion pack)
+- ❌ **NOT the official**: `https://github.com/bmadcode/bmad-method.git` (doesn't have this expansion pack)
 
 ### Using in Web UI (Gemini Gem or CustomGPT)
 
@@ -87,48 +92,70 @@ npm run build:team
 
 ## Installation Methods
 
-### Method 1: Using with BMAD-METHOD Framework
+### Method 1: Install in Your ERPNext Project
 
 ```bash
-# If you already have BMAD-METHOD installed in a project:
-cd your-project
-npx bmad-method install
+# Go to your ERPNext app directory
+cd /home/frappe/frappe-bench/apps/your-app-name
 
-# The installer will detect and install the ERPNext expansion pack
-# from expansion-packs/bmad-erpnext-v15/
-```
-
-### Method 2: Direct Repository Usage
-
-```bash
-# Clone the repository
-git clone https://github.com/woakes070048/BMAD-METHOD.git
-cd BMAD-METHOD
-
-# Install dependencies
+# Install BMAD-METHOD from THIS fork
+git clone https://github.com/woakes070048/BMAD-METHOD.git .bmad-temp
+cd .bmad-temp
 npm install
+npm run install:bmad
 
-# The expansion pack is in expansion-packs/bmad-erpnext-v15/
-# Use directly with your AI platform
+# When prompted, install to parent directory (..)
+# This installs BMAD with the ERPNext expansion pack
+
+# Clean up
+cd ..
+rm -rf .bmad-temp
 ```
 
-### Method 3: IDE Integration
+### Method 2: Use Official BMAD + Add This Expansion Pack
 
 ```bash
-# In your ERPNext development project
-cd /path/to/your/erpnext-project
-
-# Install BMAD-METHOD
+# Install official BMAD-METHOD (without ERPNext pack)
+cd /home/frappe/frappe-bench/apps/your-app-name
 npx bmad-method install
 
-# Copy the ERPNext expansion pack
-cp -r /path/to/BMAD-METHOD/expansion-packs/bmad-erpnext-v15 bmad/expansion-packs/
+# Then manually add the ERPNext expansion pack
+git clone https://github.com/woakes070048/BMAD-METHOD.git /tmp/bmad-fork
+cp -r /tmp/bmad-fork/expansion-packs/bmad-erpnext-v15 .bmad-core/expansion-packs/
+rm -rf /tmp/bmad-fork
 
-# Configure for your ERPNext environment
-cd bmad/expansion-packs/bmad-erpnext-v15
-cp config.yaml.example config.yaml
-# Edit config.yaml with your ERPNext settings
+# Now you have BMAD with the ERPNext expansion pack
 ```
+
+### Method 3: Direct Use Without Installation
+
+```bash
+# Clone this fork anywhere
+git clone https://github.com/woakes070048/BMAD-METHOD.git
+cd BMAD-METHOD/expansion-packs/bmad-erpnext-v15
+
+# Use the agents directly:
+# - Upload agent files from agents/ to Gemini/CustomGPT
+# - Reference templates and workflows in your development
+# - No installation needed for AI platforms
+```
+
+### 📍 Where to Install BMAD
+
+**For ERPNext development:**
+```
+/home/frappe/frappe-bench/apps/your-app/  ← Install HERE
+├── your_app/                             # Your app code
+├── .bmad-core/                           # BMAD framework
+│   └── expansion-packs/
+│       └── bmad-erpnext-v15/            # This expansion pack
+└── package.json
+```
+
+**NOT in:**
+- ❌ `/home/frappe/frappe-bench/` (affects all apps)
+- ❌ npm cache directories
+- ❌ system-wide installations
 
 ---
 
@@ -302,12 +329,43 @@ settings:
 
 ### Common Issues
 
-#### Issue: "Cannot find BMAD-METHOD"
+#### Issue: "Node.js version too old"
 **Solution**:
 ```bash
-# Ensure you're in the right directory
-ls expansion-packs/bmad-erpnext-v15/
-# Should show: agents/, workflows/, templates/, etc.
+# You have v18, but BMAD needs v20+
+# Install Node.js v20:
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Verify:
+node --version  # Should show v20+
+```
+
+#### Issue: "BMAD installs in npm cache instead of project"
+**Solution**:
+```bash
+# This happens when npx doesn't detect the current directory properly
+# Manual fix:
+cd /home/frappe/frappe-bench/apps/your-app
+mkdir -p .bmad-core
+
+# Copy from npm cache to your project:
+cp -r ~/.npm/_npx/*/node_modules/bmad-method/.bmad-core/* .bmad-core/
+
+# Then add the expansion pack:
+git clone https://github.com/woakes070048/BMAD-METHOD.git /tmp/fork
+cp -r /tmp/fork/expansion-packs/bmad-erpnext-v15 .bmad-core/expansion-packs/
+```
+
+#### Issue: "Cannot find expansion pack"
+**Solution**:
+```bash
+# The official BMAD doesn't have this expansion pack
+# You MUST use this fork:
+git clone https://github.com/woakes070048/BMAD-METHOD.git
+
+# NOT this:
+# git clone https://github.com/bmadcode/bmad-method.git  ❌
 ```
 
 #### Issue: "Agent not loading in Web UI"
