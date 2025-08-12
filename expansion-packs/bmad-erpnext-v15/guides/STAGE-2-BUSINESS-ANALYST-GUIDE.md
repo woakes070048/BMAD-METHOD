@@ -13,6 +13,49 @@ As a Business Analyst, you transform high-level product requirements into action
 4. **Technical Validation**: Ensure feasibility with dev team
 5. **Documentation**: Create comprehensive epic documentation
 
+## 🚀 BMAD Commands for Business Analysts
+
+### Quick Start Commands
+
+```bash
+# 1. Activate the Business Analyst Agent
+/bmadErpNext:agent:business-analyst
+
+# 2. Essential Business Analysis tasks
+/bmadErpNext:task:erpnext-requirements-elicitation
+/bmadErpNext:task:facilitate-erpnext-brainstorm
+
+# 3. Document project (for epic creation)
+/bmadErpNext:task:document-erpnext-project
+```
+
+### Command Reference for Each Step
+
+#### Step 1: PRD Analysis
+```bash
+# Analyze the incoming PRD
+npx bmad-method activate:agent bmad-erpnext-v15 business-analyst
+*analyze-requirements prd-document.md
+*identify-patterns      # Find common patterns in requirements
+*map-dependencies      # Create dependency map
+```
+
+#### Step 2: Epic Creation
+```bash
+# Use Product Owner agent to create epics from PRD analysis
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+*create-epic           # Create epic from your analysis
+*shard-doc large-prd.md ./epics/  # Break large PRD into epic-sized chunks
+```
+
+#### Step 3: Technical Validation
+```bash
+# Review with architect for technical feasibility
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-architect
+*review-requirements   # Technical feasibility review
+*validate-architecture # Ensure architecture supports requirements
+```
+
 ## Epic Creation Process
 
 ### Step 1: PRD Analysis and Decomposition
@@ -64,6 +107,15 @@ PRD: "Customer Portal"
 - Heavy dependencies
 
 ### Step 2: Epic Definition Structure
+
+#### 💻 BMAD Command: Create Epic Document
+```bash
+# Create epic using ERPNext epic template
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+*create-epic
+# Follow prompts based on erpnext-epic-template.yaml
+# The agent will guide you through epic creation process
+```
 
 #### Epic Document Template
 
@@ -453,6 +505,54 @@ Before epic handoff:
 - [ ] **Estimates**: Effort estimates provided
 - [ ] **Acceptance**: Criteria clearly defined
 
+## 🎯 Complete Workflow Example
+
+### Example: Converting Customer Portal PRD to Epics
+
+```bash
+# Step 1: Receive PRD from Product Owner
+# Review customer-portal-prd.md
+
+# Step 2: Analyze and decompose requirements
+npx bmad-method activate:agent bmad-erpnext-v15 business-analyst
+*analyze-requirements customer-portal-prd.md
+*identify-patterns
+*map-dependencies
+
+# Step 3: Create epics based on analysis
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+*create-epic
+# Epic 1: "User Account Management"
+# - User registration
+# - Profile management  
+# - Password reset
+
+*create-epic
+# Epic 2: "Order Self-Service"
+# - View order history
+# - Track shipments
+# - Download invoices
+
+*create-epic
+# Epic 3: "Customer Support Portal"
+# - Submit support tickets
+# - View knowledge base
+# - Chat integration
+
+# Step 4: Validate technical feasibility
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-architect
+*review-requirements
+*validate-architecture
+
+# Step 5: Document and hand off to Scrum Master
+npx bmad-method run:task bmad-erpnext-v15 document-erpnext-project
+*exit
+```
+
+### Ready for Handoff ✅
+
+Your epics are now ready to hand off to the Scrum Master for story breakdown and sprint planning.
+
 ## Next Steps
 
 After epic approval:
@@ -462,6 +562,13 @@ After epic approval:
 3. **Create Story Details** for each identified story
 4. **Set up Tracking** for epic progress
 5. **Establish Review Cadence** with stakeholders
+
+### 💻 Next Stage Command
+```bash
+# Move to Stage 3 - Sprint Planning
+# Hand off your completed epics to the Scrum Master
+# They will use: npx bmad-method activate:agent bmad-erpnext-v15 erpnext-scrum-master
+```
 
 ## Templates
 

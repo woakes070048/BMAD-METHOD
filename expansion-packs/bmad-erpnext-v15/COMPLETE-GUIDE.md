@@ -4,15 +4,387 @@ This comprehensive guide demonstrates how to build modern ERPNext applications u
 
 ## Table of Contents
 
-1. [Quick Start](#quick-start)
-2. [Project Setup](#project-setup)
-3. [Backend Development](#backend-development)
-4. [Frontend Development](#frontend-development)
-5. [Real-time Features](#real-time-features)
-6. [Testing](#testing)
-7. [Security](#security)
-8. [Deployment](#deployment)
-9. [Troubleshooting](#troubleshooting)
+1. [Team Command Reference](#team-command-reference)
+2. [Quick Start](#quick-start)
+3. [Project Setup](#project-setup)
+4. [Backend Development](#backend-development)
+5. [Frontend Development](#frontend-development)
+6. [Real-time Features](#real-time-features)
+7. [Testing](#testing)
+8. [Security](#security)
+9. [Deployment](#deployment)
+10. [Troubleshooting](#troubleshooting)
+
+## Team Command Reference
+
+### Quick Command Card - Copy & Paste Ready
+
+#### 🚀 Most Common Commands by Workflow Stage
+
+##### Stage 1: Product Requirements (Product Owner)
+```bash
+# Activate Product Owner Agent
+npx bmad-method list:agents bmad-erpnext-v15
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+
+# Inside agent, use these commands:
+*create-epic                    # Create an epic for large features
+*create-story                    # Create user story from requirements  
+*shard-doc requirements.md docs/ # Break down large requirements
+*execute-checklist-po            # Run PO validation checklist
+```
+
+##### Stage 2: Business Analysis
+```bash
+# Activate Business Analyst Agent
+npx bmad-method activate:agent bmad-erpnext-v15 business-analyst
+
+# Inside agent, use these commands:
+*requirements-gather             # Start requirements elicitation
+*process-map                     # Create process flow diagrams
+*data-model                      # Design data relationships
+*validate-requirements           # Check requirements completeness
+```
+
+##### Stage 3: Sprint Planning (Scrum Master)
+```bash
+# Activate Scrum Master Agent
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-scrum-master
+
+# Inside agent, use these commands:
+*plan-sprint                     # Create sprint plan from stories
+*estimate-story                  # Add story points
+*assign-tasks                    # Distribute work to team
+*track-progress                  # Monitor sprint progress
+```
+
+##### Stage 4: Development
+```bash
+# For DocType Development
+npx bmad-method activate:agent bmad-erpnext-v15 doctype-designer
+*create-doctype Customer_Profile # Create new DocType
+
+# For API Development
+npx bmad-method activate:agent bmad-erpnext-v15 api-developer
+*create-api customer             # Create API endpoints
+
+# For Vue Frontend
+npx bmad-method activate:agent bmad-erpnext-v15 vue-frontend-architect
+*setup-vue-spa                   # Initialize Vue SPA
+*create-component CustomerList   # Create Vue component
+```
+
+##### Stage 5: Testing (QA Lead)
+```bash
+# Activate QA Lead Agent
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-qa-lead
+
+# Inside agent, use these commands:
+*create-test-plan                # Generate test cases
+*run-tests                       # Execute test suite
+*validate-acceptance             # Check acceptance criteria
+*report-defects                  # Document issues
+```
+
+##### Stage 6: Deployment
+```bash
+# Activate Bench Operator
+npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
+
+# Inside agent, use these commands:
+*install-app customer_portal    # Install app on site
+*run-migrations                  # Apply database changes
+*build-assets                    # Build frontend assets
+*deploy-production              # Deploy to production
+```
+
+### Agent Directory - Who Does What?
+
+#### 📋 Project Management Agents
+| Agent | Primary Purpose | Key Commands | When to Use |
+|-------|----------------|--------------|-------------|
+| **erpnext-product-owner** | Requirements & Stories | `*create-epic`, `*create-story`, `*shard-doc` | Starting new features, creating user stories |
+| **erpnext-scrum-master** | Sprint Planning | `*plan-sprint`, `*track-progress` | Planning iterations, managing tasks |
+| **erpnext-qa-lead** | Quality Assurance | `*create-test-plan`, `*run-tests` | Testing features, validation |
+| **main-dev-coordinator** | Team Coordination | `*coordinate-team`, `*status-report` | Managing multiple developers |
+
+#### 🛠️ Development Agents
+| Agent | Primary Purpose | Key Commands | When to Use |
+|-------|----------------|--------------|-------------|
+| **erpnext-architect** | System Design | `*design-architecture`, `*review-design` | Planning system architecture |
+| **doctype-designer** | Data Models | `*create-doctype`, `*design-schema` | Creating ERPNext DocTypes |
+| **api-developer** | Backend APIs | `*create-api`, `*whitelist-methods` | Building REST/RPC endpoints |
+| **workflow-specialist** | Business Logic | `*create-workflow`, `*setup-automation` | Implementing workflows |
+
+#### 🎨 Frontend Agents
+| Agent | Primary Purpose | Key Commands | When to Use |
+|-------|----------------|--------------|-------------|
+| **vue-frontend-architect** | Vue Architecture | `*setup-vue-spa`, `*design-store` | Vue.js app structure |
+| **vue-spa-architect** | SPA Development | `*create-router`, `*setup-auth` | Single-page applications |
+| **frappe-ui-developer** | Frappe UI Components | `*create-list-view`, `*create-form` | Using Frappe UI library |
+| **mobile-ui-specialist** | Mobile/PWA | `*implement-pwa`, `*optimize-mobile` | Mobile-first features |
+
+#### 🔧 Specialized Agents
+| Agent | Primary Purpose | Key Commands | When to Use |
+|-------|----------------|--------------|-------------|
+| **bench-operator** | DevOps & Deployment | `*install-app`, `*deploy-production` | Managing bench operations |
+| **testing-specialist** | Test Automation | `*create-unit-tests`, `*e2e-tests` | Writing automated tests |
+| **data-integration-expert** | Integrations | `*setup-webhook`, `*migrate-data` | External system integration |
+| **frappe-compliance-validator** | Code Quality | `*validate-code`, `*check-patterns` | Ensuring Frappe best practices |
+
+#### 🔄 Migration Agents
+| Agent | Primary Purpose | Key Commands | When to Use |
+|-------|----------------|--------------|-------------|
+| **airtable-analyzer** | Airtable Migration | `*analyze-base`, `*map-schema` | Migrating from Airtable |
+| **n8n-workflow-analyst** | n8n Conversion | `*convert-workflow`, `*map-triggers` | Converting n8n workflows |
+| **workflow-converter** | Workflow Migration | `*import-workflow`, `*test-workflow` | General workflow migration |
+
+### Common Workflow Commands
+
+#### 🎯 Complete Feature Development Flow
+```bash
+# 1. Start with requirements
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+*create-story
+*exit
+
+# 2. Design the data model
+npx bmad-method activate:agent bmad-erpnext-v15 doctype-designer
+*create-doctype Customer_Profile
+*exit
+
+# 3. Build the API
+npx bmad-method activate:agent bmad-erpnext-v15 api-developer
+*create-api customer
+*exit
+
+# 4. Create the frontend
+npx bmad-method activate:agent bmad-erpnext-v15 vue-frontend-architect
+*setup-vue-spa
+*create-component CustomerList
+*exit
+
+# 5. Test everything
+npx bmad-method activate:agent bmad-erpnext-v15 testing-specialist
+*create-unit-tests
+*run-tests
+*exit
+
+# 6. Deploy
+npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
+*install-app customer_portal
+*deploy-production
+*exit
+```
+
+#### 🔄 Migration Workflows
+```bash
+# Airtable to ERPNext Migration
+npx bmad-method run:workflow bmad-erpnext-v15 airtable-to-erpnext-migration
+
+# n8n Workflow Conversion
+npx bmad-method run:workflow bmad-erpnext-v15 n8n-workflow-conversion
+
+# Combined Migration (Airtable + n8n)
+npx bmad-method run:workflow bmad-erpnext-v15 combined-airtable-n8n-conversion
+```
+
+### 5 Essential Tips for Team Success
+
+#### 1. 🎯 Choosing the Right Agent - Decision Tree
+
+```
+Need to create requirements? → erpnext-product-owner
+Need to design data models? → doctype-designer
+Need to build APIs? → api-developer
+Need to create Vue frontend? → vue-frontend-architect
+Need to test? → testing-specialist
+Need to deploy? → bench-operator
+Need to migrate from Airtable? → airtable-analyzer
+Need to convert n8n workflows? → n8n-workflow-analyst
+```
+
+#### 2. 🚀 Quick Scenarios & Commands
+
+**"I need to create a new customer portal"**
+```bash
+# Use the modern app team
+npx bmad-method activate:team bmad-erpnext-v15 modern-app-team
+```
+
+**"I need to migrate from Airtable"**
+```bash
+# Use the airtable migration team
+npx bmad-method activate:team bmad-erpnext-v15 airtable-migration-team
+```
+
+**"I need to build a Vue SPA"**
+```bash
+npx bmad-method run:task bmad-erpnext-v15 create-vue-spa
+```
+
+**"I need to create a new DocType"**
+```bash
+npx bmad-method run:task bmad-erpnext-v15 create-doctype
+```
+
+#### 3. 🎮 Command Shortcuts
+
+Most agents support these universal commands:
+- `*help` - Show available commands
+- `*status` - Check current progress
+- `*list` - List available resources
+- `*exit` - Exit agent mode
+- `*yolo` - Skip confirmations (use carefully!)
+
+#### 4. 👥 Team Collaboration Patterns
+
+**Sequential Pattern** (One agent at a time):
+```bash
+Product Owner → Business Analyst → Developer → Tester → Deployer
+```
+
+**Parallel Pattern** (Multiple agents working together):
+```bash
+# Activate a complete team
+npx bmad-method activate:team bmad-erpnext-v15 development-team
+```
+
+**Expert Pattern** (Bring in specialist when needed):
+```bash
+# Start with general development
+npx bmad-method activate:agent bmad-erpnext-v15 api-developer
+
+# Need Frappe compliance check
+npx bmad-method activate:agent bmad-erpnext-v15 frappe-compliance-validator
+```
+
+#### 5. 🆘 Emergency Commands
+
+**Something went wrong?**
+```bash
+# Check what's happening
+npx bmad-method status
+
+# View logs
+npx bmad-method logs
+
+# Reset agent state
+npx bmad-method reset:agent
+
+# Get help
+npx bmad-method help
+```
+
+**Need to validate your work?**
+```bash
+# Run compliance check
+npx bmad-method activate:agent bmad-erpnext-v15 frappe-compliance-validator
+*validate-code
+```
+
+### Quick Start Examples
+
+#### Example 1: Create a Customer Portal
+```bash
+# Step 1: Define requirements
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+*create-story
+# Follow prompts to define: Customer Portal with login, dashboard, profile management
+*exit
+
+# Step 2: Create the app structure
+npx bmad-method run:task bmad-erpnext-v15 create-vue-spa --app-name customer_portal
+
+# Step 3: Design the DocTypes
+npx bmad-method activate:agent bmad-erpnext-v15 doctype-designer
+*create-doctype Customer_Profile
+*create-doctype Portal_Settings
+*exit
+
+# Step 4: Build the APIs
+npx bmad-method run:task bmad-erpnext-v15 create-api-module --module customer
+
+# Step 5: Deploy
+npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
+*install-app customer_portal
+*exit
+```
+
+#### Example 2: Migrate from Airtable
+```bash
+# Step 1: Analyze Airtable base
+npx bmad-method activate:agent bmad-erpnext-v15 airtable-analyzer
+*analyze-base https://airtable.com/shrXXXXXXXX
+*map-schema
+*exit
+
+# Step 2: Run migration workflow
+npx bmad-method run:workflow bmad-erpnext-v15 airtable-to-erpnext-migration \
+  --base-id appXXXXXXXX \
+  --api-key keyXXXXXXXX
+
+# Step 3: Validate migration
+npx bmad-method activate:agent bmad-erpnext-v15 testing-specialist
+*validate-migration
+*exit
+```
+
+#### Example 3: Build a Vue SPA with Frappe UI
+```bash
+# Step 1: Setup Vue SPA
+npx bmad-method run:task bmad-erpnext-v15 setup-frappe-ui --app-name my_app
+
+# Step 2: Create components
+npx bmad-method activate:agent bmad-erpnext-v15 frappe-ui-developer
+*create-list-view Customers
+*create-form CustomerForm
+*create-dashboard MainDashboard
+*exit
+
+# Step 3: Add PWA support
+npx bmad-method run:task bmad-erpnext-v15 implement-pwa --app-name my_app
+
+# Step 4: Test
+npx bmad-method run:task bmad-erpnext-v15 run-tests --app my_app
+```
+
+#### Example 4: Create a Complete DocType with API
+```bash
+# All-in-one command for DocType + API + Tests
+npx bmad-method activate:team bmad-erpnext-v15 development-team
+# The team will coordinate to:
+# 1. Design the DocType
+# 2. Create API endpoints
+# 3. Add validation
+# 4. Write tests
+# 5. Generate documentation
+```
+
+### Task Quick Reference
+
+| Task | Command | Purpose |
+|------|---------|---------|
+| **create-doctype** | `npx bmad-method run:task bmad-erpnext-v15 create-doctype` | Create new DocType |
+| **create-api-endpoint** | `npx bmad-method run:task bmad-erpnext-v15 create-api-endpoint` | Add API endpoint |
+| **create-vue-spa** | `npx bmad-method run:task bmad-erpnext-v15 create-vue-spa` | Setup Vue SPA |
+| **setup-frappe-ui** | `npx bmad-method run:task bmad-erpnext-v15 setup-frappe-ui` | Install Frappe UI |
+| **implement-pwa** | `npx bmad-method run:task bmad-erpnext-v15 implement-pwa` | Add PWA support |
+| **run-tests** | `npx bmad-method run:task bmad-erpnext-v15 run-tests` | Execute tests |
+| **run-migrations** | `npx bmad-method run:task bmad-erpnext-v15 run-migrations` | Apply migrations |
+| **build-frontend** | `npx bmad-method run:task bmad-erpnext-v15 build-frontend` | Build assets |
+
+### Team Quick Reference
+
+| Team | Purpose | Key Agents |
+|------|---------|------------|
+| **development-team** | Full app development | Architect, DocType, API, Vue, Testing |
+| **modern-app-team** | Vue SPA development | Vue architects, PWA, Mobile UI |
+| **airtable-migration-team** | Airtable migration | Analyzer, Converter, Validator |
+| **n8n-conversion-team** | n8n workflow conversion | Workflow analyst, Converter |
+| **business-analysis-team** | Requirements & analysis | PO, BA, Architect |
+
+---
 
 ## Quick Start
 

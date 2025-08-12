@@ -13,6 +13,82 @@ As a Developer, you transform user stories and tasks into working ERPNext featur
 4. **Integration**: Ensure compatibility with existing systems
 5. **Documentation**: Document code and functionality
 
+## 🚀 BMAD Commands for Developers
+
+### Quick Start Commands
+
+```bash
+# 1. DocType Development
+npx bmad-method activate:agent bmad-erpnext-v15 doctype-designer
+*create-doctype Customer_Portal_Settings
+
+# 2. API Development
+npx bmad-method activate:agent bmad-erpnext-v15 api-developer
+*create-api customer
+*create-api-endpoint get_customer_orders
+
+# 3. Vue Frontend Development  
+npx bmad-method activate:agent bmad-erpnext-v15 vue-frontend-architect
+*setup-vue-spa
+*create-component CustomerDashboard
+
+# 4. Complete App Creation
+npx bmad-method run:task bmad-erpnext-v15 create-vue-spa --app-name customer_portal
+```
+
+### Command Reference for Each Development Phase
+
+#### Phase 1: Backend Development
+```bash
+# Create DocTypes
+npx bmad-method run:task bmad-erpnext-v15 create-doctype
+
+# Create API module  
+npx bmad-method run:task bmad-erpnext-v15 create-api-module --module customer
+
+# Create specific API endpoints
+npx bmad-method run:task bmad-erpnext-v15 create-api-endpoint --name get_orders
+```
+
+#### Phase 2: Frontend Development
+```bash
+# Setup Vue SPA with Frappe UI
+npx bmad-method run:task bmad-erpnext-v15 setup-frappe-ui --app-name customer_portal
+
+# Create Vue components
+npx bmad-method run:task bmad-erpnext-v15 create-vue-components
+
+# Add PWA support
+npx bmad-method run:task bmad-erpnext-v15 implement-pwa --app-name customer_portal
+```
+
+#### Phase 3: Testing & Deployment
+```bash
+# Create unit tests
+npx bmad-method run:task bmad-erpnext-v15 create-unit-tests
+
+# Run all tests
+npx bmad-method run:task bmad-erpnext-v15 run-tests
+
+# Build frontend assets
+npx bmad-method run:task bmad-erpnext-v15 build-frontend
+
+# Install app on site
+npx bmad-method run:task bmad-erpnext-v15 install-app --app-name customer_portal
+```
+
+#### Phase 4: Advanced Features
+```bash
+# Setup workflows
+npx bmad-method run:task bmad-erpnext-v15 setup-workflow
+
+# Integrate with docflow
+npx bmad-method run:task bmad-erpnext-v15 integrate-docflow
+
+# Setup n8n triggers
+npx bmad-method run:task bmad-erpnext-v15 setup-n8n-triggers
+```
+
 ## Development Environment Setup
 
 ### Step 1: Bench Environment
@@ -1207,6 +1283,70 @@ def on_cancel(self):
 | Frontend Not Loading | Build issue | Run `bench build` |
 | Cache Issues | Stale cache | Run `bench clear-cache` |
 
+## 🎯 Complete Workflow Example
+
+### Example: Implementing Story 1.1 - User Registration
+
+```bash
+# Step 1: Create the Customer Portal Settings DocType
+npx bmad-method activate:agent bmad-erpnext-v15 doctype-designer
+*create-doctype Customer_Portal_Settings
+# Follow prompts to define fields: customer, portal_user, access_level, enabled
+
+# Step 2: Create API endpoints for registration
+npx bmad-method activate:agent bmad-erpnext-v15 api-developer
+*create-api customer
+*create-api-endpoint register_customer
+*create-api-endpoint validate_registration
+
+# Step 3: Setup Vue frontend for registration
+npx bmad-method run:task bmad-erpnext-v15 create-vue-spa --app-name customer_portal
+npx bmad-method run:task bmad-erpnext-v15 setup-frappe-ui --app-name customer_portal
+
+# Step 4: Create registration components
+npx bmad-method activate:agent bmad-erpnext-v15 vue-frontend-architect
+*create-component RegistrationForm
+*create-component EmailVerification
+*setup-auth-flow
+
+# Step 5: Add PWA support for mobile users
+npx bmad-method run:task bmad-erpnext-v15 implement-pwa --app-name customer_portal
+
+# Step 6: Create unit tests
+npx bmad-method run:task bmad-erpnext-v15 create-unit-tests
+
+# Step 7: Run tests and build
+npx bmad-method run:task bmad-erpnext-v15 run-tests
+npx bmad-method run:task bmad-erpnext-v15 build-frontend
+
+# Step 8: Install and test
+npx bmad-method run:task bmad-erpnext-v15 install-app --app-name customer_portal
+
+# Step 9: Run compliance check
+npx bmad-method activate:agent bmad-erpnext-v15 frappe-compliance-validator
+*validate-code
+*check-patterns
+*exit
+```
+
+### Multi-Agent Development Team
+
+For complex stories, use the development team:
+```bash
+# Activate the complete development team
+npx bmad-method activate:team bmad-erpnext-v15 development-team
+# The team coordinates:
+# - DocType Designer: Creates data models
+# - API Developer: Builds backend APIs
+# - Vue Frontend Architect: Creates UI components
+# - Testing Specialist: Writes tests
+# - Frappe Compliance Validator: Ensures best practices
+```
+
+### Ready for QA ✅
+
+Your feature is now implemented, tested, and ready for quality assurance.
+
 ## Next Steps
 
 After task completion:
@@ -1215,6 +1355,13 @@ After task completion:
 3. **Update Documentation** if needed
 4. **Prepare for Demo** in sprint review
 5. **Handoff to QA** for testing
+
+### 💻 Next Stage Command
+```bash
+# Move to Stage 5 - QA Testing
+# Hand off your completed feature to the QA Lead
+# They will use: npx bmad-method activate:agent bmad-erpnext-v15 erpnext-qa-lead
+```
 
 ## Resources
 

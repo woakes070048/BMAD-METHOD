@@ -13,6 +13,52 @@ As a Product Owner, you are responsible for defining WHAT needs to be built and 
 4. **Success Criteria**: Define measurable outcomes
 5. **Prioritization**: Determine feature priorities based on business value
 
+## 🚀 BMAD Commands for Product Owners
+
+### Quick Start Commands
+
+```bash
+# 1. Activate the Product Owner Agent
+/bmadErpNext:agent:erpnext-product-owner
+
+# 2. Once in agent mode, create your story/epic
+*create-story    # Create a user story from requirements
+*create-epic     # Create an epic for larger features
+*help           # See all available commands
+```
+
+### Command Reference for Each Step
+
+#### Step 1: Requirements Gathering
+```bash
+# Start requirements elicitation session
+/bmadErpNext:task:erpnext-requirements-elicitation
+
+# Run brainstorming session
+/bmadErpNext:task:facilitate-erpnext-brainstorm
+```
+
+#### Step 2: Create PRD
+```bash
+# Activate Product Owner agent and create story/epic
+/bmadErpNext:agent:erpnext-product-owner
+*create-story   # Follow prompts to create PRD-based story
+*create-epic    # For larger features requiring multiple stories
+```
+
+#### Step 3: Validate and Review
+```bash
+# In Product Owner agent mode:
+*execute-checklist-po    # Run Product Owner validation checklist
+*validate-story-draft requirements.md    # Validate specific requirements doc
+```
+
+#### Step 4: Break Down Large Documents
+```bash
+# In Product Owner agent mode:
+*shard-doc large-requirements.md ./epics/    # Break large docs into smaller parts
+```
+
 ## PRD Creation Process
 
 ### Step 1: Requirements Gathering
@@ -56,6 +102,15 @@ As a Product Owner, you are responsible for defining WHAT needs to be built and 
 - Performance expectations
 
 ### Step 2: PRD Structure
+
+#### 💻 BMAD Command: Create PRD Template
+```bash
+# Use the ERPNext PRD template to get started
+/bmadErpNext:agent:erpnext-product-owner
+*create-story
+# Follow the prompts - the agent will guide you through PRD creation
+# based on the erpnext-prd-template.yaml
+```
 
 #### Core Sections of a PRD
 
@@ -248,6 +303,17 @@ Permissions:
 
 ### Step 5: Validation and Review
 
+#### 💻 BMAD Commands: Validation Process
+```bash
+# Run the Product Owner master checklist
+/bmadErpNext:agent:erpnext-product-owner
+*execute-checklist-po    # Comprehensive PO validation checklist
+
+# Validate specific story/epic documents
+*validate-story-draft customer-portal-requirements.md
+*correct-course         # Course correction if issues found
+```
+
 #### Stakeholder Review Checklist
 
 - [ ] All stakeholders have reviewed the PRD
@@ -371,15 +437,109 @@ Before marking PRD as complete:
 - [ ] **Prioritization**: Features are prioritized
 - [ ] **Risk Assessment**: Risks identified and mitigated
 
+## 🎯 Three Scenarios: Choose Your Starting Point
+
+### Scenario 1: 🌱 Greenfield - Fresh Start
+**When to use**: "We're starting completely from scratch with just a business idea"
+
+```bash
+# Step 1: Start requirements gathering
+/bmadErpNext:task:erpnext-requirements-elicitation
+# Follow prompts to gather stakeholder requirements
+
+# Step 2: Create the epic/story
+/bmadErpNext:agent:erpnext-product-owner
+*create-epic
+# Answer prompts:
+# - Epic Name: "Customer Portal"
+# - Business Value: "Allow customers self-service access"
+# - Key Features: Login, Order History, Support Tickets
+# - Success Metrics: 50% reduction in support calls
+
+# Step 3: Validate the epic
+*execute-checklist-po
+*shard-doc customer-portal-epic.md ./stories/
+*doc-out && *exit
+```
+
+### Scenario 2: 📋 Greenfield - With Existing Specs
+**When to use**: "We have designs, mockups, API specs, or detailed requirements already"
+
+```bash
+# Step 1: Analyze existing specifications
+/bmadErpNext:task:shard-erpnext-doc existing-specs.md ./requirements/
+# Break down existing documentation into ERPNext-friendly format
+
+# Step 2: Validate specs against ERPNext patterns
+/bmadErpNext:agent:erpnext-architect
+*validate-requirements existing-specs.md
+*check-frappe-patterns    # Ensure specs align with Frappe/ERPNext
+
+# Step 3: Create PRD from validated specs
+/bmadErpNext:agent:erpnext-product-owner
+*create-epic              # Use validated specs as input
+*execute-checklist-po     # Quick validation
+*doc-out && *exit
+```
+
+### Scenario 3: 🏗️ Brownfield - Existing ERPNext App
+**When to use**: "We have an existing ERPNext app that needs new features or fixes"
+
+```bash
+# Step 1: Analyze existing app
+/bmadErpNext:agent:erpnext-architect
+*analyze-app existing-app-name
+*audit-compliance        # Check current code quality
+*identify-integration-points
+
+# Step 2: Define enhancement requirements
+/bmadErpNext:agent:erpnext-product-owner
+*create-story           # For new feature additions
+*document-enhancement   # Document what needs to be added/fixed
+
+# Step 3: Plan integration with existing code
+*validate-story-draft enhancement-requirements.md
+*check-compatibility    # Ensure new features won't break existing
+*doc-out && *exit
+```
+
+### 🤔 Quick Decision Guide
+
+**Choose Scenario 1 if:**
+- Starting completely fresh
+- Only have high-level business ideas
+- Need to do stakeholder interviews
+
+**Choose Scenario 2 if:**
+- Have Figma designs, API docs, or wireframes
+- Specs exist but aren't ERPNext-specific
+- Want to fast-track to development
+
+**Choose Scenario 3 if:**
+- Modifying existing ERPNext app
+- Adding features to live system
+- Fixing bugs or improving performance
+
+### Ready for Handoff ✅
+
+Your PRD is now ready to hand off to the Business Analyst for epic breakdown and story creation.
+
 ## Next Steps
 
 Once PRD is approved:
 
 1. **Schedule Handoff Meeting** with Business Analyst
-2. **Create Epic Breakdown** workshop
+2. **Create Epic Breakdown** workshop  
 3. **Establish Communication Cadence**
 4. **Set up Tracking Mechanisms**
 5. **Begin Epic Definition Process**
+
+### 💻 Next Stage Command
+```bash
+# Move to Stage 2 - Business Analysis
+# Hand off your completed PRD to the Business Analyst
+# They will use: /bmadErpNext:agent:business-analyst
+```
 
 ## Resources
 

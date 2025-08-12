@@ -13,6 +13,58 @@ As a Scrum Master, you facilitate the transformation of epics into actionable us
 4. **Team Facilitation**: Remove blockers and enable productivity
 5. **Progress Tracking**: Monitor and report on development progress
 
+## 🚀 BMAD Commands for Scrum Masters
+
+### Quick Start Commands
+
+```bash
+# 1. Activate the Scrum Master Agent
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-scrum-master
+
+# 2. Create stories from epics
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+*create-story    # Create individual stories from epic
+*validate-story-draft story.md    # Validate story format
+
+# 3. Review and validate stories
+npx bmad-method run:task bmad-erpnext-v15 review-erpnext-story
+npx bmad-method run:task bmad-erpnext-v15 validate-erpnext-story
+```
+
+### Command Reference for Each Step
+
+#### Step 1: Epic Analysis & Story Creation
+```bash
+# Analyze epics from Business Analyst
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-scrum-master
+*analyze-epic epic-document.md
+*identify-stories          # Extract story opportunities
+*estimate-complexity      # Add story point estimates
+
+# Create detailed stories
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+*create-story            # Create story using template
+*validate-story-draft    # Validate story completeness
+```
+
+#### Step 2: Sprint Planning
+```bash
+# In Scrum Master agent mode:
+*plan-sprint            # Organize stories into sprints
+*assign-tasks           # Distribute work to team members
+*track-dependencies     # Map story dependencies
+*estimate-velocity      # Calculate team velocity
+```
+
+#### Step 3: Progress Tracking
+```bash
+# In Scrum Master agent mode:
+*track-progress         # Monitor sprint progress
+*identify-blockers      # Find and resolve impediments
+*update-burndown       # Update sprint metrics
+*facilitate-standup    # Daily standup facilitation
+```
+
 ## Story Creation Process
 
 ### Step 1: Epic to Story Decomposition
@@ -599,6 +651,59 @@ Swimlanes:
    - Escalation path
    - Code review assignments
 
+## 🎯 Complete Workflow Example
+
+### Example: Sprint Planning for Customer Portal Epics
+
+```bash
+# Step 1: Receive epics from Business Analyst
+# Review epic documents: user-account-management.md, order-self-service.md
+
+# Step 2: Break epics into stories
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-scrum-master
+*analyze-epic user-account-management.md
+*identify-stories
+# Identifies: User Registration, Profile Management, Password Reset
+
+# Create detailed stories
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+*create-story
+# Story 1.1: User Registration
+# Story 1.2: Profile Management
+# Story 1.3: Password Reset
+
+*create-story
+# Story 2.1: View Order History
+# Story 2.2: Track Shipments
+# Story 2.3: Download Invoices
+
+# Step 3: Validate stories
+npx bmad-method run:task bmad-erpnext-v15 review-erpnext-story
+npx bmad-method run:task bmad-erpnext-v15 validate-erpnext-story
+
+# Step 4: Sprint planning
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-scrum-master
+*plan-sprint
+# Sprint 1: Stories 1.1, 1.2 (User Account Foundation)
+# Sprint 2: Stories 1.3, 2.1 (Extended Features)
+# Sprint 3: Stories 2.2, 2.3 (Order Management)
+
+*assign-tasks
+# Assign specific developers to stories
+# Map dependencies between tasks
+
+*estimate-velocity
+# Calculate team capacity and timeline
+
+# Step 5: Hand off to development team
+*track-progress    # Set up progress tracking
+*exit
+```
+
+### Ready for Development ✅
+
+Your stories are now ready for the development team with clear tasks, assignments, and sprint plans.
+
 ## Next Steps
 
 After sprint planning:
@@ -607,6 +712,16 @@ After sprint planning:
 3. **Monitor Progress Daily**
 4. **Address Blockers Immediately**
 5. **Prepare for Sprint Review**
+
+### 💻 Next Stage Command
+```bash
+# Move to Stage 4 - Development
+# Hand off your sprint plan to the Development Team
+# They will use various agents like:
+# npx bmad-method activate:agent bmad-erpnext-v15 doctype-designer
+# npx bmad-method activate:agent bmad-erpnext-v15 api-developer
+# npx bmad-method activate:agent bmad-erpnext-v15 vue-frontend-architect
+```
 
 ## Resources
 

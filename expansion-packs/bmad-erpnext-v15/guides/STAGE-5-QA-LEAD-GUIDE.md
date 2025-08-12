@@ -13,6 +13,64 @@ As a QA Lead, you ensure the quality of ERPNext implementations through comprehe
 4. **Defect Management**: Track and manage bugs through resolution
 5. **Quality Metrics**: Monitor and report quality indicators
 
+## 🚀 BMAD Commands for QA Leads
+
+### Quick Start Commands
+
+```bash
+# 1. Activate QA Lead Agent
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-qa-lead
+
+# 2. Testing workflow commands
+*create-test-plan story-1-1-user-registration    # Create comprehensive test plan
+*run-tests                                        # Execute automated tests
+*validate-acceptance                              # Check acceptance criteria
+*report-defects                                   # Document found issues
+
+# 3. Specialized testing tasks
+npx bmad-method run:task bmad-erpnext-v15 create-unit-tests
+npx bmad-method run:task bmad-erpnext-v15 run-tests
+```
+
+### Command Reference for Each Testing Phase
+
+#### Phase 1: Test Planning
+```bash
+# Create test plans and test cases
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-qa-lead
+*create-test-plan customer-portal-features       # Generate test plan
+*design-test-cases                                # Create detailed test cases
+*setup-test-environment                           # Prepare testing environment
+```
+
+#### Phase 2: Test Execution
+```bash
+# Execute different types of testing
+*run-functional-tests                             # Test feature functionality
+*run-integration-tests                            # Test system integration
+*run-regression-tests                             # Test existing functionality
+*run-security-tests                               # Test security requirements
+*run-performance-tests                            # Test performance benchmarks
+```
+
+#### Phase 3: Defect Management
+```bash
+# Manage bugs and issues
+*report-defects                                   # Document found issues
+*track-defect-resolution                          # Monitor bug fixes
+*validate-fixes                                   # Verify bug resolution
+*update-test-results                              # Update test outcomes
+```
+
+#### Phase 4: Final Validation
+```bash
+# Final validation and sign-off
+*validate-acceptance                              # Check acceptance criteria
+*generate-test-report                             # Create test summary
+*prepare-uat                                      # Prepare for user acceptance
+*approve-release                                  # Give final approval
+```
+
 ## Testing Strategy Framework
 
 ### Step 1: Test Planning
@@ -969,6 +1027,70 @@ Performance Metrics:
 **Problem**: Not enough time for thorough testing
 **Solution**: Risk-based testing, automation, parallel execution
 
+## 🎯 Complete Workflow Example
+
+### Example: Testing Story 1.1 - User Registration
+
+```bash
+# Step 1: Receive completed feature from developers
+# Review development completion: user-registration-feature/
+
+# Step 2: Create comprehensive test plan
+npx bmad-method activate:agent bmad-erpnext-v15 erpnext-qa-lead
+*create-test-plan user-registration-story
+# Follow prompts to create test plan covering:
+# - Functional testing of registration flow
+# - Security testing of authentication
+# - Performance testing of registration process
+# - Integration testing with customer portal
+
+# Step 3: Setup test environment
+*setup-test-environment
+# Prepares test environment with:
+# - Clean ERPNext instance
+# - Test data sets
+# - Browser automation setup
+
+# Step 4: Execute test suite
+*run-functional-tests      # Test registration workflow
+*run-security-tests       # Test authentication security
+*run-integration-tests    # Test with existing systems
+*run-performance-tests    # Test response times
+
+# Step 5: Validate acceptance criteria
+*validate-acceptance user-registration-story
+# Checks each acceptance criteria:
+# ✓ User can register with email
+# ✓ Email verification works
+# ✓ Registration creates customer record
+# ✓ Portal access is granted
+
+# Step 6: Report any defects found
+*report-defects
+# Document any issues found:
+# - Bug descriptions
+# - Steps to reproduce
+# - Screenshots/evidence
+# - Severity levels
+
+# Step 7: Verify bug fixes (if any)
+*validate-fixes
+# Re-test fixed issues
+
+# Step 8: Generate final test report
+*generate-test-report
+*prepare-uat
+# Prepare for user acceptance testing
+
+# Step 9: Final approval
+*approve-release          # Give QA sign-off
+*exit
+```
+
+### Ready for Deployment ✅
+
+Your feature has passed all quality checks and is ready for production deployment.
+
 ## Handoff to Deployment
 
 ### Pre-Deployment Checklist
@@ -1002,6 +1124,14 @@ Performance Metrics:
    - Smoke test plan
    - Monitoring checklist
    - Support handoff
+
+### 💻 Next Stage Command
+```bash
+# Move to Stage 6 - Deployment & Project Management
+# Hand off your tested feature to the Project Manager
+# They will use: npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
+# And: npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
+```
 
 ## Resources
 

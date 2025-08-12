@@ -15,6 +15,82 @@ As a Project Manager, you orchestrate the entire ERPNext implementation project 
 6. **Quality Assurance**: Ensure deliverables meet standards
 7. **Communication**: Facilitate effective project communication
 
+## 🚀 BMAD Commands for Project Managers
+
+### Quick Start Commands
+
+```bash
+# 1. Activate Main Development Coordinator (Project Manager Agent)
+npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
+
+# 2. Project coordination commands
+*coordinate-team                    # Coordinate development team activities
+*status-report                      # Generate project status reports
+*track-milestones                   # Monitor project milestones
+*manage-resources                   # Allocate team resources
+
+# 3. Deployment and operations
+npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
+*install-app customer_portal       # Deploy to production
+*run-migrations                     # Apply database updates
+*deploy-production                  # Complete production deployment
+```
+
+### Command Reference for Each Project Phase
+
+#### Phase 1: Project Setup & Planning
+```bash
+# Initial project setup
+npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
+*setup-project                      # Initialize project structure
+*plan-resources                     # Plan team resources
+*create-milestones                  # Define project milestones
+*establish-communication            # Setup communication channels
+```
+
+#### Phase 2: Development Coordination
+```bash
+# Coordinate development activities across stages
+*coordinate-team                    # Align team activities
+*track-sprint-progress             # Monitor sprint progress
+*manage-dependencies               # Track cross-team dependencies
+*escalate-blockers                 # Resolve team blockers
+```
+
+#### Phase 3: Quality & Testing Coordination
+```bash
+# Coordinate testing and quality assurance
+*coordinate-qa                     # Coordinate with QA team
+*track-defects                     # Monitor defect resolution
+*validate-milestones              # Validate milestone completion
+*prepare-release                  # Prepare for release
+```
+
+#### Phase 4: Deployment & Launch
+```bash
+# Production deployment and launch
+npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
+*install-app customer_portal      # Install app on production
+*run-migrations                    # Apply database migrations
+*deploy-production                 # Complete production deployment
+*monitor-deployment                # Monitor deployment health
+
+# Post-deployment activities
+*conduct-go-live                   # Conduct go-live activities
+*monitor-performance               # Monitor system performance
+*collect-feedback                  # Collect user feedback
+```
+
+#### Phase 5: Project Closure
+```bash
+# Project closure activities
+npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
+*generate-final-report             # Generate project completion report
+*conduct-retrospective             # Conduct team retrospective
+*document-lessons-learned          # Document lessons learned
+*handoff-maintenance               # Hand off to maintenance team
+```
+
 ## Project Lifecycle Management
 
 ### Step 1: Project Initiation
@@ -813,6 +889,84 @@ Risk Metrics:
   - Escalation rate
 ```
 
+## 🎯 Complete Workflow Example
+
+### Example: Managing Complete Customer Portal Project
+
+```bash
+# PHASE 1: PROJECT INITIATION
+npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
+*setup-project customer-portal
+*plan-resources
+# Team: 1 PO, 1 BA, 1 SM, 3 Devs, 1 QA Lead
+*create-milestones
+# Milestone 1: Requirements Complete (Week 2)
+# Milestone 2: Development Complete (Week 8)
+# Milestone 3: Testing Complete (Week 10)
+# Milestone 4: Production Deployment (Week 12)
+
+# PHASE 2: COORDINATE STAGES 1-3 (Requirements → Planning)
+*coordinate-team stage-1-requirements
+# Monitor: Product Owner creates PRD
+# Monitor: Business Analyst creates epics
+# Monitor: Scrum Master creates sprint plan
+
+# PHASE 3: COORDINATE STAGE 4 (Development)
+*track-sprint-progress sprint-1
+*manage-dependencies doctype-to-api
+*escalate-blockers vue-setup-issues
+# Monitor 3 developers across:
+# - DocType development
+# - API development  
+# - Vue frontend development
+
+# PHASE 4: COORDINATE STAGE 5 (Testing)
+*coordinate-qa testing-phase
+*track-defects
+# Monitor QA Lead testing all features
+# Ensure defect resolution
+*validate-milestones development-complete
+
+# PHASE 5: DEPLOYMENT & GO-LIVE
+npx bmad-method activate:agent bmad-erpnext-v15 bench-operator
+*install-app customer_portal
+*run-migrations
+*deploy-production
+*monitor-deployment
+
+# Back to project coordination
+npx bmad-method activate:agent bmad-erpnext-v15 main-dev-coordinator
+*conduct-go-live
+*monitor-performance
+*collect-feedback
+
+# PHASE 6: PROJECT CLOSURE
+*generate-final-report
+*conduct-retrospective
+*document-lessons-learned
+*handoff-maintenance
+*exit
+```
+
+### Cross-Stage Coordination Commands
+
+```bash
+# Monitor overall project health
+*status-report                    # Weekly status to stakeholders
+*track-milestones                # Monitor milestone progress
+*manage-risks                    # Track and mitigate risks
+*stakeholder-communication       # Manage stakeholder expectations
+
+# Resource management across stages
+*balance-workload               # Balance team workload
+*resolve-conflicts              # Resolve team conflicts
+*optimize-resources             # Optimize resource allocation
+```
+
+### Project Success ✅
+
+Your ERPNext Customer Portal project is now live, users are adopting it, and the project is officially closed with documented lessons learned.
+
 ## Next Steps
 
 After project completion:
@@ -822,6 +976,13 @@ After project completion:
 4. **Release Resources**
 5. **Transition to Support**
 6. **Celebrate Success**
+
+### 🔄 Next Project Cycle
+```bash
+# Apply lessons learned to next project
+# Start new project with Stage 1 Product Owner
+# npx bmad-method activate:agent bmad-erpnext-v15 erpnext-product-owner
+```
 
 ## Resources
 
