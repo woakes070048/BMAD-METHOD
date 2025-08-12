@@ -368,6 +368,25 @@ git clone https://github.com/woakes070048/BMAD-METHOD.git
 # git clone https://github.com/bmadcode/bmad-method.git  ❌
 ```
 
+#### Issue: "ERPNext pack not showing in installer options"
+**Solution**:
+```bash
+# This happens if the config.yaml is missing required fields
+# Ensure you have the latest version from the repository:
+git pull origin main
+
+# Verify the expansion pack config has the required fields:
+cat expansion-packs/bmad-erpnext-v15/config.yaml | grep short-title
+# Should show: short-title: "ERPNext v15 Modern App Builder"
+
+# If missing, the installer won't display the pack
+# The installer needs these fields in config.yaml:
+# - name (package identifier)
+# - short-title (display name in installer)
+# - version (version number)
+# - description (pack description)
+```
+
 #### Issue: "Agent not loading in Web UI"
 **Solution**:
 - Ensure you uploaded the correct `.yaml` files from `agents/`
