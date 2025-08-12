@@ -1,0 +1,791 @@
+name: "vue-spa-template"
+title: "Vue 3 SPA Template for ERPNext Apps (Doppio Method)"
+description: "Complete Vue 3 SPA using doppio_frappeui_starter template with frappe-ui integration"
+version: "2.0.0"
+
+parameters:
+  app_name:
+    type: "string"
+    required: true
+    description: "Name of the ERPNext app (snake_case)"
+  app_title:
+    type: "string"
+    required: true
+    description: "Display title of the app"
+  app_description:
+    type: "string"
+    required: false
+    description: "Brief description of the app"
+  site_name:
+    type: "string"
+    required: true
+    description: "Site name (e.g., mysite.test)"
+  enable_pwa:
+    type: "boolean"
+    required: false
+    default: false
+    description: "Enable Progressive Web App features"
+  enable_typescript:
+    type: "boolean"
+    required: false
+    default: false
+    description: "Use TypeScript instead of JavaScript"
+
+templates:
+  package_json: |
+    {
+      "name": "{{app_name}}-frontend",
+      "version": "0.1.0",
+      "private": true,
+      "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+        "format": "prettier --write src/",
+        "test": "vitest",
+        "test:unit": "vitest --run",
+        "test:e2e": "playwright test"
+      },
+      "dependencies": {
+        "vue": "^3.5.0",
+        "vue-router": "^4.2.5",
+        "pinia": "^2.1.7",
+        "frappe-ui": "^0.1.171",
+        "@headlessui/vue": "^1.7.22",
+        "@iconify/vue": "^4.1.1",
+        "socket.io-client": "^4.7.2",
+        "axios": "^1.6.2"
+      },
+      "devDependencies": {
+        "@vitejs/plugin-vue": "^4.5.0",
+        "vite": "^5.0.0",
+        "autoprefixer": "^10.4.16",
+        "postcss": "^8.4.32",
+        "tailwindcss": "^3.3.6",
+        "eslint": "^8.55.0",
+        "eslint-plugin-vue": "^9.19.2",
+        "prettier": "^3.1.0",
+        "@vue/test-utils": "^2.4.3",
+        "vitest": "^1.0.4",
+        "jsdom": "^23.0.1"
+      }
+    }
+  
+  vite_config: |
+    import { defineConfig } from 'vite'
+    import vue from '@vitejs/plugin-vue'
+    import path from 'path'
+    
+    export default defineConfig({
+      plugins: [vue()],
+      resolve: {
+        alias: {
+          '@': path.resolve(__dirname, './src'),
+        },
+      },
+      server: {
+        port: 8080,
+        proxy: {
+          '^/((?!frontend).)*$': {
+            target: 'http://{{site_name}}:8000',
+            ws: true,
+            router: function (req) {
+              const host = req.headers.host
+              if (host) {
+                return `http://${host.replace(':8080', ':8000')}`
+              }
+              return 'http://{{site_name}}:8000'
+            },
+          },
+        },
+      },
+      base: '/frontend/',
+      build: {
+        outDir: '../{{app_name}}/public/frontend',
+        emptyOutDir: true,
+        sourcemap: true,
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              'frappe-ui': ['frappe-ui'],
+              'vendor': ['vue', 'vue-router', 'pinia'],
+            },
+          },
+        },
+      },
+      optimizeDeps: {
+        include: ['frappe-ui', '@headlessui/vue', 'socket.io-client'],
+      },
+    })
+  
+  main_js: |
+    import { createApp } from 'vue'
+    import { createPinia } from 'pinia'
+    import { FrappeUI, setConfig, frappeRequest } from 'frappe-ui'
+    import router from './router'
+    import App from './App.vue'
+    import './index.css'
+    
+    // Configure frappe-ui with proper CSRF handling
+    setConfig('resourceFetcher', frappeRequest)
+    
+    // Configure API calls with CSRF token
+    frappeRequest.configure({
+      baseURL: '',
+      headers: {
+        // In production, csrf_token is available on window
+        // In development with ignore_csrf: 1, this is optional
+        ...(window.csrf_token && { 'X-Frappe-CSRF-Token': window.csrf_token }),
+      },
+    })
+    
+    // Create Vue app
+    const app = createApp(App)
+    const pinia = createPinia()
+    
+    // Use plugins
+    app.use(pinia)
+    app.use(router)
+    app.use(FrappeUI)
+    
+    // Global error handler
+    app.config.errorHandler = (err, instance, info) => {
+      console.error('Global error:', err, info)
+    }
+    
+    // Mount app
+    app.mount('#app')
+  
+  app_vue: |
+    <template>
+      <div id="app">
+        <RouterView v-if="isReady" />
+        <div v-else class="flex items-center justify-center h-screen">
+          <LoadingIndicator />
+        </div>
+      </div>
+    </template>
+    
+    <script setup>
+    import { ref, onMounted } from 'vue'
+    import { useAuthStore } from '@/stores/auth'
+    import { LoadingIndicator } from 'frappe-ui'
+    
+    const isReady = ref(false)
+    const authStore = useAuthStore()
+    
+    onMounted(async () => {
+      try {
+        await authStore.init()
+      } catch (error) {
+        console.error('Failed to initialize app:', error)
+      } finally {
+        isReady.value = true
+      }
+    })
+    </script>
+  
+  router_index: |
+    import { createRouter, createWebHistory } from 'vue-router'
+    import { useAuthStore } from '@/stores/auth'
+    
+    const routes = [
+      {
+        path: '/',
+        redirect: '/app/dashboard',
+      },
+      {
+        path: '/login',
+        name: 'Login',
+        component: () => import('@/pages/Login.vue'),
+        meta: { public: true },
+      },
+      {
+        path: '/app',
+        component: () => import('@/layouts/AppLayout.vue'),
+        meta: { requiresAuth: true },
+        children: [
+          {
+            path: 'dashboard',
+            name: 'Dashboard',
+            component: () => import('@/pages/Dashboard.vue'),
+          },
+          {
+            path: ':doctype',
+            name: 'ListView',
+            component: () => import('@/pages/ListView.vue'),
+            props: true,
+          },
+          {
+            path: ':doctype/:name',
+            name: 'DetailView',
+            component: () => import('@/pages/DetailView.vue'),
+            props: true,
+          },
+          {
+            path: 'settings',
+            name: 'Settings',
+            component: () => import('@/pages/Settings.vue'),
+          },
+        ],
+      },
+      {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: () => import('@/pages/NotFound.vue'),
+      },
+    ]
+    
+    const router = createRouter({
+      history: createWebHistory('/frontend'),
+      routes,
+    })
+    
+    // Navigation guard
+    router.beforeEach(async (to, from, next) => {
+      const authStore = useAuthStore()
+      
+      if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+        next({ name: 'Login', query: { redirect: to.fullPath } })
+      } else if (to.name === 'Login' && authStore.isLoggedIn) {
+        next({ name: 'Dashboard' })
+      } else {
+        next()
+      }
+    })
+    
+    export default router
+  
+  auth_store: |
+    import { defineStore } from 'pinia'
+    import { ref, computed } from 'vue'
+    import { createResource } from 'frappe-ui'
+    import { useRouter } from 'vue-router'
+    
+    export const useAuthStore = defineStore('auth', () => {
+      const router = useRouter()
+      
+      // State
+      const user = ref(null)
+      const initialized = ref(false)
+      
+      // Resources
+      const sessionResource = createResource({
+        url: '{{app_name}}.api.auth.get_logged_user',
+        auto: false,
+        onSuccess(data) {
+          if (data.success && data.user) {
+            user.value = data.user
+          }
+        },
+      })
+      
+      const loginResource = createResource({
+        url: '{{app_name}}.api.auth.login',
+        auto: false,
+      })
+      
+      const logoutResource = createResource({
+        url: '{{app_name}}.api.auth.logout',
+        auto: false,
+      })
+      
+      // Getters
+      const isLoggedIn = computed(() => !!user.value)
+      const userFullName = computed(() => user.value?.full_name || '')
+      const userImage = computed(() => user.value?.user_image || '')
+      const userRoles = computed(() => user.value?.roles || [])
+      
+      // Actions
+      async function init() {
+        if (initialized.value) return
+        
+        try {
+          await sessionResource.fetch()
+          initialized.value = true
+        } catch (error) {
+          console.error('Failed to initialize auth:', error)
+          initialized.value = true
+        }
+      }
+      
+      async function login(email, password) {
+        try {
+          const response = await loginResource.submit({
+            usr: email,
+            pwd: password,
+          })
+          
+          if (response.success) {
+            user.value = {
+              email: response.user,
+              full_name: response.full_name,
+            }
+            router.push('/app/dashboard')
+            return { success: true }
+          } else {
+            return { success: false, message: response.message }
+          }
+        } catch (error) {
+          return { success: false, message: error.message }
+        }
+      }
+      
+      async function logout() {
+        try {
+          await logoutResource.submit()
+          user.value = null
+          router.push('/login')
+        } catch (error) {
+          console.error('Logout failed:', error)
+        }
+      }
+      
+      function hasRole(role) {
+        return userRoles.value.includes(role)
+      }
+      
+      function hasAnyRole(roles) {
+        return roles.some(role => hasRole(role))
+      }
+      
+      return {
+        // State
+        user,
+        initialized,
+        
+        // Getters
+        isLoggedIn,
+        userFullName,
+        userImage,
+        userRoles,
+        
+        // Actions
+        init,
+        login,
+        logout,
+        hasRole,
+        hasAnyRole,
+      }
+    })
+  
+  app_layout: |
+    <template>
+      <div class="min-h-screen bg-gray-50">
+        <!-- Sidebar -->
+        <AppSidebar
+          v-model:open="sidebarOpen"
+          :items="sidebarItems"
+        />
+        
+        <!-- Main Content -->
+        <div :class="[
+          'transition-all duration-200',
+          sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'
+        ]">
+          <!-- Header -->
+          <AppHeader
+            @toggle-sidebar="sidebarOpen = !sidebarOpen"
+          />
+          
+          <!-- Page Content -->
+          <main class="p-6">
+            <RouterView />
+          </main>
+        </div>
+        
+        <!-- Global Components -->
+        <CommandPalette v-model:open="commandPaletteOpen" />
+        <NotificationCenter />
+      </div>
+    </template>
+    
+    <script setup>
+    import { ref, computed, onMounted } from 'vue'
+    import { useRouter } from 'vue-router'
+    import AppSidebar from '@/components/AppSidebar.vue'
+    import AppHeader from '@/components/AppHeader.vue'
+    import CommandPalette from '@/components/CommandPalette.vue'
+    import NotificationCenter from '@/components/NotificationCenter.vue'
+    
+    const router = useRouter()
+    const sidebarOpen = ref(true)
+    const commandPaletteOpen = ref(false)
+    
+    // Sidebar items based on permissions
+    const sidebarItems = computed(() => [
+      {
+        label: 'Dashboard',
+        icon: 'home',
+        route: '/app/dashboard',
+      },
+      {
+        label: 'Customers',
+        icon: 'users',
+        route: '/app/customer',
+      },
+      {
+        label: 'Items',
+        icon: 'package',
+        route: '/app/item',
+      },
+      {
+        label: 'Settings',
+        icon: 'settings',
+        route: '/app/settings',
+      },
+    ])
+    
+    // Keyboard shortcuts
+    onMounted(() => {
+      document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault()
+          commandPaletteOpen.value = true
+        }
+      })
+    })
+    </script>
+  
+  dashboard_page: |
+    <template>
+      <div>
+        <PageHeader
+          title="Dashboard"
+          description="Welcome to {{app_title}}"
+        />
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+          <StatCard
+            v-for="stat in stats"
+            :key="stat.label"
+            :label="stat.label"
+            :value="stat.value"
+            :change="stat.change"
+            :icon="stat.icon"
+          />
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <Card title="Recent Activity">
+            <ActivityList :items="recentActivity" />
+          </Card>
+          
+          <Card title="Quick Actions">
+            <QuickActions />
+          </Card>
+        </div>
+      </div>
+    </template>
+    
+    <script setup>
+    import { ref, onMounted } from 'vue'
+    import { createResource } from 'frappe-ui'
+    import PageHeader from '@/components/PageHeader.vue'
+    import StatCard from '@/components/StatCard.vue'
+    import Card from '@/components/Card.vue'
+    import ActivityList from '@/components/ActivityList.vue'
+    import QuickActions from '@/components/QuickActions.vue'
+    
+    const stats = ref([])
+    const recentActivity = ref([])
+    
+    const dashboardResource = createResource({
+      url: '{{app_name}}.api.views.get_dashboard_data',
+      auto: true,
+      onSuccess(data) {
+        // Process dashboard data
+        stats.value = data.stats || []
+        recentActivity.value = data.activity || []
+      },
+    })
+    
+    onMounted(() => {
+      dashboardResource.fetch()
+    })
+    </script>
+  
+  list_view_page: |
+    <template>
+      <div>
+        <PageHeader
+          :title="pageTitle"
+          :actions="headerActions"
+        >
+          <template #right>
+            <Button
+              variant="solid"
+              @click="showCreateDialog = true"
+            >
+              <template #prefix>
+                <Icon name="plus" />
+              </template>
+              New {{ doctype }}
+            </Button>
+          </template>
+        </PageHeader>
+        
+        <div class="mt-6">
+          <!-- Filters -->
+          <ListFilters
+            v-model="filters"
+            :doctype="doctype"
+            @change="applyFilters"
+          />
+          
+          <!-- List -->
+          <ListView
+            :columns="columns"
+            :rows="documents"
+            :loading="listResource.loading"
+            @row-click="handleRowClick"
+          >
+            <template #empty>
+              <EmptyState
+                :title="`No ${doctype} found`"
+                description="Create your first record to get started"
+              >
+                <Button @click="showCreateDialog = true">
+                  Create {{ doctype }}
+                </Button>
+              </EmptyState>
+            </template>
+          </ListView>
+          
+          <!-- Pagination -->
+          <Pagination
+            v-model:page="currentPage"
+            :total="totalItems"
+            :page-size="pageSize"
+            @change="fetchDocuments"
+          />
+        </div>
+        
+        <!-- Create Dialog -->
+        <CreateDialog
+          v-model="showCreateDialog"
+          :doctype="doctype"
+          @success="handleCreateSuccess"
+        />
+      </div>
+    </template>
+    
+    <script setup>
+    import { ref, computed, onMounted, watch } from 'vue'
+    import { useRoute, useRouter } from 'vue-router'
+    import { createListResource } from 'frappe-ui'
+    import {
+      Button,
+      Icon,
+      ListView,
+      EmptyState,
+    } from 'frappe-ui'
+    import PageHeader from '@/components/PageHeader.vue'
+    import ListFilters from '@/components/ListFilters.vue'
+    import Pagination from '@/components/Pagination.vue'
+    import CreateDialog from '@/components/CreateDialog.vue'
+    
+    const props = defineProps({
+      doctype: {
+        type: String,
+        required: true,
+      },
+    })
+    
+    const route = useRoute()
+    const router = useRouter()
+    
+    const documents = ref([])
+    const columns = ref([])
+    const filters = ref({})
+    const currentPage = ref(1)
+    const pageSize = ref(20)
+    const totalItems = ref(0)
+    const showCreateDialog = ref(false)
+    
+    const pageTitle = computed(() => {
+      return props.doctype.replace(/_/g, ' ')
+    })
+    
+    const headerActions = computed(() => [
+      {
+        label: 'Refresh',
+        icon: 'refresh',
+        onClick: () => listResource.fetch(),
+      },
+      {
+        label: 'Export',
+        icon: 'download',
+        onClick: () => exportData(),
+      },
+    ])
+    
+    const listResource = createListResource({
+      doctype: props.doctype,
+      fields: ['name', 'modified', 'owner'],
+      filters: filters.value,
+      orderBy: 'modified desc',
+      pageLength: pageSize.value,
+      start: (currentPage.value - 1) * pageSize.value,
+      auto: false,
+      onSuccess(data) {
+        documents.value = data
+        totalItems.value = data.total_count || 0
+      },
+    })
+    
+    function handleRowClick(row) {
+      router.push(`/app/${props.doctype}/${row.name}`)
+    }
+    
+    function applyFilters(newFilters) {
+      filters.value = newFilters
+      currentPage.value = 1
+      fetchDocuments()
+    }
+    
+    function fetchDocuments() {
+      listResource.update({
+        filters: filters.value,
+        start: (currentPage.value - 1) * pageSize.value,
+      })
+      listResource.fetch()
+    }
+    
+    function handleCreateSuccess(doc) {
+      showCreateDialog.value = false
+      router.push(`/app/${props.doctype}/${doc.name}`)
+    }
+    
+    function exportData() {
+      // Export implementation
+    }
+    
+    onMounted(() => {
+      fetchDocuments()
+    })
+    
+    watch(() => props.doctype, () => {
+      currentPage.value = 1
+      filters.value = {}
+      fetchDocuments()
+    })
+    </script>
+  
+  tailwind_config: |
+    /** @type {import('tailwindcss').Config} */
+    export default {
+      content: [
+        './index.html',
+        './src/**/*.{vue,js,ts,jsx,tsx}',
+        './node_modules/frappe-ui/src/**/*.{vue,js,ts}',
+      ],
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: '#171717',
+              50: '#f5f5f5',
+              100: '#e5e5e5',
+              200: '#d4d4d4',
+              300: '#a3a3a3',
+              400: '#737373',
+              500: '#525252',
+              600: '#404040',
+              700: '#262626',
+              800: '#171717',
+              900: '#0a0a0a',
+            },
+          },
+        },
+      },
+      plugins: [],
+    }
+  
+  index_css: |
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+    
+    @layer base {
+      body {
+        @apply antialiased;
+      }
+    }
+    
+    @layer components {
+      .btn-primary {
+        @apply bg-primary text-white hover:bg-primary-700 px-4 py-2 rounded-md transition-colors;
+      }
+      
+      .card {
+        @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+      }
+    }
+
+instructions:
+  setup:
+    - "Navigate to your app directory: cd apps/{{app_name}}"
+    - "Clone doppio starter: npx degit NagariaHussain/doppio_frappeui_starter frontend"
+    - "Install dependencies: cd frontend && yarn"
+    - "Add to site_config.json: '\"ignore_csrf\": 1' for development"
+    - "Customize templates with your app-specific content"
+  
+  development:
+    - "Run development server: yarn dev"
+    - "Access at http://{{site_name}}:8080/frontend"
+    - "Hot reload enabled for Vue components"
+    - "API calls proxied to port 8000"
+    - "CSRF protection disabled in development"
+  
+  integration:
+    - "Build outputs to ../{{app_name}}/public/frontend"
+    - "Add to hooks.py: website_route_rules for /frontend routing"
+    - "In production, remove 'ignore_csrf' from site_config.json"
+    - "Ensure CSRF token available on window object"
+  
+  hooks_py_addition: |
+    # Add to hooks.py
+    website_route_rules = [
+        {"from_route": "/frontend/<path:app_path>", "to_route": "frontend"},
+    ]
+    
+    # Optional: Add to desk
+    add_to_apps_screen = [
+        {
+            "name": "{{app_name}}",
+            "logo": "/assets/{{app_name}}/logo.svg",
+            "title": "{{app_title}}",
+            "route": "/frontend",
+            "has_permission": "{{app_name}}.api.permission.has_app_permission"
+        }
+    ]
+  
+  index_html_template: |
+    <!-- Create {{app_name}}/www/frontend.html -->
+    {% extends "templates/web.html" %}
+    
+    {% block title %}{{app_title}}{% endblock %}
+    
+    {% block head_include %}
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{app_title}}</title>
+        <script>
+            window.csrf_token = "{{ csrf_token }}";
+        </script>
+    {% endblock %}
+    
+    {% block content %}
+        <div id="app"></div>
+        <script type="module" src="/assets/{{app_name}}/frontend/index.js"></script>
+        <link rel="stylesheet" type="text/css" href="/assets/{{app_name}}/frontend/index.css">
+    {% endblock %}
+  
+  production_checklist:
+    - "Remove 'ignore_csrf': 1 from site_config.json"
+    - "Ensure CSRF token in window object"
+    - "Run 'yarn build' to generate production assets"
+    - "Test routing with nginx configuration"
+    - "Verify API calls include CSRF token"

@@ -1,0 +1,1609 @@
+name: "n8n-node-mappings"
+title: "n8n to ERPNext Node Mappings Reference"
+description: "Comprehensive mapping of n8n node types to their ERPNext/Frappe framework equivalents with code examples"
+version: "1.0.0"
+
+mappings:
+  
+  # TRIGGER NODES
+  triggers:
+    
+    manual_trigger:
+      n8n_type: "n8n-nodes-base.manualTrigger"
+      n8n_description: "Triggers workflow manually by clicking in n8n interface"
+      erpnext_equivalent: "Custom Button or Manual Workflow Action"
+      implementation_type: "user_action"
+      complexity: "simple"
+      
+      frappe_pattern: |
+        # Option 1: Custom Button in DocType
+        // In [doctype].js
+        frappe.ui.form.on('[DocType Name]', {
+            refresh: function(frm) {
+                frm.add_custom_button(__('Trigger Automation'), function() {
+                    frappe.call({
+                        method: 'myapp.automation.trigger_manual_workflow',
+                        args: {
+                            'doc_name': frm.doc.name
+                        },
+                        callback: function(r) {
+                            if (r.message) {
+                                frappe.msgprint(__('Workflow triggered successfully'));
+                            }
+                        }
+                    });
+                });
+            }
+        });
+        
+        # Option 2: Workflow Action
+        # Define in Workflow DocType as manual action
+      
+      python_implementation: |
+        import frappe
+        from frappe import _
+        
+        @frappe.whitelist()
+        def trigger_manual_workflow(doc_name):
+            """Manual trigger equivalent for n8n manual trigger"""
+            try:
+                doc = frappe.get_doc("Target DocType", doc_name)
+                
+                # Execute workflow logic
+                result = execute_workflow_logic(doc)
+                
+                frappe.log_error(f"Manual workflow triggered for {doc_name}", "Workflow Success")
+                return {"success": True, "result": result}
+                
+            except Exception as e:
+                frappe.log_error(frappe.get_traceback(), "Manual Workflow Error")
+                frappe.throw(_("Workflow execution failed"))
+    
+    webhook_trigger:
+      n8n_type: "n8n-nodes-base.webhook"
+      n8n_description: "Receives HTTP requests to trigger workflows"
+      erpnext_equivalent: "@frappe.whitelist() API Endpoint"
+      implementation_type: "api_endpoint"
+      complexity: "moderate"
+      
+      frappe_pattern: |
+        import frappe
+        from frappe import _
+        import json
+        
+        @frappe.whitelist(allow_guest=True)
+        def webhook_handler():
+            """Webhook trigger equivalent"""
+            try:
+                # Validate request method
+                if frappe.request.method != 'POST':
+                    frappe.throw(_("Only POST requests allowed"))
+                
+                # Get and validate data
+                data = frappe.request.get_json()
+                if not data:
+                    frappe.throw(_("No data received"))
+                
+                # Validate webhook signature (if required)
+                if not validate_webhook_signature(frappe.request.headers, data):
+                    frappe.throw(_("Invalid webhook signature"))
+                
+                # Process the webhook
+                result = process_webhook_data(data)
+                
+                return {
+                    "success": True,
+                    "message": "Webhook processed successfully",
+                    "data": result
+                }
+                
+            except Exception as e:
+                frappe.log_error(frappe.get_traceback(), "Webhook Error")
+                return {"success": False, "error": str(e)}
+        
+        def validate_webhook_signature(headers, data):
+            """Validate incoming webhook signature"""
+            # Implement signature validation based on service
+            return True
+        
+        def process_webhook_data(data):
+            """Process the webhook payload"""
+            # Convert n8n workflow logic here
+            return data
+    
+    cron_trigger:
+      n8n_type: "n8n-nodes-base.cronTrigger"
+      n8n_description: "Triggers workflow on scheduled intervals using cron expressions"
+      erpnext_equivalent: "Scheduled Jobs in hooks.py"
+      implementation_type: "scheduled_job"
+      complexity: "moderate"
+      
+      frappe_pattern: |
+        # In hooks.py
+        scheduler_events = {
+            "daily": [
+                "myapp.jobs.daily_automation"
+            ],
+            "hourly": [
+                "myapp.jobs.hourly_sync"
+            ],
+            "weekly": [
+                "myapp.jobs.weekly_cleanup"
+            ],
+            "cron": {
+                "*/15 * * * *": [
+                    "myapp.jobs.fifteen_minute_task"
+                ]
+            }
+        }
+      
+      python_implementation: |
+        import frappe
+        from frappe import _
+        from frappe.utils import now_datetime, add_days
+        
+        def scheduled_automation():
+            """Scheduled job equivalent for n8n cron trigger"""
+            try:
+                frappe.log_error("Starting scheduled automation", "Scheduled Job")
+                
+                # Check if job should run
+                settings = frappe.get_single("App Settings")
+                if not settings.enable_scheduled_automation:
+                    return
+                
+                # Execute scheduled logic
+                result = execute_scheduled_logic()
+                
+                # Update last run timestamp
+                frappe.db.set_value("App Settings", None, "last_automation_run", now_datetime())
+                frappe.db.commit()
+                
+                frappe.log_error(f"Completed scheduled automation: {result}", "Scheduled Job Success")
+                
+            except Exception as e:
+                frappe.log_error(frappe.get_traceback(), "Scheduled Job Error")
+                notify_admin_of_job_failure(str(e))
+        
+        def execute_scheduled_logic():
+            """Execute the main scheduled logic"""
+            # Convert n8n cron workflow logic here
+            return {"processed": 0, "errors": 0}
+        
+        def notify_admin_of_job_failure(error):
+            """Notify administrators of job failure"""
+            frappe.sendmail(
+                recipients=["admin@company.com"],
+                subject="Scheduled Job Failed",
+                message=f"Scheduled job failed with error: {error}"
+            )
+    
+    email_trigger:
+      n8n_type: "n8n-nodes-base.emailTrigger"
+      n8n_description: "Triggers workflow when emails are received"
+      erpnext_equivalent: "Email Account Integration or Communication Hooks"
+      implementation_type: "email_handler"
+      complexity: "complex"
+      
+      frappe_pattern: |
+        # Option 1: Email Account Integration
+        # Configure Email Account DocType with custom handler
+        
+        # Option 2: Communication DocType hooks
+        # In hooks.py
+        doc_events = {
+            "Communication": {
+                "after_insert": "myapp.email_handlers.handle_incoming_email"
+            }
+        }
+      
+      python_implementation: |
+        import frappe
+        from frappe import _
+        import email
+        from email.mime.text import MIMEText
+        
+        def handle_incoming_email(communication, method):
+            """Email trigger equivalent"""
+            try:
+                # Only process incoming emails
+                if communication.communication_type != "Communication" or communication.sent_or_received != "Received":
+                    return
+                
+                # Check if email matches trigger criteria
+                if not matches_email_trigger_criteria(communication):
+                    return
+                
+                # Extract email data
+                email_data = extract_email_data(communication)
+                
+                # Process email trigger
+                result = process_email_trigger(email_data)
+                
+                # Log processing
+                frappe.log_error(f"Email trigger processed: {communication.name}", "Email Trigger Success")
+                
+            except Exception as e:
+                frappe.log_error(frappe.get_traceback(), "Email Trigger Error")
+        
+        def matches_email_trigger_criteria(communication):
+            """Check if email matches trigger criteria"""
+            # Implement email filtering logic from n8n
+            return True
+        
+        def extract_email_data(communication):
+            """Extract relevant data from email"""
+            return {
+                "subject": communication.subject,
+                "sender": communication.sender,
+                "content": communication.content,
+                "attachments": communication.attachments
+            }
+        
+        def process_email_trigger(email_data):
+            """Process the email trigger logic"""
+            # Convert n8n email processing logic here
+            return email_data
+
+  # LOGIC NODES
+  logic:
+    
+    if_node:
+      n8n_type: "n8n-nodes-base.if"
+      n8n_description: "Routes workflow based on conditional logic"
+      erpnext_equivalent: "Python if/else statements with business logic"
+      implementation_type: "conditional_logic"
+      complexity: "simple"
+      
+      python_implementation: |
+        def process_conditional_logic(data):
+            """If node equivalent"""
+            
+            # Example: n8n If node checking if amount > 1000
+            if data.get("amount", 0) > 1000:
+                # True branch logic
+                return process_high_value_transaction(data)
+            else:
+                # False branch logic  
+                return process_normal_transaction(data)
+        
+        def process_high_value_transaction(data):
+            """Logic for true branch"""
+            data["requires_approval"] = True
+            data["approval_level"] = "manager"
+            return data
+        
+        def process_normal_transaction(data):
+            """Logic for false branch"""
+            data["requires_approval"] = False
+            data["auto_process"] = True
+            return data
+    
+    switch_node:
+      n8n_type: "n8n-nodes-base.switch"
+      n8n_description: "Routes workflow based on multiple conditions"
+      erpnext_equivalent: "Python switch-like logic or match statements"
+      implementation_type: "conditional_routing"
+      complexity: "moderate"
+      
+      python_implementation: |
+        def process_switch_logic(data):
+            """Switch node equivalent"""
+            
+            # Get the value to switch on
+            status = data.get("status", "unknown")
+            
+            # Python 3.10+ match statement (preferred)
+            match status:
+                case "pending":
+                    return process_pending_status(data)
+                case "approved":
+                    return process_approved_status(data)
+                case "rejected":
+                    return process_rejected_status(data)
+                case "cancelled":
+                    return process_cancelled_status(data)
+                case _:  # default case
+                    return process_unknown_status(data)
+        
+        # Alternative for older Python versions
+        def process_switch_logic_legacy(data):
+            """Switch logic for older Python versions"""
+            status = data.get("status", "unknown")
+            
+            switch_functions = {
+                "pending": process_pending_status,
+                "approved": process_approved_status,
+                "rejected": process_rejected_status,
+                "cancelled": process_cancelled_status
+            }
+            
+            handler = switch_functions.get(status, process_unknown_status)
+            return handler(data)
+    
+    code_node:
+      n8n_type: "n8n-nodes-base.code"
+      n8n_description: "Executes custom JavaScript code"
+      erpnext_equivalent: "Python functions with custom business logic"
+      implementation_type: "custom_logic"
+      complexity: "variable"
+      
+      python_implementation: |
+        def execute_custom_code(data):
+            """Code node equivalent - custom Python logic"""
+            
+            # Convert JavaScript logic to Python
+            # Example: n8n code that processes customer data
+            
+            processed_data = {}
+            
+            # Data validation
+            if not data.get("customer_name"):
+                raise ValueError("Customer name is required")
+            
+            # Data transformation
+            processed_data["customer_name"] = data["customer_name"].title()
+            processed_data["email"] = data.get("email", "").lower().strip()
+            processed_data["phone"] = format_phone_number(data.get("phone", ""))
+            
+            # Business calculations
+            if data.get("purchase_amount"):
+                processed_data["loyalty_points"] = calculate_loyalty_points(
+                    data["purchase_amount"]
+                )
+                processed_data["customer_tier"] = determine_customer_tier(
+                    data["purchase_amount"]
+                )
+            
+            # Additional processing
+            processed_data["created_date"] = frappe.utils.now()
+            processed_data["processed_by"] = frappe.session.user
+            
+            return processed_data
+        
+        def format_phone_number(phone):
+            """Format phone number"""
+            # Remove non-numeric characters
+            import re
+            return re.sub(r'[^\d+]', '', phone)
+        
+        def calculate_loyalty_points(amount):
+            """Calculate loyalty points based on purchase amount"""
+            return int(amount * 0.01)  # 1 point per dollar
+        
+        def determine_customer_tier(amount):
+            """Determine customer tier based on purchase amount"""
+            if amount >= 10000:
+                return "Platinum"
+            elif amount >= 5000:
+                return "Gold"
+            elif amount >= 1000:
+                return "Silver"
+            else:
+                return "Bronze"
+
+  # DATA NODES
+  data:
+    
+    set_node:
+      n8n_type: "n8n-nodes-base.set"
+      n8n_description: "Sets or modifies data values"
+      erpnext_equivalent: "Python variable assignment and data transformation"
+      implementation_type: "data_transformation"
+      complexity: "simple"
+      
+      python_implementation: |
+        def set_data_values(input_data):
+            """Set node equivalent - data transformation"""
+            
+            # Initialize output data
+            output_data = input_data.copy()
+            
+            # Set static values (n8n "Value" mode)
+            output_data["status"] = "processed"
+            output_data["processed_date"] = frappe.utils.now()
+            output_data["processed_by"] = frappe.session.user
+            
+            # Set computed values (n8n "Expression" mode)
+            if input_data.get("first_name") and input_data.get("last_name"):
+                output_data["full_name"] = f"{input_data['first_name']} {input_data['last_name']}"
+            
+            # Mathematical calculations
+            if input_data.get("quantity") and input_data.get("price"):
+                output_data["total_amount"] = input_data["quantity"] * input_data["price"]
+                output_data["tax_amount"] = output_data["total_amount"] * 0.1  # 10% tax
+                output_data["grand_total"] = output_data["total_amount"] + output_data["tax_amount"]
+            
+            # String manipulations
+            if input_data.get("email"):
+                output_data["email_domain"] = input_data["email"].split("@")[1]
+                output_data["is_business_email"] = not output_data["email_domain"] in ["gmail.com", "yahoo.com", "hotmail.com"]
+            
+            # Conditional settings
+            if input_data.get("age"):
+                output_data["age_group"] = "Adult" if input_data["age"] >= 18 else "Minor"
+            
+            return output_data
+    
+    function_node:
+      n8n_type: "n8n-nodes-base.function"
+      n8n_description: "Executes JavaScript functions on data items"
+      erpnext_equivalent: "Python functions for data processing"
+      implementation_type: "data_processing"
+      complexity: "moderate"
+      
+      python_implementation: |
+        def function_data_processing(items):
+            """Function node equivalent - process multiple data items"""
+            
+            processed_items = []
+            
+            for item in items:
+                try:
+                    # Process each item
+                    processed_item = process_single_item(item)
+                    processed_items.append(processed_item)
+                    
+                except Exception as e:
+                    # Log error but continue processing other items
+                    frappe.log_error(f"Error processing item {item}: {str(e)}", "Function Node Error")
+                    
+                    # Optionally add error item to results
+                    error_item = item.copy()
+                    error_item["processing_error"] = str(e)
+                    error_item["processing_status"] = "failed"
+                    processed_items.append(error_item)
+            
+            return processed_items
+        
+        def process_single_item(item):
+            """Process a single data item"""
+            
+            # Data validation
+            if not item.get("id"):
+                item["id"] = frappe.generate_hash(length=10)
+            
+            # Data enrichment
+            if item.get("customer_id"):
+                customer = frappe.get_doc("Customer", item["customer_id"])
+                item["customer_name"] = customer.customer_name
+                item["customer_territory"] = customer.territory
+            
+            # Business logic calculations
+            if item.get("order_date"):
+                from frappe.utils import getdate, date_diff, now_datetime
+                order_date = getdate(item["order_date"])
+                item["days_since_order"] = date_diff(now_datetime().date(), order_date)
+                item["is_recent_order"] = item["days_since_order"] <= 30
+            
+            # Status determination
+            item["processing_status"] = "completed"
+            item["processed_at"] = frappe.utils.now()
+            
+            return item
+
+  # INTEGRATION NODES  
+  integrations:
+    
+    http_request:
+      n8n_type: "n8n-nodes-base.httpRequest"
+      n8n_description: "Makes HTTP requests to external APIs"
+      erpnext_equivalent: "requests library or frappe.call for external APIs"
+      implementation_type: "api_integration"
+      complexity: "moderate"
+      
+      python_implementation: |
+        import requests
+        import frappe
+        from frappe import _
+        from frappe.utils import cstr
+        
+        def make_http_request(url, method="GET", data=None, headers=None):
+            """HTTP Request node equivalent"""
+            
+            try:
+                # Get default headers
+                default_headers = {
+                    "Content-Type": "application/json",
+                    "User-Agent": "ERPNext-Automation/1.0"
+                }
+                
+                # Merge with custom headers
+                if headers:
+                    default_headers.update(headers)
+                
+                # Get authentication if configured
+                auth_headers = get_api_authentication("external_service")
+                default_headers.update(auth_headers)
+                
+                # Make the request
+                response = requests.request(
+                    method=method.upper(),
+                    url=url,
+                    json=data if method.upper() in ["POST", "PUT", "PATCH"] else None,
+                    params=data if method.upper() == "GET" else None,
+                    headers=default_headers,
+                    timeout=30
+                )
+                
+                # Check for successful response
+                response.raise_for_status()
+                
+                # Parse response
+                try:
+                    return response.json()
+                except ValueError:
+                    return {"response_text": response.text}
+                    
+            except requests.exceptions.RequestException as e:
+                frappe.log_error(f"HTTP Request failed: {str(e)}", "HTTP Request Error")
+                frappe.throw(_("External API call failed: {0}").format(str(e)))
+        
+        def get_api_authentication(service_name):
+            """Get authentication headers for external service"""
+            settings = frappe.get_single("Integration Settings")
+            
+            api_key = getattr(settings, f"{service_name}_api_key", "")
+            auth_type = getattr(settings, f"{service_name}_auth_type", "bearer")
+            
+            if api_key:
+                if auth_type == "bearer":
+                    return {"Authorization": f"Bearer {api_key}"}
+                elif auth_type == "api_key":
+                    return {"X-API-Key": api_key}
+            
+            return {}
+        
+        # Usage examples
+        def sync_customer_to_external_system(customer_data):
+            """Sync customer data to external system"""
+            
+            url = "https://api.external-system.com/customers"
+            
+            # Prepare data for external system
+            external_data = {
+                "name": customer_data.get("customer_name"),
+                "email": customer_data.get("email_id"),
+                "phone": customer_data.get("mobile_no"),
+                "created_at": customer_data.get("creation")
+            }
+            
+            # Make API call
+            result = make_http_request(url, method="POST", data=external_data)
+            
+            # Process response
+            if result.get("id"):
+                # Update customer with external ID
+                frappe.db.set_value("Customer", customer_data["name"], "external_id", result["id"])
+                frappe.db.commit()
+            
+            return result
+    
+    webhook_respond:
+      n8n_type: "n8n-nodes-base.respondToWebhook"  
+      n8n_description: "Sends response back to webhook caller"
+      erpnext_equivalent: "Return statement in @frappe.whitelist() function"
+      implementation_type: "api_response"
+      complexity: "simple"
+      
+      python_implementation: |
+        @frappe.whitelist(allow_guest=True)
+        def webhook_with_response():
+            """Webhook with custom response"""
+            
+            try:
+                # Process webhook data
+                data = frappe.request.get_json()
+                result = process_webhook_data(data)
+                
+                # Custom response (equivalent to n8n Respond to Webhook)
+                return {
+                    "status": "success",
+                    "message": "Data processed successfully", 
+                    "data": result,
+                    "timestamp": frappe.utils.now(),
+                    "reference": result.get("reference_number")
+                }
+                
+            except Exception as e:
+                frappe.log_error(frappe.get_traceback(), "Webhook Processing Error")
+                
+                # Error response
+                return {
+                    "status": "error",
+                    "message": "Processing failed",
+                    "error": str(e),
+                    "timestamp": frappe.utils.now()
+                }
+
+  # NOTIFICATION NODES
+  notifications:
+    
+    email_send:
+      n8n_type: "n8n-nodes-base.emailSend"
+      n8n_description: "Sends emails with attachments and templates"
+      erpnext_equivalent: "frappe.sendmail with email templates"
+      implementation_type: "email_notification"
+      complexity: "moderate"
+      
+      python_implementation: |
+        import frappe
+        from frappe import _
+        from frappe.utils import cstr
+        
+        def send_email_notification(recipients, subject, message, template=None, context=None, attachments=None):
+            """Email Send node equivalent"""
+            
+            try:
+                # Prepare recipients list
+                if isinstance(recipients, str):
+                    recipients = [recipients]
+                
+                # Use email template if specified
+                if template and context:
+                    template_doc = frappe.get_doc("Email Template", template)
+                    subject = frappe.render_template(template_doc.subject, context)
+                    message = frappe.render_template(template_doc.response, context)
+                
+                # Send email using Frappe's email system
+                frappe.sendmail(
+                    recipients=recipients,
+                    subject=subject,
+                    message=message,
+                    attachments=attachments,
+                    reference_doctype=context.get("doctype") if context else None,
+                    reference_name=context.get("docname") if context else None,
+                    send_priority=1,
+                    retry=3
+                )
+                
+                # Log successful send
+                frappe.log_error(f"Email sent to {recipients} with subject: {subject}", "Email Success")
+                
+                return {
+                    "success": True,
+                    "recipients": recipients,
+                    "subject": subject,
+                    "sent_at": frappe.utils.now()
+                }
+                
+            except Exception as e:
+                frappe.log_error(frappe.get_traceback(), "Email Send Error")
+                return {
+                    "success": False,
+                    "error": str(e),
+                    "recipients": recipients
+                }
+        
+        def send_templated_email(template_name, context, recipient_field="email"):
+            """Send email using predefined template"""
+            
+            # Get recipients from context
+            recipients = []
+            if isinstance(context.get(recipient_field), list):
+                recipients = context[recipient_field]
+            elif context.get(recipient_field):
+                recipients = [context[recipient_field]]
+            
+            if not recipients:
+                frappe.throw(_("No recipients found"))
+            
+            # Send email with template
+            return send_email_notification(
+                recipients=recipients,
+                subject="",  # Will be set by template
+                message="",  # Will be set by template
+                template=template_name,
+                context=context
+            )
+        
+        # Usage examples
+        def send_order_confirmation(order_doc):
+            """Send order confirmation email"""
+            
+            context = {
+                "customer_name": order_doc.customer_name,
+                "order_number": order_doc.name,
+                "order_date": order_doc.transaction_date,
+                "total_amount": order_doc.grand_total,
+                "doctype": order_doc.doctype,
+                "docname": order_doc.name
+            }
+            
+            return send_templated_email(
+                template_name="Order Confirmation",
+                context=context,
+                recipient_field="contact_email"
+            )
+    
+    sms_send:
+      n8n_type: "n8n-nodes-base.sms"
+      n8n_description: "Sends SMS messages"
+      erpnext_equivalent: "frappe.sendmail SMS gateway integration"
+      implementation_type: "sms_notification"
+      complexity: "moderate"
+      
+      python_implementation: |
+        import frappe
+        from frappe import _
+        import requests
+        
+        def send_sms_notification(phone_number, message, template=None, context=None):
+            """SMS Send node equivalent"""
+            
+            try:
+                # Get SMS settings
+                settings = frappe.get_single("SMS Settings")
+                
+                if not settings.sms_gateway_url:
+                    frappe.throw(_("SMS Gateway not configured"))
+                
+                # Use SMS template if specified  
+                if template and context:
+                    template_doc = frappe.get_doc("SMS Template", template)
+                    message = frappe.render_template(template_doc.message, context)
+                
+                # Format phone number
+                formatted_phone = format_phone_for_sms(phone_number)
+                
+                # Prepare SMS data
+                sms_data = {
+                    "to": formatted_phone,
+                    "message": message,
+                    "from": settings.sender_name or "ERPNext"
+                }
+                
+                # Add authentication
+                if settings.api_key:
+                    sms_data["api_key"] = settings.api_key
+                
+                # Send SMS via gateway
+                response = requests.post(
+                    settings.sms_gateway_url,
+                    json=sms_data,
+                    timeout=30
+                )
+                
+                response.raise_for_status()
+                result = response.json()
+                
+                # Log successful send
+                frappe.log_error(f"SMS sent to {formatted_phone}: {message}", "SMS Success")
+                
+                return {
+                    "success": True,
+                    "phone_number": formatted_phone,
+                    "message": message,
+                    "gateway_response": result,
+                    "sent_at": frappe.utils.now()
+                }
+                
+            except Exception as e:
+                frappe.log_error(frappe.get_traceback(), "SMS Send Error")
+                return {
+                    "success": False,
+                    "error": str(e),
+                    "phone_number": phone_number
+                }
+        
+        def format_phone_for_sms(phone):
+            """Format phone number for SMS"""
+            import re
+            
+            # Remove non-digit characters except +
+            cleaned = re.sub(r'[^\d+]', '', phone)
+            
+            # Ensure country code
+            if not cleaned.startswith('+'):
+                if len(cleaned) == 10:
+                    cleaned = '+1' + cleaned  # US/Canada default
+            
+            return cleaned
+
+  # DATABASE NODES
+  database:
+    
+    mysql:
+      n8n_type: "n8n-nodes-base.mySql"
+      n8n_description: "Executes MySQL database operations"
+      erpnext_equivalent: "frappe.db methods for database operations"
+      implementation_type: "database_operation"
+      complexity: "moderate"
+      
+      python_implementation: |
+        import frappe
+        from frappe import _
+        
+        def execute_database_query(query, values=None, operation_type="select"):
+            """MySQL node equivalent using Frappe DB methods"""
+            
+            try:
+                # Use Frappe's database methods instead of direct SQL when possible
+                if operation_type.lower() == "select":
+                    
+                    if values:
+                        result = frappe.db.sql(query, values, as_dict=True)
+                    else:
+                        result = frappe.db.sql(query, as_dict=True)
+                    
+                    return {
+                        "success": True,
+                        "data": result,
+                        "count": len(result)
+                    }
+                
+                elif operation_type.lower() in ["insert", "update", "delete"]:
+                    
+                    if values:
+                        frappe.db.sql(query, values)
+                    else:
+                        frappe.db.sql(query)
+                    
+                    frappe.db.commit()
+                    
+                    return {
+                        "success": True,
+                        "affected_rows": frappe.db.sql("SELECT ROW_COUNT() as count")[0][0]
+                    }
+                
+            except Exception as e:
+                frappe.db.rollback()
+                frappe.log_error(frappe.get_traceback(), "Database Operation Error")
+                frappe.throw(_("Database operation failed: {0}").format(str(e)))
+        
+        # Preferred Frappe patterns instead of raw SQL
+        def frappe_database_operations():
+            """Use Frappe's ORM methods instead of raw SQL"""
+            
+            # CREATE - Use DocType methods
+            customer = frappe.get_doc({
+                "doctype": "Customer",
+                "customer_name": "John Doe",
+                "email_id": "john@example.com"
+            })
+            customer.insert()
+            
+            # READ - Use get_all or get_list
+            customers = frappe.get_all(
+                "Customer",
+                filters={"disabled": 0},
+                fields=["name", "customer_name", "email_id"],
+                limit=10
+            )
+            
+            # UPDATE - Use frappe.db.set_value or doc.save()
+            frappe.db.set_value("Customer", "CUST-001", "mobile_no", "+1234567890")
+            
+            # Or update via document
+            customer = frappe.get_doc("Customer", "CUST-001")
+            customer.mobile_no = "+1234567890"
+            customer.save()
+            
+            # DELETE - Use doc.delete() 
+            frappe.delete_doc("Customer", "CUST-001")
+            
+            return {
+                "created": customer.name,
+                "customers_found": len(customers),
+                "operation": "completed"
+            }
+    
+    postgresql:
+      n8n_type: "n8n-nodes-base.postgres"
+      n8n_description: "Executes PostgreSQL database operations"  
+      erpnext_equivalent: "frappe.db methods (ERPNext supports PostgreSQL)"
+      implementation_type: "database_operation"
+      complexity: "moderate"
+      
+      python_implementation: |
+        # Same as MySQL implementation since Frappe abstracts the database layer
+        # Frappe handles the underlying database type (MariaDB, PostgreSQL)
+        
+        def execute_postgres_equivalent(query, values=None):
+            """PostgreSQL node equivalent - same as MySQL in Frappe context"""
+            
+            # Frappe's DB layer abstracts MySQL/PostgreSQL differences
+            return execute_database_query(query, values)
+        
+        def bulk_database_operations(data_list):
+            """Bulk operations equivalent to n8n database loops"""
+            
+            results = []
+            
+            try:
+                for item in data_list:
+                    # Process each item
+                    if item.get("operation") == "insert":
+                        result = insert_record(item["data"])
+                    elif item.get("operation") == "update":
+                        result = update_record(item["id"], item["data"])
+                    elif item.get("operation") == "delete":
+                        result = delete_record(item["id"])
+                    
+                    results.append(result)
+                
+                # Commit all changes at once
+                frappe.db.commit()
+                
+                return {
+                    "success": True,
+                    "processed": len(results),
+                    "results": results
+                }
+                
+            except Exception as e:
+                frappe.db.rollback()
+                frappe.log_error(frappe.get_traceback(), "Bulk Database Operation Error")
+                raise e
+
+  # UTILITY NODES
+  utilities:
+    
+    wait_node:
+      n8n_type: "n8n-nodes-base.wait"
+      n8n_description: "Pauses workflow execution for specified time"
+      erpnext_equivalent: "frappe.enqueue with delay or scheduled jobs"
+      implementation_type: "delayed_execution"
+      complexity: "moderate"
+      
+      python_implementation: |
+        import frappe
+        from frappe import _
+        from frappe.utils import add_to_date, now_datetime
+        
+        def schedule_delayed_execution(function_name, data, delay_seconds=None, delay_until=None):
+            """Wait node equivalent using background jobs"""
+            
+            if delay_seconds:
+                # Delay by seconds (n8n "Wait for duration")
+                frappe.enqueue(
+                    method=function_name,
+                    queue="long",
+                    job_name=f"delayed_job_{frappe.utils.now()}",
+                    delay=delay_seconds,
+                    **data
+                )
+                
+            elif delay_until:
+                # Wait until specific time (n8n "Wait until date")
+                from datetime import datetime
+                
+                if isinstance(delay_until, str):
+                    delay_until = datetime.fromisoformat(delay_until)
+                
+                now = now_datetime()
+                if delay_until > now:
+                    delay_seconds = (delay_until - now).total_seconds()
+                    frappe.enqueue(
+                        method=function_name,
+                        queue="long", 
+                        delay=int(delay_seconds),
+                        **data
+                    )
+                else:
+                    # Time has passed, execute immediately
+                    frappe.enqueue(method=function_name, queue="short", **data)
+            
+            return {
+                "scheduled": True,
+                "function": function_name,
+                "delay_seconds": delay_seconds,
+                "scheduled_at": now_datetime()
+            }
+        
+        def process_after_delay(original_data):
+            """Function to be executed after delay"""
+            
+            try:
+                # Continue workflow after delay
+                result = continue_workflow_processing(original_data)
+                
+                frappe.log_error(f"Delayed processing completed: {result}", "Delayed Job Success")
+                return result
+                
+            except Exception as e:
+                frappe.log_error(frappe.get_traceback(), "Delayed Job Error")
+                raise e
+        
+        # Usage example
+        def trigger_delayed_workflow(data):
+            """Trigger workflow with delay"""
+            
+            # Immediate processing
+            immediate_result = process_immediate_steps(data)
+            
+            # Schedule delayed processing (equivalent to n8n Wait node)
+            schedule_delayed_execution(
+                function_name="myapp.automation.process_after_delay",
+                data={"original_data": data, "immediate_result": immediate_result},
+                delay_seconds=3600  # 1 hour delay
+            )
+            
+            return {"immediate_result": immediate_result, "delayed_scheduled": True}
+    
+    merge_node:
+      n8n_type: "n8n-nodes-base.merge"
+      n8n_description: "Merges data from multiple workflow branches"
+      erpnext_equivalent: "Python data merging and aggregation functions"
+      implementation_type: "data_aggregation"
+      complexity: "moderate"
+      
+      python_implementation: |
+        def merge_workflow_data(data_sources, merge_mode="combine"):
+            """Merge node equivalent - combine multiple data sources"""
+            
+            if merge_mode == "combine":
+                # n8n "Combine" mode - merge all items into one array
+                combined_data = []
+                for source in data_sources:
+                    if isinstance(source, list):
+                        combined_data.extend(source)
+                    else:
+                        combined_data.append(source)
+                
+                return combined_data
+            
+            elif merge_mode == "merge_by_key":
+                # n8n "Merge by Key" mode - merge items with same key
+                merged_dict = {}
+                
+                for source in data_sources:
+                    if isinstance(source, list):
+                        for item in source:
+                            key = item.get("id") or item.get("key")
+                            if key:
+                                if key in merged_dict:
+                                    merged_dict[key].update(item)
+                                else:
+                                    merged_dict[key] = item.copy()
+                
+                return list(merged_dict.values())
+            
+            elif merge_mode == "append_fields":
+                # n8n "Append" mode - add fields from one source to another
+                if len(data_sources) >= 2:
+                    base_data = data_sources[0].copy() if isinstance(data_sources[0], dict) else data_sources[0]
+                    
+                    for additional_source in data_sources[1:]:
+                        if isinstance(additional_source, dict):
+                            if isinstance(base_data, dict):
+                                base_data.update(additional_source)
+                            elif isinstance(base_data, list) and len(base_data) > 0:
+                                base_data[0].update(additional_source)
+                
+                return base_data
+            
+            return data_sources
+        
+        def aggregate_data(data_list, aggregation_fields):
+            """Advanced data aggregation"""
+            
+            result = {}
+            
+            for field_config in aggregation_fields:
+                field_name = field_config["field"]
+                operation = field_config["operation"]  # sum, avg, count, min, max
+                
+                values = [item.get(field_name) for item in data_list if item.get(field_name) is not None]
+                
+                if operation == "sum":
+                    result[f"{field_name}_sum"] = sum(values)
+                elif operation == "avg":
+                    result[f"{field_name}_avg"] = sum(values) / len(values) if values else 0
+                elif operation == "count":
+                    result[f"{field_name}_count"] = len(values)
+                elif operation == "min":
+                    result[f"{field_name}_min"] = min(values) if values else None
+                elif operation == "max":
+                    result[f"{field_name}_max"] = max(values) if values else None
+            
+            return result
+
+  # FILE OPERATIONS
+  file_operations:
+    
+    read_binary_file:
+      n8n_type: "n8n-nodes-base.readBinaryFile"
+      n8n_description: "Reads binary files from file system"
+      erpnext_equivalent: "Frappe File API for file operations"
+      implementation_type: "file_operation"
+      complexity: "moderate"
+      
+      python_implementation: |
+        import frappe
+        from frappe import _
+        import os
+        import base64
+        
+        def read_binary_file(file_path):
+            """Read Binary File node equivalent"""
+            
+            try:
+                # Use Frappe's file system if it's a Frappe file
+                if file_path.startswith("/files/"):
+                    # Frappe managed file
+                    file_doc = frappe.get_doc("File", {"file_url": file_path})
+                    file_content = file_doc.get_content()
+                    
+                    return {
+                        "success": True,
+                        "content": base64.b64encode(file_content).decode('utf-8'),
+                        "file_name": file_doc.file_name,
+                        "file_size": len(file_content),
+                        "mime_type": file_doc.mime_type
+                    }
+                
+                else:
+                    # External file path
+                    if not os.path.exists(file_path):
+                        frappe.throw(_("File not found: {0}").format(file_path))
+                    
+                    with open(file_path, 'rb') as file:
+                        content = file.read()
+                    
+                    return {
+                        "success": True,
+                        "content": base64.b64encode(content).decode('utf-8'),
+                        "file_name": os.path.basename(file_path),
+                        "file_size": len(content),
+                        "file_path": file_path
+                    }
+                    
+            except Exception as e:
+                frappe.log_error(frappe.get_traceback(), "File Read Error")
+                frappe.throw(_("Failed to read file: {0}").format(str(e)))
+        
+        def process_uploaded_file(file_doc_name):
+            """Process an uploaded file in Frappe"""
+            
+            file_doc = frappe.get_doc("File", file_doc_name)
+            file_content = file_doc.get_content()
+            
+            # Process based on file type
+            if file_doc.mime_type.startswith('image/'):
+                return process_image_file(file_content, file_doc)
+            elif file_doc.mime_type == 'text/csv':
+                return process_csv_file(file_content, file_doc)
+            elif file_doc.mime_type.startswith('application/'):
+                return process_document_file(file_content, file_doc)
+            
+            return {"processed": False, "reason": "Unsupported file type"}
+    
+    write_binary_file:
+      n8n_type: "n8n-nodes-base.writeBinaryFile"
+      n8n_description: "Writes binary files to file system"
+      erpnext_equivalent: "frappe.attach_print or File DocType creation"
+      implementation_type: "file_creation"
+      complexity: "moderate"
+      
+      python_implementation: |
+        import frappe
+        from frappe import _
+        import base64
+        import os
+        
+        def write_binary_file(content, file_name, folder=None, is_private=0):
+            """Write Binary File node equivalent"""
+            
+            try:
+                # Decode base64 content if needed
+                if isinstance(content, str):
+                    file_content = base64.b64decode(content)
+                else:
+                    file_content = content
+                
+                # Create file using Frappe's file system
+                file_doc = frappe.get_doc({
+                    "doctype": "File",
+                    "file_name": file_name,
+                    "folder": folder or "Home",
+                    "is_private": is_private,
+                    "content": file_content
+                })
+                
+                file_doc.insert()
+                
+                return {
+                    "success": True,
+                    "file_name": file_name,
+                    "file_url": file_doc.file_url,
+                    "file_doc_name": file_doc.name,
+                    "file_size": len(file_content)
+                }
+                
+            except Exception as e:
+                frappe.log_error(frappe.get_traceback(), "File Write Error")
+                frappe.throw(_("Failed to write file: {0}").format(str(e)))
+        
+        def create_pdf_file(html_content, file_name):
+            """Create PDF file from HTML content"""
+            
+            pdf_content = frappe.utils.pdf.get_pdf(html_content)
+            
+            return write_binary_file(
+                content=pdf_content,
+                file_name=file_name,
+                folder="Generated Reports",
+                is_private=1
+            )
+        
+        def create_excel_file(data, file_name):
+            """Create Excel file from data"""
+            
+            from frappe.utils.xlsxutils import make_xlsx
+            
+            xlsx_content = make_xlsx(data, file_name.replace('.xlsx', ''))
+            
+            return write_binary_file(
+                content=xlsx_content,
+                file_name=file_name,
+                folder="Generated Reports",
+                is_private=1
+            )
+
+# CONVERSION STRATEGIES
+conversion_strategies:
+  
+  workflow_patterns:
+    linear_workflow:
+      description: "Sequential processing workflow"
+      n8n_pattern: "Trigger → Node1 → Node2 → Node3 → End"
+      erpnext_pattern: "Single function with sequential method calls"
+      implementation: |
+        def linear_workflow_processor(trigger_data):
+            """Convert linear n8n workflow to sequential function calls"""
+            
+            # Step 1: Initial processing (equivalent to first n8n node)
+            step1_result = process_step_one(trigger_data)
+            
+            # Step 2: Transform data (equivalent to second n8n node)
+            step2_result = process_step_two(step1_result)
+            
+            # Step 3: Final action (equivalent to third n8n node)
+            final_result = process_step_three(step2_result)
+            
+            return final_result
+    
+    conditional_workflow:
+      description: "Workflow with branching logic"
+      n8n_pattern: "Trigger → If → Branch1/Branch2 → Merge → End"
+      erpnext_pattern: "Conditional logic with separate processing functions"
+      implementation: |
+        def conditional_workflow_processor(trigger_data):
+            """Convert conditional n8n workflow to if/else logic"""
+            
+            # Initial processing
+            processed_data = initial_processing(trigger_data)
+            
+            # Conditional branching (equivalent to n8n If node)
+            if meets_condition(processed_data):
+                branch_result = process_branch_one(processed_data)
+            else:
+                branch_result = process_branch_two(processed_data)
+            
+            # Merge results and final processing
+            final_result = merge_and_finalize(processed_data, branch_result)
+            
+            return final_result
+    
+    parallel_workflow:
+      description: "Workflow with parallel processing branches"
+      n8n_pattern: "Trigger → Split → [Parallel Branches] → Merge → End"
+      erpnext_pattern: "Background jobs for parallel processing"
+      implementation: |
+        def parallel_workflow_processor(trigger_data):
+            """Convert parallel n8n workflow to background jobs"""
+            
+            # Prepare data for parallel processing
+            branch_data = prepare_parallel_data(trigger_data)
+            
+            # Start parallel branches as background jobs
+            job_ids = []
+            for i, data in enumerate(branch_data):
+                job_id = frappe.enqueue(
+                    method=f"myapp.workflows.process_branch_{i+1}",
+                    queue="long",
+                    job_name=f"parallel_job_{i+1}_{frappe.utils.now()}",
+                    data=data
+                )
+                job_ids.append(job_id)
+            
+            # Schedule merge job to run after all branches complete
+            merge_job_id = frappe.enqueue(
+                method="myapp.workflows.merge_parallel_results",
+                queue="long",
+                job_name=f"merge_job_{frappe.utils.now()}",
+                job_ids=job_ids,
+                original_data=trigger_data,
+                delay=60  # Wait for parallel jobs to complete
+            )
+            
+            return {"parallel_jobs": job_ids, "merge_job": merge_job_id}
+    
+    error_handling_workflow:
+      description: "Workflow with comprehensive error handling"
+      n8n_pattern: "Try → Process → Catch Error → Error Handler"
+      erpnext_pattern: "Try/except blocks with error logging and recovery"
+      implementation: |
+        def error_handling_workflow_processor(trigger_data):
+            """Convert n8n error handling to Python try/except"""
+            
+            try:
+                # Main processing logic
+                result = main_processing_logic(trigger_data)
+                
+                # Success handling
+                log_success(result)
+                send_success_notification(result)
+                
+                return {"success": True, "result": result}
+                
+            except BusinessLogicError as e:
+                # Handle business logic errors
+                error_result = handle_business_error(e, trigger_data)
+                
+                return {"success": False, "error_type": "business", "result": error_result}
+                
+            except ExternalServiceError as e:
+                # Handle external service errors with retry
+                error_result = handle_external_service_error(e, trigger_data)
+                
+                return {"success": False, "error_type": "external", "result": error_result}
+                
+            except Exception as e:
+                # Handle unexpected errors
+                frappe.log_error(frappe.get_traceback(), "Workflow Processing Error")
+                
+                # Send error notification
+                send_error_notification(str(e), trigger_data)
+                
+                return {"success": False, "error_type": "system", "error": str(e)}
+
+# BEST PRACTICES
+best_practices:
+  security:
+    - "Always validate and sanitize input data from webhooks and external sources"
+    - "Use frappe.whitelist() appropriately and check permissions"
+    - "Implement proper authentication for API endpoints"
+    - "Use HTTPS for all external communications"
+    - "Store sensitive credentials in secure settings, not in code"
+    - "Implement rate limiting for public endpoints"
+    - "Validate webhook signatures when available"
+  
+  performance:
+    - "Use background jobs (frappe.enqueue) for long-running processes"
+    - "Implement proper database indexing for frequently queried fields"
+    - "Use frappe.db methods instead of raw SQL when possible"
+    - "Cache expensive calculations and API responses"
+    - "Batch database operations when processing multiple records"
+    - "Monitor and optimize slow database queries"
+    - "Use appropriate queue types (short/long) for background jobs"
+  
+  reliability:
+    - "Implement comprehensive error handling and logging"
+    - "Use try/except blocks around external API calls"
+    - "Add retry logic for transient failures"
+    - "Implement idempotency for critical operations"
+    - "Use database transactions for multi-step operations"
+    - "Set up monitoring and alerting for critical workflows"
+    - "Create health checks for external service dependencies"
+  
+  maintainability:
+    - "Follow Frappe coding standards and conventions"
+    - "Use descriptive function and variable names"
+    - "Add comprehensive docstrings and comments"
+    - "Separate business logic from technical implementation"
+    - "Create modular, reusable functions"
+    - "Write unit tests for critical business logic"
+    - "Document API endpoints and webhook formats"
+    - "Version your APIs appropriately"
+
+# TESTING PATTERNS
+testing_patterns:
+  unit_testing:
+    description: "Test individual functions and methods"
+    example: |
+      import frappe
+      import unittest
+      from myapp.automation import process_webhook_data
+      
+      class TestWebhookProcessing(unittest.TestCase):
+          
+          def setUp(self):
+              # Set up test data
+              self.test_data = {
+                  "customer_name": "Test Customer",
+                  "email": "test@example.com",
+                  "amount": 1000
+              }
+          
+          def test_valid_webhook_data(self):
+              """Test processing valid webhook data"""
+              result = process_webhook_data(self.test_data)
+              
+              self.assertTrue(result["success"])
+              self.assertEqual(result["customer_name"], "Test Customer")
+          
+          def test_invalid_webhook_data(self):
+              """Test handling invalid webhook data"""
+              invalid_data = {"invalid": "data"}
+              
+              with self.assertRaises(frappe.ValidationError):
+                  process_webhook_data(invalid_data)
+  
+  integration_testing:
+    description: "Test workflow components working together"
+    example: |
+      class TestWorkflowIntegration(unittest.TestCase):
+          
+          def test_complete_workflow(self):
+              """Test complete workflow from trigger to completion"""
+              
+              # Simulate webhook trigger
+              webhook_data = self.get_test_webhook_data()
+              
+              # Process webhook
+              result = process_webhook_handler(webhook_data)
+              
+              # Verify database changes
+              created_doc = frappe.get_doc("Customer", result["customer_id"])
+              self.assertEqual(created_doc.email_id, webhook_data["email"])
+              
+              # Verify email was sent
+              email_queue = frappe.get_all("Email Queue", 
+                  filters={"reference_name": result["customer_id"]})
+              self.assertTrue(len(email_queue) > 0)
+
+usage_examples:
+  simple_webhook_to_database:
+    description: "Convert simple n8n webhook that creates database records"
+    n8n_nodes: ["Webhook", "Set", "HTTP Request (create record)"]
+    erpnext_implementation: |
+      @frappe.whitelist(allow_guest=True)
+      def create_lead_from_webhook():
+          """Convert n8n: Webhook → Set → Create Lead"""
+          
+          try:
+              # Get webhook data (replaces n8n Webhook node)
+              data = frappe.request.get_json()
+              
+              # Validate and transform data (replaces n8n Set node)
+              lead_data = {
+                  "doctype": "Lead",
+                  "lead_name": data.get("name", "").title(),
+                  "email_id": data.get("email", "").lower(),
+                  "phone": data.get("phone", ""),
+                  "source": "Website Form",
+                  "status": "Open"
+              }
+              
+              # Create record (replaces n8n HTTP Request)
+              lead = frappe.get_doc(lead_data)
+              lead.insert()
+              
+              return {"success": True, "lead_id": lead.name}
+              
+          except Exception as e:
+              frappe.log_error(frappe.get_traceback(), "Webhook Error")
+              return {"success": False, "error": str(e)}
+  
+  scheduled_data_sync:
+    description: "Convert n8n scheduled workflow that syncs external data"
+    n8n_nodes: ["Cron Trigger", "HTTP Request (fetch)", "Loop", "HTTP Request (update)", "Email"]
+    erpnext_implementation: |
+      def daily_data_sync():
+          """Convert n8n: Cron → API Fetch → Loop → Update → Email"""
+          
+          try:
+              # Fetch external data (replaces n8n HTTP Request)
+              external_data = fetch_external_customer_data()
+              
+              processed = 0
+              errors = 0
+              
+              # Process each record (replaces n8n Loop)
+              for record in external_data:
+                  try:
+                      # Update local record (replaces n8n HTTP Request in loop)
+                      update_local_customer(record)
+                      processed += 1
+                      
+                  except Exception as e:
+                      frappe.log_error(f"Sync error for {record}: {str(e)}")
+                      errors += 1
+              
+              # Send completion email (replaces n8n Email node)
+              frappe.sendmail(
+                  recipients=["admin@company.com"],
+                  subject="Daily Data Sync Complete",
+                  message=f"Processed: {processed}, Errors: {errors}"
+              )
+              
+              return {"processed": processed, "errors": errors}
+              
+          except Exception as e:
+              frappe.log_error(frappe.get_traceback(), "Data Sync Error")
+              # Send error notification
+              frappe.sendmail(
+                  recipients=["admin@company.com"],
+                  subject="Data Sync Failed",
+                  message=f"Daily sync failed: {str(e)}"
+              )
+              raise e
+      
+      # Add to hooks.py
+      scheduler_events = {
+          "daily": ["myapp.sync.daily_data_sync"]
+      }
+  
+  approval_workflow:
+    description: "Convert n8n approval workflow with email notifications"
+    n8n_nodes: ["Form Trigger", "If (amount check)", "Email (notify approver)", "Webhook (approval response)", "Update Status"]
+    erpnext_implementation: |
+      # Document event hook
+      def expense_approval_workflow(doc, method):
+          """Convert n8n approval workflow to ERPNext workflow"""
+          
+          if method == "on_update" and doc.workflow_state == "Pending Approval":
+              
+              # Check approval threshold (replaces n8n If node)
+              if doc.total_amount > 5000:
+                  # High value - needs manager approval
+                  send_approval_request(doc, "Manager")
+              elif doc.total_amount > 1000:
+                  # Medium value - needs supervisor approval  
+                  send_approval_request(doc, "Supervisor")
+              else:
+                  # Low value - auto approve
+                  doc.workflow_state = "Approved"
+                  doc.save()
+      
+      def send_approval_request(doc, approver_role):
+          """Send email to approvers (replaces n8n Email node)"""
+          
+          approvers = frappe.get_all("User",
+              filters={"role_profile_name": approver_role},
+              fields=["email"]
+          )
+          
+          approval_url = f"{frappe.utils.get_url()}/app/expense-claim/{doc.name}"
+          
+          frappe.sendmail(
+              recipients=[a.email for a in approvers],
+              subject=f"Approval Required: {doc.name}",
+              message=f"""
+              Expense claim {doc.name} requires your approval.
+              Amount: {doc.total_amount}
+              Employee: {doc.employee_name}
+              
+              Click here to review: {approval_url}
+              """,
+              reference_doctype=doc.doctype,
+              reference_name=doc.name
+          )
+      
+      @frappe.whitelist()
+      def approve_expense_claim(doc_name, action):
+          """Handle approval response (replaces n8n Webhook)"""
+          
+          doc = frappe.get_doc("Expense Claim", doc_name)
+          
+          if action == "approve":
+              doc.workflow_state = "Approved"
+              doc.approved_by = frappe.session.user
+              doc.approval_date = frappe.utils.now()
+          elif action == "reject":
+              doc.workflow_state = "Rejected"
+              doc.rejected_by = frappe.session.user
+              doc.rejection_date = frappe.utils.now()
+          
+          doc.save()
+          
+          # Notify employee of decision
+          frappe.sendmail(
+              recipients=[doc.owner],
+              subject=f"Expense Claim {action.title()}: {doc.name}",
+              message=f"Your expense claim has been {action}d."
+          )
+          
+          return {"success": True, "new_status": doc.workflow_state}

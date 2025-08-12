@@ -1,0 +1,378 @@
+name: "n8n-workflow-conversion"
+title: "n8n Workflow to ERPNext Automation Conversion"
+description: "Systematic conversion of n8n workflows into native ERPNext automation and business processes"
+version: "1.0.0"
+
+metadata:
+  category: "migration_automation"
+  complexity: "medium-high"
+  estimated_duration: "3-8 weeks"
+  target_users: ["automation_engineers", "developers", "business_analysts"]
+  prerequisites:
+    - "Access to n8n workflow exports"
+    - "Understanding of existing automation processes"
+    - "ERPNext development environment"
+    - "Integration endpoint documentation"
+
+workflow_steps:
+  analyze_n8n_workflow:
+    title: "Analyze n8n Workflow Structure and Logic"
+    description: "Comprehensive analysis of existing n8n workflows"
+    agents: ["n8n-workflow-analyst", "business-analyst"]
+    duration: "3-5 days"
+    inputs:
+      - "n8n workflow JSON exports"
+      - "Workflow documentation"
+      - "Integration endpoint details"
+      - "Business process documentation"
+    outputs:
+      - "Workflow analysis report"
+      - "Node dependency mapping"
+      - "Data flow documentation"
+      - "Business logic extraction"
+      - "Integration point identification"
+    tasks:
+      - "Export and analyze n8n workflow JSON structure"
+      - "Document workflow triggers and conditions"
+      - "Map data transformations and processing steps"
+      - "Identify external API calls and integrations"
+      - "Document conditional logic and branching"
+      - "Analyze error handling and retry mechanisms"
+      - "Identify scheduled executions and cron patterns"
+      - "Document workflow dependencies and relationships"
+
+  map_triggers_to_erpnext:
+    title: "Map n8n Triggers to ERPNext Events"
+    description: "Convert n8n triggers into ERPNext event handlers and hooks"
+    agents: ["trigger-mapper", "workflow-converter", "api-developer"]
+    duration: "2-4 days"
+    dependencies: ["analyze_n8n_workflow"]
+    inputs:
+      - "Workflow analysis report"
+      - "n8n trigger configurations"
+      - "ERPNext event system documentation"
+    outputs:
+      - "Trigger mapping specifications"
+      - "ERPNext event handler designs"
+      - "Webhook endpoint specifications"
+      - "Scheduled job definitions"
+    tasks:
+      - "Map webhook triggers to ERPNext document events"
+      - "Convert manual triggers to ERPNext button actions"
+      - "Map schedule triggers to ERPNext scheduled jobs"
+      - "Convert polling triggers to background job patterns"
+      - "Map form submission triggers to DocType validations"
+      - "Convert file triggers to attachment event handlers"
+      - "Map database triggers to DocType lifecycle events"
+      - "Design custom trigger mechanisms where needed"
+
+  convert_workflow_logic:
+    title: "Convert n8n Logic to ERPNext Code"
+    description: "Transform n8n node logic into ERPNext Python code"
+    agents: ["workflow-converter", "api-developer"]
+    duration: "1-3 weeks"
+    dependencies: ["map_triggers_to_erpnext"]
+    inputs:
+      - "Trigger mapping specifications"
+      - "n8n node configurations"
+      - "Business logic requirements"
+    outputs:
+      - "ERPNext Python code implementations"
+      - "Custom DocType controllers"
+      - "API method implementations"
+      - "Data transformation functions"
+    tasks:
+      - "Convert n8n Set nodes to Python data manipulation"
+      - "Transform Function nodes to custom Python methods"
+      - "Convert If nodes to Python conditional logic"
+      - "Transform HTTP Request nodes to API calls"
+      - "Convert Code nodes to Python function implementations"
+      - "Transform Switch nodes to Python routing logic"
+      - "Convert Merge nodes to data aggregation functions"
+      - "Transform Split nodes to data distribution logic"
+
+  generate_erpnext_code:
+    title: "Generate Production-Ready ERPNext Code"
+    description: "Create clean, maintainable ERPNext code from workflow logic"
+    agents: ["api-developer", "doctype-designer", "jinja-template-specialist"]
+    duration: "1-2 weeks"
+    dependencies: ["convert_workflow_logic"]
+    inputs:
+      - "Converted workflow logic"
+      - "ERPNext coding standards"
+      - "Integration requirements"
+    outputs:
+      - "DocType definitions and controllers"
+      - "API endpoint implementations"
+      - "Scheduled job scripts"
+      - "Event handler implementations"
+      - "Configuration and settings"
+    tasks:
+      - "Generate DocType JSON definitions"
+      - "Create Python controller classes with proper methods"
+      - "Implement API endpoints with @frappe.whitelist() decorators"
+      - "Create scheduled job functions with proper error handling"
+      - "Generate event handler hooks for document lifecycle"
+      - "Create configuration DocTypes for workflow settings"
+      - "Implement logging and monitoring capabilities"
+      - "Add comprehensive error handling and validation"
+
+  implement_automation:
+    title: "Implement ERPNext Automation Framework"
+    description: "Set up automation infrastructure and execution engine"
+    agents: ["workflow-specialist", "api-developer"]
+    duration: "1-2 weeks"
+    dependencies: ["generate_erpnext_code"]
+    inputs:
+      - "Generated ERPNext code"
+      - "Automation requirements"
+      - "Performance specifications"
+    outputs:
+      - "Automation execution framework"
+      - "Queue and background job setup"
+      - "Monitoring and logging system"
+      - "Error handling and recovery mechanisms"
+    tasks:
+      - "Set up background job queues for async processing"
+      - "Implement workflow execution engine"
+      - "Create automation status tracking system"
+      - "Set up comprehensive logging and monitoring"
+      - "Implement error handling and retry mechanisms"
+      - "Create automation performance metrics"
+      - "Set up notification systems for failures"
+      - "Implement workflow pause and resume capabilities"
+
+  setup_webhooks_and_apis:
+    title: "Setup Webhook Endpoints and API Integrations"
+    description: "Create webhook handlers and external API integration points"
+    agents: ["api-developer", "data-integration-expert"]
+    duration: "1-2 weeks"
+    dependencies: ["implement_automation"]
+    inputs:
+      - "External API requirements"
+      - "Webhook specifications"
+      - "Security requirements"
+    outputs:
+      - "Webhook endpoint implementations"
+      - "API client implementations"
+      - "Authentication and security setup"
+      - "Integration monitoring system"
+    tasks:
+      - "Create secure webhook endpoints for external triggers"
+      - "Implement API clients for external service calls"
+      - "Set up authentication mechanisms (OAuth, API keys, etc.)"
+      - "Create request/response logging and monitoring"
+      - "Implement rate limiting and throttling"
+      - "Set up API error handling and retries"
+      - "Create integration health checks"
+      - "Implement webhook signature validation"
+
+  configure_scheduled_jobs:
+    title: "Configure Scheduled Jobs and Cron Automation"
+    description: "Set up ERPNext scheduled jobs to replace n8n cron triggers"
+    agents: ["bench-operator", "workflow-converter"]
+    duration: "3-5 days"
+    dependencies: ["setup_webhooks_and_apis"]
+    inputs:
+      - "n8n schedule configurations"
+      - "ERPNext scheduler documentation"
+      - "Business timing requirements"
+    outputs:
+      - "ERPNext scheduler configurations"
+      - "Scheduled job implementations"
+      - "Job monitoring and alerting setup"
+      - "Scheduling optimization recommendations"
+    tasks:
+      - "Convert n8n cron expressions to ERPNext scheduler events"
+      - "Set up hourly, daily, weekly, and monthly job schedules"
+      - "Implement job execution logging and monitoring"
+      - "Create job failure notification systems"
+      - "Set up job performance monitoring"
+      - "Implement job queue management"
+      - "Create job execution history tracking"
+      - "Optimize job scheduling for system performance"
+
+  test_converted_workflow:
+    title: "Test Converted Workflow Functionality"
+    description: "Comprehensive testing of converted automation workflows"
+    agents: ["testing-specialist", "n8n-workflow-analyst"]
+    duration: "1-2 weeks"
+    dependencies: ["configure_scheduled_jobs"]
+    inputs:
+      - "Converted workflow implementation"
+      - "Original n8n workflow test data"
+      - "Business validation criteria"
+    outputs:
+      - "Test execution reports"
+      - "Performance comparison analysis"
+      - "Functionality validation results"
+      - "Bug reports and fixes"
+    tasks:
+      - "Create test scenarios based on original n8n workflows"
+      - "Test trigger mechanisms and event handling"
+      - "Validate data transformations and processing"
+      - "Test external API integrations and responses"
+      - "Verify scheduled job execution and timing"
+      - "Test error handling and recovery mechanisms"
+      - "Validate performance against original workflows"
+      - "Conduct end-to-end workflow testing"
+
+  deploy_and_validate:
+    title: "Deploy to Production and Validate Operation"
+    description: "Production deployment and operational validation"
+    agents: ["bench-operator", "testing-specialist", "workflow-specialist"]
+    duration: "3-5 days"
+    dependencies: ["test_converted_workflow"]
+    inputs:
+      - "Tested workflow implementation"
+      - "Deployment procedures"
+      - "Monitoring requirements"
+    outputs:
+      - "Production deployment"
+      - "Operational monitoring setup"
+      - "Performance benchmarks"
+      - "User training materials"
+    tasks:
+      - "Deploy converted workflows to production ERPNext"
+      - "Set up production monitoring and alerting"
+      - "Validate workflow execution in production environment"
+      - "Monitor initial performance and resource usage"
+      - "Create operational documentation and runbooks"
+      - "Train support team on new automation processes"
+      - "Set up performance baselines and SLAs"
+      - "Implement continuous monitoring and improvement"
+
+validation_gates:
+  workflow_analysis_complete:
+    description: "n8n workflow analysis completed and validated"
+    criteria:
+      - "All n8n workflows documented and analyzed"
+      - "Business logic extracted and validated"
+      - "Integration points identified"
+      - "Data flows mapped and documented"
+
+  trigger_mapping_approved:
+    description: "Trigger mapping strategy approved"
+    criteria:
+      - "All n8n triggers mapped to ERPNext events"
+      - "Custom trigger mechanisms designed where needed"
+      - "Trigger timing and frequency validated"
+      - "Technical approach approved"
+
+  logic_conversion_complete:
+    description: "Workflow logic conversion completed"
+    criteria:
+      - "All n8n nodes converted to ERPNext code"
+      - "Business logic preserved and validated"
+      - "Error handling implemented"
+      - "Code review completed"
+
+  code_generation_approved:
+    description: "Generated ERPNext code approved for implementation"
+    criteria:
+      - "Code follows ERPNext best practices"
+      - "Security requirements met"
+      - "Performance optimizations implemented"
+      - "Documentation completed"
+
+  automation_framework_ready:
+    description: "Automation framework implemented and tested"
+    criteria:
+      - "Background job system operational"
+      - "Monitoring and logging active"
+      - "Error handling validated"
+      - "Performance benchmarks met"
+
+  integration_validated:
+    description: "All integrations tested and validated"
+    criteria:
+      - "Webhook endpoints functional"
+      - "External API calls working correctly"
+      - "Authentication mechanisms validated"
+      - "Security testing completed"
+
+  testing_passed:
+    description: "Comprehensive testing completed successfully"
+    criteria:
+      - "Functional testing passed"
+      - "Performance testing acceptable"
+      - "Integration testing successful"
+      - "User acceptance criteria met"
+
+  production_ready:
+    description: "Ready for production deployment"
+    criteria:
+      - "All testing completed successfully"
+      - "Production environment prepared"
+      - "Monitoring systems configured"
+      - "Support procedures established"
+
+success_criteria:
+  functional:
+    - "All n8n workflow functionality preserved"
+    - "Business processes operate correctly"
+    - "Data transformations accurate"
+    - "Integration points working properly"
+    - "Scheduled jobs executing on time"
+
+  performance:
+    - "Automation execution times acceptable"
+    - "System resource usage optimized"
+    - "API response times within SLA"
+    - "Background job processing efficient"
+    - "Error rates below threshold"
+
+  operational:
+    - "Monitoring and alerting active"
+    - "Support team trained and ready"
+    - "Documentation complete and accessible"
+    - "Continuous improvement process established"
+    - "Business stakeholder satisfaction achieved"
+
+conversion_patterns:
+  trigger_conversions:
+    webhook_trigger: "ERPNext document event handler"
+    schedule_trigger: "ERPNext scheduled job"
+    manual_trigger: "ERPNext custom button action"
+    poll_trigger: "ERPNext background job with polling"
+    file_trigger: "ERPNext attachment event handler"
+
+  node_conversions:
+    http_request: "Python requests with error handling"
+    set_node: "Python data manipulation"
+    function_node: "Custom Python method"
+    if_node: "Python conditional logic"
+    switch_node: "Python routing with match/case"
+    code_node: "Custom Python function"
+    merge_node: "Data aggregation function"
+    split_node: "Data distribution logic"
+
+quality_assurance:
+  code_quality:
+    - "Follows ERPNext coding standards"
+    - "Proper error handling implemented"
+    - "Comprehensive logging added"
+    - "Security best practices followed"
+    - "Performance optimizations applied"
+
+  testing_coverage:
+    - "Unit tests for all conversion functions"
+    - "Integration tests for external APIs"
+    - "End-to-end workflow testing"
+    - "Performance and load testing"
+    - "Security and vulnerability testing"
+
+maintenance_considerations:
+  ongoing_support:
+    - "Regular monitoring of automation performance"
+    - "Periodic review of external API integrations"
+    - "Updates for ERPNext framework changes"
+    - "Business process evolution support"
+    - "Performance optimization reviews"
+
+  documentation_maintenance:
+    - "Keep workflow documentation current"
+    - "Update integration specifications"
+    - "Maintain troubleshooting guides"
+    - "Update performance benchmarks"
+    - "Maintain operational runbooks"

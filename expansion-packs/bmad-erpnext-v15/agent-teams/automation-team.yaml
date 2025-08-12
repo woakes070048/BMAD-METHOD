@@ -1,0 +1,604 @@
+name: "ERPNext Automation and Integration Team"
+description: "Expert team specializing in ERPNext automation, integrations, and business process optimization"
+version: "1.0.0"
+
+# Team Composition
+agents:
+  - name: "Automation Architect"
+    role: "ERPNext Automation Designer"
+    expertise:
+      - ERPNext workflow design
+      - Server script development
+      - Client script implementation
+      - Document event automation
+      - Scheduled job configuration
+      - Custom automation patterns
+      - Performance optimization
+    tools:
+      - ERPNext development environment
+      - Python debugging tools
+      - Workflow designer
+      - Performance profilers
+      - Automation testing frameworks
+
+  - name: "Integration Specialist"
+    role: "API and Systems Integration Expert"
+    expertise:
+      - REST API development
+      - Webhook implementation
+      - Third-party integrations
+      - Message queue systems
+      - Real-time data synchronization
+      - Authentication and security
+      - Error handling and recovery
+    tools:
+      - API testing tools
+      - Integration platforms
+      - Message queue systems
+      - Authentication frameworks
+      - Monitoring and logging tools
+
+  - name: "Business Process Consultant"
+    role: "Process Optimization Specialist"
+    expertise:
+      - Business process analysis
+      - Workflow optimization
+      - Approval hierarchy design
+      - Document lifecycle management
+      - KPI and metrics tracking
+      - Change management
+      - User adoption strategies
+    tools:
+      - Process mapping tools
+      - Analytics platforms
+      - Performance dashboards
+      - Training development tools
+      - Change management frameworks
+
+  - name: "Data Automation Engineer"
+    role: "Data Processing and ETL Specialist"
+    expertise:
+      - Data transformation pipelines
+      - Automated data validation
+      - Report automation
+      - Data synchronization
+      - Batch processing systems
+      - Data quality assurance
+      - Performance optimization
+    tools:
+      - ETL frameworks
+      - Data validation tools
+      - Batch processing systems
+      - Report generators
+      - Data quality tools
+
+# Automation Categories
+automation_categories:
+  document_automation:
+    description: "Automated processes for document lifecycle management"
+    types:
+      - creation_automation:
+          triggers:
+            - "Time-based creation"
+            - "Event-triggered generation"
+            - "Conditional document creation"
+            - "Bulk document generation"
+          examples:
+            - "Auto-create purchase orders from sales orders"
+            - "Generate invoices from delivery notes"
+            - "Create project tasks from templates"
+            - "Auto-generate recurring documents"
+
+      - validation_automation:
+          triggers:
+            - "Field validation on save"
+            - "Cross-document validation"
+            - "Business rule enforcement"
+            - "Data integrity checks"
+          examples:
+            - "Credit limit validation"
+            - "Inventory level checks"
+            - "Duplicate prevention"
+            - "Mandatory field validation"
+
+      - approval_automation:
+          triggers:
+            - "Threshold-based approvals"
+            - "Multi-level approval routing"
+            - "Conditional approval paths"
+            - "Auto-approval rules"
+          examples:
+            - "Purchase order approvals"
+            - "Leave request processing"
+            - "Expense claim approvals"
+            - "Budget approval workflows"
+
+      - notification_automation:
+          triggers:
+            - "Status change notifications"
+            - "Deadline reminders"
+            - "Exception alerts"
+            - "Progress updates"
+          examples:
+            - "Invoice payment reminders"
+            - "Task deadline notifications"
+            - "Low stock alerts"
+            - "Approval pending notifications"
+
+  data_automation:
+    description: "Automated data processing and synchronization"
+    types:
+      - data_synchronization:
+          methods:
+            - "Real-time sync via webhooks"
+            - "Scheduled batch synchronization"
+            - "Event-triggered sync"
+            - "Bidirectional synchronization"
+          examples:
+            - "E-commerce platform sync"
+            - "CRM data synchronization"
+            - "Inventory level updates"
+            - "Financial data integration"
+
+      - data_transformation:
+          processes:
+            - "Format standardization"
+            - "Data enrichment"
+            - "Calculation automation"
+            - "Data aggregation"
+          examples:
+            - "Currency conversion"
+            - "Tax calculation automation"
+            - "Profit margin calculations"
+            - "Commission calculations"
+
+      - data_validation:
+          checks:
+            - "Format validation"
+            - "Range validation"
+            - "Business rule validation"
+            - "Cross-reference validation"
+          examples:
+            - "Email format validation"
+            - "Date range validation"
+            - "Customer credit checks"
+            - "Inventory availability checks"
+
+      - reporting_automation:
+          features:
+            - "Scheduled report generation"
+            - "Auto-email reports"
+            - "Dashboard updates"
+            - "KPI calculations"
+          examples:
+            - "Daily sales reports"
+            - "Monthly financial statements"
+            - "Inventory aging reports"
+            - "Performance dashboards"
+
+  communication_automation:
+    description: "Automated communication and notification systems"
+    types:
+      - email_automation:
+          triggers:
+            - "Document status changes"
+            - "Scheduled communications"
+            - "Exception-based alerts"
+            - "Milestone notifications"
+          examples:
+            - "Invoice generation emails"
+            - "Payment confirmation emails"
+            - "Order status updates"
+            - "Welcome emails for new customers"
+
+      - sms_automation:
+          use_cases:
+            - "Critical alerts"
+            - "OTP delivery"
+            - "Payment reminders"
+            - "Delivery notifications"
+          examples:
+            - "Low stock alerts to procurement"
+            - "Payment due reminders"
+            - "Delivery confirmations"
+            - "Emergency notifications"
+
+      - in_app_notifications:
+          types:
+            - "Toast notifications"
+            - "System alerts"
+            - "Task assignments"
+            - "Progress updates"
+          examples:
+            - "New task assignments"
+            - "Approval requests"
+            - "System maintenance alerts"
+            - "Achievement notifications"
+
+  workflow_automation:
+    description: "Business process workflow automation"
+    types:
+      - approval_workflows:
+          patterns:
+            - "Sequential approval"
+            - "Parallel approval"
+            - "Conditional routing"
+            - "Escalation workflows"
+          examples:
+            - "Purchase requisition approval"
+            - "Leave application processing"
+            - "Expense reimbursement"
+            - "Document approval chains"
+
+      - document_workflows:
+          stages:
+            - "Draft creation"
+            - "Review and approval"
+            - "Execution and delivery"
+            - "Completion and archival"
+          examples:
+            - "Sales order processing"
+            - "Purchase order lifecycle"
+            - "Project delivery workflow"
+            - "Customer onboarding process"
+
+      - escalation_workflows:
+          triggers:
+            - "Time-based escalation"
+            - "Priority-based routing"
+            - "Exception handling"
+            - "Resource availability"
+          examples:
+            - "Overdue approval escalation"
+            - "Critical issue routing"
+            - "Resource conflict resolution"
+            - "SLA breach notifications"
+
+# Integration Patterns
+integration_patterns:
+  api_integrations:
+    rest_api:
+      implementation:
+        - "Custom API endpoints"
+        - "Standard ERPNext API"
+        - "OAuth authentication"
+        - "Rate limiting"
+        - "Error handling"
+      examples:
+        - "E-commerce platform integration"
+        - "Payment gateway integration"
+        - "Shipping provider API"
+        - "CRM system synchronization"
+
+    webhooks:
+      implementation:
+        - "Event-driven notifications"
+        - "Real-time data sync"
+        - "Third-party callbacks"
+        - "Status update propagation"
+      examples:
+        - "Payment confirmation webhooks"
+        - "Inventory update notifications"
+        - "Order status changes"
+        - "Customer data updates"
+
+    file_based:
+      methods:
+        - "CSV import/export"
+        - "Excel file processing"
+        - "FTP/SFTP transfers"
+        - "Cloud storage integration"
+      examples:
+        - "Bank statement imports"
+        - "Product catalog updates"
+        - "Employee data imports"
+        - "Financial data exports"
+
+  message_queue_systems:
+    async_processing:
+      benefits:
+        - "Improved response times"
+        - "Better resource utilization"
+        - "Fault tolerance"
+        - "Scalability"
+      use_cases:
+        - "Bulk data processing"
+        - "Long-running operations"
+        - "External API calls"
+        - "Report generation"
+
+    event_streaming:
+      features:
+        - "Real-time event processing"
+        - "Event sourcing"
+        - "CQRS implementation"
+        - "Microservices communication"
+      applications:
+        - "Real-time analytics"
+        - "Event-driven architecture"
+        - "Audit trail generation"
+        - "State management"
+
+# Automation Implementation Strategies
+implementation_strategies:
+  server_scripts:
+    use_cases:
+      - "Complex business logic"
+      - "Data validation and transformation"
+      - "External system integration"
+      - "Background processing"
+    
+    best_practices:
+      - "Error handling and logging"
+      - "Performance optimization"
+      - "Code modularity"
+      - "Testing strategies"
+    
+    examples:
+      - "Auto-calculate pricing based on rules"
+      - "Validate credit limits before sales"
+      - "Sync data with external systems"
+      - "Generate custom reports"
+
+  client_scripts:
+    use_cases:
+      - "Form validations"
+      - "Dynamic field behavior"
+      - "User interface enhancements"
+      - "Real-time calculations"
+    
+    best_practices:
+      - "Performance considerations"
+      - "Cross-browser compatibility"
+      - "User experience optimization"
+      - "Error handling"
+    
+    examples:
+      - "Auto-populate fields based on selection"
+      - "Dynamic form field visibility"
+      - "Real-time calculation updates"
+      - "Custom button actions"
+
+  scheduled_jobs:
+    use_cases:
+      - "Periodic data synchronization"
+      - "Maintenance tasks"
+      - "Report generation"
+      - "Cleanup operations"
+    
+    configuration:
+      - "Cron expression setup"
+      - "Error handling and notifications"
+      - "Job monitoring and logging"
+      - "Resource management"
+    
+    examples:
+      - "Daily inventory updates"
+      - "Monthly financial closing"
+      - "Weekly backup operations"
+      - "Hourly data synchronization"
+
+  document_events:
+    event_types:
+      - "before_insert"
+      - "after_insert"
+      - "before_save"
+      - "after_save"
+      - "before_submit"
+      - "after_submit"
+      - "before_cancel"
+      - "after_cancel"
+      - "before_delete"
+      - "after_delete"
+    
+    use_cases:
+      - "Data validation"
+      - "Automatic field population"
+      - "Status updates"
+      - "Notification triggers"
+      - "Audit trail creation"
+    
+    examples:
+      - "Auto-generate document numbers"
+      - "Update related document status"
+      - "Send notification emails"
+      - "Create journal entries"
+
+# Performance Optimization
+performance_optimization:
+  automation_performance:
+    strategies:
+      - "Asynchronous processing"
+      - "Batch operations"
+      - "Caching mechanisms"
+      - "Database optimization"
+      - "Resource pooling"
+    
+    monitoring:
+      - "Execution time tracking"
+      - "Memory usage analysis"
+      - "Database query optimization"
+      - "Error rate monitoring"
+      - "Resource utilization tracking"
+    
+    best_practices:
+      - "Efficient database queries"
+      - "Minimal API calls"
+      - "Proper error handling"
+      - "Resource cleanup"
+      - "Scalable architecture design"
+
+  integration_performance:
+    optimization_techniques:
+      - "Connection pooling"
+      - "Request batching"
+      - "Response caching"
+      - "Retry mechanisms"
+      - "Circuit breaker patterns"
+    
+    monitoring_metrics:
+      - "API response times"
+      - "Integration success rates"
+      - "Data synchronization latency"
+      - "Error recovery times"
+      - "Throughput measurements"
+
+# Quality Assurance
+quality_assurance:
+  testing_strategies:
+    unit_testing:
+      - "Individual function testing"
+      - "Mock external dependencies"
+      - "Test coverage requirements"
+      - "Automated test execution"
+    
+    integration_testing:
+      - "End-to-end workflow testing"
+      - "External system integration"
+      - "Data synchronization validation"
+      - "Performance testing"
+    
+    user_acceptance_testing:
+      - "Business process validation"
+      - "User experience testing"
+      - "Performance acceptance"
+      - "Security validation"
+
+  code_quality:
+    standards:
+      - "Code formatting and style"
+      - "Documentation requirements"
+      - "Error handling patterns"
+      - "Security best practices"
+      - "Performance guidelines"
+    
+    review_process:
+      - "Peer code reviews"
+      - "Architecture reviews"
+      - "Security assessments"
+      - "Performance evaluations"
+      - "Compliance checks"
+
+# Security Considerations
+security_considerations:
+  authentication_authorization:
+    - "Role-based access control"
+    - "API authentication"
+    - "Session management"
+    - "Multi-factor authentication"
+    - "OAuth integration"
+  
+  data_protection:
+    - "Data encryption in transit"
+    - "Data encryption at rest"
+    - "Sensitive data handling"
+    - "PII protection"
+    - "Audit trail maintenance"
+  
+  integration_security:
+    - "API key management"
+    - "SSL/TLS implementation"
+    - "Input validation"
+    - "Output encoding"
+    - "Rate limiting"
+
+# Monitoring and Logging
+monitoring_logging:
+  automation_monitoring:
+    metrics:
+      - "Execution success rates"
+      - "Processing times"
+      - "Error frequencies"
+      - "Resource utilization"
+      - "User satisfaction"
+    
+    alerting:
+      - "Failure notifications"
+      - "Performance degradation alerts"
+      - "Resource threshold warnings"
+      - "SLA breach notifications"
+      - "Security incident alerts"
+  
+  integration_monitoring:
+    tracking:
+      - "API call volumes"
+      - "Response time trends"
+      - "Error rate patterns"
+      - "Data synchronization status"
+      - "Integration health scores"
+    
+    dashboards:
+      - "Real-time status monitoring"
+      - "Performance trend analysis"
+      - "Error pattern visualization"
+      - "SLA compliance tracking"
+      - "Cost analysis reports"
+
+# Success Metrics
+success_metrics:
+  automation_effectiveness:
+    - "Process time reduction"
+    - "Error rate reduction"
+    - "User productivity improvement"
+    - "Cost savings achieved"
+    - "Customer satisfaction improvement"
+  
+  integration_success:
+    - "Data synchronization accuracy"
+    - "Integration uptime"
+    - "Processing throughput"
+    - "Error recovery time"
+    - "Business continuity improvement"
+  
+  business_impact:
+    - "Revenue impact"
+    - "Operational efficiency gains"
+    - "Customer experience improvements"
+    - "Compliance adherence"
+    - "Risk reduction achievements"
+
+# Best Practices
+best_practices:
+  automation_design:
+    - "Start with simple automations"
+    - "Incremental complexity addition"
+    - "Comprehensive error handling"
+    - "User-friendly interfaces"
+    - "Scalable architecture design"
+  
+  integration_approach:
+    - "API-first design philosophy"
+    - "Idempotent operations"
+    - "Graceful degradation"
+    - "Comprehensive documentation"
+    - "Version management"
+  
+  maintenance_strategy:
+    - "Regular performance reviews"
+    - "Proactive monitoring"
+    - "Continuous optimization"
+    - "Documentation updates"
+    - "User training programs"
+
+# Training and Support
+training_support:
+  user_training:
+    - "Automation awareness programs"
+    - "Feature-specific training"
+    - "Best practice workshops"
+    - "Troubleshooting guides"
+    - "Continuous learning programs"
+  
+  technical_support:
+    - "24/7 monitoring support"
+    - "Issue escalation procedures"
+    - "Knowledge base maintenance"
+    - "Community forums"
+    - "Expert consultation services"
+  
+  documentation:
+    - "User manuals and guides"
+    - "Technical documentation"
+    - "API documentation"
+    - "Troubleshooting resources"
+    - "Best practice guidelines"

@@ -1,0 +1,792 @@
+name: "api-module-template"
+title: "Frappe API Module Template"
+description: "Template for creating secure, well-structured API modules for ERPNext apps"
+version: "1.0.0"
+
+parameters:
+  app_name:
+    type: "string"
+    required: true
+    description: "Name of the app (snake_case)"
+  module_name:
+    type: "string"
+    required: true
+    description: "Name of the API module (e.g., auth, doc, session)"
+  doctype_name:
+    type: "string"
+    required: false
+    description: "Primary DocType this module works with"
+  enable_guest:
+    type: "boolean"
+    required: false
+    default: false
+    description: "Allow guest access to some endpoints"
+  rate_limit:
+    type: "object"
+    required: false
+    description: "Rate limiting configuration"
+    properties:
+      limit: 
+        type: "integer"
+        default: 100
+      window:
+        type: "integer"
+        default: 60
+
+templates:
+  main_module: |
+    """
+    {{module_name|title}} API Module
+    
+    Handles {{module_name}} related API endpoints for {{app_name}}
+    """
+    
+    import frappe
+    from frappe import _
+    from frappe.utils import cint, cstr, flt, now_datetime
+    from frappe.rate_limiter import rate_limit
+    import json
+    from typing import Dict, List, Optional, Any
+    
+    # Constants
+    DEFAULT_PAGE_SIZE = 20
+    MAX_PAGE_SIZE = 100
+    
+    {% if doctype_name %}
+    DOCTYPE = "{{doctype_name}}"
+    {% endif %}
+    
+    # ============================================================
+    # Public Endpoints (if enabled)
+    # ============================================================
+    
+    {% if enable_guest %}
+    @frappe.whitelist(allow_guest=True)
+    def public_info() -> Dict[str, Any]:
+        """
+        Get public information
+        
+        Returns:
+            Dict containing public information
+        """
+        return {
+            "app": "{{app_name}}",
+            "version": frappe.get_attr("{{app_name}}.__version__"),
+            "timestamp": now_datetime()
+        }
+    {% endif %}
+    
+    # ============================================================
+    # Authentication Required Endpoints
+    # ============================================================
+    
+    @frappe.whitelist()
+    {% if rate_limit %}
+    @rate_limit(limit={{rate_limit.limit}}, seconds={{rate_limit.window}})
+    {% endif %}
+    def get_list(
+        doctype: str = None,
+        fields: Optional[str] = None,
+        filters: Optional[str] = None,
+        order_by: Optional[str] = None,
+        limit: int = DEFAULT_PAGE_SIZE,
+        offset: int = 0
+    ) -> Dict[str, Any]:
+        """
+        Get list of documents with pagination
+        
+        Args:
+            doctype: DocType to query
+            fields: Fields to return (JSON string or list)
+            filters: Filters to apply (JSON string or dict)
+            order_by: Sort order
+            limit: Number of records to return
+            offset: Starting position
+            
+        Returns:
+            Dict with data, total count, and pagination info
+        """
+        {% if doctype_name %}
+        doctype = doctype or DOCTYPE
+        {% endif %}
+        
+        # Validate permissions
+        if not frappe.has_permission(doctype, "read"):
+            frappe.throw(_("Insufficient permissions to read {0}").format(doctype), frappe.PermissionError)
+        
+        # Parse parameters
+        if isinstance(fields, str):
+            fields = frappe.parse_json(fields)
+        if isinstance(filters, str):
+            filters = frappe.parse_json(filters)
+        
+        # Validate and sanitize limit
+        limit = min(cint(limit), MAX_PAGE_SIZE)
+        offset = cint(offset)
+        
+        # Default fields if not specified
+        if not fields:
+            fields = ["name", "modified", "owner"]
+        
+        # Get data
+        try:
+            data = frappe.get_all(
+                doctype,
+                fields=fields,
+                filters=filters or {},
+                order_by=order_by or "modified desc",
+                limit=limit,
+                start=offset
+            )
+            
+            total = frappe.db.count(doctype, filters)
+            
+            return {
+                "success": True,
+                "data": data,
+                "pagination": {
+                    "total": total,
+                    "limit": limit,
+                    "offset": offset,
+                    "has_next": (offset + limit) < total,
+                    "has_previous": offset > 0
+                }
+            }
+        except Exception as e:
+            frappe.log_error(frappe.get_traceback(), "API Error: get_list")
+            return {
+                "success": False,
+                "error": str(e),
+                "message": _("Failed to fetch data")
+            }
+    
+    @frappe.whitelist()
+    def get_document(doctype: str, name: str) -> Dict[str, Any]:
+        """
+        Get a single document
+        
+        Args:
+            doctype: DocType of the document
+            name: Name of the document
+            
+        Returns:
+            Document data or error
+        """
+        {% if doctype_name %}
+        doctype = doctype or DOCTYPE
+        {% endif %}
+        
+        try:
+            # Check permissions
+            if not frappe.has_permission(doctype, "read", doc=name):
+                frappe.throw(_("No permission to read this document"), frappe.PermissionError)
+            
+            # Get document
+            doc = frappe.get_doc(doctype, name)
+            
+            # Remove sensitive fields if needed
+            doc_dict = doc.as_dict()
+            _sanitize_response(doc_dict)
+            
+            return {
+                "success": True,
+                "data": doc_dict
+            }
+        except frappe.DoesNotExistError:
+            return {
+                "success": False,
+                "error": "NotFound",
+                "message": _("{0} {1} not found").format(doctype, name)
+            }
+        except frappe.PermissionError as e:
+            return {
+                "success": False,
+                "error": "PermissionDenied",
+                "message": str(e)
+            }
+        except Exception as e:
+            frappe.log_error(frappe.get_traceback(), "API Error: get_document")
+            return {
+                "success": False,
+                "error": "ServerError",
+                "message": _("An error occurred while fetching the document")
+            }
+    
+    @frappe.whitelist()
+    def create_document(doctype: str, data: str) -> Dict[str, Any]:
+        """
+        Create a new document
+        
+        Args:
+            doctype: DocType to create
+            data: Document data as JSON string
+            
+        Returns:
+            Created document or error
+        """
+        {% if doctype_name %}
+        doctype = doctype or DOCTYPE
+        {% endif %}
+        
+        try:
+            # Check create permission
+            if not frappe.has_permission(doctype, "create"):
+                frappe.throw(_("No permission to create {0}").format(doctype), frappe.PermissionError)
+            
+            # Parse data
+            doc_data = frappe.parse_json(data) if isinstance(data, str) else data
+            
+            # Validate required fields
+            _validate_required_fields(doctype, doc_data)
+            
+            # Create document
+            doc = frappe.get_doc({
+                "doctype": doctype,
+                **doc_data
+            })
+            
+            # Insert with permission check
+            doc.insert()
+            frappe.db.commit()
+            
+            return {
+                "success": True,
+                "data": doc.as_dict(),
+                "message": _("{0} created successfully").format(doctype)
+            }
+        except frappe.PermissionError as e:
+            return {
+                "success": False,
+                "error": "PermissionDenied",
+                "message": str(e)
+            }
+        except frappe.ValidationError as e:
+            return {
+                "success": False,
+                "error": "ValidationError",
+                "message": str(e)
+            }
+        except Exception as e:
+            frappe.log_error(frappe.get_traceback(), "API Error: create_document")
+            frappe.db.rollback()
+            return {
+                "success": False,
+                "error": "ServerError",
+                "message": _("Failed to create document")
+            }
+    
+    @frappe.whitelist()
+    def update_document(doctype: str, name: str, data: str) -> Dict[str, Any]:
+        """
+        Update an existing document
+        
+        Args:
+            doctype: DocType of the document
+            name: Name of the document
+            data: Update data as JSON string
+            
+        Returns:
+            Updated document or error
+        """
+        {% if doctype_name %}
+        doctype = doctype or DOCTYPE
+        {% endif %}
+        
+        try:
+            # Get document
+            doc = frappe.get_doc(doctype, name)
+            
+            # Check write permission
+            if not doc.has_permission("write"):
+                frappe.throw(_("No permission to update this document"), frappe.PermissionError)
+            
+            # Parse update data
+            update_data = frappe.parse_json(data) if isinstance(data, str) else data
+            
+            # Remove protected fields
+            _remove_protected_fields(update_data)
+            
+            # Update document
+            doc.update(update_data)
+            doc.save()
+            frappe.db.commit()
+            
+            return {
+                "success": True,
+                "data": doc.as_dict(),
+                "message": _("Document updated successfully")
+            }
+        except frappe.DoesNotExistError:
+            return {
+                "success": False,
+                "error": "NotFound",
+                "message": _("Document not found")
+            }
+        except frappe.PermissionError as e:
+            return {
+                "success": False,
+                "error": "PermissionDenied",
+                "message": str(e)
+            }
+        except frappe.ValidationError as e:
+            frappe.db.rollback()
+            return {
+                "success": False,
+                "error": "ValidationError",
+                "message": str(e)
+            }
+        except Exception as e:
+            frappe.log_error(frappe.get_traceback(), "API Error: update_document")
+            frappe.db.rollback()
+            return {
+                "success": False,
+                "error": "ServerError",
+                "message": _("Failed to update document")
+            }
+    
+    @frappe.whitelist()
+    def delete_document(doctype: str, name: str) -> Dict[str, Any]:
+        """
+        Delete a document
+        
+        Args:
+            doctype: DocType of the document
+            name: Name of the document
+            
+        Returns:
+            Success status or error
+        """
+        {% if doctype_name %}
+        doctype = doctype or DOCTYPE
+        {% endif %}
+        
+        try:
+            # Check delete permission
+            if not frappe.has_permission(doctype, "delete", doc=name):
+                frappe.throw(_("No permission to delete this document"), frappe.PermissionError)
+            
+            # Delete document
+            frappe.delete_doc(doctype, name)
+            frappe.db.commit()
+            
+            return {
+                "success": True,
+                "message": _("Document deleted successfully")
+            }
+        except frappe.DoesNotExistError:
+            return {
+                "success": False,
+                "error": "NotFound",
+                "message": _("Document not found")
+            }
+        except frappe.PermissionError as e:
+            return {
+                "success": False,
+                "error": "PermissionDenied",
+                "message": str(e)
+            }
+        except frappe.LinkExistsError as e:
+            return {
+                "success": False,
+                "error": "LinkExists",
+                "message": _("Cannot delete document as it is linked with other documents")
+            }
+        except Exception as e:
+            frappe.log_error(frappe.get_traceback(), "API Error: delete_document")
+            frappe.db.rollback()
+            return {
+                "success": False,
+                "error": "ServerError",
+                "message": _("Failed to delete document")
+            }
+    
+    @frappe.whitelist()
+    def bulk_operation(
+        doctype: str,
+        operation: str,
+        names: str,
+        data: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        Perform bulk operations on multiple documents
+        
+        Args:
+            doctype: DocType to operate on
+            operation: Operation type (update, delete)
+            names: List of document names as JSON string
+            data: Update data (for update operation)
+            
+        Returns:
+            Operation results
+        """
+        {% if doctype_name %}
+        doctype = doctype or DOCTYPE
+        {% endif %}
+        
+        try:
+            # Parse names
+            names_list = frappe.parse_json(names) if isinstance(names, str) else names
+            
+            if not isinstance(names_list, list):
+                frappe.throw(_("Names must be a list"))
+            
+            results = {
+                "success": [],
+                "failed": [],
+                "errors": []
+            }
+            
+            if operation == "update":
+                update_data = frappe.parse_json(data) if isinstance(data, str) else data
+                _remove_protected_fields(update_data)
+                
+                for name in names_list:
+                    try:
+                        doc = frappe.get_doc(doctype, name)
+                        if doc.has_permission("write"):
+                            doc.update(update_data)
+                            doc.save()
+                            results["success"].append(name)
+                        else:
+                            results["failed"].append(name)
+                            results["errors"].append({
+                                "name": name,
+                                "error": "No write permission"
+                            })
+                    except Exception as e:
+                        results["failed"].append(name)
+                        results["errors"].append({
+                            "name": name,
+                            "error": str(e)
+                        })
+            
+            elif operation == "delete":
+                for name in names_list:
+                    try:
+                        if frappe.has_permission(doctype, "delete", doc=name):
+                            frappe.delete_doc(doctype, name)
+                            results["success"].append(name)
+                        else:
+                            results["failed"].append(name)
+                            results["errors"].append({
+                                "name": name,
+                                "error": "No delete permission"
+                            })
+                    except Exception as e:
+                        results["failed"].append(name)
+                        results["errors"].append({
+                            "name": name,
+                            "error": str(e)
+                        })
+            
+            else:
+                frappe.throw(_("Invalid operation: {0}").format(operation))
+            
+            frappe.db.commit()
+            
+            return {
+                "success": True,
+                "results": results,
+                "message": _("Bulk operation completed")
+            }
+            
+        except Exception as e:
+            frappe.log_error(frappe.get_traceback(), "API Error: bulk_operation")
+            frappe.db.rollback()
+            return {
+                "success": False,
+                "error": "ServerError",
+                "message": _("Bulk operation failed")
+            }
+    
+    # ============================================================
+    # Helper Functions
+    # ============================================================
+    
+    def _validate_required_fields(doctype: str, data: Dict[str, Any]) -> None:
+        """Validate required fields for a doctype"""
+        meta = frappe.get_meta(doctype)
+        missing_fields = []
+        
+        for field in meta.fields:
+            if field.reqd and field.fieldname not in data:
+                missing_fields.append(field.label or field.fieldname)
+        
+        if missing_fields:
+            frappe.throw(
+                _("Missing required fields: {0}").format(", ".join(missing_fields)),
+                frappe.ValidationError
+            )
+    
+    def _remove_protected_fields(data: Dict[str, Any]) -> None:
+        """Remove protected fields from update data"""
+        protected_fields = [
+            "name", "creation", "modified", "modified_by",
+            "owner", "docstatus", "idx", "parent", "parentfield",
+            "parenttype"
+        ]
+        
+        for field in protected_fields:
+            data.pop(field, None)
+    
+    def _sanitize_response(data: Dict[str, Any]) -> None:
+        """Remove sensitive fields from response"""
+        sensitive_fields = [
+            "__onload", "__unsaved"
+        ]
+        
+        for field in sensitive_fields:
+            data.pop(field, None)
+    
+    @frappe.whitelist()
+    def search(
+        doctype: str,
+        query: str,
+        filters: Optional[str] = None,
+        limit: int = 20
+    ) -> Dict[str, Any]:
+        """
+        Search documents
+        
+        Args:
+            doctype: DocType to search
+            query: Search query
+            filters: Additional filters
+            limit: Maximum results
+            
+        Returns:
+            Search results
+        """
+        {% if doctype_name %}
+        doctype = doctype or DOCTYPE
+        {% endif %}
+        
+        try:
+            if not frappe.has_permission(doctype, "read"):
+                frappe.throw(_("No permission to search {0}").format(doctype))
+            
+            # Parse filters
+            if isinstance(filters, str):
+                filters = frappe.parse_json(filters)
+            
+            # Build search conditions
+            search_fields = frappe.get_meta(doctype).search_fields
+            search_fields = search_fields.split(",") if search_fields else ["name"]
+            
+            conditions = []
+            for field in search_fields:
+                conditions.append([doctype, field.strip(), "like", f"%{query}%"])
+            
+            # Get results
+            results = frappe.get_all(
+                doctype,
+                filters=filters,
+                or_filters=conditions,
+                fields=["name", *search_fields],
+                limit=min(cint(limit), MAX_PAGE_SIZE)
+            )
+            
+            return {
+                "success": True,
+                "data": results,
+                "total": len(results)
+            }
+            
+        except Exception as e:
+            frappe.log_error(frappe.get_traceback(), "API Error: search")
+            return {
+                "success": False,
+                "error": "ServerError",
+                "message": _("Search failed")
+            }
+
+  test_module: |
+    """
+    Tests for {{module_name}} API module
+    """
+    
+    import frappe
+    import unittest
+    import json
+    from {{app_name}}.api import {{module_name}}
+    
+    class Test{{module_name|title}}API(unittest.TestCase):
+        
+        @classmethod
+        def setUpClass(cls):
+            """Set up test data"""
+            cls.test_user = "test@example.com"
+            frappe.set_user(cls.test_user)
+        
+        def test_get_list(self):
+            """Test get_list endpoint"""
+            response = {{module_name}}.get_list(
+                doctype="{{doctype_name or 'ToDo'}}",
+                limit=10
+            )
+            
+            self.assertTrue(response["success"])
+            self.assertIn("data", response)
+            self.assertIn("pagination", response)
+            self.assertLessEqual(len(response["data"]), 10)
+        
+        def test_create_document(self):
+            """Test document creation"""
+            test_data = {
+                "description": "Test Document"
+            }
+            
+            response = {{module_name}}.create_document(
+                doctype="ToDo",
+                data=json.dumps(test_data)
+            )
+            
+            self.assertTrue(response["success"])
+            self.assertIn("data", response)
+            self.assertEqual(response["data"]["description"], "Test Document")
+            
+            # Clean up
+            frappe.delete_doc("ToDo", response["data"]["name"])
+        
+        def test_permission_denied(self):
+            """Test permission checking"""
+            frappe.set_user("Guest")
+            
+            response = {{module_name}}.get_list(
+                doctype="User"
+            )
+            
+            self.assertFalse(response["success"])
+            self.assertEqual(response["error"], "PermissionDenied")
+            
+            frappe.set_user(self.test_user)
+        
+        def test_invalid_input(self):
+            """Test input validation"""
+            response = {{module_name}}.get_list(
+                doctype="NonExistentDocType"
+            )
+            
+            self.assertFalse(response["success"])
+        
+        def test_rate_limiting(self):
+            """Test rate limiting (if enabled)"""
+            # This would test rate limiting if configured
+            pass
+        
+        @classmethod
+        def tearDownClass(cls):
+            """Clean up test data"""
+            frappe.set_user("Administrator")
+
+  documentation: |
+    # {{module_name|title}} API Documentation
+    
+    ## Overview
+    This module provides API endpoints for {{module_name}} operations in {{app_name}}.
+    
+    ## Base URL
+    ```
+    /api/method/{{app_name}}.api.{{module_name}}.<method_name>
+    ```
+    
+    ## Authentication
+    All endpoints require authentication unless specified otherwise.
+    Include the session cookie or API key/secret in your requests.
+    
+    ## Endpoints
+    
+    ### Get List
+    ```http
+    POST /api/method/{{app_name}}.api.{{module_name}}.get_list
+    ```
+    
+    **Parameters:**
+    - `doctype` (string): DocType to query
+    - `fields` (array): Fields to return
+    - `filters` (object): Filter conditions
+    - `order_by` (string): Sort order
+    - `limit` (integer): Page size (max: 100)
+    - `offset` (integer): Starting position
+    
+    **Response:**
+    ```json
+    {
+      "success": true,
+      "data": [...],
+      "pagination": {
+        "total": 100,
+        "limit": 20,
+        "offset": 0,
+        "has_next": true,
+        "has_previous": false
+      }
+    }
+    ```
+    
+    ### Get Document
+    ```http
+    POST /api/method/{{app_name}}.api.{{module_name}}.get_document
+    ```
+    
+    **Parameters:**
+    - `doctype` (string): DocType
+    - `name` (string): Document name
+    
+    ### Create Document
+    ```http
+    POST /api/method/{{app_name}}.api.{{module_name}}.create_document
+    ```
+    
+    **Parameters:**
+    - `doctype` (string): DocType
+    - `data` (object): Document data
+    
+    ### Update Document
+    ```http
+    POST /api/method/{{app_name}}.api.{{module_name}}.update_document
+    ```
+    
+    **Parameters:**
+    - `doctype` (string): DocType
+    - `name` (string): Document name
+    - `data` (object): Update data
+    
+    ### Delete Document
+    ```http
+    POST /api/method/{{app_name}}.api.{{module_name}}.delete_document
+    ```
+    
+    **Parameters:**
+    - `doctype` (string): DocType
+    - `name` (string): Document name
+    
+    ## Error Codes
+    - `PermissionDenied`: No permission for operation
+    - `NotFound`: Resource not found
+    - `ValidationError`: Input validation failed
+    - `ServerError`: Internal server error
+    
+    ## Rate Limiting
+    {% if rate_limit %}
+    Endpoints are rate limited to {{rate_limit.limit}} requests per {{rate_limit.window}} seconds.
+    {% else %}
+    No rate limiting configured.
+    {% endif %}
+
+instructions:
+  creation:
+    - "Create api directory in app if not exists"
+    - "Create {{module_name}}.py in api directory"
+    - "Add imports to api/__init__.py"
+    - "Create tests for the module"
+    - "Document all endpoints"
+    - "Test with different user roles"
+  
+  security:
+    - "All methods must have @frappe.whitelist()"
+    - "Check permissions before operations"
+    - "Validate all input parameters"
+    - "Sanitize responses"
+    - "Log errors appropriately"
+    - "Implement rate limiting for expensive operations"

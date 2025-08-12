@@ -1,0 +1,230 @@
+name: "app-development"
+title: "ERPNext App Development Workflow"
+description: "Complete workflow for developing ERPNext applications using BMAD agents"
+version: "1.0.0"
+
+workflow_stages:
+  1_requirements_analysis:
+    name: "Requirements Analysis"
+    description: "Analyze business requirements and define scope"
+    agent: "erpnext-architect"
+    inputs:
+      - "Business requirements document"
+      - "User stories"
+      - "Integration requirements"
+    outputs:
+      - "Requirements analysis report"
+      - "Technical scope document"
+      - "Integration points identified"
+    tasks:
+      - "analyze_business_requirements"
+      - "identify_integration_points"
+      - "define_technical_scope"
+    validation:
+      - "All requirements clearly understood"
+      - "Integration points with docflow/n8n_integration identified"
+      - "Technical feasibility confirmed"
+  
+  2_architecture_design:
+    name: "Architecture Design"
+    description: "Design system architecture and data models"
+    agent: "erpnext-architect"
+    dependencies: ["1_requirements_analysis"]
+    inputs:
+      - "Requirements analysis report"
+      - "Existing system architecture"
+    outputs:
+      - "System architecture diagram"
+      - "Data model design"
+      - "API design specifications"
+    tasks:
+      - "design_system_architecture"
+      - "create_data_model"
+      - "plan_api_structure"
+    validation:
+      - "Architecture follows Frappe/ERPNext patterns"
+      - "Integration with existing apps planned"
+      - "Performance considerations addressed"
+  
+  3_doctype_design:
+    name: "DocType Design"
+    description: "Design and create DocTypes"
+    agent: "doctype-designer"
+    dependencies: ["2_architecture_design"]
+    inputs:
+      - "Data model design"
+      - "Field specifications"
+    outputs:
+      - "DocType specifications"
+      - "Field validation rules"
+      - "Permission matrix"
+    tasks:
+      - "design_doctype_schema"
+      - "define_field_validations"
+      - "setup_permissions"
+    validation:
+      - "All DocTypes properly designed"
+      - "Relationships correctly modeled"
+      - "Permissions follow security best practices"
+  
+  4_doctype_implementation:
+    name: "DocType Implementation"
+    description: "Implement DocTypes and controllers"
+    agent: "doctype-designer"
+    dependencies: ["3_doctype_design"]
+    inputs:
+      - "DocType specifications"
+      - "Business logic requirements"
+    outputs:
+      - "DocType JSON files"
+      - "Python controller files"
+      - "Client-side JavaScript files"
+    tasks:
+      - "create_doctype_files"
+      - "implement_controllers"
+      - "add_client_scripts"
+    validation:
+      - "All DocTypes created successfully"
+      - "Controllers implement required logic"
+      - "Client scripts function correctly"
+  
+  5_api_development:
+    name: "API Development"
+    description: "Create REST APIs and integration endpoints"
+    agent: "api-developer"
+    dependencies: ["4_doctype_implementation"]
+    inputs:
+      - "API specifications"
+      - "Integration requirements"
+    outputs:
+      - "API endpoint files"
+      - "Authentication handlers"
+      - "Integration webhooks"
+    tasks:
+      - "implement_api_endpoints"
+      - "setup_authentication"
+      - "create_webhook_handlers"
+    validation:
+      - "All APIs working correctly"
+      - "Authentication properly implemented"
+      - "Integration endpoints tested"
+  
+  6_workflow_integration:
+    name: "Workflow Integration"
+    description: "Integrate with docflow and setup workflows"
+    agent: "workflow-specialist"
+    dependencies: ["5_api_development"]
+    inputs:
+      - "Workflow requirements"
+      - "Existing docflow patterns"
+    outputs:
+      - "Workflow configurations"
+      - "Approval processes"
+      - "Notification setups"
+    tasks:
+      - "design_workflows"
+      - "integrate_with_docflow"
+      - "setup_notifications"
+    validation:
+      - "Workflows function correctly"
+      - "Integration with docflow working"
+      - "Notifications sending properly"
+  
+  7_automation_setup:
+    name: "Automation Setup"
+    description: "Setup n8n_integration triggers and automation"
+    agent: "workflow-specialist"
+    dependencies: ["6_workflow_integration"]
+    inputs:
+      - "Automation requirements"
+      - "n8n_integration capabilities"
+    outputs:
+      - "Webhook configurations"
+      - "Automation triggers"
+      - "External integration setups"
+    tasks:
+      - "configure_webhooks"
+      - "setup_automation_triggers"
+      - "test_external_integrations"
+    validation:
+      - "Automation triggers working"
+      - "External integrations functional"
+      - "Webhook security implemented"
+  
+  8_testing:
+    name: "Testing"
+    description: "Comprehensive testing of the application"
+    agent: "testing-specialist"
+    dependencies: ["7_automation_setup"]
+    inputs:
+      - "Complete application"
+      - "Test requirements"
+    outputs:
+      - "Test suites"
+      - "Test reports"
+      - "Performance benchmarks"
+    tasks:
+      - "create_unit_tests"
+      - "run_integration_tests"
+      - "perform_performance_testing"
+      - "validate_multi_app_compatibility"
+    validation:
+      - "All tests passing"
+      - "Performance within acceptable limits"
+      - "Multi-app compatibility confirmed"
+  
+  9_deployment:
+    name: "Deployment"
+    description: "Deploy application to production"
+    agent: "bench-operator"
+    dependencies: ["8_testing"]
+    inputs:
+      - "Tested application"
+      - "Deployment requirements"
+    outputs:
+      - "Production deployment"
+      - "Monitoring setup"
+      - "Rollback procedures"
+    tasks:
+      - "deploy_to_production"
+      - "setup_monitoring"
+      - "create_rollback_procedures"
+    validation:
+      - "Application deployed successfully"
+      - "All existing apps still functional"
+      - "Monitoring operational"
+
+environment:
+  bench_path: "/home/frappe/frappe-bench"
+  site: "prima-erpnext.pegashosting.com"
+  existing_apps:
+    - "frappe"
+    - "erpnext"
+    - "docflow" 
+    - "n8n_integration"
+
+checkpoints:
+  - stage: "3_doctype_design"
+    checkpoint: "Design Review"
+    description: "Review DocType designs with stakeholders"
+    
+  - stage: "6_workflow_integration"
+    checkpoint: "Integration Review"
+    description: "Verify integration with existing systems"
+    
+  - stage: "8_testing"
+    checkpoint: "Quality Gate"
+    description: "All tests must pass before deployment"
+
+rollback_points:
+  - "Before DocType creation"
+  - "Before API implementation" 
+  - "Before workflow integration"
+  - "Before production deployment"
+
+success_criteria:
+  - "All requirements implemented"
+  - "Integration with existing apps working"
+  - "Performance benchmarks met"
+  - "Security requirements satisfied"
+  - "User acceptance criteria met"

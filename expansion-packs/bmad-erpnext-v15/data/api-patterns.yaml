@@ -1,0 +1,863 @@
+name: "api-patterns"
+title: "ERPNext API Development Patterns"
+description: "Best practices and patterns for developing secure, scalable APIs in ERPNext v15"
+version: "1.0.0"
+
+# Core API Patterns
+core_api_patterns:
+  authentication_patterns:
+    token_authentication: |
+      @frappe.whitelist()
+      def secure_api_method():
+          """API method requiring authentication"""
+          
+          # Authentication is handled automatically by @frappe.whitelist()
+          # User must provide valid API key/secret or session token
+          
+          # Additional custom authentication if needed
+          if not validate_custom_auth():
+              frappe.throw(_("Custom authentication failed"), frappe.PermissionError)
+          
+          return {"message": "Authenticated successfully"}
+    
+    api_key_generation: |
+      def generate_api_credentials(user_email):
+          """Generate API credentials for a user"""
+          
+          user = frappe.get_doc("User", user_email)
+          
+          # Generate new API keys
+          api_key = user.generate_keys()
+          
+          return {
+              "api_key": user.api_key,
+              "api_secret": user.get_password("api_secret"),
+              "user": user_email
+          }
+    
+    session_based_auth: |
+      @frappe.whitelist()
+      def session_api_method():
+          """API method using session authentication"""
+          
+          # Check if user is logged in via session
+          if frappe.session.user == "Guest":
+              frappe.throw(_("Authentication required"), frappe.AuthenticationError)
+          
+          # Proceed with authenticated user
+          return {"user": frappe.session.user}
+    
+    guest_api_pattern: |
+      @frappe.whitelist(allow_guest=True)
+      def public_api_method():
+          """Public API method with rate limiting"""
+          
+          # Implement rate limiting for guest access
+          if not check_rate_limit(frappe.local.request_ip):
+              frappe.throw(_("Rate limit exceeded"), frappe.RateLimitExceededError)
+          
+          # Log guest access
+          log_guest_api_access(frappe.local.request_ip)
+          
+          return {"message": "Public data"}
+
+  permission_patterns:
+    document_level_permissions: |
+      @frappe.whitelist()
+      def get_customer_details(customer_id):
+          """Get customer details with permission check"""
+          
+          # Check read permission for specific document
+          if not frappe.has_permission("Customer", "read", customer_id):
+              frappe.throw(_("No permission to view this customer"), frappe.PermissionError)
+          
+          customer = frappe.get_doc("Customer", customer_id)
+          
+          # Filter sensitive fields based on permissions
+          data = customer.as_dict()
+          
+          # Remove sensitive fields if user doesn't have full access
+          if not frappe.has_permission("Customer", "write", customer_id):
+              sensitive_fields = ["tax_id", "credit_limit"]
+              for field in sensitive_fields:
+                  data.pop(field, None)
+          
+          return data
+    
+    role_based_permissions: |
+      @frappe.whitelist()
+      def sales_manager_api():
+          """API method restricted to sales managers"""
+          
+          user_roles = frappe.get_roles(frappe.session.user)
+          
+          required_roles = ["Sales Manager", "Sales User"]
+          if not any(role in user_roles for role in required_roles):
+              frappe.throw(_("Insufficient privileges"), frappe.PermissionError)
+          
+          # Role-specific logic
+          if "Sales Manager" in user_roles:
+              return get_all_sales_data()
+          else:
+              return get_user_sales_data(frappe.session.user)
+    
+    territory_based_permissions: |
+      def check_territory_permission(user, territory):
+          """Check if user has permission for specific territory"""
+          
+          # Get user's allowed territories
+          user_territories = frappe.get_all("User Permission",
+              filters={
+                  "user": user,
+                  "allow": "Territory",
+                  "for_value": territory
+              }
+          )
+          
+          # If no restrictions, allow all territories
+          if not user_territories:
+              return True
+          
+          # Check if specific territory is allowed
+          return len(user_territories) > 0
+
+  input_validation_patterns:
+    parameter_validation: |
+      @frappe.whitelist()
+      def create_customer_api(customer_name, email_id, mobile_no=None):
+          """Create customer with comprehensive input validation"""
+          
+          # Validate required parameters
+          if not customer_name or not email_id:
+              frappe.throw(_("Customer name and email are required"))
+          
+          # Validate data types
+          if not isinstance(customer_name, str) or not isinstance(email_id, str):
+              frappe.throw(_("Invalid data types"))
+          
+          # Validate data format
+          if not validate_email_format(email_id):
+              frappe.throw(_("Invalid email format"))
+          
+          if mobile_no and not validate_phone_format(mobile_no):
+              frappe.throw(_("Invalid phone format"))
+          
+          # Sanitize inputs
+          customer_name = frappe.utils.cstr(customer_name).strip()[:140]  # Limit length
+          email_id = frappe.utils.cstr(email_id).strip().lower()
+          
+          # Business validation
+          if frappe.db.exists("Customer", {"email_id": email_id}):
+              frappe.throw(_("Customer with this email already exists"))
+          
+          # Create customer
+          customer = frappe.get_doc({
+              "doctype": "Customer",
+              "customer_name": customer_name,
+              "email_id": email_id,
+              "mobile_no": mobile_no
+          })
+          customer.insert()
+          
+          return {
+              "success": True,
+              "customer_id": customer.name,
+              "message": _("Customer created successfully")
+          }
+    
+    json_validation: |
+      @frappe.whitelist()
+      def bulk_create_api():
+          """API with JSON payload validation"""
+          
+          try:
+              # Get and parse JSON data
+              data = json.loads(frappe.request.get_data())
+              
+              # Validate JSON structure
+              if not isinstance(data, dict):
+                  frappe.throw(_("Invalid JSON structure"))
+              
+              # Validate required keys
+              required_keys = ["customers"]
+              for key in required_keys:
+                  if key not in data:
+                      frappe.throw(_("Missing required field: {0}").format(key))
+              
+              # Validate array structure
+              if not isinstance(data["customers"], list):
+                  frappe.throw(_("Customers must be an array"))
+              
+              # Validate each customer object
+              for i, customer_data in enumerate(data["customers"]):
+                  validate_customer_data(customer_data, i)
+              
+              # Process data
+              results = process_bulk_customers(data["customers"])
+              return results
+              
+          except json.JSONDecodeError:
+              frappe.throw(_("Invalid JSON format"))
+          except Exception as e:
+              frappe.log_error(frappe.get_traceback())
+              frappe.throw(_("Processing failed: {0}").format(str(e)))
+    
+    file_upload_validation: |
+      @frappe.whitelist()
+      def upload_file_api():
+          """File upload with validation"""
+          
+          # Get uploaded file
+          file_doc = frappe.request.files.get('file')
+          if not file_doc:
+              frappe.throw(_("No file provided"))
+          
+          # Validate file type
+          allowed_types = ['.pdf', '.doc', '.docx', '.jpg', '.png']
+          file_ext = os.path.splitext(file_doc.filename)[1].lower()
+          if file_ext not in allowed_types:
+              frappe.throw(_("File type not allowed"))
+          
+          # Validate file size (5MB limit)
+          max_size = 5 * 1024 * 1024  # 5MB
+          file_doc.seek(0, 2)  # Seek to end
+          file_size = file_doc.tell()
+          file_doc.seek(0)  # Reset position
+          
+          if file_size > max_size:
+              frappe.throw(_("File size exceeds 5MB limit"))
+          
+          # Save file
+          file_record = save_file(file_doc.filename, file_doc.read())
+          
+          return {
+              "file_url": file_record.file_url,
+              "file_name": file_record.file_name
+          }
+
+  response_patterns:
+    standardized_responses: |
+      def api_response(success=True, data=None, message=None, error=None, meta=None):
+          """Standardized API response format"""
+          
+          response = {
+              "success": success,
+              "timestamp": frappe.utils.now_datetime().isoformat(),
+              "user": frappe.session.user if frappe.session.user != "Guest" else None
+          }
+          
+          if data is not None:
+              response["data"] = data
+          
+          if message:
+              response["message"] = message
+          
+          if error:
+              response["error"] = {
+                  "message": error,
+                  "type": "validation" if isinstance(error, frappe.ValidationError) else "system"
+              }
+          
+          if meta:
+              response["meta"] = meta
+          
+          return response
+    
+    paginated_responses: |
+      @frappe.whitelist()
+      def get_customers_paginated(page=1, limit=20, search=None):
+          """Get paginated customer list"""
+          
+          # Validate pagination parameters
+          page = max(int(page), 1)
+          limit = min(max(int(limit), 1), 100)  # Max 100 per page
+          offset = (page - 1) * limit
+          
+          # Build filters
+          filters = {"disabled": 0}
+          if search:
+              filters["customer_name"] = ["like", f"%{search}%"]
+          
+          # Get total count
+          total_count = frappe.db.count("Customer", filters)
+          
+          # Get paginated data
+          customers = frappe.get_all("Customer",
+              filters=filters,
+              fields=["name", "customer_name", "email_id", "territory"],
+              order_by="creation desc",
+              limit=limit,
+              start=offset
+          )
+          
+          # Calculate pagination info
+          total_pages = (total_count + limit - 1) // limit
+          has_next = page < total_pages
+          has_prev = page > 1
+          
+          return api_response(
+              success=True,
+              data=customers,
+              meta={
+                  "pagination": {
+                      "page": page,
+                      "limit": limit,
+                      "total_count": total_count,
+                      "total_pages": total_pages,
+                      "has_next": has_next,
+                      "has_prev": has_prev
+                  }
+              }
+          )
+    
+    error_responses: |
+      def handle_api_error(e):
+          """Centralized error handling for APIs"""
+          
+          if isinstance(e, frappe.ValidationError):
+              return api_response(
+                  success=False,
+                  error=str(e),
+                  meta={"error_type": "validation"}
+              )
+          
+          elif isinstance(e, frappe.PermissionError):
+              frappe.response["http_status_code"] = 403
+              return api_response(
+                  success=False,
+                  error="Permission denied",
+                  meta={"error_type": "permission"}
+              )
+          
+          elif isinstance(e, frappe.DoesNotExistError):
+              frappe.response["http_status_code"] = 404
+              return api_response(
+                  success=False,
+                  error="Resource not found",
+                  meta={"error_type": "not_found"}
+              )
+          
+          else:
+              frappe.log_error(frappe.get_traceback())
+              frappe.response["http_status_code"] = 500
+              return api_response(
+                  success=False,
+                  error="Internal server error",
+                  meta={"error_type": "system"}
+              )
+
+  performance_patterns:
+    caching_strategies: |
+      @frappe.whitelist()
+      def get_territory_list():
+          """Cached territory list API"""
+          
+          cache_key = "api:territory_list"
+          cached_data = frappe.cache().get(cache_key)
+          
+          if cached_data:
+              return api_response(
+                  success=True,
+                  data=cached_data,
+                  meta={"cached": True}
+              )
+          
+          # Fetch from database
+          territories = frappe.get_all("Territory",
+              fields=["name", "territory_name", "parent_territory"],
+              order_by="territory_name"
+          )
+          
+          # Cache for 1 hour
+          frappe.cache().set(cache_key, territories, expires_in_sec=3600)
+          
+          return api_response(
+              success=True,
+              data=territories,
+              meta={"cached": False}
+          )
+    
+    bulk_operations: |
+      @frappe.whitelist()
+      def bulk_update_customers():
+          """Bulk update customers with batch processing"""
+          
+          try:
+              data = json.loads(frappe.request.get_data())
+              updates = data.get("updates", [])
+              
+              if len(updates) > 1000:  # Limit bulk operations
+                  frappe.throw(_("Maximum 1000 updates allowed per request"))
+              
+              results = {"success": [], "errors": []}
+              
+              # Process in batches
+              batch_size = 100
+              for i in range(0, len(updates), batch_size):
+                  batch = updates[i:i+batch_size]
+                  
+                  for update_data in batch:
+                      try:
+                          customer_id = update_data.get("customer_id")
+                          fields = update_data.get("fields", {})
+                          
+                          # Validate permission
+                          if not frappe.has_permission("Customer", "write", customer_id):
+                              results["errors"].append({
+                                  "customer_id": customer_id,
+                                  "error": "Permission denied"
+                              })
+                              continue
+                          
+                          # Update customer
+                          customer = frappe.get_doc("Customer", customer_id)
+                          customer.update(fields)
+                          customer.save()
+                          
+                          results["success"].append(customer_id)
+                          
+                      except Exception as e:
+                          results["errors"].append({
+                              "customer_id": update_data.get("customer_id"),
+                              "error": str(e)
+                          })
+                  
+                  # Commit batch
+                  frappe.db.commit()
+              
+              return api_response(
+                  success=True,
+                  data=results,
+                  meta={"total_processed": len(updates)}
+              )
+              
+          except Exception as e:
+              frappe.db.rollback()
+              return handle_api_error(e)
+    
+    async_processing: |
+      @frappe.whitelist()
+      def start_async_process():
+          """Start asynchronous processing"""
+          
+          # Enqueue background job
+          job_id = frappe.enqueue(
+              'your_app.tasks.long_running_task',
+              queue='long',
+              timeout=3600,
+              **request_data
+          )
+          
+          return api_response(
+              success=True,
+              data={
+                  "job_id": job_id,
+                  "status": "queued"
+              },
+              message="Process started successfully"
+          )
+      
+      @frappe.whitelist()
+      def get_job_status(job_id):
+          """Get status of background job"""
+          
+          job_status = get_job_status_from_queue(job_id)
+          
+          return api_response(
+              success=True,
+              data={
+                  "job_id": job_id,
+                  "status": job_status.get("status"),
+                  "progress": job_status.get("progress", 0),
+                  "result": job_status.get("result")
+              }
+          )
+
+# Advanced API Patterns
+advanced_patterns:
+  webhook_patterns:
+    webhook_handler: |
+      @frappe.whitelist(allow_guest=True)
+      def webhook_endpoint():
+          """Secure webhook endpoint"""
+          
+          try:
+              # Validate webhook signature
+              signature = frappe.request.headers.get('X-Webhook-Signature')
+              payload = frappe.request.get_data()
+              
+              if not validate_webhook_signature(payload, signature):
+                  frappe.response["http_status_code"] = 403
+                  return {"error": "Invalid signature"}
+              
+              # Parse webhook data
+              data = json.loads(payload)
+              
+              # Process webhook
+              result = process_webhook_data(data)
+              
+              # Log webhook
+              log_webhook_call(data, "success")
+              
+              return {"received": True, "processed": result}
+              
+          except Exception as e:
+              log_webhook_call(data, "error", str(e))
+              frappe.log_error(frappe.get_traceback())
+              
+              frappe.response["http_status_code"] = 500
+              return {"error": "Processing failed"}
+    
+    webhook_signature_validation: |
+      def validate_webhook_signature(payload, signature, secret=None):
+          """Validate webhook signature"""
+          
+          if not secret:
+              secret = frappe.get_conf().get("webhook_secret")
+          
+          if not secret or not signature:
+              return False
+          
+          import hmac
+          import hashlib
+          
+          # Calculate expected signature
+          expected_signature = hmac.new(
+              secret.encode(),
+              payload,
+              hashlib.sha256
+          ).hexdigest()
+          
+          # Compare signatures
+          return hmac.compare_digest(
+              f"sha256={expected_signature}",
+              signature
+          )
+
+  rate_limiting_patterns:
+    api_rate_limiting: |
+      def check_rate_limit(identifier, limit=100, window=3600):
+          """Check API rate limit"""
+          
+          cache_key = f"rate_limit:{identifier}"
+          current_count = frappe.cache().get(cache_key) or 0
+          
+          if current_count >= limit:
+              return False
+          
+          # Increment counter
+          frappe.cache().set(cache_key, current_count + 1, expires_in_sec=window)
+          return True
+      
+      def rate_limited_api(limit=60, window=3600):
+          """Decorator for rate limiting"""
+          def decorator(func):
+              def wrapper(*args, **kwargs):
+                  identifier = frappe.session.user
+                  
+                  if not check_rate_limit(identifier, limit, window):
+                      frappe.response["http_status_code"] = 429
+                      return {"error": "Rate limit exceeded"}
+                  
+                  return func(*args, **kwargs)
+              return wrapper
+          return decorator
+    
+    progressive_rate_limiting: |
+      def check_progressive_rate_limit(user):
+          """Progressive rate limiting based on user type"""
+          
+          user_type = frappe.db.get_value("User", user, "user_type")
+          
+          rate_limits = {
+              "System User": {"limit": 1000, "window": 3600},
+              "Website User": {"limit": 100, "window": 3600},
+              "Guest": {"limit": 10, "window": 3600}
+          }
+          
+          config = rate_limits.get(user_type, rate_limits["Guest"])
+          return check_rate_limit(user, config["limit"], config["window"])
+
+  api_versioning_patterns:
+    version_header: |
+      @frappe.whitelist()
+      def versioned_api():
+          """API with version handling"""
+          
+          api_version = frappe.request.headers.get('API-Version', 'v1')
+          
+          if api_version == 'v1':
+              return handle_v1_request()
+          elif api_version == 'v2':
+              return handle_v2_request()
+          else:
+              frappe.response["http_status_code"] = 400
+              return {"error": f"Unsupported API version: {api_version}"}
+    
+    url_versioning: |
+      # In hooks.py
+      website_route_rules = [
+          {"from_route": "/api/v1/<path:method_path>", "to_route": "/api/v1"},
+          {"from_route": "/api/v2/<path:method_path>", "to_route": "/api/v2"}
+      ]
+    
+    backward_compatibility: |
+      def handle_deprecated_api():
+          """Handle deprecated API with warning"""
+          
+          # Add deprecation warning to response
+          frappe.response.setdefault("warnings", [])
+          frappe.response["warnings"].append({
+              "code": "DEPRECATED",
+              "message": "This API version is deprecated. Please use v2.",
+              "sunset_date": "2024-12-31"
+          })
+          
+          # Process request with legacy logic
+          return process_legacy_request()
+
+  search_api_patterns:
+    advanced_search: |
+      @frappe.whitelist()
+      def advanced_search(doctype, fields=None, filters=None, search_term=None):
+          """Advanced search API"""
+          
+          # Validate doctype permission
+          if not frappe.has_permission(doctype, "read"):
+              frappe.throw(_("No permission to read {0}").format(doctype), frappe.PermissionError)
+          
+          # Parse fields
+          if isinstance(fields, str):
+              fields = json.loads(fields)
+          
+          # Parse filters
+          if isinstance(filters, str):
+              filters = json.loads(filters)
+          
+          filters = filters or {}
+          
+          # Add search term to filters
+          if search_term:
+              # Get searchable fields for doctype
+              meta = frappe.get_meta(doctype)
+              search_fields = [df.fieldname for df in meta.fields 
+                             if df.fieldtype in ['Data', 'Text'] and df.in_global_search]
+              
+              if search_fields:
+                  or_filters = []
+                  for field in search_fields:
+                      or_filters.append({field: ['like', f'%{search_term}%']})
+                  filters['or_filters'] = or_filters
+          
+          # Execute search
+          results = frappe.get_all(
+              doctype,
+              filters=filters,
+              fields=fields,
+              limit=50  # Limit results
+          )
+          
+          return api_response(
+              success=True,
+              data=results,
+              meta={
+                  "doctype": doctype,
+                  "search_term": search_term,
+                  "result_count": len(results)
+              }
+          )
+    
+    fuzzy_search: |
+      def fuzzy_search_customers(query, limit=20):
+          """Fuzzy search for customers"""
+          
+          # Use full-text search if available
+          search_query = f"""
+              SELECT name, customer_name, email_id,
+                     MATCH(customer_name, email_id) AGAINST(%s IN NATURAL LANGUAGE MODE) as relevance
+              FROM `tabCustomer`
+              WHERE MATCH(customer_name, email_id) AGAINST(%s IN NATURAL LANGUAGE MODE)
+                 OR customer_name LIKE %s
+                 OR email_id LIKE %s
+              ORDER BY relevance DESC, customer_name
+              LIMIT %s
+          """
+          
+          like_pattern = f"%{query}%"
+          
+          results = frappe.db.sql(search_query, 
+              [query, query, like_pattern, like_pattern, limit],
+              as_dict=True
+          )
+          
+          return results
+
+# Security Patterns
+security_patterns:
+  input_sanitization: |
+    def sanitize_api_input(data):
+        """Sanitize API input data"""
+        
+        if isinstance(data, dict):
+            return {k: sanitize_api_input(v) for k, v in data.items()}
+        elif isinstance(data, list):
+            return [sanitize_api_input(item) for item in data]
+        elif isinstance(data, str):
+            # Remove potentially dangerous characters
+            import re
+            # Remove HTML tags
+            data = re.sub(r'<[^>]+>', '', data)
+            # Remove SQL injection patterns
+            dangerous_patterns = ['--', ';', 'DROP', 'DELETE', 'INSERT', 'UPDATE']
+            for pattern in dangerous_patterns:
+                data = data.replace(pattern, '')
+            return data.strip()
+        else:
+            return data
+  
+  sql_injection_prevention: |
+    def safe_query_execution(query, params):
+        """Safe SQL query execution"""
+        
+        # Always use parameterized queries
+        return frappe.db.sql(query, params, as_dict=True)
+    
+    # Example of safe dynamic query building
+    def build_safe_filter_query(doctype, filters):
+        conditions = []
+        params = []
+        
+        for field, value in filters.items():
+            if isinstance(value, list) and len(value) == 2:
+                operator, val = value
+                conditions.append(f"`{field}` {operator} %s")
+                params.append(val)
+            else:
+                conditions.append(f"`{field}` = %s")
+                params.append(value)
+        
+        where_clause = " AND ".join(conditions) if conditions else "1=1"
+        query = f"SELECT * FROM `tab{doctype}` WHERE {where_clause}"
+        
+        return query, params
+  
+  api_logging: |
+    def log_api_call(method, user, params, response, duration):
+        """Log API calls for security auditing"""
+        
+        api_log = frappe.get_doc({
+            "doctype": "API Log",
+            "method": method,
+            "user": user,
+            "ip_address": frappe.local.request_ip,
+            "user_agent": frappe.request.headers.get('User-Agent'),
+            "parameters": json.dumps(params, default=str),
+            "response_code": frappe.response.get("http_status_code", 200),
+            "duration": duration,
+            "timestamp": frappe.utils.now_datetime()
+        })
+        
+        # Only log response for errors or sensitive operations
+        if frappe.response.get("http_status_code", 200) >= 400:
+            api_log.response_data = json.dumps(response, default=str)
+        
+        api_log.insert(ignore_permissions=True)
+
+# Testing Patterns for APIs
+testing_patterns:
+  api_test_base: |
+    class APITestBase(FrappeTestCase):
+        def setUp(self):
+            # Create test user with API access
+            self.test_user = create_test_user()
+            self.api_key, self.api_secret = generate_api_keys(self.test_user.email)
+        
+        def make_api_call(self, method, data=None):
+            """Helper method to make authenticated API calls"""
+            
+            headers = {
+                'Authorization': f'token {self.api_key}:{self.api_secret}',
+                'Content-Type': 'application/json'
+            }
+            
+            if data:
+                response = requests.post(
+                    f"{self.base_url}/api/method/{method}",
+                    json=data,
+                    headers=headers
+                )
+            else:
+                response = requests.get(
+                    f"{self.base_url}/api/method/{method}",
+                    headers=headers
+                )
+            
+            return response
+        
+        def assertAPISuccess(self, response):
+            """Assert API call was successful"""
+            self.assertEqual(response.status_code, 200)
+            data = response.json()
+            self.assertTrue(data.get('success', False))
+            return data
+        
+        def assertAPIError(self, response, expected_status=400):
+            """Assert API call returned error"""
+            self.assertEqual(response.status_code, expected_status)
+            data = response.json()
+            self.assertFalse(data.get('success', True))
+            return data
+  
+  api_integration_tests: |
+    class TestCustomerAPI(APITestBase):
+        def test_create_customer(self):
+            """Test customer creation API"""
+            
+            customer_data = {
+                "customer_name": "Test Customer API",
+                "email_id": "testapi@example.com"
+            }
+            
+            response = self.make_api_call(
+                "your_app.api.create_customer", 
+                customer_data
+            )
+            
+            data = self.assertAPISuccess(response)
+            self.assertIn('customer_id', data['data'])
+            
+            # Verify customer was created
+            customer_id = data['data']['customer_id']
+            self.assertTrue(frappe.db.exists("Customer", customer_id))
+        
+        def test_api_permission_error(self):
+            """Test API permission handling"""
+            
+            # Use user without permission
+            limited_user = create_limited_user()
+            api_key, api_secret = generate_api_keys(limited_user.email)
+            
+            headers = {
+                'Authorization': f'token {api_key}:{api_secret}',
+                'Content-Type': 'application/json'
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/api/method/restricted_api_method",
+                headers=headers
+            )
+            
+            self.assertAPIError(response, 403)
+        
+        def test_api_rate_limiting(self):
+            """Test API rate limiting"""
+            
+            # Make requests up to limit
+            for i in range(60):  # Assuming 60/hour limit
+                response = self.make_api_call("test_api_method")
+                if response.status_code == 429:
+                    break
+            
+            # Next request should be rate limited
+            response = self.make_api_call("test_api_method")
+            self.assertEqual(response.status_code, 429)

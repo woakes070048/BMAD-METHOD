@@ -1,0 +1,815 @@
+name: "frappe-ui-component-template"
+title: "Frappe UI Component Template"
+description: "Template for creating Vue 3 components using frappe-ui library with proper patterns and best practices"
+version: "1.0.0"
+
+parameters:
+  component_name:
+    type: "string"
+    required: true
+    description: "Name of the Vue component (PascalCase)"
+  
+  component_type:
+    type: "string"
+    required: true
+    enum: ["page", "dialog", "form", "list", "card", "widget", "layout"]
+    description: "Type of component to create"
+  
+  frappe_ui_components:
+    type: "array"
+    required: false
+    description: "Frappe UI components to use"
+  
+  props:
+    type: "array"
+    required: false
+    description: "Component props definition"
+  
+  api_endpoints:
+    type: "array"
+    required: false
+    description: "API endpoints the component will use"
+  
+  permissions:
+    type: "object"
+    required: false
+    description: "Permission requirements for the component"
+
+templates:
+  vue_component_base: |
+    <template>
+      <div class="{{ component_name.lower().replace(' ', '-') }}">
+        {% if component_type == 'page' %}
+        <!-- Page Header -->
+        <div class="mb-6">
+          <h1 class="text-2xl font-bold text-gray-900">{{ page_title | default(component_name) }}</h1>
+          {% if page_subtitle %}
+          <p class="text-gray-600 mt-1">{{ page_subtitle }}</p>
+          {% endif %}
+        </div>
+        
+        <!-- Page Content -->
+        <div class="space-y-6">
+          {{ page_content_template | indent(10) }}
+        </div>
+        
+        {% elif component_type == 'dialog' %}
+        <Dialog v-model="show" :options="dialogOptions">
+          <template #body>
+            <div class="space-y-4">
+              {{ dialog_content_template | indent(14) }}
+            </div>
+          </template>
+          <template #actions>
+            <div class="flex justify-end space-x-2">
+              <Button variant="outline" @click="show = false">
+                {{ __('Cancel') }}
+              </Button>
+              <Button variant="solid" @click="handleSave" :loading="saving">
+                {{ __('Save') }}
+              </Button>
+            </div>
+          </template>
+        </Dialog>
+        
+        {% elif component_type == 'form' %}
+        <form @submit.prevent="handleSubmit" class="space-y-6">
+          {{ form_fields_template | indent(10) }}
+          
+          <div class="flex justify-end space-x-2 pt-4 border-t">
+            <Button type="button" variant="outline" @click="handleCancel">
+              {{ __('Cancel') }}
+            </Button>
+            <Button type="submit" variant="solid" :loading="submitting">
+              {{ __('Save') }}
+            </Button>
+          </div>
+        </form>
+        
+        {% elif component_type == 'list' %}
+        <div class="space-y-4">
+          <!-- List Header -->
+          <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+              <h2 class="text-lg font-semibold">{{ list_title | default(component_name) }}</h2>
+              <span class="text-sm text-gray-500" v-if="totalCount">
+                {{ totalCount }} {{ __('items') }}
+              </span>
+            </div>
+            <div class="flex items-center space-x-2">
+              {{ list_actions_template | indent(14) }}
+            </div>
+          </div>
+          
+          <!-- List Filters -->
+          <div class="flex items-center space-x-4" v-if="filters.length > 0">
+            {{ list_filters_template | indent(12) }}
+          </div>
+          
+          <!-- List Content -->
+          <ListView
+            :columns="columns"
+            :rows="rows"
+            :loading="loading"
+            :options="listOptions"
+            @row-click="handleRowClick"
+          />
+          
+          <!-- Pagination -->
+          <div class="flex justify-center" v-if="totalPages > 1">
+            <Pagination
+              :total="totalCount"
+              :page-size="pageSize"
+              :current-page="currentPage"
+              @update:current-page="handlePageChange"
+            />
+          </div>
+        </div>
+        
+        {% elif component_type == 'card' %}
+        <Card class="p-6">
+          <template #header v-if="cardTitle">
+            <div class="flex justify-between items-center">
+              <h3 class="text-lg font-semibold">{{ cardTitle }}</h3>
+              {{ card_header_actions | indent(14) }}
+            </div>
+          </template>
+          
+          <div class="space-y-4">
+            {{ card_content_template | indent(12) }}
+          </div>
+          
+          <template #footer v-if="cardActions">
+            <div class="flex justify-end space-x-2">
+              {{ card_footer_actions | indent(14) }}
+            </div>
+          </template>
+        </Card>
+        
+        {% elif component_type == 'widget' %}
+        <div class="widget bg-white rounded-lg shadow-sm border p-6">
+          <div class="flex items-center justify-between mb-4" v-if="widgetTitle">
+            <h3 class="text-lg font-semibold text-gray-900">{{ widgetTitle }}</h3>
+            {{ widget_actions | indent(12) }}
+          </div>
+          
+          <div class="widget-content">
+            {{ widget_content_template | indent(12) }}
+          </div>
+        </div>
+        
+        {% elif component_type == 'layout' %}
+        <div class="layout-container">
+          <div class="layout-sidebar" v-if="hasSidebar">
+            {{ sidebar_template | indent(12) }}
+          </div>
+          
+          <div class="layout-main">
+            <div class="layout-header" v-if="hasHeader">
+              {{ header_template | indent(14) }}
+            </div>
+            
+            <div class="layout-content">
+              <slot />
+            </div>
+            
+            <div class="layout-footer" v-if="hasFooter">
+              {{ footer_template | indent(14) }}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </template>
+    
+    <script setup>
+    import { ref, computed, onMounted, watch } from 'vue'
+    import { 
+      {% for ui_component in frappe_ui_components %}
+      {{ ui_component }},
+      {% endfor %}
+    } from 'frappe-ui'
+    import { createResource } from 'frappe-ui'
+    import { toast } from '@/utils'
+    import { __ } from '@/utils/translations'
+    
+    // Props
+    {% if props %}
+    const props = defineProps({
+      {% for prop in props %}
+      {{ prop.name }}: {
+        type: {{ prop.type }},
+        {% if prop.required %}required: true,{% endif %}
+        {% if prop.default %}default: {{ prop.default }},{% endif %}
+        {% if prop.validator %}validator: {{ prop.validator }}{% endif %}
+      },
+      {% endfor %}
+    })
+    {% else %}
+    const props = defineProps({})
+    {% endif %}
+    
+    // Emits
+    const emit = defineEmits([
+      {% for event in component_events %}
+      '{{ event.name }}',
+      {% endfor %}
+    ])
+    
+    // Reactive state
+    {% for state_var in reactive_state %}
+    const {{ state_var.name }} = ref({{ state_var.default_value }})
+    {% endfor %}
+    
+    // API Resources
+    {% for api_resource in api_resources %}
+    const {{ api_resource.name }} = createResource({
+      url: '{{ api_resource.endpoint }}',
+      {% if api_resource.method %}method: '{{ api_resource.method }}',{% endif %}
+      {% if api_resource.auto %}auto: true,{% endif %}
+      onSuccess(data) {
+        {{ api_resource.on_success | indent(8) }}
+      },
+      onError(error) {
+        console.error('{{ api_resource.name }} error:', error)
+        toast({
+          title: __('Error'),
+          text: error.message,
+          icon: 'x',
+          iconClasses: 'text-red-600'
+        })
+      }
+    })
+    {% endfor %}
+    
+    // Computed properties
+    {% for computed_prop in computed_properties %}
+    const {{ computed_prop.name }} = computed(() => {
+      {{ computed_prop.logic | indent(6) }}
+    })
+    {% endfor %}
+    
+    // Methods
+    {% for method in component_methods %}
+    const {{ method.name }} = {% if method.async %}async {% endif %}({{ method.parameters | join(', ') if method.parameters }}) => {
+      {{ method.implementation | indent(6) }}
+    }
+    {% endfor %}
+    
+    // Watchers
+    {% for watcher in watchers %}
+    watch({{ watcher.source }}, (newValue, oldValue) => {
+      {{ watcher.handler | indent(6) }}
+    }{% if watcher.options %}, {{ watcher.options }}{% endif %})
+    {% endfor %}
+    
+    // Lifecycle
+    onMounted(async () => {
+      {{ on_mounted_logic | indent(6) }}
+    })
+    
+    // Expose public methods for template refs
+    defineExpose({
+      {% for exposed_method in exposed_methods %}
+      {{ exposed_method }},
+      {% endfor %}
+    })
+    </script>
+    
+    <style scoped>
+    {% if component_styles %}
+    {{ component_styles }}
+    {% else %}
+    .{{ component_name.lower().replace(' ', '-') }} {
+      /* Component-specific styles */
+    }
+    
+    .loading-state {
+      @apply flex items-center justify-center p-8 text-gray-500;
+    }
+    
+    .error-state {
+      @apply flex flex-col items-center justify-center p-8 text-red-600;
+    }
+    
+    .empty-state {
+      @apply flex flex-col items-center justify-center p-8 text-gray-400;
+    }
+    {% endif %}
+    </style>
+
+  form_field_templates: |
+    <!-- Text Input Field -->
+    <FormControl
+      v-model="formData.{{ field_name }}"
+      :label="__('{{ field_label }}')"
+      type="text"
+      {% if field_required %}:required="true"{% endif %}
+      {% if field_placeholder %}:placeholder="__('{{ field_placeholder }}')"{% endif %}
+      {% if field_disabled %}:disabled="{{ field_disabled }}"{% endif %}
+    />
+    
+    <!-- Select Field -->
+    <FormControl
+      v-model="formData.{{ field_name }}"
+      :label="__('{{ field_label }}')"
+      type="select"
+      :options="{{ field_options }}"
+      {% if field_required %}:required="true"{% endif %}
+    />
+    
+    <!-- Autocomplete Field -->
+    <FormControl
+      v-model="formData.{{ field_name }}"
+      :label="__('{{ field_label }}')"
+      type="autocomplete"
+      :options="{{ field_options }}"
+      :loading="{{ field_loading }}"
+      {% if field_required %}:required="true"{% endif %}
+    />
+    
+    <!-- Checkbox Field -->
+    <FormControl
+      v-model="formData.{{ field_name }}"
+      :label="__('{{ field_label }}')"
+      type="checkbox"
+    />
+    
+    <!-- Date Field -->
+    <FormControl
+      v-model="formData.{{ field_name }}"
+      :label="__('{{ field_label }}')"
+      type="date"
+      {% if field_required %}:required="true"{% endif %}
+    />
+    
+    <!-- File Upload Field -->
+    <FormControl
+      v-model="formData.{{ field_name }}"
+      :label="__('{{ field_label }}')"
+      type="file"
+      :accept="'{{ file_accept }}'"
+      {% if field_multiple %}:multiple="true"{% endif %}
+    />
+
+  list_view_columns: |
+    const columns = [
+      {% for column in list_columns %}
+      {
+        label: __('{{ column.label }}'),
+        key: '{{ column.key }}',
+        {% if column.width %}width: '{{ column.width }}',{% endif %}
+        {% if column.align %}align: '{{ column.align }}',{% endif %}
+        {% if column.sortable %}sortable: true,{% endif %}
+        {% if column.formatter %}
+        formatter: (value, row) => {
+          {{ column.formatter | indent(10) }}
+        }
+        {% endif %}
+      },
+      {% endfor %}
+    ]
+
+  api_integration_patterns: |
+    // Fetch data pattern
+    const fetchData = async () => {
+      try {
+        loading.value = true
+        const response = await dataResource.fetch()
+        if (response) {
+          data.value = response
+        }
+      } catch (error) {
+        console.error('Fetch error:', error)
+        toast({
+          title: __('Error'),
+          text: __('Failed to fetch data'),
+          icon: 'x',
+          iconClasses: 'text-red-600'
+        })
+      } finally {
+        loading.value = false
+      }
+    }
+    
+    // Create record pattern
+    const createRecord = async (recordData) => {
+      try {
+        saving.value = true
+        const response = await createResource.submit(recordData)
+        if (response) {
+          toast({
+            title: __('Success'),
+            text: __('Record created successfully'),
+            icon: 'check',
+            iconClasses: 'text-green-600'
+          })
+          emit('record-created', response)
+          return response
+        }
+      } catch (error) {
+        console.error('Create error:', error)
+        toast({
+          title: __('Error'),
+          text: error.message || __('Failed to create record'),
+          icon: 'x',
+          iconClasses: 'text-red-600'
+        })
+        throw error
+      } finally {
+        saving.value = false
+      }
+    }
+    
+    // Update record pattern
+    const updateRecord = async (recordData) => {
+      try {
+        updating.value = true
+        const response = await updateResource.submit(recordData)
+        if (response) {
+          toast({
+            title: __('Success'),
+            text: __('Record updated successfully'),
+            icon: 'check',
+            iconClasses: 'text-green-600'
+          })
+          emit('record-updated', response)
+          return response
+        }
+      } catch (error) {
+        console.error('Update error:', error)
+        toast({
+          title: __('Error'),
+          text: error.message || __('Failed to update record'),
+          icon: 'x',
+          iconClasses: 'text-red-600'
+        })
+        throw error
+      } finally {
+        updating.value = false
+      }
+    }
+    
+    // Delete record pattern
+    const deleteRecord = async (recordName) => {
+      try {
+        const confirmed = await confirm(__('Are you sure you want to delete this record?'))
+        if (!confirmed) return
+        
+        deleting.value = true
+        const response = await deleteResource.submit({ name: recordName })
+        if (response) {
+          toast({
+            title: __('Success'),
+            text: __('Record deleted successfully'),
+            icon: 'check',
+            iconClasses: 'text-green-600'
+          })
+          emit('record-deleted', recordName)
+          return response
+        }
+      } catch (error) {
+        console.error('Delete error:', error)
+        toast({
+          title: __('Error'),
+          text: error.message || __('Failed to delete record'),
+          icon: 'x',
+          iconClasses: 'text-red-600'
+        })
+        throw error
+      } finally {
+        deleting.value = false
+      }
+    }
+
+  permission_checks: |
+    // Permission checking utilities
+    import { useUserPermissions } from '@/composables/useUserPermissions'
+    
+    const { hasPermission, canCreate, canRead, canWrite, canDelete } = useUserPermissions()
+    
+    // Check specific permission
+    const canEditRecord = computed(() => {
+      return hasPermission('{{ doctype }}', 'write', props.recordName)
+    })
+    
+    // Check role-based permission
+    const canApprove = computed(() => {
+      return {{ approval_roles | map("'{}'" | format) | join(' || ') | replace("'{}'", "hasRole('{}')") }}
+    })
+    
+    // Permission-based rendering
+    const showActions = computed(() => {
+      return canWrite.value || canDelete.value
+    })
+    
+    // Permission guards for methods
+    const handleEdit = () => {
+      if (!canEditRecord.value) {
+        toast({
+          title: __('Permission Denied'),
+          text: __('You do not have permission to edit this record'),
+          icon: 'x',
+          iconClasses: 'text-red-600'
+        })
+        return
+      }
+      
+      // Proceed with edit logic
+      emit('edit-record', props.record)
+    }
+
+  responsive_design_patterns: |
+    <!-- Responsive Grid Layout -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div v-for="item in items" :key="item.id" class="col-span-1">
+        <!-- Item content -->
+      </div>
+    </div>
+    
+    <!-- Responsive Table/Cards -->
+    <div class="hidden md:block">
+      <!-- Desktop table view -->
+      <ListView :columns="columns" :rows="rows" />
+    </div>
+    <div class="md:hidden space-y-4">
+      <!-- Mobile card view -->
+      <Card v-for="row in rows" :key="row.id" class="p-4">
+        <!-- Card content -->
+      </Card>
+    </div>
+    
+    <!-- Responsive Navigation -->
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <!-- Always visible items -->
+      </div>
+      <div class="hidden sm:flex items-center space-x-2">
+        <!-- Hidden on mobile -->
+      </div>
+      <div class="sm:hidden">
+        <!-- Mobile menu button -->
+        <Button variant="ghost" size="sm" @click="showMobileMenu = !showMobileMenu">
+          <MoreHorizontal class="w-4 h-4" />
+        </Button>
+      </div>
+    </div>
+
+examples:
+  customer_form_component:
+    component_name: "CustomerForm"
+    component_type: "form"
+    props:
+      - name: "customerId"
+        type: "String"
+        required: false
+        default: "null"
+    api_resources:
+      - name: "customerResource"
+        endpoint: "/api/method/frappe.client.get"
+        method: "GET"
+        auto: false
+        on_success: |
+          if (data.message) {
+            formData.value = data.message
+          }
+    form_fields:
+      - name: "customer_name"
+        label: "Customer Name"
+        type: "text"
+        required: true
+      - name: "email_id"
+        label: "Email"
+        type: "text"
+        placeholder: "customer@example.com"
+        required: true
+
+  sales_dashboard_widget:
+    component_name: "SalesDashboard"
+    component_type: "widget"
+    frappe_ui_components:
+      - "Card"
+      - "Button"
+      - "Badge"
+    api_resources:
+      - name: "salesData"
+        endpoint: "/api/method/myapp.api.get_sales_summary"
+        auto: true
+        on_success: |
+          salesSummary.value = data.message
+
+  document_list_view:
+    component_name: "InvoiceList"
+    component_type: "list"
+    frappe_ui_components:
+      - "ListView"
+      - "Button"
+      - "Badge"
+      - "Pagination"
+    list_columns:
+      - label: "Invoice No"
+        key: "name"
+        width: "150px"
+        sortable: true
+      - label: "Customer"
+        key: "customer"
+        width: "200px"
+      - label: "Date"
+        key: "posting_date"
+        width: "120px"
+        formatter: |
+          return new Date(value).toLocaleDateString()
+      - label: "Amount"
+        key: "grand_total"
+        width: "120px"
+        align: "right"
+        formatter: |
+          return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+          }).format(value)
+
+best_practices:
+  component_structure:
+    - "Use composition API with <script setup>"
+    - "Keep components focused on single responsibility"
+    - "Use TypeScript for better type safety"
+    - "Implement proper prop validation"
+    - "Use emits for parent communication"
+  
+  frappe_ui_integration:
+    - "Import only needed frappe-ui components"
+    - "Use createResource for API calls"
+    - "Follow frappe-ui design tokens"
+    - "Use consistent spacing and colors"
+    - "Leverage built-in accessibility features"
+  
+  state_management:
+    - "Use reactive refs for component state"
+    - "Implement computed properties for derived state"
+    - "Use watchers sparingly and with cleanup"
+    - "Consider Pinia for complex state"
+  
+  performance_optimization:
+    - "Use v-memo for expensive renders"
+    - "Implement virtual scrolling for large lists"
+    - "Lazy load heavy components"
+    - "Debounce user inputs"
+    - "Use keep-alive for navigation"
+  
+  accessibility:
+    - "Use semantic HTML elements"
+    - "Implement proper ARIA labels"
+    - "Ensure keyboard navigation"
+    - "Test with screen readers"
+    - "Maintain focus management"
+
+component_patterns:
+  data_table_with_actions:
+    description: "Table with inline actions and bulk operations"
+    template: |
+      <ListView
+        :columns="columns"
+        :rows="rows"
+        :loading="loading"
+        :selectable="true"
+        v-model:selected="selectedRows"
+        @row-click="handleRowClick"
+      >
+        <template #actions>
+          <Button
+            v-if="selectedRows.length > 0"
+            variant="outline"
+            @click="handleBulkDelete"
+          >
+            Delete Selected ({{ selectedRows.length }})
+          </Button>
+        </template>
+        <template #row-actions="{ row }">
+          <div class="flex space-x-1">
+            <Button size="sm" variant="ghost" @click="handleEdit(row)">
+              Edit
+            </Button>
+            <Button size="sm" variant="ghost" @click="handleDelete(row)">
+              Delete
+            </Button>
+          </div>
+        </template>
+      </ListView>
+
+  modal_with_form:
+    description: "Modal dialog containing a form with validation"
+    template: |
+      <Dialog v-model="show" :options="{ title: modalTitle, size: 'lg' }">
+        <template #body>
+          <form @submit.prevent="handleSubmit" class="space-y-4">
+            <FormControl
+              v-for="field in formFields"
+              :key="field.name"
+              v-model="formData[field.name]"
+              :label="field.label"
+              :type="field.type"
+              :required="field.required"
+              :error="errors[field.name]"
+            />
+          </form>
+        </template>
+        <template #actions>
+          <div class="flex justify-end space-x-2">
+            <Button variant="outline" @click="show = false">
+              Cancel
+            </Button>
+            <Button 
+              variant="solid" 
+              @click="handleSubmit" 
+              :loading="saving"
+              :disabled="!isFormValid"
+            >
+              Save
+            </Button>
+          </div>
+        </template>
+      </Dialog>
+
+  dashboard_card_with_chart:
+    description: "Dashboard card containing a chart and key metrics"
+    template: |
+      <Card class="p-6">
+        <template #header>
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg font-semibold">{{ cardTitle }}</h3>
+            <Badge :color="trendColor">
+              {{ trendIndicator }}
+            </Badge>
+          </div>
+        </template>
+        
+        <div class="space-y-4">
+          <div class="grid grid-cols-3 gap-4">
+            <div v-for="metric in keyMetrics" :key="metric.label" class="text-center">
+              <div class="text-2xl font-bold">{{ metric.value }}</div>
+              <div class="text-sm text-gray-600">{{ metric.label }}</div>
+            </div>
+          </div>
+          
+          <div class="h-64">
+            <ChartComponent
+              :data="chartData"
+              :options="chartOptions"
+              :loading="chartLoading"
+            />
+          </div>
+        </div>
+      </Card>
+
+testing_patterns:
+  component_test: |
+    import { mount } from '@vue/test-utils'
+    import {{ component_name }} from '@/components/{{ component_name }}.vue'
+    
+    describe('{{ component_name }}', () => {
+      let wrapper
+      
+      beforeEach(() => {
+        wrapper = mount({{ component_name }}, {
+          props: {
+            // Test props
+          },
+          global: {
+            // Global test configuration
+          }
+        })
+      })
+      
+      test('renders correctly', () => {
+        expect(wrapper.exists()).toBe(true)
+        expect(wrapper.find('h1').text()).toBe('Expected Title')
+      })
+      
+      test('handles user interaction', async () => {
+        const button = wrapper.find('button')
+        await button.trigger('click')
+        
+        expect(wrapper.emitted('click')).toBeTruthy()
+      })
+      
+      test('displays data correctly', async () => {
+        await wrapper.setProps({
+          data: mockData
+        })
+        
+        expect(wrapper.findAll('.data-item')).toHaveLength(mockData.length)
+      })
+    })
+
+deployment_checklist:
+  - "Test component with different screen sizes"
+  - "Verify accessibility compliance"
+  - "Test with various data scenarios"
+  - "Check error handling and loading states"
+  - "Validate API integration"
+  - "Test permission-based rendering"
+  - "Verify translation support"
+  - "Test component performance"
+  - "Check browser compatibility"
+  - "Validate SEO considerations (for pages)"

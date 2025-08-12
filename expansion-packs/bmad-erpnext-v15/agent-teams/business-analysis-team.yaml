@@ -1,0 +1,337 @@
+name: "ERPNext Business Analysis Team"
+description: "Expert team specializing in business process analysis and ERPNext requirements gathering"
+version: "1.0.0"
+
+# Team Composition
+agents:
+  - name: "Senior Business Analyst"
+    role: "Lead Business Process Expert"
+    expertise:
+      - Business process mapping
+      - Requirements gathering
+      - Gap analysis
+      - Stakeholder management
+      - Process optimization
+      - Change management
+    tools:
+      - Process mapping software
+      - Requirements documentation templates
+      - Stakeholder analysis frameworks
+      - BPMN modeling tools
+
+  - name: "ERPNext Systems Analyst"
+    role: "ERPNext Configuration Specialist"
+    expertise:
+      - ERPNext module architecture
+      - Standard vs custom requirements
+      - DocType relationships
+      - Workflow design
+      - Permission systems
+      - Data migration planning
+    tools:
+      - ERPNext demo environments
+      - Configuration documentation
+      - Migration assessment tools
+      - Performance analysis tools
+
+  - name: "Industry Domain Expert"
+    role: "Sector-Specific Business Consultant"
+    expertise:
+      - Industry best practices
+      - Regulatory compliance
+      - Sector-specific workflows
+      - KPI and metrics definition
+      - Competitive analysis
+      - Risk assessment
+    tools:
+      - Industry benchmarking tools
+      - Compliance checklists
+      - Risk assessment frameworks
+      - Performance measurement tools
+
+  - name: "Technical Requirements Analyst"
+    role: "Technical Translation Specialist"
+    expertise:
+      - Business-to-technical translation
+      - Integration requirements
+      - API specifications
+      - Data model design
+      - Performance requirements
+      - Security requirements
+    tools:
+      - Technical specification templates
+      - API documentation tools
+      - Database design tools
+      - Security assessment frameworks
+
+# Workflows
+workflows:
+  discovery_phase:
+    name: "Business Discovery and Analysis"
+    steps:
+      - stakeholder_identification:
+          description: "Identify and categorize all stakeholders"
+          deliverables:
+            - Stakeholder matrix
+            - Communication plan
+            - Interview schedule
+          duration: "3-5 days"
+
+      - current_state_analysis:
+          description: "Document existing business processes"
+          deliverables:
+            - Current state process maps
+            - Pain point analysis
+            - System inventory
+            - Data flow diagrams
+          duration: "1-2 weeks"
+
+      - requirements_gathering:
+          description: "Collect and document business requirements"
+          deliverables:
+            - Functional requirements document
+            - Non-functional requirements
+            - User stories
+            - Acceptance criteria
+          duration: "2-3 weeks"
+
+      - gap_analysis:
+          description: "Identify gaps between current and desired state"
+          deliverables:
+            - Gap analysis report
+            - Priority matrix
+            - Risk assessment
+            - Resource requirements
+          duration: "1 week"
+
+      - solution_design:
+          description: "Design ERPNext-based solution"
+          deliverables:
+            - Future state process maps
+            - ERPNext configuration plan
+            - Customization requirements
+            - Integration specifications
+          duration: "2-3 weeks"
+
+  requirements_validation:
+    name: "Requirements Validation and Sign-off"
+    steps:
+      - stakeholder_review:
+          description: "Present findings to stakeholders"
+          deliverables:
+            - Presentation materials
+            - Feedback compilation
+            - Requirements updates
+          duration: "1 week"
+
+      - prototype_validation:
+          description: "Create and validate solution prototype"
+          deliverables:
+            - ERPNext prototype
+            - Validation test cases
+            - User feedback analysis
+          duration: "2 weeks"
+
+      - final_requirements:
+          description: "Finalize and document requirements"
+          deliverables:
+            - Final requirements document
+            - Technical specifications
+            - Project scope statement
+            - Change control process
+          duration: "1 week"
+
+# Analysis Frameworks
+frameworks:
+  business_process_analysis:
+    methods:
+      - "Value Stream Mapping"
+      - "SIPOC Analysis"
+      - "Root Cause Analysis"
+      - "Process Mining"
+      - "Bottleneck Analysis"
+    
+  requirements_gathering:
+    techniques:
+      - "Structured Interviews"
+      - "Focus Groups"
+      - "Observation Studies"
+      - "Document Analysis"
+      - "Prototyping"
+      - "User Story Mapping"
+
+  gap_analysis:
+    approaches:
+      - "Fit-Gap Analysis"
+      - "McKinsey 7S Framework"
+      - "SWOT Analysis"
+      - "Force Field Analysis"
+      - "Impact-Effort Matrix"
+
+# ERPNext-Specific Analysis
+erpnext_analysis:
+  module_assessment:
+    core_modules:
+      - "Accounting & Finance"
+      - "Sales & CRM"
+      - "Purchase & Procurement"
+      - "Inventory Management"
+      - "Manufacturing"
+      - "Human Resources"
+      - "Project Management"
+      - "Asset Management"
+    
+    evaluation_criteria:
+      - "Functional fit percentage"
+      - "Configuration complexity"
+      - "Customization requirements"
+      - "Integration needs"
+      - "Performance impact"
+      - "User experience"
+
+  customization_analysis:
+    types:
+      - "DocType modifications"
+      - "Custom fields and forms"
+      - "Workflow customizations"
+      - "Report customizations"
+      - "Dashboard customizations"
+      - "Print format customizations"
+    
+    complexity_levels:
+      - low: "Configuration-only changes"
+      - medium: "Custom scripts and forms"
+      - high: "Custom DocTypes and modules"
+      - complex: "Core framework modifications"
+
+# Industry-Specific Templates
+industry_templates:
+  manufacturing:
+    focus_areas:
+      - "Production planning"
+      - "Quality control"
+      - "Supply chain management"
+      - "Equipment maintenance"
+      - "Regulatory compliance"
+    
+    key_processes:
+      - "Make-to-order vs Make-to-stock"
+      - "Bill of Materials management"
+      - "Work order processing"
+      - "Inventory optimization"
+      - "Cost accounting"
+
+  services:
+    focus_areas:
+      - "Project management"
+      - "Resource allocation"
+      - "Time tracking"
+      - "Billing and invoicing"
+      - "Client relationship management"
+    
+    key_processes:
+      - "Service delivery workflows"
+      - "Resource scheduling"
+      - "Project profitability"
+      - "Client portal management"
+      - "SLA tracking"
+
+  retail:
+    focus_areas:
+      - "Multi-channel sales"
+      - "Inventory management"
+      - "Point of sale integration"
+      - "Customer loyalty"
+      - "Promotional campaigns"
+    
+    key_processes:
+      - "Omnichannel operations"
+      - "Demand forecasting"
+      - "Pricing strategies"
+      - "Returns management"
+      - "Customer analytics"
+
+# Quality Standards
+quality_standards:
+  documentation:
+    - "Clear and concise language"
+    - "Structured templates"
+    - "Version control"
+    - "Review and approval process"
+    - "Traceability matrix"
+
+  analysis_depth:
+    - "Comprehensive process mapping"
+    - "Detailed requirements specification"
+    - "Thorough gap analysis"
+    - "Risk and impact assessment"
+    - "Stakeholder validation"
+
+  deliverable_quality:
+    - "Executive summary"
+    - "Detailed findings"
+    - "Actionable recommendations"
+    - "Implementation roadmap"
+    - "Success metrics"
+
+# Success Metrics
+success_metrics:
+  process_efficiency:
+    - "Requirements clarity score"
+    - "Stakeholder satisfaction rating"
+    - "Change request volume"
+    - "Time to requirement sign-off"
+    - "Implementation success rate"
+
+  business_alignment:
+    - "Business objective alignment"
+    - "ROI achievement"
+    - "Process improvement metrics"
+    - "User adoption rates"
+    - "System utilization metrics"
+
+# Tools and Resources
+tools:
+  analysis_tools:
+    - "Microsoft Visio (Process mapping)"
+    - "Lucidchart (Diagramming)"
+    - "JIRA (Requirements tracking)"
+    - "Confluence (Documentation)"
+    - "Miro (Collaborative workshops)"
+
+  erpnext_tools:
+    - "ERPNext Demo Sites"
+    - "ERPNext Documentation"
+    - "Bench Commands"
+    - "Custom App Development Tools"
+    - "Data Import Tools"
+
+  communication_tools:
+    - "Stakeholder interview guides"
+    - "Requirements gathering templates"
+    - "Gap analysis frameworks"
+    - "Presentation templates"
+    - "Sign-off documents"
+
+# Best Practices
+best_practices:
+  stakeholder_engagement:
+    - "Regular communication"
+    - "Clear expectations setting"
+    - "Inclusive decision making"
+    - "Conflict resolution"
+    - "Change management"
+
+  requirements_management:
+    - "Iterative refinement"
+    - "Traceability maintenance"
+    - "Impact analysis"
+    - "Version control"
+    - "Change control"
+
+  quality_assurance:
+    - "Peer reviews"
+    - "Stakeholder validation"
+    - "Prototype testing"
+    - "Documentation standards"
+    - "Continuous improvement"

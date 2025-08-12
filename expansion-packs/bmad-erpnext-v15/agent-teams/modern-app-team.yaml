@@ -1,0 +1,321 @@
+name: "modern-app-team"
+title: "Modern ERPNext App Development Team"
+description: "Specialized team for building modern ERPNext applications with Vue 3, PWA capabilities, and contemporary UX patterns"
+version: "1.0.0"
+
+team_composition:
+  lead_agent: "vue-frontend-architect"
+  core_agents:
+    - "vue-frontend-architect"
+    - "vue-spa-architect" 
+    - "frappe-ui-developer"
+    - "api-architect"
+    - "doctype-designer"
+    - "pwa-specialist"
+    - "jinja-template-specialist"
+  
+  supporting_agents:
+    - "mobile-ui-specialist"
+    - "testing-specialist"
+    - "erpnext-architect"
+
+expertise_areas:
+  frontend_development:
+    primary_focus: "Modern Vue 3 applications with Composition API"
+    technologies:
+      - "Vue 3 with <script setup> syntax"
+      - "Vite build system and hot reload"
+      - "frappe-ui component library"
+      - "TailwindCSS for styling"
+      - "Pinia for state management"
+      - "Vue Router for navigation"
+    
+    capabilities:
+      - "Responsive design for all device types"
+      - "Component-driven architecture"
+      - "Performance optimization and code splitting"
+      - "Modern JavaScript ES2022+ features"
+      - "TypeScript integration when needed"
+
+  backend_integration:
+    primary_focus: "Seamless ERPNext backend integration"
+    technologies:
+      - "frappe-ui createResource patterns"
+      - "ERPNext API endpoints and whitelisting"
+      - "Real-time updates with Socket.IO"
+      - "ERPNext authentication and permissions"
+    
+    capabilities:
+      - "Secure API endpoint design"
+      - "Efficient data fetching and caching"
+      - "Real-time synchronization"
+      - "Permission-based UI rendering"
+
+  progressive_web_app:
+    primary_focus: "PWA features for app-like experience"
+    technologies:
+      - "Service Workers for offline functionality"
+      - "Web App Manifest for installability"
+      - "Push Notifications API"
+      - "Background Sync capabilities"
+    
+    capabilities:
+      - "Offline-first architecture"
+      - "App installation prompts"
+      - "Background data synchronization"
+      - "Push notification integration"
+
+team_workflows:
+  modern_app_development:
+    description: "End-to-end modern app development process"
+    phases:
+      discovery:
+        duration: "3-5 days"
+        activities:
+          - "Requirements analysis and user story creation"
+          - "Technical architecture planning"
+          - "UI/UX design system establishment"
+          - "Performance and scalability planning"
+        deliverables:
+          - "Technical specifications document"
+          - "UI/UX design mockups"
+          - "Architecture decision records"
+          - "Development timeline"
+
+      setup:
+        duration: "2-3 days"
+        activities:
+          - "Project scaffolding with doppio starter"
+          - "Development environment configuration"
+          - "CI/CD pipeline setup"
+          - "Design system implementation"
+        deliverables:
+          - "Development environment ready"
+          - "Base application structure"
+          - "Component library foundation"
+          - "Build and deployment pipeline"
+
+      development:
+        duration: "2-8 weeks"
+        activities:
+          - "Vue component development"
+          - "ERPNext DocType and API creation"
+          - "State management implementation"
+          - "Real-time feature development"
+        deliverables:
+          - "Feature-complete application"
+          - "API endpoints and documentation"
+          - "Component library and design system"
+          - "Test coverage and validation"
+
+      optimization:
+        duration: "1-2 weeks"
+        activities:
+          - "Performance testing and optimization"
+          - "Bundle size optimization"
+          - "PWA feature implementation"
+          - "Accessibility and SEO optimization"
+        deliverables:
+          - "Performance-optimized application"
+          - "PWA capabilities enabled"
+          - "Accessibility compliance achieved"
+          - "Production-ready deployment"
+
+collaboration_patterns:
+  design_to_development:
+    process: "Seamless handoff from design to implementation"
+    tools:
+      - "Figma for design specifications"
+      - "Component story documentation"
+      - "Design token system"
+    
+    workflow:
+      - "Design system creation in Figma"
+      - "Component specification documentation"
+      - "Vue component implementation"
+      - "Design review and iteration"
+
+  frontend_backend_sync:
+    process: "Coordinated development between frontend and backend"
+    communication:
+      - "API contract definition upfront"
+      - "Regular sync meetings for integration points"
+      - "Shared development database for testing"
+    
+    workflow:
+      - "API specification agreement"
+      - "Parallel development with mocked data"
+      - "Integration testing and validation"
+      - "Performance optimization collaboration"
+
+  testing_integration:
+    process: "Comprehensive testing throughout development"
+    testing_levels:
+      - "Unit tests for Vue components"
+      - "Integration tests for API endpoints"
+      - "E2E tests for user workflows"
+      - "Performance and accessibility testing"
+    
+    workflow:
+      - "Test-driven development approach"
+      - "Continuous integration with automated tests"
+      - "User acceptance testing with stakeholders"
+      - "Performance benchmarking and optimization"
+
+quality_standards:
+  code_quality:
+    frontend_standards:
+      - "Vue 3 Composition API with <script setup>"
+      - "TypeScript for complex components"
+      - "ESLint and Prettier for code formatting"
+      - "Component documentation with JSDoc"
+      - "Consistent naming conventions"
+
+    backend_standards:
+      - "ERPNext coding conventions compliance"
+      - "Proper API documentation with docstrings"
+      - "Security best practices (@frappe.whitelist())"
+      - "Error handling and validation"
+      - "Performance optimization patterns"
+
+  user_experience:
+    design_principles:
+      - "Mobile-first responsive design"
+      - "Accessibility WCAG 2.1 compliance"
+      - "Consistent design system usage"
+      - "Performance budgets and metrics"
+      - "User feedback integration"
+
+    interaction_patterns:
+      - "Loading states and skeleton screens"
+      - "Error boundary and fallback UI"
+      - "Optimistic updates for better UX"
+      - "Keyboard navigation support"
+      - "Touch-friendly mobile interactions"
+
+  performance_standards:
+    metrics:
+      - "First Contentful Paint < 1.5s"
+      - "Largest Contentful Paint < 2.5s"
+      - "Cumulative Layout Shift < 0.1"
+      - "Time to Interactive < 3.5s"
+      - "Bundle size optimization targets"
+
+    optimization_techniques:
+      - "Code splitting and lazy loading"
+      - "Image optimization and responsive images"
+      - "Critical CSS inlining"
+      - "Service worker caching strategies"
+      - "Database query optimization"
+
+project_deliverables:
+  technical_assets:
+    - "Production-ready Vue 3 application"
+    - "ERPNext app with custom DocTypes and APIs"
+    - "Component library and design system"
+    - "PWA configuration and service workers"
+    - "Comprehensive test suite"
+
+  documentation:
+    - "Technical architecture documentation"
+    - "Component library documentation"
+    - "API documentation and examples"
+    - "Deployment and maintenance guides"
+    - "User training materials"
+
+  deployment_assets:
+    - "Production build configuration"
+    - "CI/CD pipeline configuration"
+    - "Performance monitoring setup"
+    - "Error tracking and logging"
+    - "Backup and recovery procedures"
+
+success_metrics:
+  technical_metrics:
+    - "Performance scores >90 on Lighthouse"
+    - "Bundle size within budget constraints"
+    - "Test coverage >85%"
+    - "Zero critical security vulnerabilities"
+    - "API response times <200ms average"
+
+  user_experience_metrics:
+    - "User satisfaction scores >4.5/5"
+    - "Task completion rates >95%"
+    - "Mobile usability scores >90%"
+    - "Accessibility audit score >95%"
+    - "Page load speed satisfaction"
+
+  business_metrics:
+    - "User adoption rate targets met"
+    - "Business process efficiency improvements"
+    - "Reduced support ticket volume"
+    - "Increased user engagement metrics"
+    - "ROI targets achieved"
+
+risk_mitigation:
+  technical_risks:
+    - risk: "Complex state management leading to bugs"
+      mitigation: "Use Pinia with clear state patterns and testing"
+      owner: "vue-frontend-architect"
+    
+    - risk: "Performance issues with large datasets"
+      mitigation: "Implement virtual scrolling and pagination"
+      owner: "pwa-specialist"
+    
+    - risk: "Browser compatibility issues"
+      mitigation: "Comprehensive testing across target browsers"
+      owner: "frappe-ui-developer"
+
+  project_risks:
+    - risk: "Scope creep affecting timeline"
+      mitigation: "Clear requirements documentation and change control"
+      owner: "vue-frontend-architect"
+    
+    - risk: "Design changes during development"
+      mitigation: "Design approval gates and version control"
+      owner: "frappe-ui-developer"
+
+team_communication:
+  daily_coordination:
+    - "Daily standup meetings for progress updates"
+    - "Shared development environment for testing"
+    - "Real-time communication via team channels"
+    - "Code review process for all changes"
+
+  milestone_reviews:
+    - "Weekly progress reviews with stakeholders"
+    - "Sprint demonstrations for user feedback"
+    - "Architecture reviews at major milestones"
+    - "Performance reviews and optimization planning"
+
+continuous_improvement:
+  learning_initiatives:
+    - "Regular Vue.js and ERPNext training sessions"
+    - "Modern web development best practice sharing"
+    - "Performance optimization technique workshops"
+    - "User experience design thinking sessions"
+
+  process_optimization:
+    - "Retrospectives for process improvement"
+    - "Tool evaluation and adoption"
+    - "Automation of repetitive tasks"
+    - "Knowledge sharing and documentation"
+
+tools_and_infrastructure:
+  development_tools:
+    - "VS Code with Vue and ERPNext extensions"
+    - "Vue DevTools for debugging"
+    - "Vite for fast development builds"
+    - "ESLint and Prettier for code quality"
+
+  collaboration_tools:
+    - "Git with branching strategy"
+    - "GitHub/GitLab for code collaboration"
+    - "Figma for design collaboration"
+    - "Slack/Teams for communication"
+
+  testing_and_monitoring:
+    - "Vitest for unit testing"
+    - "Playwright for E2E testing"
+    - "Lighthouse for performance auditing"
+    - "Sentry for error tracking"

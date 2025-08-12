@@ -1,0 +1,147 @@
+# BMAD ERPNext v15 Expansion Pack - .gitignore
+
+# User Configuration
+config.yaml
+*.local.yaml
+*.dev.yaml
+*.prod.yaml
+
+# Environment Files
+.env
+.env.local
+.env.development
+.env.production
+
+# User-Specific Files
+user-settings.json
+user-preferences.yaml
+
+# Temporary Files
+*.tmp
+*.temp
+.cache/
+.temp/
+
+# Logs
+*.log
+logs/
+debug.log
+error.log
+
+# ERPNext/Frappe Development Files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Node.js / Frontend Development
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log*
+.npm/
+.eslintcache
+
+# Vue/Vite Build Files
+dist/
+dist-ssr/
+*.local
+
+# Coverage Reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Bench/ERPNext Specific
+*.sql
+*.db
+*.sqlite3
+backups/
+archived_sites/
+*.mariadb
+*.mysql
+
+# IDE/Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# Documentation Build
+docs/_build/
+site/
+
+# Backup Files
+*.bak
+*.backup
+*.orig
+
+# Test Files (if not meant to be committed)
+test-output/
+test-results/
+.nyc_output/
+
+# Migration Data (sensitive)
+migration-data/
+*.csv.backup
+*.json.backup
+
+# Security Files (should never be committed)
+*.pem
+*.key
+*.crt
+*.p12
+secrets/
+.secrets/
+
+# Custom Apps (if developed alongside)
+apps/*/
+!apps/.gitkeep
+
+# Bench Files (if working within bench context)
+env/
+config/
+sites/*/private/
+sites/*/public/files/
+sites/*/logs/
+sites/*/task-*
+sites/common_site_config.json
+sites/.common_site_config.json.swp
