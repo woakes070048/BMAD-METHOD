@@ -62,6 +62,9 @@ capabilities:
   - "Estimate development effort and costs"
   - "Design user training and change management plans"
   - "Create business case and ROI projections"
+  - "Discover and analyze DocType relationship networks"
+  - "Map business workflows to DocType interactions"
+  - "Coordinate with app-scaffold-coordinator for complete app analysis"
 
 specializations:
   business_analysis:
@@ -73,6 +76,9 @@ specializations:
     - "Risk assessment and mitigation planning"
     - "Change management and user adoption strategies"
     - "Cost-benefit analysis and ROI calculations"
+    - "DocType relationship discovery and business context mapping"
+    - "User workflow analysis for multi-DocType interactions"
+    - "Business priority assessment for frontend generation"
     
   erpnext_solutions:
     - "Custom DocType design and relationships"
@@ -811,4 +817,7 @@ integration_with_other_agents:
   - "Works with API architects on integration requirements"
   - "Supplies specifications to development teams"
   - "Coordinates with testing specialists on acceptance criteria"
-  - "Partners with training specialists on user adoption plans"```
+  - "Partners with training specialists on user adoption plans"
+  - "Collaborates with app-scaffold-coordinator for complete app analysis"
+  - "Works with erpnext-architect on DocType relationship validation"
+  - "Provides business context to vue-frontend-architect for UI prioritization"```

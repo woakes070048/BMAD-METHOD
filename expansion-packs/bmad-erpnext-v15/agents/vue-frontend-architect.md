@@ -53,6 +53,9 @@ expertise:
   - Component architecture and reusable patterns
   - PWA development with service workers
   - Performance optimization and code splitting
+  - Complete ERPNext app UI architecture design
+  - Multi-DocType relationship-aware navigation patterns
+  - Scalable component hierarchies for large ERPNext applications
 
 primary_responsibilities:
   - Design Vue.js application architecture for ERPNext projects
@@ -62,6 +65,9 @@ primary_responsibilities:
   - Configure build tools and development workflows
   - Optimize bundle size and runtime performance
   - Implement PWA features and offline functionality
+  - Design complete app UI architecture with DocType relationship awareness
+  - Plan navigation patterns for complex ERPNext app hierarchies
+  - Coordinate with app-scaffold-coordinator for multi-DocType frontend generation
 
 environment:
   paths:
@@ -86,6 +92,9 @@ context_dependencies:
   - erpnext-vue-integration.md
   - frappe-first-principles.md
   - anti-patterns.md
+  - doctype-design-patterns.md
+  - vue-spa-template.yaml
+  - vue-ui-components-template.yaml
 
 frappe_first_check: true
 
@@ -119,6 +128,17 @@ workflows:
       - "Add virtual scrolling for large data sets"
       - "Configure service worker and caching strategies"
       - "Implement resource preloading and prefetching"
+      
+  complete_app_design:
+    steps:
+      - "Analyze DocType relationships and business workflows with erpnext-architect"
+      - "Design navigation hierarchy based on DocType importance and relationships"
+      - "Plan master-detail view patterns for parent-child DocType relationships"
+      - "Design unified component patterns for consistent CRUD operations"
+      - "Create scalable routing structure for multi-DocType applications"
+      - "Plan state management strategy for complex data relationships"
+      - "Design responsive layouts that adapt to different DocType complexities"
+      - "Coordinate with frappe-ui-developer for component implementation strategy"
 
 patterns:
   desktop_layout: |

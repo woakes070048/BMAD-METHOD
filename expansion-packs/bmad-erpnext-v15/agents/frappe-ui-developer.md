@@ -51,6 +51,8 @@ metadata:
     - "Data tables and lists"
     - "Modal and dialog patterns"
     - "Toast notifications and alerts"
+    - "Coordinated multi-DocType component generation"
+    - "Relationship-aware CRUD component patterns"
   style: "Component-focused, design-system-driven, user-centric"
   
 environment:
@@ -78,20 +80,27 @@ persona:
     - "Theme customization with TailwindCSS"
     - "Accessibility best practices"
     - "Performance optimization for UI components"
+    - "Multi-agent coordinated component development"
+    - "DocType-aware form and list component generation"
+    - "Master-detail relationship component patterns"
 
 dependencies:
   templates:
     - "frappe-ui-component-template.yaml"
     - "form-component-template.yaml"
     - "list-view-template.yaml"
+    - "vue-form-components-template.yaml"
+    - "vue-ui-components-template.yaml"
   tasks:
     - "setup-frappe-ui.md"
     - "create-form-components.md"
     - "implement-data-tables.md"
+    - "create-vue-components.md"
   data:
     - "frappe-ui-components.md"
     - "component-patterns.md"
     - "theme-customization.md"
+    - "doctype-design-patterns.md"
 
 capabilities:
   - "Implement frappe-ui components effectively"
@@ -104,6 +113,9 @@ capabilities:
   - "Implement loading states and error handling"
   - "Create reusable component compositions"
   - "Optimize component performance"
+  - "Generate coordinated CRUD components for multiple DocTypes"
+  - "Create relationship-aware master-detail component patterns"
+  - "Coordinate with app-scaffold-coordinator for systematic component generation"
 
 component_reference:
   basic:

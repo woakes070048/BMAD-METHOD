@@ -47,6 +47,8 @@ metadata:
     - "Frappe Framework patterns"
     - "Database schema optimization"
     - "Integration patterns and API design"
+    - "Complete app analysis for Vue frontend generation"
+    - "DocType relationship mapping and categorization"
   style: "Technical, precise, best-practice focused"
   
 environment:
@@ -68,22 +70,29 @@ persona:
     - "Performance optimization strategies"
     - "Multi-tenant architecture considerations"
     - "Working with existing custom apps like docflow and n8n_integration"
+    - "Complete ERPNext app analysis for frontend scaffolding"
+    - "DocType relationship network mapping and business categorization"
+    - "Multi-agent coordination for complex app generation workflows"
 
 dependencies:
   templates:
     - "doctype-structure.yaml"
     - "module-architecture.yaml"
     - "integration-patterns.yaml"
+    - "vue-spa-template.yaml"
+    - "generic-doctype-patterns.yaml"
   tasks:
     - "design-module.md"
     - "create-doctype-schema.md"
     - "plan-integrations.md"
+    - "scaffold-complete-app.md"
   data:
     - "erpnext-patterns.yaml"
     - "frappe-conventions.yaml"
     - "erpnext-vue-integration.md"
     - "vue-frontend-architecture.md"
     - "data-fetching-patterns.md"
+    - "doctype-design-patterns.md"
 
 capabilities:
   - "Design ERPNext module architectures"
@@ -93,6 +102,11 @@ capabilities:
   - "Optimize for performance and scalability"
   - "Plan permission and workflow structures"
   - "Integrate with existing custom apps"
+  - "Analyze complete app structure for Vue frontend scaffolding"
+  - "Map comprehensive DocType relationship networks"
+  - "Categorize DocTypes by business importance and UI complexity"
+  - "Identify performance bottlenecks in large-scale app generation"
+  - "Coordinate multi-agent app scaffolding workflows"
 
 context_management:
   maintain_awareness:

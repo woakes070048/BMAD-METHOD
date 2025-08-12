@@ -90,6 +90,7 @@ agents:
     - "frappe-ui-developer"
     - "api-architect"
     - "pwa-specialist"
+    - "app-scaffold-coordinator"
   project_management:
     - "erpnext-product-owner"
     - "erpnext-scrum-master"
@@ -175,6 +176,13 @@ agent_teams:
     - "pwa-specialist"
     - "vue-frontend-architect"
     - "api-architect"
+  complete_app_scaffolding_team:
+    - "app-scaffold-coordinator"
+    - "erpnext-architect"
+    - "business-analyst"
+    - "vue-frontend-architect"
+    - "frappe-ui-developer"
+    - "api-architect"
 
 templates:
   core:
@@ -218,6 +226,8 @@ tasks:
     - "convert-n8n-workflow.md"
   migration:
     - "convert-n8n-workflow.md"
+  scaffolding:
+    - "scaffold-complete-app.md"
 
 workflows:
   modern_app_development:
@@ -295,6 +305,23 @@ workflows:
     - "create_comprehensive_solution"
     - "test_end_to_end_functionality"
     - "deploy_complete_system"
+  
+  complete_app_scaffolding:
+    - "multi_agent_discovery_and_analysis"
+    - "doctype_relationship_mapping"
+    - "business_context_analysis"
+    - "ui_complexity_assessment"
+    - "coordinated_design_phase"
+    - "relationship_validation"
+    - "component_design_strategy"
+    - "performance_optimization_planning"
+    - "coordinated_generation_phase"
+    - "foundation_setup"
+    - "tiered_component_generation"
+    - "relationship_integration"
+    - "backend_api_integration"
+    - "performance_optimization_implementation"
+    - "testing_and_validation"
 
 data:
   reference:
