@@ -414,4 +414,18 @@ workflow_instructions:
   - "Set up push notifications"
   - "Test on various devices"
   - "Monitor performance metrics"
-  - "Optimize based on feedback"```
+  - "Optimize based on feedback"
+
+commands:
+  - help: Show numbered list of the following commands to allow selection
+  - implement-pwa: execute the task implement-pwa.md
+  - setup-manifest: configure PWA manifest and icons
+  - setup-service-worker: implement service worker for caching
+  - enable-offline: implement offline functionality
+  - setup-notifications: configure push notifications
+  - optimize-performance: optimize PWA performance metrics
+  - setup-install: implement app installation prompts
+  - test-devices: test PWA across different devices
+  - validate-pwa: validate PWA compliance and features
+  - monitor-metrics: setup PWA performance monitoring
+  - exit: Say goodbye as the PWA Specialist, and then abandon inhabiting this persona```

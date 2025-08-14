@@ -1,0 +1,237 @@
+# ERPNext Validation Patterns
+# Comprehensive validation patterns for ERPNext development
+# These patterns ensure quality, security, and compliance
+
+validation_frameworks:
+  frappe_compliance:
+    description: "Frappe Framework compliance validation patterns"
+    patterns:
+      api_endpoints:
+        required_decorator: "@frappe.whitelist()"
+        authentication_check: "frappe.has_permission() validation"
+        input_validation: "frappe.parse_json() for JSON inputs"
+        error_handling: "frappe.throw() for user errors"
+        
+      database_operations:
+        orm_usage: "frappe.get_doc(), frappe.get_all() instead of raw SQL"
+        transaction_handling: "frappe.db.commit(), frappe.db.rollback()"
+        parameterized_queries: "Use %(variable)s placeholders"
+        
+      authentication:
+        session_management: "frappe.session for user context"
+        permission_checks: "frappe.has_permission() before operations"
+        role_validation: "Role-based access control patterns"
+        
+      external_libraries:
+        prohibited_imports:
+          - requests: "Use frappe.request instead"
+          - redis: "Use frappe.cache() instead"
+          - celery: "Use frappe.enqueue instead"
+          - sqlalchemy: "Use Frappe ORM instead"
+
+  security_validation:
+    description: "Security validation patterns and checks"
+    patterns:
+      input_validation:
+        sql_injection_prevention:
+          - "Use parameterized queries exclusively"
+          - "Validate all user inputs with frappe.validate_type()"
+          - "Sanitize inputs with frappe.utils.escape_html()"
+          
+        xss_prevention:
+          - "Escape HTML output with frappe.utils.escape_html()"
+          - "Use Content Security Policy headers"
+          - "Validate file upload MIME types"
+          
+        csrf_protection:
+          - "Use frappe.form_dict for form submissions"
+          - "Validate CSRF tokens for state-changing operations"
+          
+      authentication_security:
+        password_policies:
+          - "Minimum 8 characters with complexity requirements"
+          - "Password hashing with frappe.utils.password()"
+          - "Account lockout after failed attempts"
+          
+        session_security:
+          - "Secure session configuration"
+          - "Session timeout implementation"
+          - "Concurrent session management"
+
+  performance_validation:
+    description: "Performance validation patterns and benchmarks"
+    patterns:
+      database_optimization:
+        query_performance:
+          - "Index frequently queried fields"
+          - "Limit query results with pagination"
+          - "Use database functions for calculations"
+          
+        connection_management:
+          - "Use connection pooling"
+          - "Close connections properly"
+          - "Monitor connection usage"
+          
+      caching_strategies:
+        application_caching:
+          - "Cache expensive computations"
+          - "Use frappe.cache() for application data"
+          - "Implement cache invalidation strategies"
+          
+      response_time_targets:
+        api_endpoints: "≤200ms for 95th percentile"
+        page_loads: "≤2s initial, ≤1s subsequent"
+        database_queries: "≤50ms complex, ≤10ms simple"
+
+  integration_validation:
+    description: "Multi-app integration validation patterns"
+    patterns:
+      docflow_integration:
+        workflow_compatibility:
+          - "Workflow state definitions match docflow patterns"
+          - "Transition permissions align with roles"
+          - "Approval hierarchies are properly configured"
+          
+        data_consistency:
+          - "Document states sync across apps"
+          - "Audit trail maintained across transitions"
+          - "Notification triggers work correctly"
+          
+      n8n_integration:
+        webhook_reliability:
+          - "Webhook endpoints are properly secured"
+          - "Retry mechanisms for failed webhooks"
+          - "Payload validation and sanitization"
+          
+        automation_triggers:
+          - "Trigger conditions are clearly defined"
+          - "Error handling for automation failures"
+          - "Logging and monitoring of automation events"
+          
+      erpnext_compatibility:
+        core_module_integration:
+          - "No conflicts with existing ERPNext modules"
+          - "Proper use of ERPNext design patterns"
+          - "Compliance with ERPNext naming conventions"
+
+validation_checklists:
+  pre_development:
+    story_validation:
+      - "All acceptance criteria are testable"
+      - "Technical requirements are clearly defined"
+      - "Security considerations are addressed"
+      - "Performance requirements are specified"
+      - "Integration points are identified"
+      
+    architecture_validation:
+      - "Design follows Frappe Framework patterns"
+      - "Data model relationships are sound"
+      - "API contracts are well-defined"
+      - "Scalability considerations are addressed"
+
+  development_time:
+    code_quality:
+      - "Frappe compliance validation passes"
+      - "Security vulnerability scan passes"
+      - "Unit test coverage ≥85%"
+      - "Code review completed and approved"
+      
+    integration_testing:
+      - "Multi-app compatibility verified"
+      - "API endpoint functionality validated"
+      - "Database operations tested"
+      - "Business logic validation complete"
+
+  pre_deployment:
+    comprehensive_validation:
+      - "All automated tests pass"
+      - "Performance benchmarks met"
+      - "Security penetration testing passes"
+      - "Documentation complete and accurate"
+      - "Deployment procedures validated"
+      - "Rollback procedures tested"
+
+validation_metrics:
+  quality_gates:
+    compliance_score: "≥95%"
+    test_coverage: "≥85%"
+    security_score: "≥90%"
+    performance_score: "≥85%"
+    
+  failure_thresholds:
+    critical_violations: "0"
+    high_severity_vulnerabilities: "0"
+    major_performance_regressions: "0"
+    integration_failures: "0"
+
+validation_automation:
+  pre_commit_hooks:
+    - "Frappe compliance scanning"
+    - "Security vulnerability detection"
+    - "Code quality analysis"
+    - "Unit test execution"
+    
+  continuous_integration:
+    - "Integration test execution"
+    - "Performance regression testing"
+    - "Security scanning"
+    - "Multi-app compatibility testing"
+    
+  deployment_gates:
+    - "Comprehensive validation orchestration"
+    - "Pre-deployment verification"
+    - "Production readiness assessment"
+    - "Rollback capability verification"
+
+validation_tools:
+  static_analysis:
+    python:
+      - "pylint for code quality"
+      - "bandit for security analysis"
+      - "mypy for type checking"
+      
+    javascript:
+      - "eslint for code quality"
+      - "jshint for syntax checking"
+      
+  security_scanning:
+    - "OWASP ZAP for web application security"
+    - "Safety for Python dependency scanning"
+    - "npm audit for JavaScript dependencies"
+    
+  performance_testing:
+    - "Apache JMeter for load testing"
+    - "Locust for performance testing"
+    - "Database profiling tools"
+
+validation_reporting:
+  report_structure:
+    executive_summary:
+      - "Overall validation status"
+      - "Critical issues count"
+      - "Deployment recommendation"
+      
+    detailed_findings:
+      - "Compliance validation results"
+      - "Security assessment findings"
+      - "Performance benchmark results"
+      - "Integration test outcomes"
+      
+    recommendations:
+      - "Critical fixes required"
+      - "Performance optimizations"
+      - "Security enhancements"
+      - "Best practice improvements"
+
+continuous_improvement:
+  validation_process_enhancement:
+    - "Regular review of validation effectiveness"
+    - "Integration of new validation techniques"
+    - "Automation of repetitive validation tasks"
+    - "Performance optimization of validation processes"
+    
+  knowledge_management:
+    - "Documentation of validation lessons learned"
+    - "Best practice pattern identification"
+    - "Anti-pattern prevention strategies"
+    - "Team knowledge sharing and training"

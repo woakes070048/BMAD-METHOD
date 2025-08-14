@@ -125,12 +125,94 @@ templates:
             {% if api_logic %}
             {{ api_logic | indent(12) }}
             {% else %}
-            # TODO: Implement your API logic here
-            result = {
-                "message": "API endpoint created successfully",
-                "data": {},
-                "timestamp": now_datetime()
-            }
+            # Template implementation - customize based on your requirements
+            try:
+                {% if endpoint_type == "create" %}
+                # Create new document
+                doc = frappe.get_doc({
+                    "doctype": "{{ target_doctype }}",
+                    {% for field in required_fields %}
+                    "{{ field }}": data.get("{{ field }}"),
+                    {% endfor %}
+                })
+                doc.insert()
+                doc.submit() if hasattr(doc, 'submit') else None
+                
+                result = {
+                    "message": "{{ target_doctype }} created successfully",
+                    "data": doc.as_dict(),
+                    "name": doc.name
+                }
+                {% elif endpoint_type == "read" %}
+                # Read existing document
+                filters = {}
+                {% for field in filter_fields %}
+                if data.get("{{ field }}"):
+                    filters["{{ field }}"] = data.get("{{ field }}")
+                {% endfor %}
+                
+                docs = frappe.get_all("{{ target_doctype }}", 
+                    filters=filters,
+                    fields=["*"],
+                    limit=data.get("limit", 20)
+                )
+                
+                result = {
+                    "message": "{{ target_doctype }} data retrieved successfully",
+                    "data": docs,
+                    "count": len(docs)
+                }
+                {% elif endpoint_type == "update" %}
+                # Update existing document
+                doc_name = data.get("name")
+                if not doc_name:
+                    frappe.throw(_("Document name is required for update"))
+                
+                doc = frappe.get_doc("{{ target_doctype }}", doc_name)
+                {% for field in updateable_fields %}
+                if "{{ field }}" in data:
+                    doc.{{ field }} = data.get("{{ field }}")
+                {% endfor %}
+                doc.save()
+                
+                result = {
+                    "message": "{{ target_doctype }} updated successfully",
+                    "data": doc.as_dict(),
+                    "name": doc.name
+                }
+                {% elif endpoint_type == "delete" %}
+                # Delete document
+                doc_name = data.get("name")
+                if not doc_name:
+                    frappe.throw(_("Document name is required for deletion"))
+                
+                frappe.delete_doc("{{ target_doctype }}", doc_name)
+                
+                result = {
+                    "message": "{{ target_doctype }} deleted successfully",
+                    "name": doc_name
+                }
+                {% else %}
+                # Custom logic implementation
+                result = {
+                    "message": "Custom API endpoint executed successfully",
+                    "data": data,
+                    "endpoint_type": "{{ endpoint_type }}"
+                }
+                {% endif %}
+                
+                result["timestamp"] = now_datetime()
+                result["success"] = True
+                
+            except Exception as e:
+                frappe.log_error(f"API endpoint error: {str(e)}", "{{ api_method }}")
+                result = {
+                    "message": "Operation failed",
+                    "error": str(e),
+                    "success": False,
+                    "timestamp": now_datetime()
+                }
+                
             {% endif %}
             
             {% if logging_enabled %}

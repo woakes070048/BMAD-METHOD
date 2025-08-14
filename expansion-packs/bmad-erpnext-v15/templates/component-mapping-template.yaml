@@ -1,0 +1,393 @@
+name: "component-mapping-template"
+title: "Component Mapping Template"
+description: "Template for mapping UI design elements to specific frappe-ui components with implementation details"
+version: "1.0.0"
+
+metadata:
+  author: "BMAD ERPNext Team"
+  category: "Frontend Implementation"
+  use_case: "Translating design specifications into concrete component implementations"
+  framework: "Vue 3 + frappe-ui"
+
+template_structure:
+  project_info:
+    name: "[Project Name]"
+    design_source: "[UI design spec or wireframe source]"
+    target_framework: "Vue 3 + frappe-ui"
+    frappe_ui_version: "[Version being used]"
+  
+  layout_mapping:
+    page_structure:
+      layout_component: "[LayoutHeader|LayoutSidebar|LayoutContent]"
+      props:
+        title: "[Page title]"
+        breadcrumbs: "[Breadcrumb configuration]"
+        actions: "[Header actions]"
+      
+      responsive_behavior:
+        mobile: "[Mobile layout adaptations]"
+        tablet: "[Tablet layout adaptations]"
+        desktop: "[Desktop layout optimizations]"
+  
+  form_field_mapping:
+    doctype_fields:
+      - doctype: "[DocType Name]"
+        field_name: "[DocType field name]"
+        field_type: "[Frappe field type]"
+        ui_component: "[frappe-ui component]"
+        component_props:
+          label: "[Display label]"
+          placeholder: "[Placeholder text]"
+          required: "[Required validation]"
+          options: "[Select options if applicable]"
+          validation: "[Validation rules]"
+        styling:
+          classes: "[Tailwind classes]"
+          responsive: "[Responsive styling]"
+        
+        example_implementation: |
+          <template>
+            <[component] 
+              v-model="[model]"
+              :label="[label]"
+              :placeholder="[placeholder]"
+              :required="[required]"
+              :options="[options]"
+              @change="[changeHandler]"
+            />
+          </template>
+  
+  list_view_mapping:
+    doctype_lists:
+      - doctype: "[DocType Name]"
+        component: "ListView"
+        configuration:
+          fields: "[Fields to display]"
+          filters: "[Available filters]"
+          sorting: "[Sorting options]"
+          actions: "[Row actions]"
+          bulk_actions: "[Bulk actions]"
+        
+        component_props:
+          columns: "[Column definitions]"
+          data: "[Data source]"
+          loading: "[Loading state]"
+          empty_state: "[Empty state config]"
+        
+        implementation_example: |
+          <template>
+            <ListView
+              :columns="columns"
+              :data="data"
+              :loading="loading"
+              :empty-state="emptyState"
+              @row-click="handleRowClick"
+              @bulk-action="handleBulkAction"
+            />
+          </template>
+          
+          <script setup>
+          const columns = [
+            { key: 'name', label: 'Name', sortable: true },
+            { key: 'status', label: 'Status', component: 'Badge' }
+          ]
+          </script>
+  
+  navigation_mapping:
+    breadcrumb_navigation:
+      component: "Breadcrumbs"
+      data_source: "[How breadcrumbs are generated]"
+      props:
+        items: "[Breadcrumb items array]"
+        separator: "[Separator style]"
+      
+      implementation: |
+        <Breadcrumbs :items="breadcrumbItems" />
+        
+        const breadcrumbItems = computed(() => [
+          { label: 'Dashboard', route: '/' },
+          { label: 'Customers', route: '/customers' },
+          { label: customerName.value }
+        ])
+    
+    tab_navigation:
+      component: "Tabs"
+      configuration:
+        tabs: "[Tab definitions]"
+        default_tab: "[Default active tab]"
+        lazy_loading: "[Lazy load tab content]"
+      
+      implementation: |
+        <Tabs v-model="activeTab" :tabs="tabs">
+          <template #[tab-name]>
+            <!-- Tab content -->
+          </template>
+        </Tabs>
+    
+    sidebar_navigation:
+      component: "LayoutSidebar"
+      menu_structure: "[Menu hierarchy]"
+      props:
+        items: "[Navigation items]"
+        collapsible: "[Collapse behavior]"
+        active_item: "[Active item tracking]"
+  
+  data_display_mapping:
+    statistics_cards:
+      component: "Card"
+      layout: "[Card layout pattern]"
+      data_binding: "[How data is bound]"
+      
+      implementation: |
+        <Card>
+          <template #header>
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold">{{ title }}</h3>
+              <Badge :variant="statusVariant">{{ status }}</Badge>
+            </div>
+          </template>
+          <template #content>
+            <div class="space-y-4">
+              <div class="text-3xl font-bold">{{ value }}</div>
+              <div class="text-sm text-gray-600">{{ description }}</div>
+            </div>
+          </template>
+        </Card>
+    
+    data_tables:
+      component: "DataTable"
+      features: "[Sorting, filtering, pagination]"
+      configuration:
+        columns: "[Column definitions]"
+        data_source: "[API or computed data]"
+        pagination: "[Pagination settings]"
+      
+      implementation: |
+        <DataTable
+          :columns="tableColumns"
+          :data="tableData"
+          :loading="isLoading"
+          :pagination="paginationConfig"
+          @sort="handleSort"
+          @filter="handleFilter"
+        />
+    
+    charts_and_graphs:
+      component: "[Chart component]"
+      chart_library: "[Chart.js, D3, etc.]"
+      data_format: "[Expected data structure]"
+      responsive_behavior: "[Mobile chart adaptations]"
+  
+  action_mapping:
+    buttons:
+      primary_actions:
+        component: "Button"
+        variant: "solid"
+        styling: "[Color scheme, size]"
+        placement: "[Where buttons appear]"
+        
+        implementation: |
+          <Button 
+            variant="solid" 
+            @click="handlePrimaryAction"
+            :loading="isProcessing"
+          >
+            {{ actionLabel }}
+          </Button>
+      
+      secondary_actions:
+        component: "Button"
+        variant: "outline"
+        styling: "[Secondary styling]"
+        
+        implementation: |
+          <Button 
+            variant="outline" 
+            @click="handleSecondaryAction"
+          >
+            {{ secondaryLabel }}
+          </Button>
+    
+    dropdown_menus:
+      component: "Dropdown"
+      trigger: "[Button, icon, text]"
+      menu_items: "[Menu structure]"
+      
+      implementation: |
+        <Dropdown>
+          <template #trigger>
+            <Button variant="ghost" icon="more-horizontal" />
+          </template>
+          <template #content>
+            <div class="py-1">
+              <DropdownItem @click="editItem">Edit</DropdownItem>
+              <DropdownItem @click="deleteItem" class="text-red-600">
+                Delete
+              </DropdownItem>
+            </div>
+          </template>
+        </Dropdown>
+    
+    modal_dialogs:
+      component: "Dialog"
+      trigger_conditions: "[When modals open]"
+      content_type: "[Form, confirmation, etc.]"
+      
+      implementation: |
+        <Dialog v-model="showDialog" :title="dialogTitle">
+          <template #content>
+            <!-- Dialog content -->
+          </template>
+          <template #actions>
+            <Button @click="handleCancel">Cancel</Button>
+            <Button variant="solid" @click="handleConfirm">
+              Confirm
+            </Button>
+          </template>
+        </Dialog>
+  
+  state_management:
+    loading_states:
+      patterns: "[Skeleton, spinner, progressive loading]"
+      components: "[Loading component usage]"
+      
+      implementation: |
+        <div v-if="isLoading" class="animate-pulse">
+          <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+          <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+        </div>
+    
+    error_states:
+      error_handling: "[How errors are displayed]"
+      recovery_actions: "[What users can do]"
+      
+      implementation: |
+        <Alert v-if="error" type="error" dismissible>
+          {{ error.message }}
+          <template #actions>
+            <Button @click="retryAction">Retry</Button>
+          </template>
+        </Alert>
+    
+    empty_states:
+      empty_data: "[When no data exists]"
+      call_to_action: "[Encourage user action]"
+      
+      implementation: |
+        <EmptyState 
+          v-if="!data?.length && !isLoading"
+          icon="inbox"
+          title="No items found"
+          description="Get started by creating your first item."
+        >
+          <template #actions>
+            <Button variant="solid" @click="createItem">
+              Create Item
+            </Button>
+          </template>
+        </EmptyState>
+  
+  responsive_adaptations:
+    mobile_specific:
+      navigation: "[Mobile nav patterns]"
+      forms: "[Mobile form layout]"
+      tables: "[Mobile table handling]"
+      actions: "[Touch-friendly actions]"
+    
+    tablet_adaptations:
+      layout_changes: "[Tablet layout tweaks]"
+      interaction_updates: "[Touch/keyboard hybrid]"
+    
+    desktop_enhancements:
+      keyboard_shortcuts: "[Keyboard navigation]"
+      advanced_features: "[Desktop-only features]"
+      multi_column: "[Desktop layout advantages]"
+
+  api_integration_mapping:
+    data_fetching:
+      - endpoint: "[API endpoint]"
+        method: "[GET, POST, etc.]"
+        component: "[Which component uses this]"
+        error_handling: "[How errors are handled]"
+        loading_state: "[Loading implementation]"
+        
+        implementation: |
+          const { data, error, isLoading } = useFetch('/api/endpoint')
+          
+          watch(error, (newError) => {
+            if (newError) {
+              toast.error(newError.message)
+            }
+          })
+    
+    form_submissions:
+      - form_component: "[Form component name]"
+        endpoint: "[Submission endpoint]"
+        validation: "[Client-side validation]"
+        success_handling: "[Success feedback]"
+        error_handling: "[Error display]"
+
+  styling_system:
+    design_tokens:
+      colors: "[Color system usage]"
+      typography: "[Typography scale]"
+      spacing: "[Spacing system]"
+      borders: "[Border styles]"
+    
+    component_styling:
+      base_styles: "[Base component styles]"
+      variants: "[Component variants]"
+      custom_styles: "[Custom styling approach]"
+    
+    responsive_utilities:
+      breakpoints: "[Tailwind breakpoints used]"
+      responsive_classes: "[Responsive utility patterns]"
+
+  accessibility_implementation:
+    keyboard_navigation:
+      focus_management: "[Focus handling]"
+      keyboard_shortcuts: "[Shortcut implementation]"
+    
+    screen_reader_support:
+      aria_labels: "[ARIA label implementation]"
+      semantic_html: "[Semantic structure]"
+    
+    visual_accessibility:
+      color_contrast: "[Contrast compliance]"
+      text_scaling: "[Text size support]"
+
+usage_guidelines:
+  component_selection:
+    decision_matrix: "[How to choose components]"
+    performance_considerations: "[Performance impact]"
+    maintenance_factors: "[Maintenance implications]"
+  
+  customization_approaches:
+    when_to_customize: "[Customization criteria]"
+    customization_methods: "[How to customize safely]"
+    avoiding_conflicts: "[Preventing upgrade issues]"
+  
+  testing_strategies:
+    unit_testing: "[Component testing approach]"
+    integration_testing: "[Integration test patterns]"
+    accessibility_testing: "[A11y testing methods]"
+
+validation_checklist:
+  completeness:
+    - "All UI elements mapped to components"
+    - "Props and configuration specified"
+    - "Responsive behavior defined"
+    - "State management addressed"
+    - "API integration planned"
+  
+  technical_accuracy:
+    - "frappe-ui components used correctly"
+    - "Vue 3 patterns followed"
+    - "Performance considerations included"
+    - "Accessibility requirements met"
+  
+  implementation_readiness:
+    - "Code examples are accurate"
+    - "Dependencies identified"
+    - "Styling approach clear"
+    - "Error handling planned"

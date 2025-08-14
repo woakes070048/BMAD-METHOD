@@ -590,14 +590,47 @@ curl -X POST \
 
 ### Step 10: Deploy and Monitor
 
-#### Pre-deployment Checklist
-- [ ] All tests pass
-- [ ] API documentation is complete
-- [ ] Error handling covers all scenarios
-- [ ] Rate limiting is configured appropriately
-- [ ] Logging is implemented for debugging
-- [ ] Security measures are in place
-- [ ] Permission checks are comprehensive
+#### Pre-deployment Validation Checklist
+- [ ] **Frappe Compliance Validation**
+  - [ ] Run frappe-compliance-validator on all API code
+  - [ ] Verify no external libraries used when Frappe equivalents exist
+  - [ ] Confirm all HTTP requests use frappe.request patterns
+  - [ ] Validate proper use of @frappe.whitelist() decorator
+- [ ] **Security Validation**
+  - [ ] Run security vulnerability scan
+  - [ ] Verify input sanitization and validation
+  - [ ] Test authentication and authorization boundaries
+  - [ ] Validate rate limiting effectiveness
+  - [ ] Check for SQL injection vulnerabilities
+  - [ ] Verify XSS protection measures
+- [ ] **Testing Validation**
+  - [ ] All unit tests pass
+  - [ ] Integration tests with other apps pass
+  - [ ] API contract tests verify response format
+  - [ ] Performance tests meet response time requirements
+  - [ ] Load tests verify scalability
+  - [ ] Security penetration tests pass
+- [ ] **Code Quality Validation**
+  - [ ] Static code analysis passes
+  - [ ] Code review completed and approved
+  - [ ] Documentation is complete and accurate
+  - [ ] Error handling covers all scenarios
+  - [ ] Logging is implemented for debugging
+- [ ] **Integration Validation**
+  - [ ] Multi-app compatibility verified
+  - [ ] docflow integration tested if applicable
+  - [ ] n8n_integration webhook compatibility verified
+  - [ ] Existing API endpoints not affected
+- [ ] **Performance Validation**
+  - [ ] Database query optimization verified
+  - [ ] Memory usage within acceptable limits
+  - [ ] Response time benchmarks met
+  - [ ] Concurrent user load tested
+- [ ] **Deployment Validation**
+  - [ ] Migration scripts tested
+  - [ ] Environment configuration validated
+  - [ ] Rollback procedures tested
+  - [ ] Production environment compatibility verified
 
 #### Production Considerations
 - Set up API monitoring and alerting

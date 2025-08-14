@@ -397,16 +397,97 @@ class DocumentFlow(Document):
         return None
     
     def get_user_with_role(self, role):
-        """Get a user with the specified role"""
+        """Get a user with the specified role using intelligent assignment logic"""
         users = frappe.get_all("Has Role", 
             filters={"role": role, "parenttype": "User"},
             fields=["parent"]
         )
         
-        if users:
-            # TODO: Implement assignment logic (round-robin, least busy, etc.)
+        if not users:
+            return None
+        
+        if len(users) == 1:
             return users[0].parent
-        return None
+        
+        # Implement smart assignment logic
+        return self._assign_user_intelligently(users, role)
+    
+    def _assign_user_intelligently(self, users, role):
+        """Intelligent user assignment using multiple strategies"""
+        user_list = [user.parent for user in users]
+        
+        # Strategy 1: Check current workload (active flows assigned)
+        workload_scores = {}
+        for user in user_list:
+            active_flows = frappe.db.count("Document Flow", {
+                "flow_status": "Active",
+                "assigned_to": user
+            })
+            
+            # Also count active stage assignments
+            active_stages = frappe.db.sql("""
+                SELECT COUNT(*) 
+                FROM `tabDocument Flow Stage` dfs
+                INNER JOIN `tabDocument Flow` df ON dfs.parent = df.name
+                WHERE dfs.assigned_user = %s 
+                AND dfs.status = 'In Progress'
+                AND df.flow_status = 'Active'
+            """, [user])[0][0]
+            
+            workload_scores[user] = active_flows + (active_stages * 0.5)
+        
+        # Strategy 2: Check user availability (last login, enabled status)
+        available_users = []
+        for user in user_list:
+            user_doc = frappe.get_cached_doc("User", user)
+            if (not user_doc.enabled or 
+                user_doc.user_type != "System User"):
+                continue
+            
+            # Check if user has been active recently (last 7 days)
+            last_login = frappe.db.get_value("User", user, "last_login")
+            if last_login:
+                from frappe.utils import getdate, add_days
+                if getdate(last_login) < add_days(getdate(), -7):
+                    workload_scores[user] += 10  # Penalty for inactive users
+            
+            available_users.append(user)
+        
+        if not available_users:
+            # Fall back to first available user if none are recently active
+            return user_list[0]
+        
+        # Strategy 3: Round-robin with workload balancing
+        # Get the user with the lowest workload score
+        best_user = min(available_users, key=lambda u: workload_scores.get(u, 0))
+        
+        # Strategy 4: Consider role-specific preferences (if configured)
+        role_preferences = self._get_role_assignment_preferences(role)
+        if role_preferences:
+            preferred_users = [u for u in available_users if u in role_preferences]
+            if preferred_users:
+                # Among preferred users, pick the one with lowest workload
+                best_user = min(preferred_users, key=lambda u: workload_scores.get(u, 0))
+        
+        frappe.log_error(
+            f"DocFlow assignment: Role {role} assigned to {best_user} "
+            f"(workload: {workload_scores.get(best_user, 0)})",
+            "DocFlow User Assignment"
+        )
+        
+        return best_user
+    
+    def _get_role_assignment_preferences(self, role):
+        """Get preferred users for a role from DocFlow Settings"""
+        try:
+            flow_settings = frappe.get_single("DocFlow Settings")
+            if hasattr(flow_settings, 'role_assignments'):
+                for assignment in flow_settings.role_assignments:
+                    if assignment.role == role and assignment.preferred_users:
+                        return [u.strip() for u in assignment.preferred_users.split(',')]
+        except Exception:
+            pass
+        return []
     
     def execute_automatic_stage(self, stage):
         """Execute automatic stage logic"""

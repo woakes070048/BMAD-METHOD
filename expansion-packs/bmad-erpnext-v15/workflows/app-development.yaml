@@ -151,48 +151,125 @@ workflow_stages:
       - "External integrations functional"
       - "Webhook security implemented"
   
-  8_testing:
-    name: "Testing"
-    description: "Comprehensive testing of the application"
+  8_comprehensive_validation:
+    name: "Comprehensive Validation"
+    description: "Comprehensive validation and testing with validation specialists"
     agent: "testing-specialist"
+    supporting_agents: ["frappe-compliance-validator"]
     dependencies: ["7_automation_setup"]
     inputs:
       - "Complete application"
       - "Test requirements"
+      - "Validation criteria"
     outputs:
-      - "Test suites"
-      - "Test reports"
+      - "Comprehensive validation report"
+      - "Compliance assessment"
+      - "Security validation results"
       - "Performance benchmarks"
     tasks:
+      - "comprehensive-validation-orchestration"
+      - "validate-erpnext-story"
       - "create_unit_tests"
       - "run_integration_tests"
       - "perform_performance_testing"
       - "validate_multi_app_compatibility"
+    validation_gates:
+      frappe_compliance:
+        - "Frappe compliance score ≥95%"
+        - "Zero anti-pattern violations"
+        - "All API endpoints use @frappe.whitelist()"
+        - "No external libraries when Frappe equivalents exist"
+      security_validation:
+        - "Zero critical security vulnerabilities"
+        - "Authentication and authorization validated"
+        - "Input sanitization effective"
+        - "SQL injection and XSS protection verified"
+      performance_validation:
+        - "API response times ≤200ms (95th percentile)"
+        - "Database query optimization validated"
+        - "Memory usage within acceptable limits"
+        - "Concurrent user performance validated"
+      integration_validation:
+        - "Multi-app compatibility confirmed"
+        - "docflow integration functional"
+        - "n8n_integration webhook compatibility verified"
+        - "ERPNext core module compatibility confirmed"
     validation:
-      - "All tests passing"
-      - "Performance within acceptable limits"
-      - "Multi-app compatibility confirmed"
+      - "All validation gates passed"
+      - "Compliance score ≥95%"
+      - "Zero critical security issues"
+      - "Performance benchmarks met"
+      - "Integration tests successful"
   
-  9_deployment:
-    name: "Deployment"
-    description: "Deploy application to production"
-    agent: "bench-operator"
-    dependencies: ["8_testing"]
+  9_pre_deployment_verification:
+    name: "Pre-Deployment Verification"
+    description: "Final validation before production deployment"
+    agent: "testing-specialist"
+    supporting_agents: ["frappe-compliance-validator", "erpnext-qa-lead"]
+    dependencies: ["8_comprehensive_validation"]
     inputs:
-      - "Tested application"
+      - "Validated application"
       - "Deployment requirements"
+      - "Production environment specifications"
+    outputs:
+      - "Deployment readiness report"
+      - "Production validation results"
+      - "Rollback verification"
+      - "Monitoring configuration"
+    tasks:
+      - "pre-deployment-verification"
+      - "validate_deployment_scripts"
+      - "test_production_environment"
+      - "verify_rollback_procedures"
+    validation_gates:
+      deployment_readiness:
+        - "All previous validation gates passed"
+        - "Deployment scripts validated"
+        - "Production environment compatibility confirmed"
+        - "Rollback procedures tested and verified"
+      operational_readiness:
+        - "Monitoring and alerting configured"
+        - "Documentation complete and accurate"
+        - "Support procedures documented"
+        - "Emergency response procedures ready"
+    validation:
+      - "Deployment readiness confirmed"
+      - "Production environment validated"
+      - "Rollback procedures verified"
+      - "Operational readiness achieved"
+  
+  10_production_deployment:
+    name: "Production Deployment"
+    description: "Deploy application to production with validation monitoring"
+    agent: "bench-operator"
+    supporting_agents: ["testing-specialist", "frappe-compliance-validator"]
+    dependencies: ["9_pre_deployment_verification"]
+    inputs:
+      - "Deployment-ready application"
+      - "Verified deployment procedures"
+      - "Production environment"
     outputs:
       - "Production deployment"
-      - "Monitoring setup"
-      - "Rollback procedures"
+      - "Active monitoring setup"
+      - "Validated rollback capability"
+      - "Production validation report"
     tasks:
       - "deploy_to_production"
       - "setup_monitoring"
       - "create_rollback_procedures"
-    validation:
+      - "validate_production_deployment"
+    post_deployment_validation:
       - "Application deployed successfully"
       - "All existing apps still functional"
-      - "Monitoring operational"
+      - "Monitoring operational and alerting"
+      - "Production performance within targets"
+      - "Security monitoring active"
+      - "Integration endpoints responsive"
+    validation:
+      - "Production deployment successful"
+      - "All validation monitoring active"
+      - "Performance targets met in production"
+      - "Security posture maintained"
 
 environment:
   bench_path: "/home/frappe/frappe-bench"
@@ -203,28 +280,125 @@ environment:
     - "docflow" 
     - "n8n_integration"
 
-checkpoints:
+validation_checkpoints:
+  - stage: "1_requirements_analysis"
+    checkpoint: "Requirements Validation"
+    description: "Validate requirements completeness and feasibility"
+    validation_team: ["erpnext-architect", "frappe-compliance-validator"]
+    criteria:
+      - "All business requirements clearly defined"
+      - "Technical feasibility confirmed"
+      - "Security requirements identified"
+      - "Integration points with existing apps mapped"
+    
   - stage: "3_doctype_design"
-    checkpoint: "Design Review"
-    description: "Review DocType designs with stakeholders"
+    checkpoint: "Design Validation Review"
+    description: "Comprehensive design validation with stakeholders and compliance"
+    validation_team: ["doctype-designer", "frappe-compliance-validator", "erpnext-architect"]
+    criteria:
+      - "DocType designs follow Frappe patterns"
+      - "Data model relationships validated"
+      - "Security and permissions properly designed"
+      - "Performance considerations addressed"
+    
+  - stage: "5_api_development"
+    checkpoint: "API Compliance Validation"
+    description: "Validate API compliance with Frappe standards and security"
+    validation_team: ["api-developer", "frappe-compliance-validator"]
+    criteria:
+      - "All APIs use @frappe.whitelist() decorator"
+      - "Authentication and authorization implemented"
+      - "Input validation and sanitization in place"
+      - "API documentation complete"
     
   - stage: "6_workflow_integration"
-    checkpoint: "Integration Review"
-    description: "Verify integration with existing systems"
+    checkpoint: "Integration Validation Review"
+    description: "Comprehensive integration validation with existing systems"
+    validation_team: ["workflow-specialist", "testing-specialist"]
+    criteria:
+      - "docflow integration tested and functional"
+      - "n8n_integration compatibility verified"
+      - "No conflicts with existing apps"
+      - "Performance impact assessed"
     
-  - stage: "8_testing"
-    checkpoint: "Quality Gate"
-    description: "All tests must pass before deployment"
+  - stage: "8_comprehensive_validation"
+    checkpoint: "Comprehensive Quality Gate"
+    description: "All validation gates must pass before deployment consideration"
+    validation_team: ["testing-specialist", "frappe-compliance-validator", "erpnext-qa-lead"]
+    criteria:
+      - "Frappe compliance score ≥95%"
+      - "Zero critical security vulnerabilities"
+      - "Performance benchmarks met"
+      - "Multi-app compatibility confirmed"
+      - "All automated tests passing"
+    
+  - stage: "9_pre_deployment_verification"
+    checkpoint: "Production Readiness Gate"
+    description: "Final validation before production deployment"
+    validation_team: ["testing-specialist", "frappe-compliance-validator", "bench-operator"]
+    criteria:
+      - "All validation checkpoints passed"
+      - "Deployment procedures validated"
+      - "Rollback procedures verified"
+      - "Production environment compatibility confirmed"
+      - "Monitoring and alerting ready"
 
-rollback_points:
-  - "Before DocType creation"
-  - "Before API implementation" 
-  - "Before workflow integration"
-  - "Before production deployment"
+validation_rollback_points:
+  - stage: "Before DocType creation"
+    validation: "Design validation passed"
+  - stage: "Before API implementation"
+    validation: "Architecture validation confirmed"
+  - stage: "Before workflow integration"
+    validation: "API compliance validated"
+  - stage: "Before comprehensive validation"
+    validation: "Integration validation successful"
+  - stage: "Before production deployment"
+    validation: "All validation gates passed"
 
-success_criteria:
-  - "All requirements implemented"
-  - "Integration with existing apps working"
-  - "Performance benchmarks met"
-  - "Security requirements satisfied"
-  - "User acceptance criteria met"
+enhanced_success_criteria:
+  functional_requirements:
+    - "All business requirements implemented and validated"
+    - "User acceptance criteria met and verified"
+    - "Integration with existing apps working seamlessly"
+    
+  quality_requirements:
+    - "Frappe Framework compliance score ≥95%"
+    - "Code quality standards met (≥85% test coverage)"
+    - "Documentation complete and accurate"
+    
+  security_requirements:
+    - "Zero critical security vulnerabilities"
+    - "Authentication and authorization properly implemented"
+    - "Input validation and sanitization effective"
+    - "Security monitoring and alerting active"
+    
+  performance_requirements:
+    - "API response times ≤200ms (95th percentile)"
+    - "Database query performance optimized"
+    - "Memory usage within acceptable limits"
+    - "Concurrent user performance validated"
+    
+  integration_requirements:
+    - "Multi-app compatibility confirmed (docflow, n8n_integration)"
+    - "ERPNext core module compatibility verified"
+    - "No conflicts with existing functionality"
+    - "Integration endpoints tested and responsive"
+    
+  operational_requirements:
+    - "Production deployment successful"
+    - "Monitoring and alerting operational"
+    - "Rollback procedures tested and verified"
+    - "Support documentation complete"
+
+continuous_validation_monitoring:
+  production_validation:
+    - "Real-time performance monitoring"
+    - "Security event monitoring and alerting"
+    - "Integration health monitoring"
+    - "User experience monitoring"
+    
+  compliance_monitoring:
+    - "Continuous Frappe compliance assessment"
+    - "Automated security vulnerability scanning"
+    - "Performance regression detection"
+    - "Integration compatibility monitoring"

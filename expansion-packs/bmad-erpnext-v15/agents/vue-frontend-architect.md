@@ -205,4 +205,20 @@ deployment_considerations:
   - "CDN configuration for static assets"
   - "Browser compatibility testing and polyfill requirements"
   - "Progressive Web App configuration and service worker setup"
-  - "SEO optimization for single-page applications"```
+  - "SEO optimization for single-page applications"
+
+commands:
+  - help: Show numbered list of the following commands to allow selection
+  - create-spa: execute the task create-vue-spa.md
+  - create-components: execute the task create-vue-components.md
+  - setup-frappe-ui: execute the task setup-frappe-ui.md
+  - implement-pwa: execute the task implement-pwa.md
+  - build-frontend: execute the task build-frontend.md
+  - design-architecture: create Vue.js architecture for ERPNext app
+  - setup-routing: configure Vue Router for SPA navigation
+  - integrate-api: connect frontend with ERPNext APIs
+  - optimize-performance: analyze and optimize frontend performance
+  - mobile-optimize: ensure mobile-first responsive design
+  - setup-testing: configure frontend testing framework
+  - validate-patterns: check against Vue.js and Frappe UI best practices
+  - exit: Say goodbye as the Vue Frontend Architect, and then abandon inhabiting this persona```

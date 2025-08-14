@@ -2,15 +2,17 @@
 
 This comprehensive checklist ensures thorough testing of ERPNext applications covering unit testing, integration testing, performance testing, and user acceptance testing.
 
-## Test Planning and Strategy
+## Test Planning and Validation Strategy
 
-### [ ] Test Strategy Development
-- [ ] Define testing objectives and scope
-- [ ] Identify testing types and methodologies
-- [ ] Plan test environments and data requirements
-- [ ] Define entry and exit criteria for testing phases
-- [ ] Establish testing timelines and milestones
-- [ ] Assign testing roles and responsibilities
+### [ ] Comprehensive Test Strategy Development
+- [ ] Define testing objectives and scope with validation focus
+- [ ] Identify testing types and methodologies including validation frameworks
+- [ ] Plan test environments and data requirements with validation data sets
+- [ ] Define entry and exit criteria for testing phases with validation gates
+- [ ] Establish testing timelines and milestones with validation checkpoints
+- [ ] Assign testing roles and responsibilities including validation specialists
+- [ ] Execute testing-specialist agent for comprehensive test planning
+- [ ] Integrate frappe-compliance-validator into testing strategy
 
 ### [ ] Test Environment Setup
 - [ ] Set up dedicated testing environments (dev, staging, UAT)
@@ -336,7 +338,67 @@ This comprehensive checklist ensures thorough testing of ERPNext applications co
 - [ ] Monitor performance and security test results
 - [ ] Analyze testing ROI and effectiveness
 
-## Specialized Testing Areas
+## Validation-Focused Testing Areas
+
+### [ ] Frappe Framework Compliance Testing
+- [ ] Execute frappe-compliance-validator agent comprehensive testing
+- [ ] Test no external library usage when Frappe equivalents exist
+- [ ] Validate all API endpoints use @frappe.whitelist() decorator
+- [ ] Test proper Frappe ORM usage instead of raw SQL
+- [ ] Validate authentication patterns follow Frappe standards
+- [ ] Test permission implementations use Frappe patterns
+- [ ] Validate anti-pattern detection with zero violations
+- [ ] Test compliance score achieves and maintains ≥95%
+
+### [ ] Multi-App Integration Validation Testing
+- [ ] Execute testing-specialist agent integration verification
+- [ ] Test docflow app integration functionality comprehensively
+- [ ] Validate n8n_integration webhook compatibility and reliability
+- [ ] Test ERPNext core module compatibility without conflicts
+- [ ] Validate existing custom app integration integrity
+- [ ] Test API endpoint compatibility across all apps
+- [ ] Validate data model relationships across app boundaries
+- [ ] Test workflow integration points for proper functionality
+
+### [ ] Security Validation Testing
+- [ ] Execute testing-specialist agent security verification
+- [ ] Run comprehensive penetration testing suite
+- [ ] Validate authentication and authorization boundary enforcement
+- [ ] Test input validation and sanitization effectiveness
+- [ ] Verify protection against SQL injection and XSS attacks
+- [ ] Test API security and rate limiting implementation
+- [ ] Validate data encryption and privacy protection measures
+- [ ] Test security compliance against industry standards
+
+### [ ] Performance Validation Testing
+- [ ] Execute testing-specialist agent performance verification
+- [ ] Test response time validation against benchmark targets
+- [ ] Validate database query optimization and performance
+- [ ] Test memory usage within acceptable limits
+- [ ] Validate concurrent user performance scenarios
+- [ ] Test scalability validation under increasing load
+- [ ] Validate performance regression prevention
+- [ ] Test resource utilization optimization
+
+### [ ] Story and Requirements Validation Testing
+- [ ] Execute validate-erpnext-story task for story validation
+- [ ] Test acceptance criteria satisfaction comprehensively
+- [ ] Validate business requirement implementation accuracy
+- [ ] Test technical specification compliance
+- [ ] Validate edge case scenario coverage
+- [ ] Test error condition handling and recovery
+- [ ] Validate user story completion criteria
+- [ ] Test requirement traceability and coverage
+
+### [ ] Deployment Validation Testing
+- [ ] Execute pre-deployment-verification task
+- [ ] Test deployment script validation and reliability
+- [ ] Validate migration script integrity and rollback capability
+- [ ] Test production environment compatibility
+- [ ] Validate configuration management accuracy
+- [ ] Test monitoring and alerting functionality
+- [ ] Validate backup and restore procedures
+- [ ] Test operational readiness and disaster recovery
 
 ### [ ] Accessibility Testing
 - [ ] Test screen reader compatibility

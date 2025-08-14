@@ -6,13 +6,13 @@ version: "1.0.0"
 team_composition:
   lead_agent: "vue-frontend-architect"
   core_agents:
-    - "vue-frontend-architect"
-    - "vue-spa-architect" 
-    - "frappe-ui-developer"
-    - "api-architect"
-    - "doctype-designer"
-    - "pwa-specialist"
-    - "jinja-template-specialist"
+    - "vue-frontend-architect"      # Overall frontend architecture
+    - "vue-spa-architect"           # SPA-specific patterns and structure
+    - "frappe-ui-developer"         # Component implementation with frappe-ui
+    - "api-architect"               # API design and architecture
+    - "doctype-designer"            # Backend data models
+    - "pwa-specialist"              # Progressive Web App features
+    - "jinja-template-specialist"   # Template and report generation
   
   supporting_agents:
     - "mobile-ui-specialist"
@@ -251,6 +251,17 @@ success_metrics:
     - "Reduced support ticket volume"
     - "Increased user engagement metrics"
     - "ROI targets achieved"
+
+escalation_procedures:
+  technical_issues:
+    description: "When complex technical issues arise during modern app development"
+    escalation_team: "troubleshooting-team"
+    trigger_conditions:
+      - "Performance degradation affecting user experience"
+      - "Vue.js/frappe-ui integration issues"
+      - "Complex refactoring needs identified"
+      - "Runtime errors in production"
+    coordination_protocol: "Modern app team lead coordinates with troubleshooting team diagnostic-specialist for triage"
 
 risk_mitigation:
   technical_risks:

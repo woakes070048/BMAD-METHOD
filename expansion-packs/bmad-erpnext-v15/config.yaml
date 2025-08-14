@@ -27,11 +27,11 @@ metadata:
 
 # CUSTOMIZE THESE SETTINGS FOR YOUR ENVIRONMENT
 environment:
-  # Update this to your actual bench path
+  # Default bench path (update for your environment)
   bench_path: "/home/frappe/frappe-bench"
   
-  # Update this to your site name
-  primary_site: "your-site-name.com"
+  # Default site name (update for your environment)
+  primary_site: "site1.local"
   
   # Update this to your user (usually 'frappe' or your system user)
   user: "frappe"
@@ -100,6 +100,7 @@ agents:
     - "vue-frontend-architect"
     - "vue-spa-architect"
     - "frappe-ui-developer"
+    - "ui-layout-designer"
     - "pwa-specialist"
     - "mobile-ui-specialist"
   backend:
@@ -123,6 +124,11 @@ agents:
     - "jinja-template-specialist"
   compliance:
     - "frappe-compliance-validator"
+  debugging:
+    - "diagnostic-specialist"
+    - "refactoring-expert"
+  documentation:
+    - "documentation-specialist"
   
 agent_teams:
   modern_app_team:
@@ -183,6 +189,19 @@ agent_teams:
     - "vue-frontend-architect"
     - "frappe-ui-developer"
     - "api-architect"
+  troubleshooting_team:
+    - "diagnostic-specialist"
+    - "refactoring-expert"
+    - "bench-operator"
+    - "testing-specialist"
+  security_validation_team:
+    - "frappe-compliance-validator"
+    - "testing-specialist"
+    - "diagnostic-specialist"
+  validation_team:
+    - "diagnostic-specialist"
+    - "testing-specialist"
+    - "frappe-compliance-validator"
 
 templates:
   core:
@@ -197,6 +216,14 @@ templates:
   coordination:
     - "task-assignment-template.yaml"
     - "handoff-template.yaml"
+  ui_design:
+    - "ui-design-spec-template.yaml"
+    - "component-mapping-template.yaml"
+  debugging:
+    - "error-diagnosis-template.yaml"
+    - "refactoring-plan-template.yaml"
+  validation:
+    - "component-mapping-template.yaml"
   automation:
     - "n8n-to-erpnext-template.yaml"
   migration:
@@ -217,6 +244,8 @@ tasks:
     - "setup-frappe-ui.md"
     - "implement-pwa.md"
     - "create-vue-components.md"
+    - "design-ui-from-doctypes.md"
+    - "create-multi-doctype-view.md"
   deployment:
     - "install-app.md"
     - "run-migrations.md"
@@ -231,6 +260,15 @@ tasks:
     - "convert-n8n-workflow.md"
   scaffolding:
     - "scaffold-complete-app.md"
+  debugging:
+    - "diagnose-runtime-error.md"
+    - "refactor-existing-code.md"
+  documentation:
+    - "generate-api-documentation.md"
+    - "create-user-guide.md"
+  validation:
+    - "comprehensive-validation-orchestration.md"
+    - "pre-deployment-verification.md"
 
 workflows:
   modern_app_development:
@@ -325,6 +363,13 @@ workflows:
     - "backend_api_integration"
     - "performance_optimization_implementation"
     - "testing_and_validation"
+  
+  doctype_to_frontend:
+    - "doctype_design_validation"
+    - "ui_layout_design"
+    - "component_implementation"
+    - "api_integration"
+    - "testing_optimization"
 
 data:
   reference:
@@ -348,6 +393,9 @@ data:
     - "frappe-first-principles.md"
     - "dry-principles-guide.md"
     - "anti-patterns.md"
+    - "frappe-ui-style-guide.md"
+    - "error-patterns-library.md"
+    - "validation-patterns.yaml"
 
 guides:
   development_stages:
@@ -384,6 +432,12 @@ checklists:
     - "documentation-checklist.md"
   integration:
     - "multi-app-compatibility.md"
+  validation:
+    - "validation-automation-guide.md"
+  recovery:
+    - "recovery-procedures.md"
+  validation_automation:
+    - "validation-automation-guide.md"
 
 integration:
   existing_systems:

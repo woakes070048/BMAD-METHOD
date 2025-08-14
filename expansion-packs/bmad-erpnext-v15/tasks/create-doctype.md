@@ -31,40 +31,87 @@ naming_rule: String (default: "Autoincrement")
 ```
 
 ## Execution Steps
-1. **Validate Environment**
+1. **Pre-Creation Validation**
    - Check bench path exists
    - Verify site is active
    - Confirm app is installed on site
    - Validate module exists in app
+   - Run frappe-compliance-validator pre-check
+   - Verify no naming conflicts with existing DocTypes
+   - Check field type compatibility with Frappe Framework
 
 2. **Validate Input Parameters**
    - DocType name follows PascalCase
    - Field names follow snake_case
-   - Field types are valid Frappe types
+   - Field types are valid Frappe types (reference frappe-field-types.yaml)
    - At least one field specified
+   - Validate field relationships and Link field targets
+   - Check permission matrix for role completeness
+   - Verify naming series format if custom naming used
 
-3. **Create DocType Structure**
+3. **Security and Compliance Pre-Check**
+   - Run security validation on field configurations
+   - Check for potential data exposure risks
+   - Validate permission design against principle of least privilege
+   - Ensure no anti-patterns in field design
+   - Verify compliance with data protection requirements
+
+4. **Create DocType Structure**
    ```bash
    cd /home/frappe/frappe-bench
    mkdir -p apps/{{app_name}}/{{app_name}}/{{module}}/doctype/{{doctype_name_snake}}
    ```
 
-4. **Generate Files**
-   - Create {{doctype_name}}.json using doctype-template
-   - Create {{doctype_name}}.py controller
-   - Create {{doctype_name}}.js client script (if needed)
-   - Create test_{{doctype_name}}.py
+5. **Generate Files with Validation**
+   - Create {{doctype_name}}.json using doctype-template with validation
+   - Create {{doctype_name}}.py controller with error handling
+   - Create {{doctype_name}}.js client script with validation (if needed)
+   - Create test_{{doctype_name}}.py with comprehensive test coverage
+   - Run frappe-compliance-validator on generated files
 
-5. **Apply to Database**
+6. **Code Quality Validation**
+   - Run static code analysis on Python controller
+   - Validate JavaScript follows Frappe UI patterns
+   - Check for anti-patterns in controller logic
+   - Ensure proper error handling implementation
+   - Verify logging and debugging capabilities
+
+7. **Apply to Database with Safety Checks**
    ```bash
    cd /home/frappe/frappe-bench
+   # Backup before migration
+   bench --site prima-erpnext.pegashosting.com backup
+   # Run migration
    bench --site prima-erpnext.pegashosting.com migrate
    ```
 
-6. **Validate Integration**
+8. **Post-Creation Verification**
+   - Verify DocType creation successful
+   - Test basic CRUD operations
+   - Validate permissions work correctly
+   - Run unit tests for the new DocType
+   - Check database table structure integrity
+
+9. **Integration Validation**
    - Test DocType creation doesn't conflict with docflow
    - Verify n8n_integration compatibility if workflows needed
-   - Check permissions work correctly
+   - Check multi-app compatibility with existing apps
+   - Validate API endpoint accessibility
+   - Test frontend rendering and interactions
+
+10. **Performance and Security Testing**
+    - Run performance tests on DocType operations
+    - Validate query optimization for list views
+    - Test security boundaries and access controls
+    - Check for potential SQL injection vulnerabilities
+    - Verify data validation and sanitization
+
+11. **Documentation and Handoff Validation**
+    - Generate DocType documentation
+    - Create user guide if needed
+    - Document any special configurations
+    - Validate all documentation is accurate
+    - Prepare handoff notes for team
 
 ## Output Specifications
 - DocType JSON: `apps/{{app}}/{{app}}/{{module}}/doctype/{{doctype_name_snake}}/{{doctype_name_snake}}.json`

@@ -243,4 +243,18 @@ code_patterns:
         logout,
         fetchUser: userResource.fetch
       }
-    })```
+    })
+
+commands:
+  - help: Show numbered list of the following commands to allow selection
+  - architect-spa: execute the task create-vue-spa.md from SPA architecture perspective
+  - design-architecture: design Vue SPA architecture
+  - setup-routing: configure Vue Router and navigation
+  - setup-state: configure Pinia state management
+  - integrate-auth: integrate Frappe authentication
+  - setup-resources: configure frappe-ui resources
+  - optimize-performance: optimize SPA performance
+  - setup-build: configure Vite build process
+  - plan-deployment: plan SPA deployment strategy
+  - validate-patterns: validate against Vue.js best practices
+  - exit: Say goodbye as the Vue SPA Architect, and then abandon inhabiting this persona```
