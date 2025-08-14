@@ -1,6 +1,6 @@
 name: "vue-spa-template"
-title: "Vue 3 SPA Template for ERPNext Apps (Doppio Method)"
-description: "Complete Vue 3 SPA using doppio_frappeui_starter template with frappe-ui integration"
+title: "Vue 3 SPA Template for ERPNext Apps (Pegas Method)"
+description: "Complete Vue 3 SPA using pegas-frappe-vue-starter template with frappe-ui integration"
 version: "2.0.0"
 
 parameters:
@@ -727,7 +727,7 @@ templates:
 instructions:
   setup:
     - "Navigate to your app directory: cd apps/{{app_name}}"
-    - "Clone doppio starter: npx degit NagariaHussain/doppio_frappeui_starter frontend"
+    - "Clone pegas starter: git clone https://github.com/woakes070048/pegas-frappe-vue-starter.git frontend"
     - "Install dependencies: cd frontend && yarn"
     - "Add to site_config.json: '\"ignore_csrf\": 1' for development"
     - "Customize templates with your app-specific content"

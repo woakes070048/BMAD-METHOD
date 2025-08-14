@@ -427,7 +427,7 @@ bench --site mysite.local install-app customer_portal
 cd apps/customer_portal
 
 # Clone frappe-ui starter template
-npx degit NagariaHussain/doppio_frappeui_starter frontend
+git clone https://github.com/woakes070048/pegas-frappe-vue-starter.git frontend
 
 # Install dependencies
 cd frontend

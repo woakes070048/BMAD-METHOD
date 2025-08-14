@@ -382,6 +382,7 @@ data:
     - "frappe-ui-patterns.md"
     - "vue-spa-patterns.md"
     - "vue-frontend-architecture.md"
+    - "pegas-starter-guide.md"
     - "api-whitelisting-guide.md"
     - "pwa-implementation.md"
     - "modern-app-architecture.md"

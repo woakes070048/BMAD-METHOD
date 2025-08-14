@@ -1,7 +1,7 @@
 # Build Frontend
 
 ## Overview
-This task guides you through building and optimizing the frontend assets for your ERPNext application, using the doppio pattern with Vue 3, Vite, and frappe-ui components.
+This task guides you through building and optimizing the frontend assets for your ERPNext application, using the pegas starter template with Vue 3, Vite, and frappe-ui components.
 
 ## Prerequisites
 
@@ -9,11 +9,11 @@ This task guides you through building and optimizing the frontend assets for you
 - [ ] Understanding of Vue 3 and Vite build system
 - [ ] Basic knowledge of JavaScript module bundling
 - [ ] Familiarity with frappe-ui components
-- [ ] Understanding of the doppio frontend pattern
+- [ ] Understanding of the pegas frontend pattern
 
 ### Development Environment
 - [ ] Node.js 16+ and npm are installed
-- [ ] Frontend is set up using doppio_frappeui_starter
+- [ ] Frontend is set up using pegas-frappe-vue-starter
 - [ ] Vite configuration is properly configured
 - [ ] All frontend dependencies are installed
 
@@ -21,12 +21,12 @@ This task guides you through building and optimizing the frontend assets for you
 
 ### Step 1: Verify Frontend Setup
 
-#### Check Doppio Configuration
+#### Check Pegas Configuration
 ```bash
 # Navigate to your app frontend directory
 cd apps/your_app/frontend
 
-# Verify doppio structure exists
+# Verify pegas starter structure exists
 ls -la
 # Should show: src/, package.json, vite.config.js, etc.
 

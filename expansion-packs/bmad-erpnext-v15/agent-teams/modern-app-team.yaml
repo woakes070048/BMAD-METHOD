@@ -85,7 +85,7 @@ team_workflows:
       setup:
         duration: "2-3 days"
         activities:
-          - "Project scaffolding with doppio starter"
+          - "Project scaffolding with pegas starter"
           - "Development environment configuration"
           - "CI/CD pipeline setup"
           - "Design system implementation"

@@ -226,9 +226,9 @@ Coordinating relationship validation:
 
 1. **Vue SPA Foundation**
    ```bash
-   # Set up Vue 3 SPA with doppio method
+   # Set up Vue 3 SPA with pegas method
    cd apps/{app_name}
-   npx degit NagariaHussain/doppio_frappeui_starter frontend
+   git clone https://github.com/woakes070048/pegas-frappe-vue-starter.git frontend
    cd frontend && yarn install
    ```
 

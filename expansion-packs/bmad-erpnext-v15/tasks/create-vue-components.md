@@ -1,7 +1,7 @@
 # Create Vue Components
 
 ## Overview
-This task guides you through creating Vue 3 components using the Composition API and frappe-ui library, following best practices for ERPNext frontend development with the doppio pattern.
+This task guides you through creating Vue 3 components using the Composition API and frappe-ui library, following best practices for ERPNext frontend development with the pegas starter template.
 
 ## Prerequisites
 
@@ -13,7 +13,7 @@ This task guides you through creating Vue 3 components using the Composition API
 
 ### Development Environment
 - [ ] ERPNext development environment is set up
-- [ ] Vue frontend is set up using doppio_frappeui_starter
+- [ ] Vue frontend is set up using pegas-frappe-vue-starter
 - [ ] Node.js and npm are installed
 - [ ] Development server is running
 
@@ -23,10 +23,10 @@ This task guides you through creating Vue 3 components using the Composition API
 
 #### Navigate to Frontend Directory
 ```bash
-# Go to your app's frontend directory (created via doppio method)
+# Go to your app's frontend directory (created via pegas method)
 cd /path/to/frappe-bench/apps/{{app_name}}/frontend
 
-# Verify doppio structure
+# Verify pegas starter structure
 ls -la
 # Should show: src/, package.json, vite.config.js, etc.
 ```

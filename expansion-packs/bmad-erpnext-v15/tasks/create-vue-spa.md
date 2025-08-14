@@ -1,7 +1,7 @@
-# Task: Create Vue SPA for ERPNext App (Doppio Method)
+# Task: Create Vue SPA for ERPNext App (Pegas Method)
 
 ## Purpose
-Set up a modern Vue 3 Single Page Application using the doppio_frappeui_starter template with proper Frappe integration
+Set up a modern Vue 3 Single Page Application using the pegas-frappe-vue-starter template with proper Frappe integration
 
 ## Prerequisites
 - ERPNext app already created with `bench new-app`
@@ -26,10 +26,10 @@ features:
 cd apps/{{app_name}}
 ```
 
-### 2. Clone the Doppio Starter Template
+### 2. Clone the Pegas Starter Template
 ```bash
-# Clone the official doppio frappe-ui starter
-npx degit NagariaHussain/doppio_frappeui_starter frontend
+# Clone the pegas frappe-ui starter
+git clone https://github.com/woakes070048/pegas-frappe-vue-starter.git frontend
 ```
 
 This creates a `frontend` directory with:
@@ -44,7 +44,7 @@ cd frontend
 yarn install
 ```
 
-The doppio template comes with pre-configured dependencies:
+The pegas template comes with pre-configured dependencies:
 - Vue 3.x
 - frappe-ui (latest)
 - Vue Router
@@ -65,10 +65,10 @@ In your site's `site_config.json` file, add:
 ⚠️ **Important**: This disables CSRF protection in development. Remove this in production!
 
 #### 4.2 Customize Vite Configuration (if needed)
-The doppio template comes with a pre-configured `vite.config.js`. You may need to customize:
+The pegas template comes with a pre-configured `vite.config.js`. You may need to customize:
 
 ```javascript
-// vite.config.js - already configured by doppio, customize as needed
+// vite.config.js - already configured by pegas, customize as needed
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
@@ -154,7 +154,7 @@ add_to_apps_screen = [
 
 ### 6. Customize the Doppio Template
 
-The doppio template comes with basic components. Customize them for your app:
+The pegas template comes with basic components. Customize them for your app:
 
 #### 6.1 Update Router Configuration
 Edit `src/router.js` to match your app structure:
@@ -187,7 +187,7 @@ export default router
 ```
 
 #### 6.2 Customize Main Component
-The doppio template includes a basic ping test. Replace `src/App.vue` with your app:
+The pegas template includes a basic ping test. Replace `src/App.vue` with your app:
 ```vue
 <template>
   <div id="app">
@@ -324,7 +324,7 @@ This creates production files in `../{{app_name}}/public/{{app_name}}/`
 - [ ] ✅ {{app_name}}.html template created
 
 #### 9.2 Verify Doppio Features
-The doppio template includes:
+The pegas template includes:
 - ✅ Basic Vue 3 app with frappe-ui
 - ✅ API connectivity test (ping button)
 - ✅ Proper proxy configuration
@@ -399,7 +399,7 @@ location /assets/{{app_name}}/{{app_name}}/ {
 ## Next Steps & Extensions
 
 ### Immediate Next Steps
-1. **Customize the UI** - Replace doppio's ping example with your app logic
+1. **Customize the UI** - Replace pegas's ping example with your app logic
 2. **Add more pages** - Create additional Vue components/pages
 3. **Integrate with ERPNext** - Connect to your app's DocTypes and APIs
 4. **Add authentication** - Implement proper user login/logout flows

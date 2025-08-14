@@ -3,7 +3,8 @@
 
 **Last Updated**: 2025-08-11  
 **Framework Version**: Vue 3.4+ | Frappe UI 0.1.x | ERPNext 15  
-**Source**: Production patterns from CRM (desktop-first) and HRMS (mobile-first with Ionic)
+**Source**: Production patterns from CRM (desktop-first) and HRMS (mobile-first with Ionic)  
+**Starter Template**: pegas-frappe-vue-starter (https://github.com/woakes070048/pegas-frappe-vue-starter)
 
 ---
 
