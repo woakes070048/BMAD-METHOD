@@ -1,0 +1,355 @@
+name: "Webhook Implementation Template"
+description: "Template for implementing webhook endpoints and handlers in ERPNext applications"
+version: "1.0.0"
+
+webhook_config:
+  name: "{{ webhook_name }}"
+  description: "{{ webhook_description }}"
+  endpoint_url: "/api/method/{{ app_name }}.{{ module }}.{{ handler_function }}"
+  http_methods: {{ allowed_methods | default(["POST"]) | tojson }}
+  
+authentication:
+  enabled: {{ auth_enabled | default(true) }}
+  methods:
+    - type: "signature"
+      header: "X-Webhook-Signature"
+      algorithm: "sha256"
+      secret_key: "{{ secret_key }}"
+      
+    - type: "token"
+      header: "Authorization"
+      format: "Bearer {{ token }}"
+      
+    - type: "api_key"
+      header: "X-API-Key"
+      key: "{{ api_key }}"
+
+webhook_handler:
+  file_path: "{{ app_name }}/{{ module }}/webhooks.py"
+  function_name: "{{ handler_function }}"
+  
+  python_code: |
+    import frappe
+    from frappe import _
+    import json
+    import hmac
+    import hashlib
+    import traceback
+    
+    @frappe.whitelist(allow_guest={{ allow_guest | default(false) }})
+    def {{ handler_function }}(**kwargs):
+        """
+        Webhook handler for {{ webhook_name }}
+        
+        Expected payload:
+        {{ payload_schema | tojson(indent=8) }}
+        """
+        
+        try:
+            # Get request data
+            if frappe.request.method == "POST":
+                payload = frappe.request.get_json()
+                raw_data = frappe.request.get_data()
+            else:
+                payload = frappe.form_dict
+                raw_data = None
+            
+            # Validate webhook signature
+            {% if auth_enabled %}
+            if not validate_webhook_signature(raw_data):
+                frappe.throw(_("Invalid webhook signature"), frappe.AuthenticationError)
+            {% endif %}
+            
+            # Validate payload structure
+            if not validate_payload(payload):
+                frappe.throw(_("Invalid payload format"), frappe.ValidationError)
+            
+            # Log webhook receipt
+            webhook_log = create_webhook_log(payload, "Received")
+            
+            try:
+                # Process webhook data
+                result = process_webhook_payload(payload)
+                
+                # Update log with success
+                webhook_log.status = "Processed"
+                webhook_log.response_data = json.dumps(result)
+                webhook_log.save()
+                
+                return {
+                    "success": True,
+                    "message": _("Webhook processed successfully"),
+                    "data": result
+                }
+                
+            except Exception as e:
+                # Update log with error
+                webhook_log.status = "Failed"
+                webhook_log.error_message = str(e)
+                webhook_log.save()
+                raise
+                
+        except Exception as e:
+            # Log error
+            frappe.log_error(
+                message=traceback.format_exc(),
+                title=f"Webhook Error: {{ webhook_name }}"
+            )
+            
+            return {
+                "success": False,
+                "error": str(e)
+            }
+    
+    def validate_webhook_signature(raw_data):
+        """Validate webhook signature"""
+        {% if auth_enabled %}
+        signature = frappe.request.headers.get("X-Webhook-Signature", "")
+        if not signature:
+            return False
+            
+        expected_signature = hmac.new(
+            "{{ secret_key }}".encode(),
+            raw_data,
+            hashlib.sha256
+        ).hexdigest()
+        
+        return hmac.compare_digest(signature, expected_signature)
+        {% else %}
+        return True
+        {% endif %}
+    
+    def validate_payload(payload):
+        """Validate webhook payload structure"""
+        required_fields = {{ required_fields | default([]) | tojson }}
+        
+        if not payload:
+            return False
+            
+        for field in required_fields:
+            if field not in payload:
+                frappe.log_error(f"Missing required field: {field}")
+                return False
+                
+        return True
+    
+    def create_webhook_log(payload, status):
+        """Create webhook log entry"""
+        return frappe.get_doc({
+            "doctype": "Webhook Log",
+            "webhook_name": "{{ webhook_name }}",
+            "request_data": json.dumps(payload),
+            "status": status,
+            "timestamp": frappe.utils.now()
+        }).insert(ignore_permissions=True)
+    
+    def process_webhook_payload(payload):
+        """Process the webhook payload based on type"""
+        
+        {% if webhook_type == "document_creation" %}
+        # Create new document
+        doc = frappe.get_doc({
+            "doctype": "{{ target_doctype }}",
+            {% for field, mapping in field_mappings.items() %}
+            "{{ field }}": payload.get("{{ mapping }}"),
+            {% endfor %}
+        })
+        doc.insert()
+        return {"document_created": doc.name}
+        
+        {% elif webhook_type == "document_update" %}
+        # Update existing document
+        doc_name = payload.get("{{ document_identifier }}")
+        if not doc_name:
+            frappe.throw("Document identifier not provided")
+            
+        doc = frappe.get_doc("{{ target_doctype }}", doc_name)
+        {% for field, mapping in field_mappings.items() %}
+        if "{{ mapping }}" in payload:
+            doc.{{ field }} = payload["{{ mapping }}"]
+        {% endfor %}
+        doc.save()
+        return {"document_updated": doc.name}
+        
+        {% elif webhook_type == "workflow_trigger" %}
+        # Trigger workflow or business logic
+        {{ custom_processing_logic }}
+        
+        {% elif webhook_type == "integration_sync" %}
+        # Sync data with external system
+        return sync_external_data(payload)
+        
+        {% else %}
+        # Custom processing
+        {{ custom_processing_logic | default("return {'status': 'processed'}") }}
+        {% endif %}
+
+payload_schema:
+  type: "object"
+  required: {{ required_fields | default([]) | tojson }}
+  properties:
+    {% for field, config in field_definitions.items() %}
+    {{ field }}:
+      type: "{{ config.type }}"
+      {% if config.description %}description: "{{ config.description }}"{% endif %}
+      {% if config.format %}format: "{{ config.format }}"{% endif %}
+      {% if config.enum %}enum: {{ config.enum | tojson }}{% endif %}
+    {% endfor %}
+
+error_handling:
+  retry_policy:
+    enabled: {{ retry_enabled | default(true) }}
+    max_attempts: {{ max_retries | default(3) }}
+    backoff_strategy: "exponential"
+    base_delay: 60  # seconds
+    
+  dead_letter_queue:
+    enabled: {{ dlq_enabled | default(false) }}
+    queue_name: "webhook_failures"
+    
+  notifications:
+    on_failure:
+      - type: "email"
+        recipients: {{ error_recipients | default([]) | tojson }}
+        
+    on_success:
+      - type: "log"
+        level: "info"
+
+monitoring:
+  metrics:
+    - name: "webhook_requests_total"
+      type: "counter"
+      labels: ["webhook_name", "status"]
+      
+    - name: "webhook_processing_duration"
+      type: "histogram"
+      labels: ["webhook_name"]
+      
+    - name: "webhook_errors_total"
+      type: "counter"
+      labels: ["webhook_name", "error_type"]
+      
+  logging:
+    enabled: true
+    log_level: "INFO"
+    include_payload: {{ log_payload | default(false) }}
+    
+  alerts:
+    - condition: "error_rate > 0.05"
+      action: "send_notification"
+      channel: "email"
+      
+    - condition: "avg_response_time > 5000ms"
+      action: "send_alert"
+      channel: "slack"
+
+webhook_doctype:
+  name: "Webhook Log"
+  fields:
+    - fieldname: "webhook_name"
+      fieldtype: "Data"
+      label: "Webhook Name"
+      reqd: 1
+      
+    - fieldname: "request_data"
+      fieldtype: "Long Text"
+      label: "Request Data"
+      
+    - fieldname: "response_data"
+      fieldtype: "Long Text"
+      label: "Response Data"
+      
+    - fieldname: "status"
+      fieldtype: "Select"
+      label: "Status"
+      options: "Received\nProcessed\nFailed"
+      default: "Received"
+      
+    - fieldname: "error_message"
+      fieldtype: "Text"
+      label: "Error Message"
+      
+    - fieldname: "timestamp"
+      fieldtype: "Datetime"
+      label: "Timestamp"
+      default: "now"
+      
+    - fieldname: "processing_time"
+      fieldtype: "Float"
+      label: "Processing Time (ms)"
+
+testing:
+  test_payload: |
+    {
+      {% for field, config in field_definitions.items() %}
+      "{{ field }}": {{ config.example | tojson }}{% if not loop.last %},{% endif %}
+      {% endfor %}
+    }
+    
+  test_cases:
+    - name: "Valid payload"
+      payload: "{{ test_payload }}"
+      expected_status: 200
+      expected_response: {"success": true}
+      
+    - name: "Invalid signature"
+      payload: "{{ test_payload }}"
+      headers: {"X-Webhook-Signature": "invalid"}
+      expected_status: 401
+      
+    - name: "Missing required field"
+      payload: "{}"
+      expected_status: 400
+      
+    - name: "Invalid payload format"
+      payload: "invalid json"
+      expected_status: 400
+
+deployment:
+  setup_commands: |
+    # Create webhook configuration
+    bench --site {{ site_name }} execute {{ app_name }}.setup.create_webhook_config
+    
+    # Set webhook secret
+    bench --site {{ site_name }} set-config webhook_secret_{{ webhook_name }} "{{ secret_key }}"
+    
+    # Create webhook log doctype (if needed)
+    bench --site {{ site_name }} migrate
+    
+  nginx_config: |
+    # Add to nginx config for webhook endpoint
+    location /api/method/{{ app_name }}.{{ module }}.{{ handler_function }} {
+        proxy_pass http://frappe;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_read_timeout 300;
+        proxy_connect_timeout 300;
+    }
+    
+  verification_script: |
+    #!/bin/bash
+    # Test webhook endpoint
+    curl -X POST {{ webhook_url }} \
+      -H "Content-Type: application/json" \
+      -H "X-Webhook-Signature: {{ test_signature }}" \
+      -d '{{ test_payload }}'
+
+security:
+  best_practices:
+    - "Always validate webhook signatures"
+    - "Use HTTPS for webhook endpoints"
+    - "Implement rate limiting"
+    - "Log all webhook activities"
+    - "Validate payload schemas"
+    - "Use idempotency keys for duplicate prevention"
+    
+  rate_limiting:
+    enabled: {{ rate_limit_enabled | default(true) }}
+    requests_per_minute: {{ rate_limit | default(60) }}
+    burst_size: {{ burst_size | default(10) }}
+    
+  ip_whitelist:
+    enabled: {{ ip_whitelist_enabled | default(false) }}
+    allowed_ips: {{ allowed_ips | default([]) | tojson }}
