@@ -1,0 +1,403 @@
+name: "Diagnostic and Troubleshooting Workflow"
+description: "Systematic workflow for diagnosing and resolving ERPNext system issues, performance problems, and errors"
+version: "1.0.0"
+
+workflow_metadata:
+  category: "Troubleshooting"
+  complexity: "Medium to High"
+  estimated_duration: "2-8 hours"
+  required_expertise: "System Administration, Development"
+
+triggers:
+  - type: "manual"
+    description: "System issue reported"
+  - type: "automated"
+    description: "Performance threshold breached"
+  - type: "scheduled"
+    description: "Regular health check"
+  - type: "alert"
+    description: "Monitoring system alert"
+
+prerequisites:
+  - "Access to system logs"
+  - "Database query permissions"
+  - "Server access credentials"
+  - "Monitoring tools access"
+  - "Test environment available"
+
+workflow_stages:
+  - stage: "initial_assessment"
+    name: "Initial Problem Assessment"
+    agents:
+      - "diagnostic-specialist"
+      - "bench-operator"
+    
+    tasks:
+      - task: "gather_symptoms"
+        description: "Collect issue symptoms and error messages"
+        agent: "diagnostic-specialist"
+        outputs:
+          - "symptom_list"
+          - "error_logs"
+          - "affected_areas"
+          
+      - task: "system_health_check"
+        description: "Run initial system health diagnostics"
+        agent: "bench-operator"
+        command: "bench doctor"
+        outputs:
+          - "health_report"
+          - "system_status"
+          
+      - task: "categorize_issue"
+        description: "Categorize the type of issue"
+        agent: "diagnostic-specialist"
+        categories:
+          - "Performance"
+          - "Functionality"
+          - "Data Integrity"
+          - "Integration"
+          - "Security"
+          
+    decision_point:
+      question: "Is this a critical production issue?"
+      yes: "proceed_to_emergency_response"
+      no: "proceed_to_detailed_diagnosis"
+      
+  - stage: "emergency_response"
+    name: "Emergency Response"
+    condition: "critical_production_issue"
+    agents:
+      - "diagnostic-specialist"
+      - "bench-operator"
+      
+    tasks:
+      - task: "isolate_issue"
+        description: "Isolate and contain the problem"
+        priority: "CRITICAL"
+        
+      - task: "implement_workaround"
+        description: "Apply temporary fix if available"
+        
+      - task: "notify_stakeholders"
+        description: "Alert relevant teams and users"
+        
+      - task: "document_incident"
+        description: "Create incident report"
+        
+  - stage: "detailed_diagnosis"
+    name: "Detailed Diagnostic Analysis"
+    agents:
+      - "diagnostic-specialist"
+      - "testing-specialist"
+      - "data-integration-expert"
+      
+    tasks:
+      - task: "analyze_logs"
+        description: "Deep dive into system logs"
+        agent: "diagnostic-specialist"
+        log_sources:
+          - "frappe-bench/logs/bench.log"
+          - "frappe-bench/logs/worker.log"
+          - "frappe-bench/logs/scheduler.log"
+          - "nginx/error.log"
+          
+      - task: "performance_profiling"
+        description: "Profile system performance"
+        agent: "diagnostic-specialist"
+        checks:
+          - "database_queries"
+          - "api_response_times"
+          - "resource_utilization"
+          - "cache_performance"
+          
+      - task: "data_integrity_check"
+        description: "Verify data consistency"
+        agent: "data-integration-expert"
+        validations:
+          - "referential_integrity"
+          - "data_completeness"
+          - "constraint_violations"
+          
+      - task: "reproduce_issue"
+        description: "Attempt to reproduce in test environment"
+        agent: "testing-specialist"
+        outputs:
+          - "reproduction_steps"
+          - "test_results"
+          
+    analysis_techniques:
+      - technique: "root_cause_analysis"
+        method: "5 Whys"
+        
+      - technique: "pattern_recognition"
+        method: "Error frequency analysis"
+        
+      - technique: "correlation_analysis"
+        method: "Timeline correlation"
+        
+  - stage: "solution_identification"
+    name: "Identify Solution Options"
+    agents:
+      - "diagnostic-specialist"
+      - "refactoring-expert"
+      - "erpnext-architect"
+      
+    tasks:
+      - task: "identify_root_cause"
+        description: "Determine the root cause"
+        agent: "diagnostic-specialist"
+        
+      - task: "propose_solutions"
+        description: "Generate solution options"
+        agents:
+          - "diagnostic-specialist"
+          - "refactoring-expert"
+        solution_types:
+          - "Configuration change"
+          - "Code fix"
+          - "Database optimization"
+          - "Infrastructure upgrade"
+          - "Process change"
+          
+      - task: "evaluate_solutions"
+        description: "Assess solution options"
+        agent: "erpnext-architect"
+        criteria:
+          - "effectiveness"
+          - "implementation_effort"
+          - "risk_level"
+          - "cost"
+          - "timeline"
+          
+      - task: "select_solution"
+        description: "Choose optimal solution"
+        approval_required: true
+        
+  - stage: "solution_implementation"
+    name: "Implement Solution"
+    agents:
+      - "diagnostic-specialist"
+      - "api-developer"
+      - "bench-operator"
+      - "testing-specialist"
+      
+    tasks:
+      - task: "prepare_fix"
+        description: "Develop and prepare the fix"
+        agent: "api-developer"
+        outputs:
+          - "fix_code"
+          - "deployment_plan"
+          
+      - task: "test_fix"
+        description: "Test solution in staging"
+        agent: "testing-specialist"
+        test_types:
+          - "unit_tests"
+          - "integration_tests"
+          - "regression_tests"
+          
+      - task: "deploy_fix"
+        description: "Deploy solution to production"
+        agent: "bench-operator"
+        deployment_steps:
+          - "backup_system"
+          - "apply_fix"
+          - "verify_deployment"
+          - "monitor_system"
+          
+      - task: "validate_resolution"
+        description: "Confirm issue is resolved"
+        agent: "diagnostic-specialist"
+        validation_checks:
+          - "symptom_elimination"
+          - "performance_improvement"
+          - "no_new_issues"
+          
+  - stage: "optimization"
+    name: "System Optimization"
+    condition: "performance_issue"
+    agents:
+      - "diagnostic-specialist"
+      - "refactoring-expert"
+      
+    tasks:
+      - task: "performance_tuning"
+        description: "Optimize system performance"
+        optimizations:
+          - "database_indexing"
+          - "query_optimization"
+          - "cache_configuration"
+          - "code_refactoring"
+          
+      - task: "resource_optimization"
+        description: "Optimize resource usage"
+        areas:
+          - "memory_management"
+          - "cpu_utilization"
+          - "disk_io"
+          - "network_bandwidth"
+          
+  - stage: "monitoring_setup"
+    name: "Enhanced Monitoring"
+    agents:
+      - "diagnostic-specialist"
+      - "testing-specialist"
+      
+    tasks:
+      - task: "implement_monitoring"
+        description: "Set up monitoring for the issue"
+        monitoring_types:
+          - "performance_metrics"
+          - "error_tracking"
+          - "custom_alerts"
+          
+      - task: "define_thresholds"
+        description: "Set alert thresholds"
+        
+      - task: "create_dashboards"
+        description: "Create monitoring dashboards"
+        
+  - stage: "documentation"
+    name: "Document Resolution"
+    agents:
+      - "documentation-specialist"
+      - "diagnostic-specialist"
+      
+    tasks:
+      - task: "create_kb_article"
+        description: "Document issue and resolution"
+        sections:
+          - "problem_description"
+          - "symptoms"
+          - "root_cause"
+          - "solution_steps"
+          - "prevention_measures"
+          
+      - task: "update_runbook"
+        description: "Update operational runbooks"
+        
+      - task: "post_mortem"
+        description: "Conduct post-mortem if critical"
+        includes:
+          - "timeline"
+          - "impact_analysis"
+          - "lessons_learned"
+          - "action_items"
+          
+  - stage: "preventive_measures"
+    name: "Implement Preventive Measures"
+    agents:
+      - "diagnostic-specialist"
+      - "erpnext-architect"
+      
+    tasks:
+      - task: "identify_prevention"
+        description: "Identify preventive measures"
+        
+      - task: "implement_safeguards"
+        description: "Implement preventive safeguards"
+        safeguard_types:
+          - "validation_rules"
+          - "automated_tests"
+          - "monitoring_alerts"
+          - "process_improvements"
+          
+      - task: "update_procedures"
+        description: "Update operational procedures"
+
+decision_points:
+  - point: "severity_assessment"
+    question: "What is the severity level?"
+    options:
+      critical: "emergency_response"
+      high: "expedited_diagnosis"
+      medium: "standard_diagnosis"
+      low: "scheduled_diagnosis"
+      
+  - point: "solution_complexity"
+    question: "How complex is the solution?"
+    options:
+      simple: "quick_fix"
+      moderate: "standard_implementation"
+      complex: "phased_implementation"
+      
+  - point: "regression_risk"
+    question: "Risk of regression?"
+    options:
+      high: "extensive_testing"
+      medium: "standard_testing"
+      low: "basic_testing"
+
+outputs:
+  - output: "diagnostic_report"
+    format: "markdown"
+    includes:
+      - "issue_summary"
+      - "root_cause_analysis"
+      - "solution_implemented"
+      - "test_results"
+      - "performance_metrics"
+      
+  - output: "incident_report"
+    format: "pdf"
+    includes:
+      - "timeline"
+      - "impact_assessment"
+      - "resolution_steps"
+      - "preventive_measures"
+      
+  - output: "knowledge_base_article"
+    format: "html"
+    includes:
+      - "problem_symptoms"
+      - "troubleshooting_steps"
+      - "solution"
+      - "related_articles"
+
+success_criteria:
+  - "Issue completely resolved"
+  - "No performance degradation"
+  - "No new issues introduced"
+  - "Documentation completed"
+  - "Monitoring in place"
+  - "Stakeholders satisfied"
+
+rollback_plan:
+  triggers:
+    - "New critical issues detected"
+    - "Performance degradation > 20%"
+    - "Data corruption detected"
+    
+  steps:
+    - "Stop current deployment"
+    - "Restore from backup"
+    - "Revert code changes"
+    - "Verify system stability"
+    - "Notify stakeholders"
+
+tools_required:
+  diagnostic:
+    - "bench doctor"
+    - "MySQL query analyzer"
+    - "Redis CLI"
+    - "System monitoring tools"
+    
+  performance:
+    - "New Relic / APM tools"
+    - "Query profiler"
+    - "Load testing tools"
+    
+  debugging:
+    - "Python debugger"
+    - "Browser DevTools"
+    - "Network analyzer"
+
+best_practices:
+  - "Always backup before making changes"
+  - "Test fixes in staging first"
+  - "Document every step taken"
+  - "Communicate status regularly"
+  - "Follow change management process"
+  - "Conduct post-mortem for major issues"

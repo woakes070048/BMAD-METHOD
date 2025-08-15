@@ -1,0 +1,365 @@
+name: "Data Transformation Template"
+description: "Comprehensive template for data transformation, ETL processes, and data migration in ERPNext"
+version: "1.0.0"
+
+transformation_config:
+  source:
+    type: "{{ source_type }}"  # database, api, csv, json, xml
+    connection:
+      host: "{{ source_host }}"
+      port: "{{ source_port }}"
+      database: "{{ source_database }}"
+      credentials:
+        username: "{{ source_username }}"
+        password: "{{ source_password }}"
+        
+  target:
+    type: "erpnext"
+    site: "{{ target_site }}"
+    database: "{{ target_database }}"
+    
+  options:
+    batch_size: 1000
+    parallel_workers: 4
+    error_threshold: 100
+    rollback_on_error: true
+    validate_data: true
+    log_level: "INFO"
+
+extraction:
+  methods:
+    database:
+      query: |
+        SELECT {{ fields | join(', ') }}
+        FROM {{ source_table }}
+        WHERE {{ filter_condition }}
+        ORDER BY {{ order_by }}
+        LIMIT {{ limit }}
+        
+    api:
+      endpoint: "{{ api_url }}"
+      method: "{{ http_method }}"
+      headers:
+        Authorization: "Bearer {{ api_token }}"
+        Content-Type: "application/json"
+      pagination:
+        type: "{{ pagination_type }}"  # offset, cursor, page
+        page_size: 100
+        
+    file:
+      path: "{{ file_path }}"
+      format: "{{ file_format }}"
+      delimiter: "{{ delimiter | default(',') }}"
+      encoding: "{{ encoding | default('utf-8') }}"
+      
+  validation:
+    pre_extraction:
+      - check: "source_connectivity"
+      - check: "permissions"
+      - check: "data_availability"
+      
+    post_extraction:
+      - check: "record_count"
+      - check: "data_completeness"
+      - check: "schema_validation"
+
+transformation_rules:
+  field_mappings:
+    - source_field: "{{ source_field_name }}"
+      target_field: "{{ target_field_name }}"
+      transformation: "{{ transformation_type }}"
+      
+  data_types:
+    string_transformations:
+      - type: "uppercase"
+        apply: "field.upper()"
+      - type: "lowercase"
+        apply: "field.lower()"
+      - type: "trim"
+        apply: "field.strip()"
+      - type: "replace"
+        apply: "field.replace('{{ old }}', '{{ new }}')"
+      - type: "regex"
+        apply: "re.sub(r'{{ pattern }}', '{{ replacement }}', field)"
+      - type: "concatenate"
+        apply: "' '.join([field1, field2])"
+        
+    numeric_transformations:
+      - type: "round"
+        apply: "round(field, {{ decimal_places }})"
+      - type: "multiply"
+        apply: "field * {{ multiplier }}"
+      - type: "divide"
+        apply: "field / {{ divisor }}"
+      - type: "percentage"
+        apply: "(field / 100)"
+      - type: "currency_conversion"
+        apply: "field * {{ exchange_rate }}"
+        
+    date_transformations:
+      - type: "format"
+        apply: "datetime.strptime(field, '{{ input_format }}').strftime('{{ output_format }}')"
+      - type: "add_days"
+        apply: "field + timedelta(days={{ days }})"
+      - type: "timezone"
+        apply: "field.replace(tzinfo={{ source_tz }}).astimezone({{ target_tz }})"
+      - type: "extract_year"
+        apply: "field.year"
+      - type: "extract_month"
+        apply: "field.month"
+        
+    complex_transformations:
+      - type: "lookup"
+        apply: |
+          def lookup_value(field):
+              mapping = {{ lookup_table }}
+              return mapping.get(field, '{{ default_value }}')
+              
+      - type: "conditional"
+        apply: |
+          def conditional_transform(field):
+              if field {{ condition }}:
+                  return {{ true_value }}
+              else:
+                  return {{ false_value }}
+                  
+      - type: "aggregation"
+        apply: |
+          def aggregate_fields(row):
+              return {{ aggregation_function }}([
+                  row['{{ field1 }}'],
+                  row['{{ field2 }}']
+              ])
+              
+      - type: "custom_function"
+        apply: |
+          {{ custom_transformation_code }}
+
+transformation_pipeline:
+  stages:
+    - stage: "data_cleaning"
+      operations:
+        - remove_duplicates:
+            key_fields: ["{{ unique_field }}"]
+        - handle_nulls:
+            strategy: "{{ null_strategy }}"  # drop, fill, interpolate
+            fill_value: "{{ fill_value }}"
+        - remove_outliers:
+            method: "{{ outlier_method }}"  # zscore, iqr
+            threshold: {{ threshold }}
+            
+    - stage: "data_enrichment"
+      operations:
+        - add_calculated_fields:
+            - field: "{{ calculated_field }}"
+              formula: "{{ calculation_formula }}"
+        - merge_datasets:
+            join_type: "{{ join_type }}"  # inner, left, right, outer
+            on: "{{ join_key }}"
+        - geocoding:
+            address_field: "{{ address_field }}"
+            output_fields: ["latitude", "longitude"]
+            
+    - stage: "data_validation"
+      operations:
+        - validate_ranges:
+            - field: "{{ numeric_field }}"
+              min: {{ min_value }}
+              max: {{ max_value }}
+        - validate_formats:
+            - field: "{{ format_field }}"
+              pattern: "{{ regex_pattern }}"
+        - validate_references:
+            - field: "{{ reference_field }}"
+              lookup_table: "{{ reference_table }}"
+              
+    - stage: "data_standardization"
+      operations:
+        - normalize_values:
+            - field: "{{ field_to_normalize }}"
+              method: "{{ normalization_method }}"  # minmax, zscore
+        - encode_categories:
+            - field: "{{ categorical_field }}"
+              encoding: "{{ encoding_type }}"  # onehot, label, ordinal
+        - standardize_formats:
+            - dates: "YYYY-MM-DD"
+            - phones: "+1-XXX-XXX-XXXX"
+            - addresses: "{{ address_format }}"
+
+loading:
+  strategies:
+    bulk_insert:
+      method: "INSERT INTO"
+      batch_size: 1000
+      ignore_duplicates: true
+      
+    upsert:
+      method: "INSERT ON DUPLICATE KEY UPDATE"
+      key_fields: ["{{ primary_key }}"]
+      update_fields: ["{{ updateable_field }}"]
+      
+    merge:
+      method: "MERGE"
+      match_condition: "{{ match_condition }}"
+      update_action: "{{ update_action }}"
+      insert_action: "{{ insert_action }}"
+      
+  error_handling:
+    on_error: "{{ error_action }}"  # skip, retry, fail, log
+    max_retries: 3
+    retry_delay: 5
+    error_log: "{{ error_log_path }}"
+    
+  post_load:
+    - action: "update_indexes"
+    - action: "refresh_cache"
+    - action: "trigger_workflows"
+    - action: "send_notifications"
+
+monitoring:
+  metrics:
+    - name: "records_processed"
+      type: "counter"
+      
+    - name: "transformation_duration"
+      type: "timer"
+      unit: "seconds"
+      
+    - name: "error_rate"
+      type: "gauge"
+      threshold: 0.01
+      
+    - name: "data_quality_score"
+      type: "gauge"
+      calculation: "{{ quality_formula }}"
+      
+  logging:
+    format: "json"
+    fields:
+      - timestamp
+      - stage
+      - records_in
+      - records_out
+      - errors
+      - duration
+      
+  alerts:
+    - condition: "error_rate > 0.05"
+      action: "send_email"
+      recipients: ["{{ admin_email }}"]
+      
+    - condition: "duration > 3600"
+      action: "send_slack"
+      channel: "#data-ops"
+
+quality_checks:
+  completeness:
+    - check: "null_percentage"
+      threshold: 5
+      
+    - check: "missing_required_fields"
+      fields: {{ required_fields | tojson }}
+      
+  accuracy:
+    - check: "data_type_consistency"
+    - check: "value_range_validation"
+    - check: "referential_integrity"
+    
+  consistency:
+    - check: "duplicate_detection"
+    - check: "format_standardization"
+    - check: "cross_field_validation"
+    
+  timeliness:
+    - check: "data_freshness"
+      max_age: "24 hours"
+      
+    - check: "update_frequency"
+      expected: "daily"
+
+transformation_code:
+  python_example: |
+    import pandas as pd
+    import numpy as np
+    from datetime import datetime
+    import frappe
+    
+    class DataTransformer:
+        def __init__(self, config):
+            self.config = config
+            self.errors = []
+            
+        def extract(self):
+            """Extract data from source"""
+            if self.config['source']['type'] == 'database':
+                return self.extract_from_database()
+            elif self.config['source']['type'] == 'api':
+                return self.extract_from_api()
+            elif self.config['source']['type'] == 'file':
+                return self.extract_from_file()
+                
+        def transform(self, data):
+            """Apply transformation rules"""
+            df = pd.DataFrame(data)
+            
+            # Apply field mappings
+            for mapping in self.config['field_mappings']:
+                if mapping['transformation']:
+                    df[mapping['target']] = df[mapping['source']].apply(
+                        self.apply_transformation,
+                        args=(mapping['transformation'],)
+                    )
+                else:
+                    df[mapping['target']] = df[mapping['source']]
+            
+            # Clean data
+            df = self.clean_data(df)
+            
+            # Validate data
+            df = self.validate_data(df)
+            
+            return df.to_dict('records')
+            
+        def load(self, data):
+            """Load data into ERPNext"""
+            success_count = 0
+            
+            for record in data:
+                try:
+                    doc = frappe.get_doc({
+                        'doctype': self.config['target']['doctype'],
+                        **record
+                    })
+                    doc.insert()
+                    success_count += 1
+                    
+                    if success_count % 100 == 0:
+                        frappe.db.commit()
+                        
+                except Exception as e:
+                    self.errors.append({
+                        'record': record,
+                        'error': str(e)
+                    })
+                    
+            return success_count
+
+output:
+  reports:
+    transformation_summary:
+      format: "html"
+      includes:
+        - total_records_processed
+        - successful_transformations
+        - failed_transformations
+        - transformation_rules_applied
+        - data_quality_metrics
+        
+    error_report:
+      format: "csv"
+      includes:
+        - record_id
+        - error_type
+        - error_message
+        - transformation_stage
+        - timestamp
