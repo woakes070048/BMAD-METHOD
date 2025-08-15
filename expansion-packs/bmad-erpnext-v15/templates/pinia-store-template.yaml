@@ -1,0 +1,1095 @@
+---
+template_name: "Pinia Store Template"
+template_type: "vue_state_management"
+version: "1.0.0"
+description: "Template for creating Pinia stores for state management in Vue 3 ERPNext applications"
+
+# Basic store structure
+basic_store:
+  template: |
+    import { defineStore } from 'pinia'
+    import { ref, computed } from 'vue'
+    import { createResource } from 'frappe-ui'
+    
+    export const use{StoreName}Store = defineStore('{store_name}', () => {
+      // State
+      const items = ref([])
+      const loading = ref(false)
+      const error = ref(null)
+      const currentItem = ref(null)
+      
+      // Getters (computed)
+      const itemCount = computed(() => items.value.length)
+      const hasItems = computed(() => items.value.length > 0)
+      const activeItems = computed(() => 
+        items.value.filter(item => item.status === 'Active')
+      )
+      
+      // Actions
+      const fetchItems = async () => {
+        loading.value = true
+        error.value = null
+        
+        try {
+          const response = await frappe.call({
+            method: 'app.api.get_items',
+            args: {}
+          })
+          
+          items.value = response.message
+        } catch (err) {
+          error.value = err.message
+          console.error('Error fetching items:', err)
+        } finally {
+          loading.value = false
+        }
+      }
+      
+      const addItem = async (itemData) => {
+        try {
+          const response = await frappe.call({
+            method: 'app.api.create_item',
+            args: itemData
+          })
+          
+          items.value.push(response.message)
+          return response.message
+        } catch (err) {
+          error.value = err.message
+          throw err
+        }
+      }
+      
+      const updateItem = async (id, updates) => {
+        try {
+          const response = await frappe.call({
+            method: 'app.api.update_item',
+            args: { id, ...updates }
+          })
+          
+          const index = items.value.findIndex(item => item.id === id)
+          if (index !== -1) {
+            items.value[index] = response.message
+          }
+          
+          return response.message
+        } catch (err) {
+          error.value = err.message
+          throw err
+        }
+      }
+      
+      const deleteItem = async (id) => {
+        try {
+          await frappe.call({
+            method: 'app.api.delete_item',
+            args: { id }
+          })
+          
+          items.value = items.value.filter(item => item.id !== id)
+        } catch (err) {
+          error.value = err.message
+          throw err
+        }
+      }
+      
+      const setCurrentItem = (item) => {
+        currentItem.value = item
+      }
+      
+      const clearError = () => {
+        error.value = null
+      }
+      
+      const resetStore = () => {
+        items.value = []
+        loading.value = false
+        error.value = null
+        currentItem.value = null
+      }
+      
+      return {
+        // State
+        items,
+        loading,
+        error,
+        currentItem,
+        
+        // Getters
+        itemCount,
+        hasItems,
+        activeItems,
+        
+        // Actions
+        fetchItems,
+        addItem,
+        updateItem,
+        deleteItem,
+        setCurrentItem,
+        clearError,
+        resetStore
+      }
+    })
+
+# Advanced store with resources
+advanced_store:
+  template: |
+    import { defineStore } from 'pinia'
+    import { ref, computed, watch } from 'vue'
+    import { createResource } from 'frappe-ui'
+    
+    export const use{StoreName}Store = defineStore('{store_name}', () => {
+      // State
+      const filters = ref({})
+      const sortBy = ref('creation desc')
+      const currentPage = ref(1)
+      const pageSize = ref(20)
+      const selectedItems = ref([])
+      
+      // Resources
+      const listResource = createResource({
+        url: 'frappe.client.get_list',
+        params: {
+          doctype: '{DocType}',
+          fields: ['*'],
+          filters: filters,
+          order_by: sortBy,
+          limit_start: computed(() => (currentPage.value - 1) * pageSize.value),
+          limit_page_length: pageSize.value
+        },
+        auto: false,
+        onSuccess(data) {
+          // Transform data if needed
+          console.log('Data loaded successfully:', data.length, 'items')
+        },
+        onError(error) {
+          console.error('Error loading data:', error)
+          frappe.toast({
+            title: 'Error',
+            text: error.message,
+            variant: 'error'
+          })
+        }
+      })
+      
+      const createResource = createResource({
+        url: 'frappe.client.save',
+        onSuccess(data) {
+          listResource.reload()
+          frappe.toast({
+            title: 'Success',
+            text: 'Item created successfully',
+            variant: 'success'
+          })
+        }
+      })
+      
+      const updateResource = createResource({
+        url: 'frappe.client.save',
+        onSuccess(data) {
+          listResource.reload()
+          frappe.toast({
+            title: 'Success',
+            text: 'Item updated successfully',
+            variant: 'success'
+          })
+        }
+      })
+      
+      const deleteResource = createResource({
+        url: 'frappe.client.delete',
+        onSuccess() {
+          listResource.reload()
+          frappe.toast({
+            title: 'Success',
+            text: 'Item deleted successfully',
+            variant: 'success'
+          })
+        }
+      })
+      
+      // Computed
+      const items = computed(() => listResource.data || [])
+      const loading = computed(() => listResource.loading)
+      const totalItems = computed(() => listResource.data?.length || 0)
+      const totalPages = computed(() => Math.ceil(totalItems.value / pageSize.value))
+      const hasSelection = computed(() => selectedItems.value.length > 0)
+      
+      // Watchers
+      watch([filters, sortBy, currentPage], () => {
+        listResource.reload()
+      }, { deep: true })
+      
+      // Actions
+      const loadData = () => {
+        listResource.reload()
+      }
+      
+      const setFilters = (newFilters) => {
+        filters.value = { ...newFilters }
+        currentPage.value = 1 // Reset to first page
+      }
+      
+      const setSorting = (field, direction = 'asc') => {
+        sortBy.value = `${field} ${direction}`
+      }
+      
+      const setPage = (page) => {
+        currentPage.value = page
+      }
+      
+      const setPageSize = (size) => {
+        pageSize.value = size
+        currentPage.value = 1
+      }
+      
+      const createItem = async (data) => {
+        await createResource.submit({
+          doc: {
+            doctype: '{DocType}',
+            ...data
+          }
+        })
+      }
+      
+      const updateItem = async (name, data) => {
+        await updateResource.submit({
+          doc: {
+            doctype: '{DocType}',
+            name,
+            ...data
+          }
+        })
+      }
+      
+      const deleteItem = async (name) => {
+        await deleteResource.submit({
+          doctype: '{DocType}',
+          name
+        })
+      }
+      
+      const selectItem = (item) => {
+        const index = selectedItems.value.findIndex(i => i.name === item.name)
+        if (index > -1) {
+          selectedItems.value.splice(index, 1)
+        } else {
+          selectedItems.value.push(item)
+        }
+      }
+      
+      const selectAll = () => {
+        selectedItems.value = [...items.value]
+      }
+      
+      const clearSelection = () => {
+        selectedItems.value = []
+      }
+      
+      const isSelected = (item) => {
+        return selectedItems.value.some(i => i.name === item.name)
+      }
+      
+      return {
+        // State
+        filters,
+        sortBy,
+        currentPage,
+        pageSize,
+        selectedItems,
+        
+        // Resources
+        listResource,
+        createResource,
+        updateResource,
+        deleteResource,
+        
+        // Computed
+        items,
+        loading,
+        totalItems,
+        totalPages,
+        hasSelection,
+        
+        // Actions
+        loadData,
+        setFilters,
+        setSorting,
+        setPage,
+        setPageSize,
+        createItem,
+        updateItem,
+        deleteItem,
+        selectItem,
+        selectAll,
+        clearSelection,
+        isSelected
+      }
+    })
+
+# Auth store pattern
+auth_store:
+  template: |
+    import { defineStore } from 'pinia'
+    import { ref, computed } from 'vue'
+    import { createResource } from 'frappe-ui'
+    
+    export const useAuthStore = defineStore('auth', () => {
+      // State
+      const user = ref(null)
+      const isAuthenticated = ref(false)
+      const permissions = ref({})
+      const roles = ref([])
+      const loading = ref(false)
+      
+      // Resources
+      const loginResource = createResource({
+        url: 'login',
+        onSuccess(data) {
+          user.value = data.user
+          isAuthenticated.value = true
+          permissions.value = data.permissions || {}
+          roles.value = data.roles || []
+          
+          // Store in localStorage
+          localStorage.setItem('auth_user', JSON.stringify(data.user))
+          
+          frappe.toast({
+            title: 'Welcome!',
+            text: `Logged in as ${data.user.full_name}`,
+            variant: 'success'
+          })
+        },
+        onError(error) {
+          frappe.toast({
+            title: 'Login Failed',
+            text: error.message,
+            variant: 'error'
+          })
+        }
+      })
+      
+      const logoutResource = createResource({
+        url: 'logout',
+        onSuccess() {
+          resetAuth()
+          frappe.toast({
+            title: 'Logged Out',
+            text: 'You have been successfully logged out',
+            variant: 'info'
+          })
+        }
+      })
+      
+      const profileResource = createResource({
+        url: 'frappe.auth.get_logged_user',
+        auto: false,
+        onSuccess(data) {
+          user.value = data
+          isAuthenticated.value = true
+        }
+      })
+      
+      // Computed
+      const userName = computed(() => user.value?.full_name || '')
+      const userEmail = computed(() => user.value?.email || '')
+      const isSystemManager = computed(() => roles.value.includes('System Manager'))
+      const hasRole = computed(() => (roleName) => roles.value.includes(roleName))
+      
+      // Actions
+      const login = async (credentials) => {
+        loading.value = true
+        try {
+          await loginResource.submit(credentials)
+        } finally {
+          loading.value = false
+        }
+      }
+      
+      const logout = async () => {
+        await logoutResource.submit()
+      }
+      
+      const checkAuth = async () => {
+        // Check if user is stored in localStorage
+        const storedUser = localStorage.getItem('auth_user')
+        if (storedUser) {
+          try {
+            user.value = JSON.parse(storedUser)
+            isAuthenticated.value = true
+            
+            // Verify with server
+            await profileResource.reload()
+          } catch (error) {
+            console.error('Auth check failed:', error)
+            resetAuth()
+          }
+        }
+      }
+      
+      const hasPermission = (doctype, action = 'read') => {
+        return permissions.value[doctype]?.[action] || false
+      }
+      
+      const canRead = (doctype) => hasPermission(doctype, 'read')
+      const canWrite = (doctype) => hasPermission(doctype, 'write')
+      const canCreate = (doctype) => hasPermission(doctype, 'create')
+      const canDelete = (doctype) => hasPermission(doctype, 'delete')
+      
+      const updateProfile = async (profileData) => {
+        try {
+          const response = await frappe.call({
+            method: 'frappe.auth.update_profile',
+            args: profileData
+          })
+          
+          user.value = { ...user.value, ...response.message }
+          localStorage.setItem('auth_user', JSON.stringify(user.value))
+          
+          frappe.toast({
+            title: 'Profile Updated',
+            variant: 'success'
+          })
+        } catch (error) {
+          frappe.toast({
+            title: 'Update Failed',
+            text: error.message,
+            variant: 'error'
+          })
+          throw error
+        }
+      }
+      
+      const resetAuth = () => {
+        user.value = null
+        isAuthenticated.value = false
+        permissions.value = {}
+        roles.value = []
+        localStorage.removeItem('auth_user')
+      }
+      
+      return {
+        // State
+        user,
+        isAuthenticated,
+        permissions,
+        roles,
+        loading,
+        
+        // Resources
+        loginResource,
+        logoutResource,
+        profileResource,
+        
+        // Computed
+        userName,
+        userEmail,
+        isSystemManager,
+        hasRole,
+        
+        // Actions
+        login,
+        logout,
+        checkAuth,
+        hasPermission,
+        canRead,
+        canWrite,
+        canCreate,
+        canDelete,
+        updateProfile,
+        resetAuth
+      }
+    })
+
+# UI state store
+ui_store:
+  template: |
+    import { defineStore } from 'pinia'
+    import { ref, computed } from 'vue'
+    
+    export const useUIStore = defineStore('ui', () => {
+      // State
+      const sidebarOpen = ref(true)
+      const theme = ref('light')
+      const notifications = ref([])
+      const modals = ref({})
+      const loading = ref(false)
+      const breadcrumbs = ref([])
+      const pageTitle = ref('')
+      
+      // Computed
+      const isDarkMode = computed(() => theme.value === 'dark')
+      const unreadNotifications = computed(() => 
+        notifications.value.filter(n => !n.read).length
+      )
+      const hasActiveModals = computed(() => 
+        Object.values(modals.value).some(modal => modal.open)
+      )
+      
+      // Actions
+      const toggleSidebar = () => {
+        sidebarOpen.value = !sidebarOpen.value
+        localStorage.setItem('sidebar_open', sidebarOpen.value.toString())
+      }
+      
+      const setSidebarOpen = (open) => {
+        sidebarOpen.value = open
+        localStorage.setItem('sidebar_open', open.toString())
+      }
+      
+      const setTheme = (newTheme) => {
+        theme.value = newTheme
+        localStorage.setItem('theme', newTheme)
+        
+        // Apply theme to document
+        document.documentElement.classList.toggle('dark', newTheme === 'dark')
+      }
+      
+      const toggleTheme = () => {
+        setTheme(theme.value === 'light' ? 'dark' : 'light')
+      }
+      
+      const addNotification = (notification) => {
+        const id = Date.now().toString()
+        notifications.value.unshift({
+          id,
+          read: false,
+          timestamp: new Date(),
+          ...notification
+        })
+        
+        // Auto-remove after 5 seconds if not persistent
+        if (!notification.persistent) {
+          setTimeout(() => {
+            removeNotification(id)
+          }, 5000)
+        }
+      }
+      
+      const removeNotification = (id) => {
+        const index = notifications.value.findIndex(n => n.id === id)
+        if (index > -1) {
+          notifications.value.splice(index, 1)
+        }
+      }
+      
+      const markNotificationAsRead = (id) => {
+        const notification = notifications.value.find(n => n.id === id)
+        if (notification) {
+          notification.read = true
+        }
+      }
+      
+      const clearAllNotifications = () => {
+        notifications.value = []
+      }
+      
+      const openModal = (modalId, props = {}) => {
+        modals.value[modalId] = {
+          open: true,
+          props
+        }
+      }
+      
+      const closeModal = (modalId) => {
+        if (modals.value[modalId]) {
+          modals.value[modalId].open = false
+        }
+      }
+      
+      const closeAllModals = () => {
+        Object.keys(modals.value).forEach(modalId => {
+          modals.value[modalId].open = false
+        })
+      }
+      
+      const setLoading = (isLoading) => {
+        loading.value = isLoading
+      }
+      
+      const setBreadcrumbs = (crumbs) => {
+        breadcrumbs.value = crumbs
+      }
+      
+      const setPageTitle = (title) => {
+        pageTitle.value = title
+        document.title = title
+      }
+      
+      const initializeUI = () => {
+        // Load saved preferences
+        const savedSidebar = localStorage.getItem('sidebar_open')
+        if (savedSidebar !== null) {
+          sidebarOpen.value = savedSidebar === 'true'
+        }
+        
+        const savedTheme = localStorage.getItem('theme')
+        if (savedTheme) {
+          setTheme(savedTheme)
+        }
+      }
+      
+      return {
+        // State
+        sidebarOpen,
+        theme,
+        notifications,
+        modals,
+        loading,
+        breadcrumbs,
+        pageTitle,
+        
+        // Computed
+        isDarkMode,
+        unreadNotifications,
+        hasActiveModals,
+        
+        // Actions
+        toggleSidebar,
+        setSidebarOpen,
+        setTheme,
+        toggleTheme,
+        addNotification,
+        removeNotification,
+        markNotificationAsRead,
+        clearAllNotifications,
+        openModal,
+        closeModal,
+        closeAllModals,
+        setLoading,
+        setBreadcrumbs,
+        setPageTitle,
+        initializeUI
+      }
+    })
+
+# Form store pattern
+form_store:
+  template: |
+    import { defineStore } from 'pinia'
+    import { ref, computed } from 'vue'
+    import { createResource } from 'frappe-ui'
+    
+    export const useFormStore = defineStore('form', () => {
+      // State
+      const formData = ref({})
+      const originalData = ref({})
+      const errors = ref({})
+      const touched = ref({})
+      const submitting = ref(false)
+      const mode = ref('create') // create, edit, view
+      const doctype = ref('')
+      const docname = ref('')
+      
+      // Resources
+      const docResource = createResource({
+        url: 'frappe.client.get',
+        auto: false,
+        onSuccess(data) {
+          setFormData(data)
+          mode.value = 'edit'
+        }
+      })
+      
+      const saveResource = createResource({
+        url: 'frappe.client.save',
+        onSuccess(data) {
+          setFormData(data)
+          mode.value = 'edit'
+          docname.value = data.name
+          
+          frappe.toast({
+            title: 'Success',
+            text: 'Document saved successfully',
+            variant: 'success'
+          })
+        },
+        onError(error) {
+          if (error.validation_errors) {
+            setErrors(error.validation_errors)
+          }
+        }
+      })
+      
+      // Computed
+      const isDirty = computed(() => {
+        return JSON.stringify(formData.value) !== JSON.stringify(originalData.value)
+      })
+      
+      const isValid = computed(() => {
+        return Object.keys(errors.value).length === 0
+      })
+      
+      const hasErrors = computed(() => {
+        return Object.keys(errors.value).length > 0
+      })
+      
+      const canSave = computed(() => {
+        return isDirty.value && isValid.value && !submitting.value
+      })
+      
+      // Actions
+      const loadDocument = async (doctypeName, name) => {
+        doctype.value = doctypeName
+        docname.value = name
+        
+        await docResource.submit({
+          doctype: doctypeName,
+          name: name
+        })
+      }
+      
+      const setFormData = (data) => {
+        formData.value = { ...data }
+        originalData.value = { ...data }
+        clearErrors()
+      }
+      
+      const updateField = (fieldname, value) => {
+        formData.value[fieldname] = value
+        touched.value[fieldname] = true
+        
+        // Clear field error when value changes
+        if (errors.value[fieldname]) {
+          delete errors.value[fieldname]
+        }
+      }
+      
+      const setFieldError = (fieldname, error) => {
+        errors.value[fieldname] = error
+      }
+      
+      const setErrors = (errorObj) => {
+        errors.value = { ...errorObj }
+      }
+      
+      const clearErrors = () => {
+        errors.value = {}
+      }
+      
+      const clearFieldError = (fieldname) => {
+        if (errors.value[fieldname]) {
+          delete errors.value[fieldname]
+        }
+      }
+      
+      const validateField = (fieldname, value, rules = []) => {
+        for (const rule of rules) {
+          const error = rule(value)
+          if (error) {
+            setFieldError(fieldname, error)
+            return false
+          }
+        }
+        clearFieldError(fieldname)
+        return true
+      }
+      
+      const save = async () => {
+        if (!canSave.value) return
+        
+        submitting.value = true
+        
+        try {
+          await saveResource.submit({
+            doc: {
+              doctype: doctype.value,
+              name: docname.value,
+              ...formData.value
+            }
+          })
+        } finally {
+          submitting.value = false
+        }
+      }
+      
+      const reset = () => {
+        formData.value = { ...originalData.value }
+        clearErrors()
+        touched.value = {}
+      }
+      
+      const newDocument = (doctypeName) => {
+        doctype.value = doctypeName
+        docname.value = ''
+        mode.value = 'create'
+        formData.value = {}
+        originalData.value = {}
+        clearErrors()
+        touched.value = {}
+      }
+      
+      return {
+        // State
+        formData,
+        originalData,
+        errors,
+        touched,
+        submitting,
+        mode,
+        doctype,
+        docname,
+        
+        // Resources
+        docResource,
+        saveResource,
+        
+        // Computed
+        isDirty,
+        isValid,
+        hasErrors,
+        canSave,
+        
+        // Actions
+        loadDocument,
+        setFormData,
+        updateField,
+        setFieldError,
+        setErrors,
+        clearErrors,
+        clearFieldError,
+        validateField,
+        save,
+        reset,
+        newDocument
+      }
+    })
+
+# Store composition patterns
+store_composition:
+  composable_pattern: |
+    // useStoreComposition.js
+    import { useAuthStore } from './auth'
+    import { useUIStore } from './ui'
+    import { useFormStore } from './form'
+    
+    export function useStores() {
+      const auth = useAuthStore()
+      const ui = useUIStore()
+      const form = useFormStore()
+      
+      return {
+        auth,
+        ui,
+        form
+      }
+    }
+    
+    // In components
+    export default {
+      setup() {
+        const { auth, ui, form } = useStores()
+        
+        return {
+          auth,
+          ui,
+          form
+        }
+      }
+    }
+
+  cross_store_actions: |
+    // Store that uses other stores
+    import { useAuthStore } from './auth'
+    import { useUIStore } from './ui'
+    
+    export const useAppStore = defineStore('app', () => {
+      const authStore = useAuthStore()
+      const uiStore = useUIStore()
+      
+      const initialize = async () => {
+        uiStore.setLoading(true)
+        
+        try {
+          await authStore.checkAuth()
+          uiStore.initializeUI()
+          
+          if (authStore.isAuthenticated) {
+            // Load user-specific data
+            await loadUserData()
+          }
+        } catch (error) {
+          console.error('App initialization failed:', error)
+        } finally {
+          uiStore.setLoading(false)
+        }
+      }
+      
+      const loadUserData = async () => {
+        // Load data specific to the authenticated user
+      }
+      
+      return {
+        initialize,
+        loadUserData
+      }
+    })
+
+# Plugin integration
+plugin_integration:
+  pinia_setup: |
+    // main.js
+    import { createApp } from 'vue'
+    import { createPinia } from 'pinia'
+    import App from './App.vue'
+    
+    const app = createApp(App)
+    const pinia = createPinia()
+    
+    // Add plugins to Pinia
+    pinia.use(({ store }) => {
+      // Add $frappe to all stores
+      store.$frappe = frappe
+      
+      // Add common utilities
+      store.$toast = (message, variant = 'info') => {
+        frappe.toast({ text: message, variant })
+      }
+      
+      // Add error handler
+      store.$handleError = (error) => {
+        console.error('Store error:', error)
+        frappe.toast({
+          title: 'Error',
+          text: error.message || 'An error occurred',
+          variant: 'error'
+        })
+      }
+    })
+    
+    app.use(pinia)
+    app.mount('#app')
+
+  persistence_plugin: |
+    // Pinia persistence plugin
+    export function createPersistedState(options = {}) {
+      return ({ store }) => {
+        const { persist = [], storage = localStorage } = options
+        
+        if (persist.includes(store.$id)) {
+          // Load persisted state
+          const persistedState = storage.getItem(`pinia_${store.$id}`)
+          if (persistedState) {
+            try {
+              const parsed = JSON.parse(persistedState)
+              store.$patch(parsed)
+            } catch (error) {
+              console.error('Failed to load persisted state:', error)
+            }
+          }
+          
+          // Subscribe to changes
+          store.$subscribe((mutation, state) => {
+            try {
+              storage.setItem(`pinia_${store.$id}`, JSON.stringify(state))
+            } catch (error) {
+              console.error('Failed to persist state:', error)
+            }
+          })
+        }
+      }
+    }
+    
+    // Usage
+    pinia.use(createPersistedState({
+      persist: ['auth', 'ui'],
+      storage: localStorage
+    }))
+
+# Testing patterns
+testing_patterns:
+  store_testing: |
+    // store.test.js
+    import { describe, it, expect, beforeEach } from 'vitest'
+    import { setActivePinia, createPinia } from 'pinia'
+    import { useItemStore } from './itemStore'
+    
+    describe('Item Store', () => {
+      beforeEach(() => {
+        setActivePinia(createPinia())
+      })
+      
+      it('should initialize with empty state', () => {
+        const store = useItemStore()
+        
+        expect(store.items).toEqual([])
+        expect(store.loading).toBe(false)
+        expect(store.error).toBeNull()
+      })
+      
+      it('should add item to store', async () => {
+        const store = useItemStore()
+        const mockItem = { id: 1, name: 'Test Item' }
+        
+        // Mock the API call
+        vi.spyOn(frappe, 'call').mockResolvedValue({ message: mockItem })
+        
+        await store.addItem(mockItem)
+        
+        expect(store.items).toContain(mockItem)
+        expect(store.itemCount).toBe(1)
+      })
+      
+      it('should handle errors correctly', async () => {
+        const store = useItemStore()
+        const error = new Error('API Error')
+        
+        vi.spyOn(frappe, 'call').mockRejectedValue(error)
+        
+        await expect(store.addItem({})).rejects.toThrow('API Error')
+        expect(store.error).toBe('API Error')
+      })
+    })
+
+  component_testing: |
+    // component.test.js
+    import { mount } from '@vue/test-utils'
+    import { createTestingPinia } from '@pinia/testing'
+    import MyComponent from './MyComponent.vue'
+    import { useItemStore } from './stores/itemStore'
+    
+    describe('MyComponent', () => {
+      it('should interact with store correctly', () => {
+        const wrapper = mount(MyComponent, {
+          global: {
+            plugins: [
+              createTestingPinia({
+                createSpy: vi.fn,
+                initialState: {
+                  item: {
+                    items: [{ id: 1, name: 'Test' }]
+                  }
+                }
+              })
+            ]
+          }
+        })
+        
+        const store = useItemStore()
+        
+        // Test component behavior
+        expect(wrapper.text()).toContain('Test')
+        
+        // Test store interaction
+        wrapper.find('[data-test="add-button"]').trigger('click')
+        expect(store.addItem).toHaveBeenCalled()
+      })
+    })
+
+# Best practices
+best_practices:
+  - "Use composition API with Pinia for better TypeScript support"
+  - "Keep stores focused on single responsibility"
+  - "Use computed properties for derived state"
+  - "Handle errors gracefully with proper user feedback"
+  - "Implement loading states for async operations"
+  - "Use resources from frappe-ui for API calls"
+  - "Persist important state to localStorage when needed"
+  - "Write tests for store logic"
+  - "Use TypeScript for better type safety"
+  - "Avoid direct mutation of state outside actions"
+  - "Use meaningful names for stores and actions"
+  - "Document complex store logic"
+  - "Consider performance implications of reactive state"
+  - "Use store composition for complex applications"
+  - "Implement proper cleanup in stores when needed"

@@ -1,0 +1,505 @@
+---
+template_name: "Integration Test Template"
+template_type: "integration_testing"
+version: "1.0.0"
+description: "Template for creating comprehensive integration tests for ERPNext applications"
+
+# Integration test structure
+test_structure:
+  test_suite_template: |
+    """
+    Integration Test Suite for {module_name}
+    Tests integration between {apps}
+    """
+    
+    import frappe
+    import unittest
+    from frappe.test_runner import make_test_records
+    from frappe.utils import now_datetime, add_days
+    
+    class Test{ModuleName}Integration(unittest.TestCase):
+        @classmethod
+        def setUpClass(cls):
+            """Setup test environment once for all tests"""
+            cls.test_site = frappe.local.site
+            cls.test_user = create_test_user()
+            cls.test_data = load_test_fixtures()
+            
+        @classmethod
+        def tearDownClass(cls):
+            """Cleanup after all tests"""
+            cleanup_test_data(cls.test_data)
+            delete_test_user(cls.test_user)
+            
+        def setUp(self):
+            """Setup before each test"""
+            frappe.set_user("Administrator")
+            frappe.db.begin()
+            
+        def tearDown(self):
+            """Cleanup after each test"""
+            frappe.db.rollback()
+            
+        def test_integration_scenario_1(self):
+            """Test specific integration scenario"""
+            # Arrange
+            test_doc = create_test_document()
+            
+            # Act
+            result = perform_integration_action(test_doc)
+            
+            # Assert
+            self.assertTrue(result.success)
+            self.assertEqual(result.status, "completed")
+            
+            # Verify side effects
+            self.verify_integration_side_effects(test_doc)
+
+  test_categories:
+    api_integration: |
+      def test_api_integration(self):
+          """Test API integration between components"""
+          # Setup API client
+          api_client = get_test_api_client()
+          
+          # Test API endpoint
+          response = api_client.post('/api/method/app.module.function', {
+              'param1': 'value1',
+              'param2': 'value2'
+          })
+          
+          # Verify response
+          self.assertEqual(response.status_code, 200)
+          self.assertIn('data', response.json())
+          
+          # Verify data persistence
+          doc = frappe.get_doc('DocType', response.json()['data']['name'])
+          self.assertEqual(doc.field1, 'value1')
+    
+    workflow_integration: |
+      def test_workflow_integration(self):
+          """Test workflow transitions across apps"""
+          # Create document with workflow
+          doc = frappe.get_doc({
+              'doctype': 'Sales Order',
+              'customer': 'Test Customer',
+              'workflow_state': 'Draft'
+          }).insert()
+          
+          # Test workflow transition
+          doc.workflow_state = 'Submitted'
+          doc.save()
+          
+          # Verify workflow actions triggered
+          self.verify_workflow_notifications_sent(doc)
+          self.verify_workflow_permissions_updated(doc)
+          self.verify_workflow_history_recorded(doc)
+    
+    data_sync_integration: |
+      def test_data_synchronization(self):
+          """Test data synchronization between apps"""
+          # Create source document
+          source_doc = create_source_document()
+          
+          # Trigger synchronization
+          sync_result = trigger_data_sync(source_doc)
+          
+          # Wait for async sync
+          frappe.db.commit()
+          time.sleep(1)
+          
+          # Verify target document created
+          target_doc = frappe.get_doc('TargetDocType', sync_result['target_name'])
+          self.assertEqual(target_doc.synced_field, source_doc.source_field)
+          
+          # Verify sync metadata
+          self.assertIsNotNone(target_doc.sync_timestamp)
+          self.assertEqual(target_doc.sync_source, source_doc.name)
+
+# Test patterns
+test_patterns:
+  database_integration_test: |
+    class TestDatabaseIntegration(unittest.TestCase):
+        def test_transaction_integrity(self):
+            """Test database transaction integrity"""
+            try:
+                frappe.db.begin()
+                
+                # Perform multiple database operations
+                doc1 = create_document_1()
+                doc2 = create_document_2_linked_to_1(doc1)
+                
+                # Simulate error
+                if should_fail:
+                    raise Exception("Simulated error")
+                
+                frappe.db.commit()
+                
+                # Verify both documents exist
+                self.assertTrue(frappe.db.exists('DocType1', doc1.name))
+                self.assertTrue(frappe.db.exists('DocType2', doc2.name))
+                
+            except Exception:
+                frappe.db.rollback()
+                
+                # Verify rollback worked
+                self.assertFalse(frappe.db.exists('DocType1', doc1.name))
+                self.assertFalse(frappe.db.exists('DocType2', doc2.name))
+        
+        def test_referential_integrity(self):
+            """Test foreign key constraints"""
+            parent_doc = create_parent_document()
+            child_doc = create_child_document(parent_doc)
+            
+            # Try to delete parent with child
+            with self.assertRaises(frappe.LinkExistsError):
+                frappe.delete_doc('ParentDocType', parent_doc.name)
+            
+            # Delete child first, then parent
+            frappe.delete_doc('ChildDocType', child_doc.name)
+            frappe.delete_doc('ParentDocType', parent_doc.name)
+            
+            # Verify deletion
+            self.assertFalse(frappe.db.exists('ParentDocType', parent_doc.name))
+            self.assertFalse(frappe.db.exists('ChildDocType', child_doc.name))
+
+  permission_integration_test: |
+    class TestPermissionIntegration(unittest.TestCase):
+        def test_cross_app_permissions(self):
+            """Test permission enforcement across apps"""
+            # Create test users with different roles
+            user1 = create_user_with_role('App1 User')
+            user2 = create_user_with_role('App2 User')
+            
+            # Test user1 access to app1 resources
+            frappe.set_user(user1)
+            self.assertTrue(frappe.has_permission('App1DocType', 'read'))
+            self.assertFalse(frappe.has_permission('App2DocType', 'write'))
+            
+            # Test user2 access to app2 resources
+            frappe.set_user(user2)
+            self.assertTrue(frappe.has_permission('App2DocType', 'read'))
+            self.assertFalse(frappe.has_permission('App1DocType', 'write'))
+            
+            # Test combined permissions
+            user3 = create_user_with_roles(['App1 User', 'App2 User'])
+            frappe.set_user(user3)
+            self.assertTrue(frappe.has_permission('App1DocType', 'read'))
+            self.assertTrue(frappe.has_permission('App2DocType', 'read'))
+
+  event_integration_test: |
+    class TestEventIntegration(unittest.TestCase):
+        def test_event_propagation(self):
+            """Test event propagation between apps"""
+            # Setup event listeners
+            events_received = []
+            
+            def event_handler(doc, method):
+                events_received.append({
+                    'doctype': doc.doctype,
+                    'name': doc.name,
+                    'method': method
+                })
+            
+            # Register event handler
+            frappe.connect('on_update', event_handler)
+            
+            # Create document that triggers events
+            doc = frappe.get_doc({
+                'doctype': 'Test DocType',
+                'field1': 'value1'
+            }).insert()
+            
+            # Verify events were triggered
+            self.assertGreater(len(events_received), 0)
+            self.assertEqual(events_received[0]['doctype'], 'Test DocType')
+            self.assertEqual(events_received[0]['method'], 'after_insert')
+            
+            # Update document
+            doc.field1 = 'updated'
+            doc.save()
+            
+            # Verify update event
+            update_events = [e for e in events_received if e['method'] == 'on_update']
+            self.assertGreater(len(update_events), 0)
+
+# Test data management
+test_data_management:
+  fixtures_template: |
+    # fixtures.json
+    [
+      {
+        "doctype": "Customer",
+        "records": [
+          {
+            "customer_name": "Test Customer 1",
+            "customer_group": "Commercial",
+            "territory": "Test Territory"
+          },
+          {
+            "customer_name": "Test Customer 2",
+            "customer_group": "Individual",
+            "territory": "Test Territory"
+          }
+        ]
+      },
+      {
+        "doctype": "Item",
+        "records": [
+          {
+            "item_code": "TEST-ITEM-001",
+            "item_name": "Test Item 1",
+            "item_group": "Products",
+            "stock_uom": "Nos"
+          }
+        ]
+      }
+    ]
+
+  factory_pattern: |
+    class TestDataFactory:
+        """Factory for creating test data"""
+        
+        @staticmethod
+        def create_customer(**kwargs):
+            """Create test customer with defaults"""
+            defaults = {
+                'doctype': 'Customer',
+                'customer_name': f'Test Customer {frappe.utils.random_string(5)}',
+                'customer_group': 'Commercial',
+                'territory': 'Test Territory'
+            }
+            defaults.update(kwargs)
+            return frappe.get_doc(defaults).insert()
+        
+        @staticmethod
+        def create_sales_order(customer=None, items=None, **kwargs):
+            """Create test sales order"""
+            if not customer:
+                customer = TestDataFactory.create_customer()
+            
+            if not items:
+                items = [TestDataFactory.create_sales_order_item()]
+            
+            defaults = {
+                'doctype': 'Sales Order',
+                'customer': customer.name,
+                'delivery_date': add_days(now_datetime(), 7),
+                'items': items
+            }
+            defaults.update(kwargs)
+            return frappe.get_doc(defaults).insert()
+
+  cleanup_pattern: |
+    def cleanup_test_data(test_records):
+        """Clean up test data after tests"""
+        for record in reversed(test_records):  # Delete in reverse order
+            try:
+                if frappe.db.exists(record['doctype'], record['name']):
+                    frappe.delete_doc(
+                        record['doctype'], 
+                        record['name'],
+                        force=True,
+                        ignore_permissions=True
+                    )
+            except Exception as e:
+                print(f"Failed to delete {record['doctype']} {record['name']}: {e}")
+        
+        frappe.db.commit()
+
+# Mock patterns
+mock_patterns:
+  api_mock: |
+    from unittest.mock import patch, MagicMock
+    
+    class TestWithMocks(unittest.TestCase):
+        @patch('app.module.external_api_call')
+        def test_with_api_mock(self, mock_api):
+            """Test with mocked external API"""
+            # Setup mock response
+            mock_api.return_value = {
+                'status': 'success',
+                'data': {'id': 123, 'value': 'test'}
+            }
+            
+            # Execute code that calls API
+            result = function_that_calls_api()
+            
+            # Verify mock was called
+            mock_api.assert_called_once_with(expected_params)
+            
+            # Verify result
+            self.assertEqual(result['external_id'], 123)
+
+  database_mock: |
+    @patch('frappe.db.get_value')
+    def test_with_db_mock(self, mock_get_value):
+        """Test with mocked database call"""
+        mock_get_value.return_value = 'mocked_value'
+        
+        result = function_using_db()
+        
+        mock_get_value.assert_called_with('DocType', 'name', 'fieldname')
+        self.assertEqual(result, 'processed_mocked_value')
+
+  email_mock: |
+    @patch('frappe.sendmail')
+    def test_email_integration(self, mock_sendmail):
+        """Test email sending integration"""
+        # Execute action that sends email
+        doc = create_and_submit_document()
+        
+        # Verify email was sent
+        mock_sendmail.assert_called()
+        call_args = mock_sendmail.call_args
+        
+        self.assertIn('test@example.com', call_args[1]['recipients'])
+        self.assertIn('Document Submitted', call_args[1]['subject'])
+
+# Performance test patterns
+performance_test_patterns:
+  load_test: |
+    import time
+    import concurrent.futures
+    
+    class TestPerformanceIntegration(unittest.TestCase):
+        def test_concurrent_operations(self):
+            """Test system under concurrent load"""
+            num_threads = 10
+            operations_per_thread = 100
+            
+            def perform_operation(thread_id):
+                results = []
+                for i in range(operations_per_thread):
+                    start = time.time()
+                    doc = create_test_document(f"Thread-{thread_id}-Doc-{i}")
+                    duration = time.time() - start
+                    results.append(duration)
+                return results
+            
+            with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
+                futures = [executor.submit(perform_operation, i) for i in range(num_threads)]
+                all_results = []
+                
+                for future in concurrent.futures.as_completed(futures):
+                    all_results.extend(future.result())
+            
+            # Analyze performance
+            avg_time = sum(all_results) / len(all_results)
+            max_time = max(all_results)
+            
+            # Assert performance requirements
+            self.assertLess(avg_time, 0.5, "Average operation time exceeds 500ms")
+            self.assertLess(max_time, 2.0, "Maximum operation time exceeds 2s")
+
+  benchmark_test: |
+    def test_integration_benchmark(self):
+        """Benchmark integration performance"""
+        import timeit
+        
+        # Setup
+        setup_code = """
+        import frappe
+        from app.module import integration_function
+        test_data = prepare_test_data()
+        """
+        
+        # Test code
+        test_code = """
+        result = integration_function(test_data)
+        """
+        
+        # Run benchmark
+        execution_time = timeit.timeit(
+            test_code,
+            setup=setup_code,
+            number=100
+        )
+        
+        avg_time = execution_time / 100
+        
+        # Assert performance threshold
+        self.assertLess(avg_time, 1.0, f"Average execution time {avg_time}s exceeds 1s threshold")
+
+# Assertion helpers
+assertion_helpers:
+  custom_assertions: |
+    class IntegrationTestCase(unittest.TestCase):
+        """Base class with custom assertions"""
+        
+        def assertDocumentExists(self, doctype, name, msg=None):
+            """Assert that a document exists"""
+            exists = frappe.db.exists(doctype, name)
+            if not exists:
+                msg = msg or f"Document {doctype} {name} does not exist"
+                self.fail(msg)
+        
+        def assertFieldValue(self, doctype, name, fieldname, expected, msg=None):
+            """Assert field has expected value"""
+            actual = frappe.db.get_value(doctype, name, fieldname)
+            self.assertEqual(actual, expected, msg)
+        
+        def assertWorkflowState(self, doc, expected_state, msg=None):
+            """Assert document is in expected workflow state"""
+            actual_state = doc.get('workflow_state') or doc.get('status')
+            self.assertEqual(actual_state, expected_state, msg)
+        
+        def assertEmailSent(self, recipient, subject_contains=None, msg=None):
+            """Assert email was sent to recipient"""
+            emails = frappe.get_all('Email Queue', 
+                filters={'recipients': ['like', f'%{recipient}%']},
+                fields=['subject', 'message']
+            )
+            self.assertGreater(len(emails), 0, msg or f"No email sent to {recipient}")
+            
+            if subject_contains:
+                subjects = [e.subject for e in emails]
+                self.assertTrue(
+                    any(subject_contains in s for s in subjects),
+                    f"No email with subject containing '{subject_contains}'"
+                )
+
+# Test reporting
+test_reporting:
+  report_template: |
+    def generate_test_report(test_results):
+        """Generate integration test report"""
+        report = {
+            'summary': {
+                'total_tests': len(test_results),
+                'passed': sum(1 for r in test_results if r['status'] == 'passed'),
+                'failed': sum(1 for r in test_results if r['status'] == 'failed'),
+                'skipped': sum(1 for r in test_results if r['status'] == 'skipped'),
+                'execution_time': sum(r['duration'] for r in test_results)
+            },
+            'details': test_results,
+            'coverage': calculate_coverage(test_results),
+            'recommendations': generate_recommendations(test_results)
+        }
+        
+        # Save report
+        save_test_report(report)
+        
+        # Send notifications
+        if report['summary']['failed'] > 0:
+            notify_test_failures(report)
+        
+        return report
+
+# Best practices
+best_practices:
+  - "Test realistic integration scenarios"
+  - "Use test fixtures for consistent test data"
+  - "Clean up test data after each test"
+  - "Mock external dependencies"
+  - "Test both success and failure paths"
+  - "Verify side effects and data consistency"
+  - "Use descriptive test names"
+  - "Group related tests in test suites"
+  - "Run tests in isolated transactions"
+  - "Monitor test execution time"
+  - "Generate comprehensive test reports"
+  - "Test with different user permissions"
+  - "Include performance benchmarks"
+  - "Test concurrent operations"
+  - "Document test prerequisites and assumptions"

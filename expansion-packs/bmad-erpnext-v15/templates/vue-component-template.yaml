@@ -1,0 +1,577 @@
+---
+template_name: "Vue Component Template"
+template_type: "vue_component"
+version: "1.0.0"
+description: "Template for creating reusable Vue 3 components with Frappe UI integration"
+
+# Component structure
+component_structure:
+  single_file_component:
+    template: |
+      <template>
+        <div class="{component_name_kebab}">
+          <!-- Component content -->
+          <div v-if="loading" class="flex justify-center items-center h-32">
+            <Spinner />
+          </div>
+          
+          <div v-else-if="error" class="text-red-600">
+            <ErrorMessage :error="error" />
+          </div>
+          
+          <div v-else>
+            <!-- Main component content -->
+            <slot />
+          </div>
+        </div>
+      </template>
+
+      <script setup>
+      import { ref, computed, onMounted, watch } from 'vue'
+      import { createResource } from 'frappe-ui'
+      import { Spinner, ErrorMessage } from '@/components/common'
+
+      // Props definition
+      const props = defineProps({
+        // Add prop definitions here
+        modelValue: {
+          type: [String, Number, Object, Array],
+          default: null
+        }
+      })
+
+      // Emits definition
+      const emit = defineEmits(['update:modelValue', 'change', 'error'])
+
+      // State
+      const loading = ref(false)
+      const error = ref(null)
+      const internalValue = ref(props.modelValue)
+
+      // Computed properties
+      const computedValue = computed(() => {
+        // Add computed logic
+        return internalValue.value
+      })
+
+      // Methods
+      const handleChange = (value) => {
+        internalValue.value = value
+        emit('update:modelValue', value)
+        emit('change', value)
+      }
+
+      // Lifecycle hooks
+      onMounted(() => {
+        // Initialization logic
+      })
+
+      // Watchers
+      watch(() => props.modelValue, (newValue) => {
+        internalValue.value = newValue
+      })
+
+      // Expose for template refs
+      defineExpose({
+        // Exposed methods/properties
+      })
+      </script>
+
+      <style scoped>
+      .{component_name_kebab} {
+        /* Component styles */
+      }
+      </style>
+
+  composition_api_pattern: |
+    // Composable function pattern
+    import { ref, computed, reactive } from 'vue'
+    import { createResource } from 'frappe-ui'
+    
+    export function use{ComponentName}(options = {}) {
+      // State
+      const state = reactive({
+        data: null,
+        loading: false,
+        error: null
+      })
+      
+      // Resource
+      const resource = createResource({
+        url: options.url,
+        params: options.params,
+        auto: options.auto ?? false,
+        onSuccess(data) {
+          state.data = data
+          state.loading = false
+        },
+        onError(error) {
+          state.error = error
+          state.loading = false
+        }
+      })
+      
+      // Methods
+      const fetchData = async () => {
+        state.loading = true
+        state.error = null
+        await resource.reload()
+      }
+      
+      // Computed
+      const hasData = computed(() => !!state.data)
+      
+      return {
+        ...toRefs(state),
+        fetchData,
+        hasData,
+        resource
+      }
+    }
+
+# Component patterns
+component_patterns:
+  form_input_component: |
+    <template>
+      <FormControl
+        v-model="internalValue"
+        :label="label"
+        :type="type"
+        :placeholder="placeholder"
+        :required="required"
+        :disabled="disabled"
+        :error="errorMessage"
+        @change="handleChange"
+      />
+    </template>
+    
+    <script setup>
+    import { ref, watch } from 'vue'
+    import { FormControl } from 'frappe-ui'
+    
+    const props = defineProps({
+      modelValue: [String, Number],
+      label: String,
+      type: {
+        type: String,
+        default: 'text'
+      },
+      placeholder: String,
+      required: Boolean,
+      disabled: Boolean,
+      validation: Function
+    })
+    
+    const emit = defineEmits(['update:modelValue', 'change'])
+    
+    const internalValue = ref(props.modelValue)
+    const errorMessage = ref('')
+    
+    const handleChange = (value) => {
+      if (props.validation) {
+        const error = props.validation(value)
+        if (error) {
+          errorMessage.value = error
+          return
+        }
+      }
+      
+      errorMessage.value = ''
+      internalValue.value = value
+      emit('update:modelValue', value)
+      emit('change', value)
+    }
+    
+    watch(() => props.modelValue, (newValue) => {
+      internalValue.value = newValue
+    })
+    </script>
+
+  list_component: |
+    <template>
+      <div class="list-component">
+        <ListView
+          :columns="columns"
+          :rows="rows"
+          :options="{
+            selectable: true,
+            showTooltip: true,
+            resizeColumn: true,
+            totalCount: totalCount,
+            rowHeight: 40
+          }"
+          @row-click="handleRowClick"
+          @selection-change="handleSelectionChange"
+        >
+          <template #cell="{ column, row }">
+            <div v-if="column.key === 'actions'">
+              <Button
+                variant="ghost"
+                icon="more-horizontal"
+                @click.stop="showActions(row)"
+              />
+            </div>
+            <div v-else>
+              {{ getCellValue(row, column.key) }}
+            </div>
+          </template>
+        </ListView>
+      </div>
+    </template>
+    
+    <script setup>
+    import { ref, computed } from 'vue'
+    import { ListView, Button } from 'frappe-ui'
+    
+    const props = defineProps({
+      doctype: String,
+      filters: Object,
+      fields: Array
+    })
+    
+    const emit = defineEmits(['row-click', 'selection-change'])
+    
+    const listResource = createResource({
+      url: 'frappe.client.get_list',
+      params: {
+        doctype: props.doctype,
+        filters: props.filters,
+        fields: props.fields
+      },
+      auto: true
+    })
+    
+    const columns = computed(() => {
+      return props.fields.map(field => ({
+        label: field.label || field,
+        key: field.fieldname || field,
+        width: field.width || 'auto'
+      }))
+    })
+    
+    const rows = computed(() => listResource.data || [])
+    const totalCount = computed(() => listResource.data?.length || 0)
+    
+    const handleRowClick = (row) => {
+      emit('row-click', row)
+    }
+    
+    const handleSelectionChange = (selection) => {
+      emit('selection-change', selection)
+    }
+    </script>
+
+  modal_component: |
+    <template>
+      <Dialog
+        v-model="showDialog"
+        :options="{
+          title: title,
+          size: size,
+          position: 'top'
+        }"
+      >
+        <template #body-content>
+          <slot name="body">
+            <!-- Modal body content -->
+          </slot>
+        </template>
+        
+        <template #actions>
+          <slot name="actions">
+            <Button variant="ghost" @click="handleCancel">
+              {{ cancelText }}
+            </Button>
+            <Button variant="solid" @click="handleConfirm">
+              {{ confirmText }}
+            </Button>
+          </slot>
+        </template>
+      </Dialog>
+    </template>
+    
+    <script setup>
+    import { ref, watch } from 'vue'
+    import { Dialog, Button } from 'frappe-ui'
+    
+    const props = defineProps({
+      modelValue: Boolean,
+      title: String,
+      size: {
+        type: String,
+        default: 'md'
+      },
+      confirmText: {
+        type: String,
+        default: 'Confirm'
+      },
+      cancelText: {
+        type: String,
+        default: 'Cancel'
+      }
+    })
+    
+    const emit = defineEmits(['update:modelValue', 'confirm', 'cancel'])
+    
+    const showDialog = ref(props.modelValue)
+    
+    const handleConfirm = () => {
+      emit('confirm')
+      showDialog.value = false
+    }
+    
+    const handleCancel = () => {
+      emit('cancel')
+      showDialog.value = false
+    }
+    
+    watch(showDialog, (value) => {
+      emit('update:modelValue', value)
+    })
+    
+    watch(() => props.modelValue, (value) => {
+      showDialog.value = value
+    })
+    </script>
+
+# State management patterns
+state_management:
+  local_state: |
+    // Local component state
+    const state = reactive({
+      data: [],
+      loading: false,
+      error: null,
+      filters: {},
+      pagination: {
+        page: 1,
+        pageSize: 20,
+        total: 0
+      }
+    })
+
+  pinia_store_integration: |
+    // Using Pinia store in component
+    import { storeToRefs } from 'pinia'
+    import { useAppStore } from '@/stores/app'
+    
+    const appStore = useAppStore()
+    const { currentUser, isAuthenticated } = storeToRefs(appStore)
+    const { login, logout } = appStore
+
+  shared_composable: |
+    // Shared state composable
+    import { ref, computed } from 'vue'
+    
+    const sharedState = ref({})
+    
+    export function useSharedState() {
+      const updateState = (newState) => {
+        sharedState.value = { ...sharedState.value, ...newState }
+      }
+      
+      const clearState = () => {
+        sharedState.value = {}
+      }
+      
+      return {
+        state: readonly(sharedState),
+        updateState,
+        clearState
+      }
+    }
+
+# Testing patterns
+testing_patterns:
+  unit_test: |
+    import { describe, it, expect, vi } from 'vitest'
+    import { mount } from '@vue/test-utils'
+    import {ComponentName} from './{ComponentName}.vue'
+    
+    describe('{ComponentName}', () => {
+      it('renders correctly', () => {
+        const wrapper = mount({ComponentName}, {
+          props: {
+            // Test props
+          }
+        })
+        
+        expect(wrapper.exists()).toBe(true)
+      })
+      
+      it('emits events correctly', async () => {
+        const wrapper = mount({ComponentName})
+        
+        await wrapper.trigger('click')
+        
+        expect(wrapper.emitted()).toHaveProperty('click')
+      })
+      
+      it('updates on prop change', async () => {
+        const wrapper = mount({ComponentName}, {
+          props: { value: 'initial' }
+        })
+        
+        await wrapper.setProps({ value: 'updated' })
+        
+        expect(wrapper.vm.internalValue).toBe('updated')
+      })
+    })
+
+  integration_test: |
+    import { describe, it, expect, beforeEach } from 'vitest'
+    import { mount } from '@vue/test-utils'
+    import { createTestingPinia } from '@pinia/testing'
+    import {ComponentName} from './{ComponentName}.vue'
+    
+    describe('{ComponentName} Integration', () => {
+      let wrapper
+      
+      beforeEach(() => {
+        wrapper = mount({ComponentName}, {
+          global: {
+            plugins: [createTestingPinia()]
+          }
+        })
+      })
+      
+      it('integrates with store', async () => {
+        // Test store integration
+      })
+      
+      it('handles API responses', async () => {
+        // Mock API response
+        const mockData = { /* mock data */ }
+        
+        // Test component behavior with API data
+      })
+    })
+
+# Responsive design patterns
+responsive_patterns:
+  mobile_first: |
+    <template>
+      <div class="component">
+        <!-- Mobile layout (default) -->
+        <div class="block sm:hidden">
+          <!-- Mobile content -->
+        </div>
+        
+        <!-- Tablet layout -->
+        <div class="hidden sm:block lg:hidden">
+          <!-- Tablet content -->
+        </div>
+        
+        <!-- Desktop layout -->
+        <div class="hidden lg:block">
+          <!-- Desktop content -->
+        </div>
+      </div>
+    </template>
+
+  adaptive_grid: |
+    <template>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div v-for="item in items" :key="item.id" class="card">
+          <!-- Card content -->
+        </div>
+      </div>
+    </template>
+
+# Performance optimization
+performance_patterns:
+  lazy_loading: |
+    // Lazy load component
+    import { defineAsyncComponent } from 'vue'
+    
+    const LazyComponent = defineAsyncComponent(() =>
+      import('./HeavyComponent.vue')
+    )
+
+  virtual_scrolling: |
+    <template>
+      <VirtualList
+        :items="items"
+        :item-height="50"
+        :buffer="5"
+      >
+        <template #default="{ item }">
+          <div class="list-item">
+            {{ item.name }}
+          </div>
+        </template>
+      </VirtualList>
+    </template>
+
+  memoization: |
+    import { computed, ref } from 'vue'
+    
+    const expensiveComputed = computed(() => {
+      // Cache expensive computation
+      return useMemo(() => {
+        return performExpensiveOperation(data.value)
+      }, [data.value])
+    })
+
+# Accessibility patterns
+accessibility_patterns:
+  aria_labels: |
+    <template>
+      <button
+        :aria-label="ariaLabel"
+        :aria-pressed="isPressed"
+        :aria-disabled="disabled"
+        @click="handleClick"
+      >
+        <slot />
+      </button>
+    </template>
+
+  keyboard_navigation: |
+    <script setup>
+    const handleKeydown = (event) => {
+      switch (event.key) {
+        case 'Enter':
+        case ' ':
+          handleSelect()
+          break
+        case 'ArrowUp':
+          navigateUp()
+          break
+        case 'ArrowDown':
+          navigateDown()
+          break
+        case 'Escape':
+          handleEscape()
+          break
+      }
+    }
+    </script>
+
+  focus_management: |
+    import { ref, nextTick, onMounted } from 'vue'
+    
+    const inputRef = ref(null)
+    
+    onMounted(async () => {
+      await nextTick()
+      inputRef.value?.focus()
+    })
+
+# Best practices
+best_practices:
+  - "Use composition API for better logic reuse"
+  - "Implement proper TypeScript types"
+  - "Follow single responsibility principle"
+  - "Use semantic HTML elements"
+  - "Implement proper error boundaries"
+  - "Optimize bundle size with tree shaking"
+  - "Use CSS modules or scoped styles"
+  - "Implement proper loading states"
+  - "Handle edge cases and errors gracefully"
+  - "Write comprehensive tests"
+  - "Document component API with comments"
+  - "Use slots for flexible content projection"
+  - "Implement proper accessibility features"
+  - "Optimize for performance with lazy loading"
+  - "Follow Vue style guide recommendations"

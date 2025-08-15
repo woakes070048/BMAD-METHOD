@@ -1,0 +1,407 @@
+---
+benchmark_name: "ERPNext Performance Benchmarks"
+version: "1.0.0"
+description: "Performance benchmarks and optimization targets for ERPNext applications"
+
+# System Performance Benchmarks
+system_benchmarks:
+  server_specifications:
+    minimum_requirements:
+      cpu_cores: 2
+      ram_gb: 4
+      storage_gb: 40
+      storage_type: "SSD"
+      
+    recommended_requirements:
+      cpu_cores: 4
+      ram_gb: 8
+      storage_gb: 100
+      storage_type: "NVMe SSD"
+      
+    high_performance:
+      cpu_cores: 8
+      ram_gb: 16
+      storage_gb: 200
+      storage_type: "NVMe SSD"
+      network: "Gigabit"
+
+  database_performance:
+    query_response_times:
+      simple_select: "< 10ms"
+      complex_join: "< 100ms"
+      report_query: "< 500ms"
+      full_text_search: "< 200ms"
+      
+    connection_limits:
+      minimum_connections: 20
+      recommended_connections: 50
+      maximum_connections: 100
+      
+    index_performance:
+      btree_index_scan: "< 5ms"
+      full_table_scan_threshold: "10000 rows"
+      query_cache_hit_ratio: "> 90%"
+
+# Web Application Performance
+web_performance:
+  page_load_times:
+    first_contentful_paint: "< 1.5s"
+    largest_contentful_paint: "< 2.5s"
+    first_input_delay: "< 100ms"
+    cumulative_layout_shift: "< 0.1"
+    
+  time_to_interactive:
+    desktop: "< 3s"
+    mobile: "< 5s"
+    
+  resource_sizes:
+    html_page: "< 50KB"
+    css_bundle: "< 200KB"
+    js_bundle: "< 500KB"
+    images_per_page: "< 2MB"
+    
+  caching_performance:
+    browser_cache_hit_ratio: "> 80%"
+    cdn_cache_hit_ratio: "> 95%"
+    server_cache_hit_ratio: "> 70%"
+
+# API Performance Benchmarks
+api_performance:
+  response_times:
+    simple_crud:
+      get_single_document: "< 50ms"
+      get_document_list: "< 100ms"
+      create_document: "< 200ms"
+      update_document: "< 150ms"
+      delete_document: "< 100ms"
+      
+    complex_operations:
+      bulk_create: "< 1000ms per 100 records"
+      bulk_update: "< 800ms per 100 records"
+      complex_report: "< 2000ms"
+      data_export: "< 5000ms per 10000 records"
+      
+    search_operations:
+      simple_search: "< 200ms"
+      advanced_search: "< 500ms"
+      full_text_search: "< 800ms"
+      
+  throughput_targets:
+    concurrent_users:
+      light_load: "50 users"
+      medium_load: "200 users"
+      heavy_load: "500 users"
+      
+    requests_per_second:
+      read_operations: "> 100 RPS"
+      write_operations: "> 50 RPS"
+      mixed_workload: "> 75 RPS"
+      
+  error_rates:
+    acceptable_error_rate: "< 0.1%"
+    timeout_rate: "< 0.05%"
+    server_error_rate: "< 0.01%"
+
+# Memory Performance
+memory_benchmarks:
+  application_memory:
+    idle_memory_usage: "< 200MB"
+    normal_operation: "< 500MB"
+    peak_usage: "< 1GB"
+    memory_leak_threshold: "< 10MB/hour growth"
+    
+  database_memory:
+    buffer_pool_hit_ratio: "> 95%"
+    query_cache_size: "128MB - 512MB"
+    connection_memory: "< 10MB per connection"
+    
+  caching_memory:
+    redis_memory_usage: "< 1GB"
+    file_cache_size: "< 2GB"
+    application_cache: "< 500MB"
+
+# Frontend Performance
+frontend_benchmarks:
+  javascript_performance:
+    dom_ready_time: "< 500ms"
+    framework_initialization: "< 1000ms"
+    route_change_time: "< 300ms"
+    form_render_time: "< 200ms"
+    
+  vue_specific_metrics:
+    component_mount_time: "< 50ms"
+    reactivity_update_time: "< 10ms"
+    virtual_dom_diff: "< 5ms"
+    
+  bundle_sizes:
+    vendor_bundle: "< 300KB gzipped"
+    application_bundle: "< 200KB gzipped"
+    chunk_size_limit: "< 100KB per chunk"
+    
+  mobile_performance:
+    touch_response_time: "< 50ms"
+    scroll_performance: "60 FPS"
+    battery_drain_acceptable: "< 5%/hour"
+
+# Database Specific Benchmarks
+database_benchmarks:
+  mysql_mariadb:
+    innodb_buffer_pool_size: "70-80% of available RAM"
+    max_connections: "100-300"
+    query_cache_size: "128MB-512MB"
+    tmp_table_size: "64MB-128MB"
+    
+  postgresql:
+    shared_buffers: "25% of total RAM"
+    effective_cache_size: "75% of total RAM"
+    max_connections: "100-200"
+    work_mem: "4MB-16MB"
+    
+  query_optimization:
+    explain_plan_analysis: "Regular optimization"
+    index_usage_monitoring: "Daily"
+    slow_query_log_threshold: "1 second"
+    
+  backup_performance:
+    full_backup_time: "< 1 hour per 10GB"
+    incremental_backup: "< 15 minutes"
+    backup_compression_ratio: "> 50%"
+    restore_time: "< 2x backup time"
+
+# File System Performance
+filesystem_benchmarks:
+  storage_performance:
+    sequential_read: "> 100 MB/s"
+    sequential_write: "> 80 MB/s"
+    random_read_iops: "> 1000"
+    random_write_iops: "> 800"
+    
+  file_operations:
+    file_upload_throughput: "> 10 MB/s"
+    file_download_throughput: "> 50 MB/s"
+    thumbnail_generation: "< 500ms per image"
+    
+  attachment_handling:
+    max_file_size: "100MB"
+    concurrent_uploads: "10 files"
+    storage_efficiency: "> 95%"
+
+# Network Performance
+network_benchmarks:
+  latency_targets:
+    local_network: "< 1ms"
+    same_datacenter: "< 5ms"
+    cross_region: "< 100ms"
+    international: "< 200ms"
+    
+  bandwidth_requirements:
+    per_user_bandwidth: "100 KB/s average"
+    peak_bandwidth: "1 MB/s per user"
+    cdn_bandwidth: "Unlimited"
+    
+  connection_limits:
+    max_concurrent_connections: "1000"
+    keep_alive_timeout: "30 seconds"
+    connection_pool_size: "50"
+
+# Monitoring Thresholds
+monitoring_thresholds:
+  cpu_usage:
+    warning_threshold: "70%"
+    critical_threshold: "85%"
+    sustained_load_limit: "60% for 1 hour"
+    
+  memory_usage:
+    warning_threshold: "75%"
+    critical_threshold: "90%"
+    swap_usage_limit: "< 10%"
+    
+  disk_usage:
+    warning_threshold: "80%"
+    critical_threshold: "90%"
+    iops_warning: "80% of max IOPS"
+    
+  application_metrics:
+    error_rate_warning: "0.5%"
+    error_rate_critical: "1%"
+    response_time_warning: "2x baseline"
+    response_time_critical: "5x baseline"
+
+# Load Testing Scenarios
+load_testing:
+  user_scenarios:
+    light_load:
+      concurrent_users: 50
+      test_duration: "30 minutes"
+      ramp_up_time: "5 minutes"
+      
+    normal_load:
+      concurrent_users: 200
+      test_duration: "1 hour"
+      ramp_up_time: "10 minutes"
+      
+    stress_test:
+      concurrent_users: 500
+      test_duration: "2 hours"
+      ramp_up_time: "15 minutes"
+      
+    spike_test:
+      base_users: 100
+      spike_users: 500
+      spike_duration: "5 minutes"
+      
+  test_operations:
+    read_heavy_workload:
+      - operation: "login"
+        percentage: 5
+      - operation: "view_documents"
+        percentage: 60
+      - operation: "search"
+        percentage: 20
+      - operation: "reports"
+        percentage: 15
+        
+    write_heavy_workload:
+      - operation: "create_document"
+        percentage: 30
+      - operation: "update_document"
+        percentage: 40
+      - operation: "view_documents"
+        percentage: 20
+      - operation: "delete_document"
+        percentage: 10
+
+# Performance Testing Tools
+testing_tools:
+  load_testing:
+    - tool: "Apache JMeter"
+      use_case: "HTTP load testing"
+      
+    - tool: "k6"
+      use_case: "Modern load testing"
+      
+    - tool: "Artillery"
+      use_case: "Node.js based testing"
+      
+  monitoring:
+    - tool: "New Relic"
+      use_case: "Application performance monitoring"
+      
+    - tool: "DataDog"
+      use_case: "Infrastructure monitoring"
+      
+    - tool: "Prometheus + Grafana"
+      use_case: "Open source monitoring"
+      
+  profiling:
+    - tool: "py-spy"
+      use_case: "Python profiling"
+      
+    - tool: "Chrome DevTools"
+      use_case: "Frontend profiling"
+      
+    - tool: "MySQL Performance Schema"
+      use_case: "Database profiling"
+
+# Optimization Strategies
+optimization_strategies:
+  database_optimization:
+    - strategy: "Query optimization"
+      impact: "High"
+      effort: "Medium"
+      
+    - strategy: "Index optimization"
+      impact: "High"
+      effort: "Low"
+      
+    - strategy: "Connection pooling"
+      impact: "Medium"
+      effort: "Low"
+      
+    - strategy: "Database sharding"
+      impact: "High"
+      effort: "High"
+      
+  application_optimization:
+    - strategy: "Code profiling"
+      impact: "High"
+      effort: "Medium"
+      
+    - strategy: "Caching implementation"
+      impact: "High"
+      effort: "Medium"
+      
+    - strategy: "Asynchronous processing"
+      impact: "Medium"
+      effort: "Medium"
+      
+  frontend_optimization:
+    - strategy: "Code splitting"
+      impact: "Medium"
+      effort: "Medium"
+      
+    - strategy: "Image optimization"
+      impact: "Medium"
+      effort: "Low"
+      
+    - strategy: "CDN implementation"
+      impact: "High"
+      effort: "Low"
+      
+  infrastructure_optimization:
+    - strategy: "Load balancing"
+      impact: "High"
+      effort: "Medium"
+      
+    - strategy: "Auto-scaling"
+      impact: "Medium"
+      effort: "High"
+      
+    - strategy: "Caching layers"
+      impact: "High"
+      effort: "Medium"
+
+# Performance Goals by User Count
+scalability_targets:
+  small_deployment:  # < 50 users
+    response_time: "< 500ms"
+    throughput: "> 50 RPS"
+    availability: "99.5%"
+    
+  medium_deployment:  # 50-200 users
+    response_time: "< 800ms"
+    throughput: "> 100 RPS"
+    availability: "99.9%"
+    
+  large_deployment:  # 200-1000 users
+    response_time: "< 1000ms"
+    throughput: "> 500 RPS"
+    availability: "99.95%"
+    
+  enterprise_deployment:  # > 1000 users
+    response_time: "< 1500ms"
+    throughput: "> 1000 RPS"
+    availability: "99.99%"
+
+# Reporting Templates
+performance_reports:
+  daily_report:
+    metrics:
+      - "Average response time"
+      - "Error rate"
+      - "Peak concurrent users"
+      - "System resource usage"
+      
+  weekly_report:
+    metrics:
+      - "Performance trends"
+      - "Capacity planning data"
+      - "Top slow queries"
+      - "User experience metrics"
+      
+  monthly_report:
+    metrics:
+      - "Performance baseline updates"
+      - "Optimization recommendations"
+      - "Infrastructure scaling needs"
+      - "Performance SLA compliance"
