@@ -1,0 +1,288 @@
+name: "Root Cause Analysis Report Template"
+description: "Comprehensive RCA report template with multi-perspective analysis and actionable recommendations"
+version: "1.0"
+category: "Root Cause Analysis"
+tags: ["rca", "incident-analysis", "continuous-improvement", "problem-solving", "executive-reporting"]
+
+placeholders:
+  incident: "Description of the incident or problem analyzed"
+  analysis_date: "Date of analysis"
+  severity: "Incident severity level (Critical/High/Medium/Low)"
+  stakeholders: "Key stakeholders involved or affected"
+  analyst_team: "Team conducting the analysis"
+
+template: |
+  # Root Cause Analysis Report: {{incident}}
+  
+  ## Executive Summary
+  
+  ### Incident Overview
+  **Incident**: {{incident}}
+  **Date of Incident**: [Incident Date]
+  **Analysis Date**: {{analysis_date}}
+  **Severity**: {{severity}}
+  **Business Impact**: [Quantified impact - financial, operational, customer]
+  **Stakeholders Affected**: {{stakeholders}}
+  **Analysis Team**: {{analyst_team}}
+  
+  ### Key Findings
+  - **Primary Root Cause**: [Most critical root cause with confidence score]
+  - **Contributing Factors**: [2-3 major contributing factors]
+  - **Pattern Identified**: [Any recurring patterns detected]
+  - **Systemic Issues**: [Underlying organizational issues]
+  - **Immediate Actions Taken**: [Quick wins implemented]
+  
+  ### Strategic Implications
+  - **Competitive Impact**: [How this affects market position]
+  - **Financial Impact**: [Total cost including opportunity cost]
+  - **Operational Impact**: [Efficiency and productivity effects]
+  - **Customer Impact**: [Customer satisfaction and retention implications]
+  - **Reputation Risk**: [Brand and reputation considerations]
+  
+  ## Multi-Methodology Root Cause Analysis
+  
+  ### Timeline of Events
+  ```
+  [Time] - [Event 1]: [Description and impact]
+  [Time] - [Event 2]: [Description and impact]
+  [Time] - [Event 3]: [Description and impact]
+  [Time] - [Critical Failure Point]: [What actually broke]
+  [Time] - [Detection]: [When and how it was discovered]
+  [Time] - [Initial Response]: [First actions taken]
+  ```
+  
+  ### Five Whys Analysis
+  **Problem Statement**: {{incident}}
+  
+  | Why Level | Question | Answer | Evidence | Confidence |
+  |-----------|----------|--------|----------|------------|
+  | Why 1 | Why did {{incident}} occur? | [Answer] | [Data/Observation] | [H/M/L] |
+  | Why 2 | Why did [Answer 1] happen? | [Answer] | [Data/Observation] | [H/M/L] |
+  | Why 3 | Why did [Answer 2] happen? | [Answer] | [Data/Observation] | [H/M/L] |
+  | Why 4 | Why did [Answer 3] happen? | [Answer] | [Data/Observation] | [H/M/L] |
+  | Why 5 | Why did [Answer 4] happen? | [Root Cause] | [Data/Observation] | [H/M/L] |
+  
+  **ROOT CAUSE IDENTIFIED**: [Actionable root cause]
+  
+  ### Fishbone Diagram Analysis
+  
+  #### People Factors
+  - **Skills/Training**: [Specific issues identified]
+  - **Communication**: [Communication breakdowns]
+  - **Decision-making**: [Decision failures]
+  - **Culture/Motivation**: [Cultural factors]
+  
+  #### Process Factors
+  - **Procedures**: [Process gaps or failures]
+  - **Controls**: [Control weaknesses]
+  - **Standards**: [Standard violations or gaps]
+  - **Workflows**: [Workflow inefficiencies]
+  
+  #### Technology Factors
+  - **Systems**: [System failures or limitations]
+  - **Tools**: [Tool inadequacies]
+  - **Automation**: [Automation gaps]
+  - **Infrastructure**: [Infrastructure issues]
+  
+  #### Environmental Factors
+  - **External Factors**: [Market, regulatory, etc.]
+  - **Internal Environment**: [Organizational factors]
+  - **Physical Environment**: [Facility/location issues]
+  
+  ### Pareto Analysis (80/20 Rule)
+  
+  | Rank | Contributing Factor | Frequency | Impact % | Cumulative % | Category |
+  |------|-------------------|-----------|----------|--------------|----------|
+  | 1 | [Factor] | [Count] | [%] | [%] | Vital Few |
+  | 2 | [Factor] | [Count] | [%] | [%] | Vital Few |
+  | 3 | [Factor] | [Count] | [%] | [%] | Vital Few |
+  | 4+ | [Other Factors] | [Count] | [%] | [%] | Useful Many |
+  
+  **Focus Areas**: Top 20% of causes creating 80% of impact
+  
+  ## Pattern Analysis and Threat Detection
+  
+  ### Historical Pattern Analysis
+  **Similar Incidents**: [Count] similar incidents in past [timeframe]
+  
+  | Date | Incident | Common Factors | Resolution | Recurrence |
+  |------|----------|---------------|------------|------------|
+  | [Date] | [Description] | [Factors] | [How resolved] | [Yes/No] |
+  | [Date] | [Description] | [Factors] | [How resolved] | [Yes/No] |
+  
+  ### Identified Patterns
+  1. **Pattern**: [Description]
+     - Frequency: [How often]
+     - Triggers: [Common triggers]
+     - Early Warnings: [Indicators to watch]
+  
+  2. **Pattern**: [Description]
+     - Frequency: [How often]
+     - Triggers: [Common triggers]
+     - Early Warnings: [Indicators to watch]
+  
+  ### Predictive Indicators
+  - **High Risk Indicators**: [Conditions that predict incidents]
+  - **Early Warning Signals**: [Metrics to monitor]
+  - **Threat Probability**: [Likelihood of recurrence without intervention]
+  
+  ## Multi-Perspective Executive Analysis
+  
+  ### CEO Strategic Perspective
+  **Strategic Implications**:
+  - Market Position Impact: [How this affects competitive position]
+  - Strategic Initiatives Affected: [Which strategies are impacted]
+  - Stakeholder Confidence: [Impact on investors, board, partners]
+  - Long-term Consequences: [3-5 year implications]
+  
+  **Strategic Recommendations**:
+  1. [Strategic action 1]
+  2. [Strategic action 2]
+  3. [Strategic action 3]
+  
+  ### CFO Financial Perspective
+  **Financial Impact Analysis**:
+  - Direct Costs: $[Amount] - [Breakdown]
+  - Indirect Costs: $[Amount] - [Opportunity costs, productivity loss]
+  - Revenue Impact: $[Amount] - [Lost sales, customer churn]
+  - Total Financial Impact: $[Total]
+  
+  **ROI of Prevention**:
+  - Investment Required: $[Amount]
+  - Expected Savings: $[Amount/year]
+  - Payback Period: [Months]
+  - 5-Year NPV: $[Amount]
+  
+  ### COO Operational Perspective
+  **Operational Impact**:
+  - Process Efficiency: [% decrease in efficiency]
+  - Resource Utilization: [Impact on capacity]
+  - Quality Metrics: [Quality degradation]
+  - Delivery Performance: [Service level impacts]
+  
+  **Operational Improvements**:
+  1. Process Optimization: [Specific improvements]
+  2. Automation Opportunities: [What can be automated]
+  3. Resource Reallocation: [Better resource deployment]
+  
+  ## Risk Assessment and Mitigation
+  
+  ### Risk Matrix
+  
+  | Risk | Probability | Impact | Risk Score | Mitigation Strategy | Owner |
+  |------|------------|--------|------------|-------------------|--------|
+  | [Risk 1] | [H/M/L] | [H/M/L] | [Score] | [Strategy] | [Person] |
+  | [Risk 2] | [H/M/L] | [H/M/L] | [Score] | [Strategy] | [Person] |
+  | [Risk 3] | [H/M/L] | [H/M/L] | [Score] | [Strategy] | [Person] |
+  
+  ### Control Gaps Identified
+  - **Preventive Controls Missing**: [What should have prevented this]
+  - **Detective Controls Missing**: [What should have detected this earlier]
+  - **Corrective Controls Missing**: [What should have minimized impact]
+  
+  ## Solution Architecture and Recommendations
+  
+  ### Immediate Actions (0-30 days)
+  | Action | Description | Owner | Timeline | Expected Impact | Status |
+  |--------|------------|-------|----------|-----------------|--------|
+  | [Action 1] | [Details] | [Person] | [Days] | [Impact] | [Status] |
+  | [Action 2] | [Details] | [Person] | [Days] | [Impact] | [Status] |
+  
+  ### Systematic Improvements (1-6 months)
+  | Improvement | Root Cause Addressed | Implementation Plan | Success Metrics | Investment |
+  |-------------|---------------------|-------------------|-----------------|------------|
+  | [Improvement 1] | [Which RC] | [Plan] | [Metrics] | $[Amount] |
+  | [Improvement 2] | [Which RC] | [Plan] | [Metrics] | $[Amount] |
+  
+  ### Long-term Transformation (6-18 months)
+  | Transformation | Systemic Issues Addressed | Business Case | Expected Benefits |
+  |---------------|--------------------------|---------------|-------------------|
+  | [Initiative 1] | [Issues] | [ROI justification] | [Benefits] |
+  | [Initiative 2] | [Issues] | [ROI justification] | [Benefits] |
+  
+  ## Implementation Roadmap
+  
+  ### Phase 1: Foundation (Months 1-2)
+  - [ ] [Milestone 1]: [Description]
+  - [ ] [Milestone 2]: [Description]
+  - [ ] Quick Wins Implementation
+  - [ ] Stakeholder Alignment
+  
+  ### Phase 2: Core Implementation (Months 3-6)
+  - [ ] [Milestone 3]: [Description]
+  - [ ] [Milestone 4]: [Description]
+  - [ ] Process Improvements
+  - [ ] System Enhancements
+  
+  ### Phase 3: Transformation (Months 7-12)
+  - [ ] [Milestone 5]: [Description]
+  - [ ] [Milestone 6]: [Description]
+  - [ ] Cultural Change
+  - [ ] Continuous Improvement Framework
+  
+  ## Monitoring and Success Metrics
+  
+  ### Key Performance Indicators
+  | KPI | Baseline | Target | Measurement Frequency | Owner |
+  |-----|----------|--------|----------------------|--------|
+  | Incident Recurrence Rate | [Current] | [Target] | [Frequency] | [Owner] |
+  | Process Efficiency | [Current] | [Target] | [Frequency] | [Owner] |
+  | Cost per Transaction | [Current] | [Target] | [Frequency] | [Owner] |
+  | Customer Satisfaction | [Current] | [Target] | [Frequency] | [Owner] |
+  
+  ### Early Warning System
+  - **Indicator 1**: [Metric] - Threshold: [Value] - Action: [Response]
+  - **Indicator 2**: [Metric] - Threshold: [Value] - Action: [Response]
+  - **Indicator 3**: [Metric] - Threshold: [Value] - Action: [Response]
+  
+  ### Continuous Improvement Process
+  1. **Monthly Review**: [Review process and participants]
+  2. **Quarterly Assessment**: [Deep dive analysis]
+  3. **Annual Audit**: [Comprehensive effectiveness review]
+  
+  ## Lessons Learned
+  
+  ### What Went Well
+  - [Positive aspect 1]: [Why it helped]
+  - [Positive aspect 2]: [Why it helped]
+  
+  ### What Could Be Improved
+  - [Improvement area 1]: [How to improve]
+  - [Improvement area 2]: [How to improve]
+  
+  ### Knowledge Management
+  - **Documentation Updated**: [What documentation was updated]
+  - **Training Required**: [Who needs what training]
+  - **Process Changes**: [What processes are being changed]
+  - **Best Practices**: [New best practices identified]
+  
+  ## Appendices
+  
+  ### A. Detailed Data Analysis
+  [Supporting data, charts, and detailed calculations]
+  
+  ### B. Stakeholder Feedback
+  [Feedback collected during investigation]
+  
+  ### C. Technical Details
+  [Technical root cause details for subject matter experts]
+  
+  ### D. References and Sources
+  [Data sources, methodologies used, references]
+  
+  ---
+  
+  ## Approval and Sign-off
+  
+  | Role | Name | Signature | Date |
+  |------|------|-----------|------|
+  | Lead Analyst | [Name] | _______ | [Date] |
+  | Department Head | [Name] | _______ | [Date] |
+  | Executive Sponsor | [Name] | _______ | [Date] |
+  
+  **Next Review Date**: [Date for follow-up review]
+  **Distribution List**: [Who receives this report]
+  
+  ---
+  
+  *This Root Cause Analysis was conducted using comprehensive methodologies including 5 Whys, Fishbone Analysis, Pareto Analysis, and Pattern Detection, with multi-perspective executive insights.*

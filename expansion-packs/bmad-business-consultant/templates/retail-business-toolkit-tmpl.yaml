@@ -1,0 +1,509 @@
+name: "Retail Business Toolkit Template"
+description: "Specialized retail business analysis and optimization template for small business consultants working with retail clients including stores, restaurants, and consumer-facing businesses"
+category: "industry-specific"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Retail Business Toolkit Template for Small Business Consulting
+
+template:
+  business_information:
+    client_name: ""
+    business_name: ""
+    retail_type: "" # Clothing, Food & Beverage, Electronics, Home Goods, etc.
+    business_format: "" # Brick & Mortar, Online, Omnichannel
+    locations: 0
+    years_in_operation: 0
+    analysis_date: ""
+    consultant_name: ""
+    seasonal_patterns: []
+    
+  retail_performance_analysis:
+    sales_metrics:
+      total_annual_sales: 0
+      average_transaction_value: 0
+      transactions_per_day: 0
+      sales_per_square_foot: 0
+      sales_per_employee: 0
+      comparable_store_sales_growth: 0
+      
+    customer_metrics:
+      customer_count_per_day: 0
+      customer_retention_rate: 0
+      repeat_customer_percentage: 0
+      new_customer_acquisition_rate: 0
+      customer_lifetime_value: 0
+      
+    conversion_metrics:
+      foot_traffic: 0
+      conversion_rate: 0
+      browse_to_buy_ratio: 0
+      abandonment_rate: 0
+      
+    financial_performance:
+      gross_margin_percentage: 0
+      net_profit_margin: 0
+      inventory_turnover: 0
+      cash_flow_from_operations: 0
+      working_capital_efficiency: 0
+
+  store_operations_assessment:
+    location_analysis:
+      location_type: "" # Mall, Strip Center, Standalone, Downtown, etc.
+      foot_traffic_patterns: {}
+      accessibility_and_parking: ""
+      visibility_and_signage: ""
+      neighborhood_demographics: {}
+      competition_proximity: []
+      
+    store_layout_and_design:
+      store_size_square_feet: 0
+      layout_efficiency: ""
+      product_flow_and_navigation: ""
+      visual_merchandising_quality: ""
+      lighting_and_ambiance: ""
+      fitting_rooms_facilities: ""
+      
+    operational_efficiency:
+      staffing_levels: {}
+      employee_productivity: 0
+      queue_management: ""
+      checkout_efficiency: ""
+      inventory_management_system: ""
+      loss_prevention_measures: []
+
+  inventory_management_analysis:
+    inventory_performance:
+      inventory_turnover_rate: 0
+      days_inventory_outstanding: 0
+      stockout_frequency: 0
+      excess_inventory_percentage: 0
+      markdown_percentage: 0
+      
+    category_analysis:
+      high_performing_categories: []
+      underperforming_categories: []
+      seasonal_category_trends: {}
+      profit_margin_by_category: {}
+      
+    supplier_relationships:
+      number_of_suppliers: 0
+      supplier_reliability_scores: {}
+      payment_terms_optimization: []
+      supplier_diversity: ""
+      
+    inventory_optimization:
+      abc_analysis: {}
+      slow_moving_inventory: []
+      fast_moving_items: []
+      safety_stock_levels: {}
+      reorder_point_optimization: []
+
+  customer_experience_evaluation:
+    service_quality:
+      customer_service_training: ""
+      service_response_time: 0
+      customer_complaint_resolution: ""
+      employee_product_knowledge: ""
+      
+    shopping_experience:
+      store_cleanliness_maintenance: ""
+      product_availability: ""
+      pricing_clarity: ""
+      payment_options_available: []
+      return_exchange_policy: ""
+      
+    customer_feedback:
+      customer_satisfaction_scores: 0
+      online_reviews_analysis: {}
+      mystery_shopper_results: {}
+      customer_suggestions: []
+      
+    loyalty_and_retention:
+      loyalty_program_effectiveness: ""
+      repeat_purchase_behavior: 0
+      customer_referral_rate: 0
+      social_media_engagement: 0
+
+  marketing_and_promotion_analysis:
+    marketing_mix:
+      advertising_channels: []
+      promotional_strategies: []
+      seasonal_campaign_effectiveness: {}
+      digital_marketing_presence: ""
+      
+    pricing_strategy:
+      pricing_model: ""
+      competitive_pricing_position: ""
+      promotional_pricing_frequency: 0
+      margin_impact_of_promotions: 0
+      
+    brand_positioning:
+      brand_awareness_local_market: ""
+      brand_differentiation: []
+      target_customer_alignment: ""
+      competitive_advantages: []
+
+  technology_and_systems:
+    point_of_sale_system:
+      pos_system_capabilities: []
+      integration_with_inventory: ""
+      reporting_and_analytics: ""
+      payment_processing_efficiency: ""
+      
+    inventory_management_system:
+      system_sophistication: ""
+      real_time_tracking: ""
+      automatic_reordering: ""
+      supplier_integration: ""
+      
+    customer_relationship_management:
+      customer_data_collection: ""
+      customer_segmentation: ""
+      personalized_marketing: ""
+      loyalty_program_integration: ""
+      
+    e_commerce_integration:
+      online_presence: ""
+      omnichannel_capabilities: []
+      inventory_synchronization: ""
+      online_offline_integration: ""
+
+  financial_analysis_retail_specific:
+    revenue_streams:
+      product_sales: 0
+      service_revenue: 0
+      online_sales: 0
+      subscription_revenue: 0
+      
+    cost_structure:
+      cost_of_goods_sold: 0
+      rent_and_occupancy_costs: 0
+      labor_costs: 0
+      marketing_advertising_costs: 0
+      utilities_and_maintenance: 0
+      
+    profitability_analysis:
+      gross_profit_by_category: {}
+      net_profit_by_location: {}
+      seasonal_profitability_patterns: {}
+      
+    cash_flow_management:
+      seasonal_cash_flow_patterns: {}
+      inventory_financing_needs: 0
+      payment_terms_optimization: []
+
+  competitive_analysis_retail:
+    local_competition:
+      direct_competitors: []
+      indirect_competitors: []
+      competitive_advantages: []
+      competitive_vulnerabilities: []
+      
+    market_positioning:
+      price_positioning: ""
+      service_level_positioning: ""
+      product_quality_positioning: ""
+      convenience_positioning: ""
+      
+    competitive_strategies:
+      differentiation_strategies: []
+      competitive_responses: []
+      market_share_defense: []
+
+  seasonal_and_trend_analysis:
+    seasonal_patterns:
+      peak_seasons: []
+      slow_seasons: []
+      seasonal_inventory_planning: {}
+      seasonal_staffing_adjustments: {}
+      
+    trend_analysis:
+      industry_trends: []
+      consumer_behavior_trends: []
+      technology_trends: []
+      demographic_trends: []
+      
+    trend_adaptation:
+      trend_response_strategies: []
+      innovation_opportunities: []
+      market_expansion_possibilities: []
+
+  retail_specific_challenges:
+    common_challenges:
+      inventory_management: []
+      customer_acquisition: []
+      staff_retention: []
+      seasonal_fluctuations: []
+      competition_pressure: []
+      
+    challenge_prioritization:
+      high_impact_challenges: []
+      quick_win_opportunities: []
+      long_term_strategic_issues: []
+      
+    solution_strategies:
+      operational_improvements: []
+      technology_investments: []
+      marketing_enhancements: []
+      customer_experience_upgrades: []
+
+  improvement_opportunities:
+    sales_optimization:
+      upselling_cross_selling: []
+      conversion_rate_improvement: []
+      average_transaction_value_increase: []
+      customer_acquisition_enhancement: []
+      
+    operational_efficiency:
+      inventory_optimization: []
+      staff_productivity_improvement: []
+      cost_reduction_initiatives: []
+      process_automation: []
+      
+    customer_experience_enhancement:
+      service_quality_improvements: []
+      store_experience_upgrades: []
+      loyalty_program_enhancements: []
+      digital_experience_improvements: []
+      
+    growth_opportunities:
+      market_expansion: []
+      product_line_extensions: []
+      service_additions: []
+      channel_expansion: []
+
+  retail_kpis_and_metrics:
+    sales_performance_kpis:
+      - "Sales per square foot"
+      - "Sales per employee"
+      - "Comparable store sales growth"
+      - "Average transaction value"
+      - "Transaction count"
+      
+    customer_kpis:
+      - "Customer conversion rate"
+      - "Customer retention rate"
+      - "Customer lifetime value"
+      - "Net promoter score"
+      - "Customer acquisition cost"
+      
+    operational_kpis:
+      - "Inventory turnover"
+      - "Gross margin percentage"
+      - "Labor cost percentage"
+      - "Shrinkage percentage"
+      - "Stockout rate"
+      
+    financial_kpis:
+      - "Revenue per square foot"
+      - "EBITDA margin"
+      - "Working capital turnover"
+      - "Cash conversion cycle"
+      - "Return on assets"
+
+  retail_specific_solutions:
+    inventory_solutions:
+      demand_forecasting: []
+      automatic_replenishment: []
+      category_management: []
+      supplier_collaboration: []
+      
+    customer_experience_solutions:
+      personalization_strategies: []
+      omnichannel_integration: []
+      loyalty_program_optimization: []
+      service_training_programs: []
+      
+    operational_solutions:
+      staff_scheduling_optimization: []
+      loss_prevention_improvements: []
+      store_layout_optimization: []
+      technology_automation: []
+
+  industry_specific_considerations:
+    fashion_retail:
+      trend_forecasting: []
+      seasonal_buying: []
+      size_and_color_management: []
+      fashion_cycles: []
+      
+    food_and_beverage:
+      food_safety_compliance: []
+      perishable_inventory_management: []
+      menu_engineering: []
+      health_regulations: []
+      
+    electronics_retail:
+      technology_obsolescence: []
+      warranty_management: []
+      technical_support: []
+      product_lifecycle_management: []
+      
+    home_and_garden:
+      seasonal_demand_patterns: []
+      large_item_logistics: []
+      installation_services: []
+      contractor_relationships: []
+
+  digital_transformation_for_retail:
+    e_commerce_development:
+      online_store_setup: []
+      payment_processing: []
+      shipping_and_fulfillment: []
+      customer_service_integration: []
+      
+    omnichannel_strategy:
+      inventory_visibility: []
+      unified_customer_experience: []
+      buy_online_pickup_in_store: []
+      cross_channel_marketing: []
+      
+    data_analytics:
+      customer_analytics: []
+      sales_analytics: []
+      inventory_analytics: []
+      predictive_analytics: []
+
+  implementation_priorities:
+    immediate_actions:
+      # 0-30 days
+      quick_wins: []
+      cost_reductions: []
+      customer_experience_fixes: []
+      
+    short_term_initiatives:
+      # 30-90 days
+      process_improvements: []
+      technology_upgrades: []
+      staff_training: []
+      
+    long_term_strategies:
+      # 90+ days
+      growth_initiatives: []
+      digital_transformation: []
+      market_expansion: []
+
+  retail_benchmarking:
+    industry_benchmarks:
+      sales_per_square_foot: 0
+      inventory_turnover: 0
+      gross_margin: 0
+      conversion_rate: 0
+      
+    performance_comparison:
+      above_benchmark: []
+      at_benchmark: []
+      below_benchmark: []
+      
+    improvement_targets:
+      performance_goals: {}
+      timeline_expectations: []
+      investment_requirements: 0
+
+action_plans:
+  sales_improvement_plan:
+    strategies: []
+    tactics: []
+    timeline: ""
+    investment_required: 0
+    expected_results: []
+    
+  operational_efficiency_plan:
+    strategies: []
+    tactics: []
+    timeline: ""
+    investment_required: 0
+    expected_results: []
+    
+  customer_experience_plan:
+    strategies: []
+    tactics: []
+    timeline: ""
+    investment_required: 0
+    expected_results: []
+
+retail_specific_tools:
+  inventory_management_tools:
+    - "ABC analysis template"
+    - "Inventory turnover calculator"
+    - "Reorder point optimizer"
+    - "Seasonal planning template"
+    
+  sales_analysis_tools:
+    - "Sales performance dashboard"
+    - "Category performance analyzer"
+    - "Customer segmentation tool"
+    - "Promotional effectiveness tracker"
+    
+  operational_tools:
+    - "Staff scheduling optimizer"
+    - "Store layout planner"
+    - "Loss prevention checklist"
+    - "Customer service scorecard"
+
+success_factors:
+  retail_success_drivers:
+    - "Prime location and accessibility"
+    - "Strong inventory management"
+    - "Excellent customer service"
+    - "Competitive pricing strategy"
+    - "Effective marketing and promotion"
+    - "Efficient operations"
+    - "Strong supplier relationships"
+    - "Adaptability to trends"
+
+common_retail_mistakes:
+  inventory_mistakes:
+    - "Overstocking slow-moving items"
+    - "Understocking fast-moving items"
+    - "Poor demand forecasting"
+    - "Inadequate inventory controls"
+    
+  customer_service_mistakes:
+    - "Insufficient staff training"
+    - "Poor customer service standards"
+    - "Inadequate complaint resolution"
+    - "Lack of customer feedback mechanisms"
+    
+  operational_mistakes:
+    - "Poor store layout and merchandising"
+    - "Inefficient checkout processes"
+    - "Inadequate loss prevention"
+    - "Poor staff scheduling"
+
+usage_guidelines:
+  assessment_approach:
+    data_collection:
+      - "Gather sales and performance data"
+      - "Conduct store observations"
+      - "Interview management and staff"
+      - "Review customer feedback"
+      
+    analysis_methodology:
+      - "Compare performance to industry benchmarks"
+      - "Identify operational inefficiencies"
+      - "Assess customer experience quality"
+      - "Evaluate competitive position"
+      
+  recommendation_development:
+    prioritization:
+      - "Focus on high-impact, quick-win opportunities"
+      - "Address critical operational issues first"
+      - "Balance short-term and long-term initiatives"
+      - "Consider resource constraints and capabilities"
+      
+    implementation_planning:
+      - "Develop detailed action plans"
+      - "Establish clear timelines and milestones"
+      - "Allocate necessary resources"
+      - "Define success metrics and monitoring"
+
+notes:
+  - "Retail success depends heavily on location, inventory management, and customer experience"
+  - "Seasonal patterns and trends significantly impact retail performance"
+  - "Technology can provide significant competitive advantages in modern retail"
+  - "Customer loyalty and retention are critical for long-term success"
+  - "Operational efficiency directly impacts profitability in retail"
+  - "Regular performance monitoring and adjustment are essential"

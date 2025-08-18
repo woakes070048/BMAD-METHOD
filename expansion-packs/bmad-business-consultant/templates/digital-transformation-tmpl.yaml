@@ -1,0 +1,837 @@
+name: "Digital Transformation Template"
+description: "Comprehensive digital transformation assessment and planning template for small business consultants to guide technology adoption, process digitization, and digital strategy development"
+category: "digital-strategy"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Digital Transformation Template for Small Business Consulting
+
+template:
+  business_context:
+    company_information:
+      business_name: ""
+      industry: ""
+      business_model: ""
+      employee_count: 0
+      annual_revenue: 0
+      geographic_reach: ""
+      customer_segments: []
+      
+    digital_maturity_level:
+      current_digital_adoption: "" # Basic, Developing, Advanced, Leading
+      technology_investment_percentage: 0
+      digital_revenue_percentage: 0
+      technology_comfort_level: ""
+      change_readiness_score: 0
+      
+    business_drivers:
+      transformation_triggers: []
+      competitive_pressures: []
+      customer_expectations: []
+      operational_challenges: []
+      growth_objectives: []
+
+  current_state_assessment:
+    technology_infrastructure:
+      hardware_systems:
+        servers_and_storage:
+          on_premise_infrastructure: ""
+          cloud_infrastructure: ""
+          backup_and_disaster_recovery: ""
+          system_age_and_condition: ""
+          
+        network_and_connectivity:
+          internet_bandwidth: ""
+          network_security: ""
+          remote_access_capabilities: ""
+          wifi_and_mobile_connectivity: ""
+          
+        end_user_devices:
+          computer_hardware: ""
+          mobile_devices: ""
+          specialized_equipment: ""
+          device_management: ""
+          
+      software_systems:
+        business_applications:
+          - application_name: ""
+            category: ""
+            users: 0
+            integration_level: ""
+            satisfaction_rating: 0
+            
+        core_business_systems:
+          erp_system: ""
+          crm_system: ""
+          accounting_software: ""
+          inventory_management: ""
+          project_management: ""
+          
+        productivity_tools:
+          office_suite: ""
+          communication_tools: ""
+          collaboration_platforms: ""
+          file_sharing_systems: ""
+          
+        industry_specific_software:
+          specialized_applications: []
+          compliance_systems: []
+          regulatory_reporting_tools: []
+          
+      data_and_analytics:
+        data_collection:
+          customer_data_sources: []
+          operational_data_sources: []
+          financial_data_sources: []
+          external_data_sources: []
+          
+        data_storage_and_management:
+          database_systems: ""
+          data_warehousing: ""
+          data_governance: ""
+          data_quality: 0
+          
+        analytics_capabilities:
+          reporting_tools: []
+          dashboard_systems: []
+          business_intelligence: ""
+          predictive_analytics: false
+          
+        data_challenges:
+          data_silos: []
+          data_quality_issues: []
+          reporting_limitations: []
+          analytics_skill_gaps: []
+
+  digital_capabilities_assessment:
+    customer_experience:
+      digital_touchpoints:
+        website_presence:
+          website_quality: 0
+          mobile_responsiveness: 0
+          search_engine_optimization: 0
+          content_management: 0
+          
+        social_media:
+          platform_presence: []
+          engagement_level: 0
+          content_strategy: 0
+          social_commerce: false
+          
+        online_sales:
+          ecommerce_platform: ""
+          online_sales_percentage: 0
+          payment_processing: ""
+          order_fulfillment: 0
+          
+        customer_service:
+          digital_support_channels: []
+          response_time_metrics: {}
+          self_service_options: []
+          customer_satisfaction: 0
+          
+      customer_data_and_insights:
+        customer_analytics: 0
+        personalization_capabilities: 0
+        customer_journey_mapping: false
+        feedback_collection_systems: []
+        
+    operational_efficiency:
+      process_automation:
+        automated_processes: []
+        manual_process_identification: []
+        automation_opportunities: []
+        workflow_management: 0
+        
+      supply_chain_digitization:
+        supplier_connectivity: 0
+        inventory_visibility: 0
+        demand_forecasting: 0
+        logistics_optimization: 0
+        
+      financial_management:
+        automated_accounting: 0
+        financial_reporting: 0
+        cash_flow_management: 0
+        expense_management: 0
+        
+      human_resources:
+        hr_system_automation: 0
+        employee_self_service: 0
+        performance_management: 0
+        learning_management: 0
+        
+    innovation_and_growth:
+      digital_product_development:
+        digital_products_services: []
+        innovation_process: 0
+        time_to_market: 0
+        digital_revenue_streams: []
+        
+      market_intelligence:
+        competitive_analysis_tools: []
+        market_research_capabilities: 0
+        trend_monitoring: 0
+        customer_insight_generation: 0
+        
+      partnership_ecosystem:
+        technology_partnerships: []
+        digital_platform_participation: []
+        api_integrations: []
+        ecosystem_collaboration: 0
+
+  digital_skills_and_culture:
+    leadership_digital_readiness:
+      digital_vision_clarity: 0
+      technology_understanding: 0
+      change_leadership: 0
+      investment_commitment: 0
+      digital_strategy_alignment: 0
+      
+    employee_digital_capabilities:
+      overall_digital_literacy: 0
+      technology_adoption_rate: 0
+      learning_agility: 0
+      resistance_to_change: 0
+      
+    skill_gap_analysis:
+      current_skills_inventory:
+        - skill_category: ""
+          current_proficiency: 0
+          required_proficiency: 0
+          gap_severity: 0
+          affected_employee_count: 0
+          
+      training_and_development:
+        current_training_programs: []
+        training_effectiveness: 0
+        learning_budget: 0
+        external_training_participation: 0
+        
+    cultural_factors:
+      innovation_culture: 0
+      collaboration_mindset: 0
+      experimentation_tolerance: 0
+      continuous_learning: 0
+      
+    digital_governance:
+      it_governance_structure: ""
+      decision_making_process: ""
+      technology_standards: []
+      security_policies: []
+
+  cybersecurity_and_risk:
+    security_posture:
+      current_security_measures:
+        endpoint_protection: ""
+        network_security: ""
+        data_encryption: ""
+        access_controls: ""
+        
+      security_policies:
+        documented_policies: false
+        employee_training: 0
+        incident_response_plan: false
+        regular_security_assessments: false
+        
+      compliance_requirements:
+        regulatory_compliance: []
+        industry_standards: []
+        certification_requirements: []
+        audit_readiness: 0
+        
+    risk_assessment:
+      technology_risks:
+        - risk_category: ""
+          risk_level: ""
+          likelihood: 0
+          impact: 0
+          mitigation_strategies: []
+          
+      business_continuity:
+        disaster_recovery_plan: false
+        business_continuity_testing: false
+        backup_and_recovery: 0
+        alternative_work_arrangements: 0
+        
+    data_privacy_and_protection:
+      data_classification: false
+      privacy_policies: false
+      consent_management: 0
+      data_breach_preparedness: 0
+
+transformation_opportunity_analysis:
+  quick_wins_0_6_months:
+    process_automation:
+      opportunity: ""
+      description: ""
+      business_impact: ""
+      implementation_effort: ""
+      cost_estimate: 0
+      expected_benefits: ""
+      
+    cloud_migration:
+      opportunity: ""
+      description: ""
+      business_impact: ""
+      implementation_effort: ""
+      cost_estimate: 0
+      expected_benefits: ""
+      
+    digital_marketing:
+      opportunity: ""
+      description: ""
+      business_impact: ""
+      implementation_effort: ""
+      cost_estimate: 0
+      expected_benefits: ""
+      
+  medium_term_initiatives_6_18_months:
+    customer_experience_enhancement:
+      opportunity: ""
+      description: ""
+      business_impact: ""
+      implementation_effort: ""
+      cost_estimate: 0
+      expected_benefits: ""
+      
+    data_analytics_implementation:
+      opportunity: ""
+      description: ""
+      business_impact: ""
+      implementation_effort: ""
+      cost_estimate: 0
+      expected_benefits: ""
+      
+    operational_system_integration:
+      opportunity: ""
+      description: ""
+      business_impact: ""
+      implementation_effort: ""
+      cost_estimate: 0
+      expected_benefits: ""
+      
+  strategic_initiatives_18_plus_months:
+    digital_business_model:
+      opportunity: ""
+      description: ""
+      business_impact: ""
+      implementation_effort: ""
+      cost_estimate: 0
+      expected_benefits: ""
+      
+    advanced_analytics_ai:
+      opportunity: ""
+      description: ""
+      business_impact: ""
+      implementation_effort: ""
+      cost_estimate: 0
+      expected_benefits: ""
+      
+    ecosystem_platform_development:
+      opportunity: ""
+      description: ""
+      business_impact: ""
+      implementation_effort: ""
+      cost_estimate: 0
+      expected_benefits: ""
+
+digital_transformation_strategy:
+  vision_and_objectives:
+    digital_vision_statement: ""
+    strategic_objectives: []
+    success_metrics: []
+    transformation_timeline: ""
+    
+  transformation_priorities:
+    priority_1_highest_impact:
+      initiative: ""
+      rationale: ""
+      expected_outcomes: []
+      resource_requirements: ""
+      
+    priority_2_high_impact:
+      initiative: ""
+      rationale: ""
+      expected_outcomes: []
+      resource_requirements: ""
+      
+    priority_3_medium_impact:
+      initiative: ""
+      rationale: ""
+      expected_outcomes: []
+      resource_requirements: ""
+      
+  digital_operating_model:
+    organizational_structure:
+      digital_leadership_role: ""
+      it_and_business_alignment: ""
+      cross_functional_teams: []
+      external_partnerships: []
+      
+    governance_framework:
+      decision_making_structure: ""
+      investment_approval_process: ""
+      project_portfolio_management: ""
+      performance_monitoring: ""
+      
+    capability_development:
+      internal_skill_building: []
+      external_talent_acquisition: []
+      training_and_certification: []
+      knowledge_management: ""
+
+technology_roadmap:
+  infrastructure_evolution:
+    cloud_strategy:
+      cloud_adoption_approach: "" # Cloud-first, Hybrid, Multi-cloud
+      migration_timeline: ""
+      target_cloud_services: []
+      cost_optimization_strategy: ""
+      
+    network_and_security:
+      network_modernization: ""
+      security_enhancement: []
+      remote_work_enablement: ""
+      compliance_requirements: []
+      
+    data_platform:
+      data_architecture_vision: ""
+      analytics_platform_selection: ""
+      data_integration_strategy: ""
+      business_intelligence_roadmap: ""
+      
+  application_portfolio:
+    core_system_modernization:
+      legacy_system_assessment: []
+      modernization_priorities: []
+      integration_requirements: []
+      migration_strategy: ""
+      
+    new_capability_development:
+      customer_facing_applications: []
+      operational_applications: []
+      analytics_and_reporting: []
+      mobile_applications: []
+      
+    vendor_and_platform_strategy:
+      technology_stack_standardization: []
+      vendor_consolidation_opportunities: []
+      platform_vs_custom_decisions: []
+      integration_architecture: ""
+
+implementation_planning:
+  phase_1_foundation_0_6_months:
+    objectives:
+      - "Establish digital transformation governance and leadership"
+      - "Complete comprehensive technology audit and gap analysis"
+      - "Implement critical security and compliance measures"
+      - "Launch quick-win automation and efficiency projects"
+      
+    key_initiatives:
+      governance_establishment:
+        deliverable: "Digital transformation steering committee"
+        timeline: "30 days"
+        success_criteria: []
+        
+      technology_audit:
+        deliverable: "Complete technology infrastructure assessment"
+        timeline: "60 days"
+        success_criteria: []
+        
+      security_baseline:
+        deliverable: "Essential cybersecurity measures implementation"
+        timeline: "90 days"
+        success_criteria: []
+        
+      process_automation:
+        deliverable: "First wave of process automation"
+        timeline: "120 days"
+        success_criteria: []
+        
+    expected_outcomes:
+      - "Clear digital transformation governance and accountability"
+      - "Comprehensive understanding of current state and gaps"
+      - "Improved security posture and risk management"
+      - "Initial productivity gains from automation"
+      
+  phase_2_capability_building_6_12_months:
+    objectives:
+      - "Modernize core business systems and applications"
+      - "Implement data analytics and business intelligence"
+      - "Enhance customer digital experience capabilities"
+      - "Build internal digital skills and capabilities"
+      
+    key_initiatives:
+      system_modernization:
+        deliverable: "Core business system upgrades or replacements"
+        timeline: "180 days"
+        success_criteria: []
+        
+      analytics_platform:
+        deliverable: "Business intelligence and analytics implementation"
+        timeline: "150 days"
+        success_criteria: []
+        
+      customer_experience:
+        deliverable: "Enhanced digital customer touchpoints"
+        timeline: "120 days"
+        success_criteria: []
+        
+      skills_development:
+        deliverable: "Digital skills training and certification programs"
+        timeline: "180 days"
+        success_criteria: []
+        
+    expected_outcomes:
+      - "Modern, integrated business systems and processes"
+      - "Data-driven decision making capabilities"
+      - "Improved customer digital experience and engagement"
+      - "Enhanced organizational digital capabilities"
+      
+  phase_3_transformation_12_24_months:
+    objectives:
+      - "Launch digital business model innovations"
+      - "Implement advanced analytics and AI capabilities"
+      - "Establish digital ecosystem partnerships"
+      - "Achieve digital operational excellence"
+      
+    key_initiatives:
+      digital_innovation:
+        deliverable: "New digital products, services, or business models"
+        timeline: "360 days"
+        success_criteria: []
+        
+      advanced_analytics:
+        deliverable: "AI and machine learning implementations"
+        timeline: "300 days"
+        success_criteria: []
+        
+      ecosystem_development:
+        deliverable: "Strategic technology partnerships and integrations"
+        timeline: "240 days"
+        success_criteria: []
+        
+      operational_excellence:
+        deliverable: "Fully digitized and optimized operations"
+        timeline: "300 days"
+        success_criteria: []
+        
+    expected_outcomes:
+      - "New revenue streams and business model innovations"
+      - "Predictive and prescriptive analytics capabilities"
+      - "Strong technology partner ecosystem"
+      - "Industry-leading digital operational efficiency"
+
+financial_analysis:
+  investment_requirements:
+    technology_infrastructure:
+      hardware_upgrades: 0
+      software_licensing: 0
+      cloud_services: 0
+      network_and_security: 0
+      
+    application_development:
+      system_modernization: 0
+      custom_development: 0
+      integration_costs: 0
+      testing_and_deployment: 0
+      
+    skills_and_training:
+      employee_training: 0
+      external_consulting: 0
+      talent_acquisition: 0
+      certification_programs: 0
+      
+    operational_costs:
+      project_management: 0
+      change_management: 0
+      temporary_resources: 0
+      contingency_buffer: 0
+      
+    total_investment_estimate: 0
+    
+  expected_benefits:
+    cost_savings:
+      operational_efficiency: 0
+      automation_benefits: 0
+      infrastructure_optimization: 0
+      process_improvement: 0
+      
+    revenue_enhancement:
+      new_digital_channels: 0
+      improved_customer_experience: 0
+      faster_time_to_market: 0
+      expanded_market_reach: 0
+      
+    strategic_value:
+      competitive_advantage: 0
+      risk_mitigation: 0
+      agility_improvement: 0
+      innovation_capability: 0
+      
+    total_annual_benefits: 0
+    
+  roi_analysis:
+    year_1_investment: 0
+    year_1_benefits: 0
+    year_1_net_value: 0
+    
+    year_2_investment: 0
+    year_2_benefits: 0
+    year_2_net_value: 0
+    
+    year_3_investment: 0
+    year_3_benefits: 0
+    year_3_net_value: 0
+    
+    cumulative_roi_percentage: 0
+    payback_period_months: 0
+    net_present_value: 0
+
+risk_assessment_and_mitigation:
+  technology_risks:
+    implementation_risks:
+      - risk: "System integration failures"
+        probability: ""
+        impact: ""
+        mitigation_strategy: ""
+        
+      - risk: "Data migration and quality issues"
+        probability: ""
+        impact: ""
+        mitigation_strategy: ""
+        
+      - risk: "Cybersecurity vulnerabilities"
+        probability: ""
+        impact: ""
+        mitigation_strategy: ""
+        
+    business_risks:
+      - risk: "User adoption and change resistance"
+        probability: ""
+        impact: ""
+        mitigation_strategy: ""
+        
+      - risk: "Business disruption during implementation"
+        probability: ""
+        impact: ""
+        mitigation_strategy: ""
+        
+      - risk: "Skills gap and capability limitations"
+        probability: ""
+        impact: ""
+        mitigation_strategy: ""
+        
+    financial_risks:
+      - risk: "Cost overruns and budget exceeding"
+        probability: ""
+        impact: ""
+        mitigation_strategy: ""
+        
+      - risk: "Lower than expected ROI realization"
+        probability: ""
+        impact: ""
+        mitigation_strategy: ""
+        
+      - risk: "Technology obsolescence"
+        probability: ""
+        impact: ""
+        mitigation_strategy: ""
+
+industry_specific_considerations:
+  retail_businesses:
+    key_focus_areas:
+      - "Omnichannel customer experience integration"
+      - "Inventory management and supply chain optimization"
+      - "Point-of-sale and payment system modernization"
+      - "Customer analytics and personalization"
+      
+    specific_technologies:
+      - "E-commerce platform integration"
+      - "Customer relationship management (CRM)"
+      - "Inventory management systems"
+      - "Digital marketing and analytics tools"
+      
+    success_metrics:
+      - "Online-to-offline conversion rates"
+      - "Customer lifetime value improvement"
+      - "Inventory turnover optimization"
+      - "Digital channel revenue growth"
+      
+  service_businesses:
+    key_focus_areas:
+      - "Service delivery automation and optimization"
+      - "Customer self-service capabilities"
+      - "Field service management and mobility"
+      - "Knowledge management and collaboration"
+      
+    specific_technologies:
+      - "Service management platforms"
+      - "Mobile workforce applications"
+      - "Customer portal and self-service tools"
+      - "Business intelligence and reporting"
+      
+    success_metrics:
+      - "Service delivery efficiency and quality"
+      - "Customer satisfaction and retention"
+      - "Employee productivity and utilization"
+      - "Response time and resolution metrics"
+      
+  manufacturing_businesses:
+    key_focus_areas:
+      - "Production planning and scheduling optimization"
+      - "Quality management and compliance automation"
+      - "Supply chain visibility and collaboration"
+      - "Predictive maintenance and IoT integration"
+      
+    specific_technologies:
+      - "Enterprise resource planning (ERP)"
+      - "Manufacturing execution systems (MES)"
+      - "Internet of Things (IoT) sensors"
+      - "Predictive analytics and AI"
+      
+    success_metrics:
+      - "Overall equipment effectiveness (OEE)"
+      - "Quality metrics and defect reduction"
+      - "Supply chain efficiency and cost"
+      - "Production flexibility and responsiveness"
+      
+  professional_services:
+    key_focus_areas:
+      - "Project management and resource optimization"
+      - "Knowledge capture and intellectual property"
+      - "Client collaboration and communication"
+      - "Business development and proposal automation"
+      
+    specific_technologies:
+      - "Project and portfolio management tools"
+      - "Document management and collaboration"
+      - "Time tracking and billing systems"
+      - "Client relationship management (CRM)"
+      
+    success_metrics:
+      - "Billable utilization and profitability"
+      - "Project delivery quality and timeliness"
+      - "Client satisfaction and retention"
+      - "Knowledge reuse and efficiency"
+
+success_measurement:
+  transformation_maturity_assessment:
+    digital_foundation: 0
+    process_optimization: 0
+    customer_experience: 0
+    data_and_analytics: 0
+    innovation_capability: 0
+    overall_digital_maturity: 0
+    
+  key_performance_indicators:
+    operational_efficiency:
+      - "Process automation percentage"
+      - "Manual task reduction"
+      - "System integration completeness"
+      - "Data accuracy and timeliness"
+      
+    customer_experience:
+      - "Digital channel adoption rates"
+      - "Customer satisfaction scores"
+      - "Response time improvements"
+      - "Self-service utilization"
+      
+    business_performance:
+      - "Revenue from digital channels"
+      - "Cost reduction from automation"
+      - "Time-to-market improvement"
+      - "Competitive positioning"
+      
+    organizational_capability:
+      - "Digital skills proficiency"
+      - "Change readiness score"
+      - "Innovation project success rate"
+      - "Technology adoption speed"
+      
+  benchmarking_and_targets:
+    industry_benchmarks: []
+    peer_comparisons: []
+    best_practice_targets: []
+    continuous_improvement_goals: []
+
+change_management_strategy:
+  stakeholder_engagement:
+    leadership_alignment:
+      executive_sponsorship: ""
+      change_champion_network: []
+      communication_strategy: ""
+      resistance_management: ""
+      
+    employee_involvement:
+      user_participation: ""
+      feedback_mechanisms: []
+      training_programs: []
+      recognition_and_incentives: []
+      
+  communication_plan:
+    key_messages: []
+    communication_channels: []
+    frequency_and_timing: ""
+    feedback_collection: ""
+    
+  training_and_support:
+    training_needs_assessment: ""
+    learning_delivery_methods: []
+    ongoing_support_structure: ""
+    competency_measurement: ""
+
+vendor_and_partner_ecosystem:
+  technology_vendor_strategy:
+    vendor_selection_criteria: []
+    partnership_approach: ""
+    contract_negotiation_priorities: []
+    vendor_management_framework: ""
+    
+  implementation_partners:
+    consulting_partner_requirements: []
+    systems_integrator_capabilities: []
+    specialized_service_providers: []
+    partnership_management: ""
+    
+  ongoing_support_model:
+    internal_vs_external_support: ""
+    service_level_agreements: []
+    escalation_procedures: []
+    continuous_improvement: ""
+
+usage_instructions:
+  assessment_preparation:
+    - "Schedule comprehensive interviews with leadership and key stakeholders"
+    - "Gather current technology inventory and documentation"
+    - "Collect financial data for investment and ROI analysis"
+    - "Prepare access to systems for technical assessment"
+    
+  assessment_execution:
+    - "Conduct stakeholder interviews using template questions"
+    - "Perform technical infrastructure and application assessment"
+    - "Analyze current digital capabilities and maturity"
+    - "Identify transformation opportunities and priorities"
+    
+  strategy_development:
+    - "Define digital vision and strategic objectives"
+    - "Prioritize transformation initiatives based on impact and effort"
+    - "Develop detailed implementation roadmap with phases"
+    - "Create financial analysis and business case"
+    
+  implementation_planning:
+    - "Establish governance structure and project management"
+    - "Plan change management and stakeholder engagement"
+    - "Define success metrics and monitoring approach"
+    - "Prepare risk mitigation and contingency plans"
+
+notes:
+  - "Digital transformation is a journey, not a destination - focus on continuous evolution"
+  - "Success depends equally on technology, process, and people change management"
+  - "Start with business objectives and customer needs, not technology capabilities"
+  - "Prioritize quick wins to build momentum and demonstrate value early"
+  - "Invest in security and data governance as foundational capabilities"
+  - "Develop internal digital capabilities while leveraging external expertise strategically"
+  - "Measure both technical implementation success and business outcome achievement"

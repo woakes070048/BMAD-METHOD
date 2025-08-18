@@ -1,0 +1,365 @@
+# crisis-turnaround-team.yaml
+
+team_name: Crisis Management and Turnaround Team
+description: Rapid response agent team for business crisis situations requiring immediate stabilization, financial restructuring, and operational recovery
+version: 1.0.0
+activation_phrase: "/BMad-BC crisis-turnaround-team"
+
+# Team Composition and Roles
+team_members:
+  - role: Turnaround Lead
+    agent: strategic-growth-advisor
+    responsibilities:
+      - Overall turnaround strategy and leadership
+      - Stakeholder management and negotiations
+      - Strategic decision making and prioritization
+      - Board and investor communication
+      - Partnership and alliance development
+    
+  - role: Financial Restructuring Expert
+    agent: financial-performance-analyst
+    responsibilities:
+      - Cash flow management and forecasting
+      - Debt restructuring and creditor negotiations
+      - Cost reduction and efficiency programs
+      - Working capital optimization
+      - Financial reporting and controls
+    
+  - role: Operations Recovery Specialist
+    agent: operations-excellence-expert
+    responsibilities:
+      - Operational assessment and stabilization
+      - Process improvement and efficiency
+      - Supply chain and vendor management
+      - Quality and customer service recovery
+      - Capacity and resource optimization
+    
+  - role: People and Change Leader
+    agent: hr-talent-specialist
+    responsibilities:
+      - Crisis communication and messaging
+      - Workforce optimization and restructuring
+      - Employee engagement and retention
+      - Leadership stabilization and development
+      - Culture preservation and rebuilding
+
+# Crisis Response Framework
+crisis_response:
+  immediate_actions:
+    timeframe: 0-72 hours
+    priorities:
+      - Cash position assessment
+      - Critical stakeholder communication
+      - Operational continuity assurance
+      - Risk assessment and mitigation
+    lead: financial-performance-analyst
+    
+  stabilization_phase:
+    timeframe: Week 1-4
+    priorities:
+      - Cash flow stabilization
+      - Creditor negotiations
+      - Customer retention
+      - Employee communication
+    lead: strategic-growth-advisor
+    
+  recovery_phase:
+    timeframe: Month 2-6
+    priorities:
+      - Operational improvements
+      - Cost restructuring
+      - Revenue recovery
+      - Organizational restructuring
+    lead: operations-excellence-expert
+    
+  growth_phase:
+    timeframe: Month 6-12
+    priorities:
+      - Strategic repositioning
+      - Market expansion
+      - Innovation initiatives
+      - Culture rebuilding
+    lead: strategic-growth-advisor
+
+# Decision Making Authority
+decision_authority:
+  emergency_decisions:
+    authority_level: Team Lead with CFO/CEO
+    types:
+      - Payment prioritization
+      - Workforce reductions
+      - Vendor negotiations
+      - Customer communications
+    documentation: Required within 24 hours
+    
+  strategic_decisions:
+    authority_level: Full team consensus with Board
+    types:
+      - Business unit closures
+      - Asset sales
+      - Debt restructuring
+      - Strategic partnerships
+    documentation: Board resolution required
+    
+  operational_decisions:
+    authority_level: Individual agent authority
+    types:
+      - Process changes
+      - Resource allocation
+      - Vendor selection
+      - Policy updates
+    documentation: Weekly reporting required
+
+# Stakeholder Management
+stakeholder_priorities:
+  critical_stakeholders:
+    - stakeholder: Lenders and Creditors
+      owner: financial-performance-analyst
+      engagement: Daily during crisis, weekly ongoing
+      objectives: Payment agreements, covenant waivers
+      
+    - stakeholder: Key Customers
+      owner: operations-excellence-expert
+      engagement: Immediate contact, regular updates
+      objectives: Retention, service continuity
+      
+    - stakeholder: Employees
+      owner: hr-talent-specialist
+      engagement: Daily communications, town halls
+      objectives: Retention, engagement, productivity
+      
+    - stakeholder: Board and Investors
+      owner: strategic-growth-advisor
+      engagement: Daily updates, weekly meetings
+      objectives: Confidence, support, alignment
+      
+    - stakeholder: Suppliers and Vendors
+      owner: operations-excellence-expert
+      engagement: Immediate contact, payment plans
+      objectives: Supply continuity, payment terms
+
+# Performance Metrics - Crisis Phase
+crisis_metrics:
+  daily_monitoring:
+    - Cash position and burn rate
+    - Customer order status
+    - Employee attendance
+    - Production/service levels
+    - Critical vendor status
+    
+  weekly_tracking:
+    - Cash flow forecast accuracy
+    - Customer retention rate
+    - Cost reduction achievement
+    - Operational efficiency metrics
+    - Employee engagement pulse
+    
+  monthly_reporting:
+    - Financial performance vs. plan
+    - Turnaround milestone achievement
+    - Market share and competitive position
+    - Organizational health indicators
+    - Stakeholder confidence levels
+
+# Turnaround Strategies
+turnaround_playbook:
+  financial_strategies:
+    - Emergency funding and bridge financing
+    - Accounts receivable acceleration
+    - Inventory liquidation and optimization
+    - Asset sales and leaseback arrangements
+    - Debt restructuring and payment deferrals
+    
+  operational_strategies:
+    - Unprofitable product/service elimination
+    - Facility consolidation and closures
+    - Outsourcing and offshoring evaluation
+    - Automation and technology deployment
+    - Supplier consolidation and negotiation
+    
+  organizational_strategies:
+    - Workforce rightsizing and restructuring
+    - Compensation and benefit adjustments
+    - Performance management enhancement
+    - Leadership changes and additions
+    - Cultural transformation initiatives
+    
+  commercial_strategies:
+    - Customer retention programs
+    - Pricing optimization and increases
+    - Sales force effectiveness improvement
+    - Marketing spend optimization
+    - Channel rationalization and focus
+
+# Risk Management Protocol
+risk_protocol:
+  risk_categories:
+    - category: Liquidity Risk
+      indicators: ["Cash below 30 days", "Credit line exhaustion"]
+      response: Immediate cash conservation measures
+      owner: financial-performance-analyst
+      
+    - category: Customer Defection
+      indicators: ["Churn >20%", "Major account loss"]
+      response: Executive intervention and retention program
+      owner: operations-excellence-expert
+      
+    - category: Employee Flight
+      indicators: ["Turnover >25%", "Key person resignation"]
+      response: Retention bonuses and stay agreements
+      owner: hr-talent-specialist
+      
+    - category: Operational Failure
+      indicators: ["Service level <80%", "Quality issues"]
+      response: Emergency operational intervention
+      owner: operations-excellence-expert
+      
+  escalation_triggers:
+    - Covenant breach or default
+    - Major customer loss
+    - Key employee departure
+    - Regulatory violation
+    - Significant operational disruption
+
+# Communication Strategy
+communication_plan:
+  internal_communication:
+    frequency: Daily during crisis, weekly in recovery
+    channels:
+      - All-hands meetings
+      - Email updates
+      - Intranet postings
+      - Department meetings
+      - One-on-one sessions
+    messaging_themes:
+      - Transparency and honesty
+      - Action plans and progress
+      - Individual roles and contributions
+      - Future vision and hope
+      - Recognition and appreciation
+      
+  external_communication:
+    frequency: As needed with consistent messaging
+    channels:
+      - Press releases
+      - Customer communications
+      - Vendor notifications
+      - Investor updates
+      - Regulatory filings
+    messaging_control:
+      - Single spokesperson designated
+      - Message approval required
+      - Q&A preparation mandatory
+      - Legal review for sensitive topics
+      - Consistent narrative maintenance
+
+# Recovery Milestones
+recovery_tracking:
+  phase_1_stabilization:
+    duration: 0-3 months
+    milestones:
+      - Positive cash flow achieved
+      - Creditor agreements secured
+      - Customer retention >80%
+      - Employee turnover <20%
+      - Operational stability restored
+      
+  phase_2_recovery:
+    duration: 3-9 months
+    milestones:
+      - Break-even profitability
+      - Debt compliance restored
+      - Market share stabilized
+      - Efficiency targets achieved
+      - Organization restructured
+      
+  phase_3_growth:
+    duration: 9-18 months
+    milestones:
+      - Sustainable profitability
+      - Growth trajectory established
+      - Competitive position improved
+      - Culture transformation complete
+      - Strategic initiatives launched
+
+# Resource Requirements
+team_resources:
+  immediate_needs:
+    - Crisis management war room
+    - Real-time reporting systems
+    - Communication platforms
+    - Legal and advisory support
+    - Emergency funding sources
+    
+  ongoing_support:
+    - Project management tools
+    - Analytics and dashboards
+    - Change management resources
+    - Training and development programs
+    - Performance tracking systems
+    
+  external_resources:
+    - Restructuring advisors
+    - Legal counsel
+    - Investment bankers
+    - Crisis communications firm
+    - Interim executives
+
+# Success Factors
+critical_success_factors:
+  - Speed of response and decision making
+  - Stakeholder confidence and support
+  - Cash preservation and generation
+  - Customer and employee retention
+  - Operational stability maintenance
+  - Clear communication and transparency
+  - Leadership alignment and commitment
+  - Execution discipline and accountability
+
+# Transition Planning
+transition_to_stability:
+  handoff_criteria:
+    - Positive cash flow for 3+ months
+    - Debt compliance achieved
+    - Customer satisfaction >80%
+    - Employee engagement >70%
+    - Operational metrics at target
+    
+  knowledge_transfer:
+    - Turnaround playbook documentation
+    - Process improvements institutionalized
+    - Management systems implemented
+    - Team capabilities developed
+    - Monitoring systems established
+    
+  ongoing_support:
+    duration: 3-6 months post-crisis
+    activities:
+      - Monthly performance reviews
+      - Quarterly board reporting
+      - Advisory support on-demand
+      - Risk monitoring and alerts
+      - Capability reinforcement
+
+# Lessons Learned Process
+continuous_improvement:
+  documentation:
+    - Crisis timeline and decisions
+    - Effective strategies and tactics
+    - Challenges and obstacles
+    - Stakeholder feedback
+    - Performance outcomes
+    
+  analysis:
+    - Root cause assessment
+    - Decision effectiveness review
+    - Process improvement opportunities
+    - Communication effectiveness
+    - Team performance evaluation
+    
+  implementation:
+    - Playbook updates and refinements
+    - Training program enhancements
+    - Tool and template improvements
+    - Best practice documentation
+    - Knowledge sharing sessions

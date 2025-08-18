@@ -1,0 +1,315 @@
+name: "ROI Calculator Template"
+description: "Comprehensive Return on Investment analysis template for business decisions and project evaluations"
+category: "financial-analysis"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# ROI Calculator Template for Business Decision Analysis
+
+template:
+  project_information:
+    project_name: ""
+    project_description: ""
+    project_sponsor: ""
+    analysis_date: ""
+    analysis_period_years: 3
+    discount_rate_percent: 10
+    
+  investment_costs:
+    initial_investment:
+      capital_expenditures:
+        equipment: 0
+        software: 0
+        infrastructure: 0
+        facilities: 0
+        other_capex: 0
+      implementation_costs:
+        consulting: 0
+        training: 0
+        integration: 0
+        testing: 0
+        change_management: 0
+        other_implementation: 0
+    
+    ongoing_costs:
+      annual_operating_costs:
+        personnel: 0
+        maintenance: 0
+        licenses: 0
+        support: 0
+        utilities: 0
+        other_operating: 0
+      
+      year_specific_costs:
+        year_1_additional: 0
+        year_2_additional: 0
+        year_3_additional: 0
+
+  expected_benefits:
+    revenue_benefits:
+      revenue_increase:
+        year_1: 0
+        year_2: 0
+        year_3: 0
+      new_revenue_streams:
+        year_1: 0
+        year_2: 0
+        year_3: 0
+      market_expansion:
+        year_1: 0
+        year_2: 0
+        year_3: 0
+    
+    cost_savings:
+      operational_savings:
+        year_1: 0
+        year_2: 0
+        year_3: 0
+      efficiency_gains:
+        year_1: 0
+        year_2: 0
+        year_3: 0
+      cost_avoidance:
+        year_1: 0
+        year_2: 0
+        year_3: 0
+    
+    productivity_benefits:
+      time_savings_value:
+        year_1: 0
+        year_2: 0
+        year_3: 0
+      quality_improvements:
+        year_1: 0
+        year_2: 0
+        year_3: 0
+      process_optimization:
+        year_1: 0
+        year_2: 0
+        year_3: 0
+
+  risk_factors:
+    implementation_risk:
+      probability_percent: 20
+      impact_reduction_percent: 15
+    
+    adoption_risk:
+      probability_percent: 25
+      impact_reduction_percent: 20
+    
+    market_risk:
+      probability_percent: 15
+      impact_reduction_percent: 10
+    
+    technology_risk:
+      probability_percent: 10
+      impact_reduction_percent: 25
+
+calculations:
+  financial_metrics:
+    # Calculated automatically based on inputs
+    total_initial_investment: "=SUM(investment_costs.initial_investment.*)"
+    total_annual_costs: "=SUM(investment_costs.ongoing_costs.annual_operating_costs.*)"
+    
+    year_1_benefits: "=SUM(expected_benefits.*.year_1)"
+    year_2_benefits: "=SUM(expected_benefits.*.year_2)"
+    year_3_benefits: "=SUM(expected_benefits.*.year_3)"
+    
+    year_1_net_benefit: "=year_1_benefits - total_annual_costs - investment_costs.ongoing_costs.year_specific_costs.year_1_additional"
+    year_2_net_benefit: "=year_2_benefits - total_annual_costs - investment_costs.ongoing_costs.year_specific_costs.year_2_additional"
+    year_3_net_benefit: "=year_3_benefits - total_annual_costs - investment_costs.ongoing_costs.year_specific_costs.year_3_additional"
+    
+    # ROI Calculations
+    simple_roi_percent: "=((year_1_net_benefit + year_2_net_benefit + year_3_net_benefit) - total_initial_investment) / total_initial_investment * 100"
+    
+    # NPV Calculation
+    npv: "=(year_1_net_benefit / (1 + discount_rate_percent/100)^1) + (year_2_net_benefit / (1 + discount_rate_percent/100)^2) + (year_3_net_benefit / (1 + discount_rate_percent/100)^3) - total_initial_investment"
+    
+    # IRR approximation (requires iterative calculation)
+    irr_percent: "Requires iterative calculation"
+    
+    # Payback Period
+    cumulative_year_1: "=year_1_net_benefit"
+    cumulative_year_2: "=cumulative_year_1 + year_2_net_benefit"
+    cumulative_year_3: "=cumulative_year_2 + year_3_net_benefit"
+    
+    payback_period_years: "Calculate based on when cumulative benefits exceed initial investment"
+    
+  risk_adjusted_metrics:
+    risk_weighted_benefits:
+      year_1_adjusted: "=year_1_benefits * (1 - average_risk_impact)"
+      year_2_adjusted: "=year_2_benefits * (1 - average_risk_impact)"
+      year_3_adjusted: "=year_3_benefits * (1 - average_risk_impact)"
+    
+    risk_adjusted_roi: "Calculate ROI using risk-adjusted benefits"
+    risk_adjusted_npv: "Calculate NPV using risk-adjusted benefits"
+
+analysis_framework:
+  benefit_categories:
+    financial_benefits:
+      - "Revenue generation"
+      - "Cost reduction"
+      - "Cost avoidance"
+      - "Working capital improvement"
+      - "Asset utilization"
+    
+    operational_benefits:
+      - "Process efficiency"
+      - "Quality improvement"
+      - "Time savings"
+      - "Capacity increase"
+      - "Error reduction"
+    
+    strategic_benefits:
+      - "Competitive advantage"
+      - "Market position"
+      - "Customer satisfaction"
+      - "Innovation capability"
+      - "Risk mitigation"
+    
+    intangible_benefits:
+      - "Brand value"
+      - "Employee satisfaction"
+      - "Knowledge creation"
+      - "Flexibility"
+      - "Compliance"
+
+  cost_categories:
+    direct_costs:
+      - "Purchase price"
+      - "Implementation"
+      - "Training"
+      - "Integration"
+      - "Migration"
+    
+    indirect_costs:
+      - "Opportunity cost"
+      - "Productivity loss"
+      - "Support overhead"
+      - "Maintenance"
+      - "Upgrades"
+    
+    hidden_costs:
+      - "Change management"
+      - "Business disruption"
+      - "Additional resources"
+      - "Compliance"
+      - "Risk mitigation"
+
+benchmark_standards:
+  roi_thresholds:
+    excellent: "> 50%"
+    good: "25-50%"
+    acceptable: "15-25%"
+    marginal: "5-15%"
+    poor: "< 5%"
+  
+  payback_periods:
+    excellent: "< 1 year"
+    good: "1-2 years"
+    acceptable: "2-3 years"
+    concerning: "> 3 years"
+  
+  npv_interpretation:
+    positive: "Project creates value"
+    zero: "Project breaks even"
+    negative: "Project destroys value"
+
+sensitivity_analysis:
+  variables_to_test:
+    - "Benefits realization (±20%)"
+    - "Implementation costs (±15%)"
+    - "Timeline delays (±6 months)"
+    - "Adoption rate (±25%)"
+    - "Market conditions (±10%)"
+  
+  scenarios:
+    optimistic:
+      benefits_multiplier: 1.2
+      costs_multiplier: 0.9
+      timeline_factor: 0.9
+    
+    realistic:
+      benefits_multiplier: 1.0
+      costs_multiplier: 1.0
+      timeline_factor: 1.0
+    
+    pessimistic:
+      benefits_multiplier: 0.8
+      costs_multiplier: 1.15
+      timeline_factor: 1.2
+
+reporting_template:
+  executive_summary:
+    recommended_decision: ""
+    key_financial_metrics:
+      - "ROI: %"
+      - "NPV: $"
+      - "Payback Period: years"
+      - "IRR: %"
+    
+    critical_assumptions: []
+    major_risks: []
+    sensitivity_factors: []
+  
+  detailed_analysis:
+    investment_summary:
+      total_investment: ""
+      implementation_timeline: ""
+      resource_requirements: ""
+    
+    benefit_analysis:
+      quantified_benefits: ""
+      benefit_realization_timeline: ""
+      benefit_dependencies: ""
+    
+    risk_assessment:
+      implementation_risks: ""
+      business_risks: ""
+      mitigation_strategies: ""
+    
+    recommendations:
+      proceed_conditions: []
+      alternative_options: []
+      next_steps: []
+
+validation_checklist:
+  data_quality:
+    - "All cost estimates reviewed and validated"
+    - "Benefit assumptions supported by data"
+    - "Historical performance considered"
+    - "Industry benchmarks referenced"
+    - "Stakeholder input incorporated"
+  
+  analysis_completeness:
+    - "All cost categories included"
+    - "All benefit categories considered"
+    - "Risk factors identified and quantified"
+    - "Sensitivity analysis performed"
+    - "Multiple scenarios evaluated"
+  
+  business_alignment:
+    - "Strategic objectives addressed"
+    - "Success criteria defined"
+    - "Resource availability confirmed"
+    - "Timeline feasibility assessed"
+    - "Change management considered"
+
+usage_instructions:
+  step_1: "Complete project information section"
+  step_2: "Identify and quantify all investment costs"
+  step_3: "Estimate expected benefits by category and year"
+  step_4: "Assess risk factors and probabilities"
+  step_5: "Review calculated financial metrics"
+  step_6: "Perform sensitivity analysis"
+  step_7: "Complete validation checklist"
+  step_8: "Prepare executive summary and recommendations"
+
+notes:
+  - "Use conservative estimates for benefits and realistic estimates for costs"
+  - "Consider both hard and soft benefits but quantify conservatively"
+  - "Include risk factors and perform sensitivity analysis"
+  - "Validate assumptions with subject matter experts"
+  - "Update analysis as new information becomes available"
+  - "Consider qualitative factors alongside quantitative analysis"

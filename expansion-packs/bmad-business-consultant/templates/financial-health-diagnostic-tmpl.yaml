@@ -1,0 +1,493 @@
+name: "Financial Health Diagnostic Template"
+description: "Comprehensive financial health assessment tool for small business consultants to evaluate overall financial condition and stability"
+category: "financial-analysis"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Financial Health Diagnostic for Small Business Consulting
+
+template:
+  diagnostic_information:
+    client_name: ""
+    business_name: ""
+    industry: ""
+    diagnostic_date: ""
+    consultant_name: ""
+    reporting_period: ""
+    comparison_periods: []
+    
+  financial_statements_analysis:
+    income_statement_analysis:
+      revenue_metrics:
+        current_year_revenue: 0
+        prior_year_revenue: 0
+        revenue_growth_rate: 0
+        revenue_consistency_score: 0 # 1-10 scale
+        seasonal_revenue_variation: 0
+        
+      profitability_metrics:
+        gross_profit: 0
+        gross_profit_margin: 0
+        operating_profit: 0
+        operating_profit_margin: 0
+        net_profit: 0
+        net_profit_margin: 0
+        ebitda: 0
+        ebitda_margin: 0
+        
+      expense_analysis:
+        cost_of_goods_sold_percentage: 0
+        operating_expense_percentage: 0
+        fixed_costs_percentage: 0
+        variable_costs_percentage: 0
+        expense_growth_rate: 0
+        
+    balance_sheet_analysis:
+      asset_composition:
+        current_assets: 0
+        fixed_assets: 0
+        total_assets: 0
+        asset_turnover_ratio: 0
+        
+      liability_structure:
+        current_liabilities: 0
+        long_term_debt: 0
+        total_liabilities: 0
+        debt_to_equity_ratio: 0
+        
+      equity_position:
+        owner_equity: 0
+        retained_earnings: 0
+        equity_growth_rate: 0
+        
+    cash_flow_analysis:
+      operating_cash_flow: 0
+      investing_cash_flow: 0
+      financing_cash_flow: 0
+      free_cash_flow: 0
+      cash_flow_to_revenue_ratio: 0
+
+  financial_ratio_analysis:
+    liquidity_ratios:
+      current_ratio: 0
+      quick_ratio: 0
+      cash_ratio: 0
+      working_capital: 0
+      
+      liquidity_assessment:
+        current_ratio_rating: "" # Excellent/Good/Fair/Poor
+        cash_position_adequacy: ""
+        working_capital_efficiency: ""
+        
+    profitability_ratios:
+      return_on_assets: 0
+      return_on_equity: 0
+      profit_margin: 0
+      gross_margin: 0
+      
+      profitability_assessment:
+        profit_trend: ""
+        margin_stability: ""
+        profitability_vs_industry: ""
+        
+    efficiency_ratios:
+      inventory_turnover: 0
+      receivables_turnover: 0
+      payables_turnover: 0
+      asset_turnover: 0
+      
+      efficiency_assessment:
+        working_capital_management: ""
+        asset_utilization: ""
+        operational_efficiency: ""
+        
+    leverage_ratios:
+      debt_to_assets: 0
+      debt_to_equity: 0
+      times_interest_earned: 0
+      debt_service_coverage: 0
+      
+      leverage_assessment:
+        debt_level_appropriateness: ""
+        debt_service_capability: ""
+        financial_risk_level: ""
+
+  financial_strength_indicators:
+    revenue_quality:
+      customer_concentration: 0 # Percentage from top customer
+      recurring_revenue_percentage: 0
+      contract_duration_average: 0
+      customer_retention_rate: 0
+      
+      revenue_quality_score: 0
+      
+    cash_generation_ability:
+      operating_cash_flow_consistency: ""
+      cash_conversion_efficiency: 0
+      free_cash_flow_trend: ""
+      working_capital_requirements: 0
+      
+      cash_generation_score: 0
+      
+    financial_flexibility:
+      available_credit_lines: 0
+      unencumbered_assets: 0
+      cash_reserves_months: 0
+      debt_covenant_compliance: ""
+      
+      flexibility_score: 0
+      
+    growth_sustainability:
+      sustainable_growth_rate: 0
+      reinvestment_rate: 0
+      funding_requirements_for_growth: 0
+      scalability_assessment: ""
+      
+      growth_sustainability_score: 0
+
+  risk_assessment:
+    financial_risks:
+      liquidity_risk:
+        cash_flow_volatility: ""
+        seasonal_cash_needs: 0
+        debt_maturity_schedule: []
+        credit_facility_renewals: []
+        
+      credit_risk:
+        customer_creditworthiness: ""
+        bad_debt_history: 0
+        collection_efficiency: 0
+        credit_concentration: 0
+        
+      market_risk:
+        revenue_sensitivity_to_economy: ""
+        competitive_pressure_impact: ""
+        pricing_power: ""
+        market_share_stability: ""
+        
+      operational_risk:
+        key_person_dependency: ""
+        supplier_concentration: 0
+        regulatory_compliance_costs: 0
+        technology_obsolescence_risk: ""
+        
+    risk_mitigation_factors:
+      diversification_efforts: []
+      insurance_coverage: []
+      contingency_planning: ""
+      risk_monitoring_systems: ""
+
+  industry_benchmarking:
+    financial_performance_comparison:
+      revenue_growth_vs_industry: 0
+      profit_margins_vs_industry: 0
+      efficiency_ratios_vs_industry: {}
+      leverage_ratios_vs_industry: {}
+      
+    competitive_position:
+      market_share_trends: ""
+      competitive_advantages: []
+      cost_structure_competitiveness: ""
+      pricing_position: ""
+      
+    industry_factors:
+      industry_growth_trends: ""
+      regulatory_environment: ""
+      competitive_intensity: ""
+      technology_disruption_risk: ""
+
+  financial_management_assessment:
+    accounting_systems:
+      bookkeeping_quality: ""
+      financial_reporting_timeliness: ""
+      internal_controls_effectiveness: ""
+      audit_history: ""
+      
+    financial_planning:
+      budgeting_process_maturity: ""
+      forecasting_accuracy: ""
+      variance_analysis_quality: ""
+      strategic_financial_planning: ""
+      
+    cash_management:
+      cash_flow_forecasting: ""
+      working_capital_optimization: ""
+      investment_management: ""
+      banking_relationships: ""
+      
+    financial_decision_making:
+      investment_analysis_capability: ""
+      financing_decision_quality: ""
+      risk_management_sophistication: ""
+      performance_measurement: ""
+
+  diagnostic_scoring:
+    category_scores:
+      profitability_score: 0 # 1-100 scale
+      liquidity_score: 0
+      efficiency_score: 0
+      leverage_score: 0
+      growth_score: 0
+      risk_management_score: 0
+      
+    weighted_overall_score: 0
+    
+    scoring_weights:
+      profitability: 25
+      liquidity: 20
+      efficiency: 15
+      leverage: 15
+      growth: 15
+      risk_management: 10
+      
+    health_rating:
+      excellent: "85-100"
+      good: "70-84"
+      fair: "55-69"
+      concerning: "40-54"
+      critical: "0-39"
+
+  trend_analysis:
+    three_year_trends:
+      revenue_trend: ""
+      profitability_trend: ""
+      cash_flow_trend: ""
+      debt_trend: ""
+      
+    leading_indicators:
+      order_backlog_trends: ""
+      customer_acquisition_trends: ""
+      pricing_trends: ""
+      cost_inflation_impacts: ""
+      
+    predictive_insights:
+      future_performance_indicators: []
+      emerging_risks: []
+      growth_opportunities: []
+
+  diagnostic_findings:
+    financial_strengths:
+      key_strengths: []
+      competitive_advantages: []
+      value_drivers: []
+      
+    areas_of_concern:
+      immediate_risks: []
+      performance_gaps: []
+      structural_weaknesses: []
+      
+    improvement_opportunities:
+      profitability_enhancements: []
+      efficiency_improvements: []
+      risk_mitigation_strategies: []
+      growth_enablers: []
+
+  action_plan:
+    immediate_priorities:
+      # 0-30 days
+      cash_flow_stabilization: []
+      cost_reduction_initiatives: []
+      revenue_protection_measures: []
+      
+    short_term_initiatives:
+      # 30-90 days
+      working_capital_optimization: []
+      process_improvements: []
+      system_enhancements: []
+      
+    medium_term_strategies:
+      # 90-365 days
+      profitability_improvements: []
+      growth_investments: []
+      risk_management_enhancements: []
+      
+    long_term_objectives:
+      # 1+ years
+      strategic_positioning: []
+      capital_structure_optimization: []
+      sustainable_growth_strategies: []
+
+  monitoring_framework:
+    key_performance_indicators:
+      financial_kpis:
+        - "Monthly revenue growth"
+        - "Gross profit margin"
+        - "Operating cash flow"
+        - "Current ratio"
+        - "Debt service coverage"
+        
+      operational_kpis:
+        - "Customer acquisition cost"
+        - "Customer lifetime value"
+        - "Inventory turnover"
+        - "Accounts receivable days"
+        
+      leading_indicators:
+        - "Sales pipeline value"
+        - "Customer satisfaction scores"
+        - "Market share trends"
+        - "Cost per unit trends"
+        
+    reporting_schedule:
+      daily_monitoring: []
+      weekly_reviews: []
+      monthly_assessments: []
+      quarterly_deep_dives: []
+      
+    variance_analysis:
+      budget_vs_actual_process: ""
+      variance_investigation_thresholds: {}
+      corrective_action_protocols: []
+
+  specialized_diagnostics:
+    seasonal_business_analysis:
+      seasonal_revenue_patterns: {}
+      seasonal_cash_flow_needs: 0
+      off_season_sustainability: ""
+      seasonal_financing_requirements: 0
+      
+    growth_stage_analysis:
+      startup_metrics:
+        burn_rate: 0
+        runway_months: 0
+        customer_acquisition_metrics: {}
+        
+      growth_metrics:
+        customer_acquisition_cost: 0
+        lifetime_value_to_cac_ratio: 0
+        monthly_recurring_revenue_growth: 0
+        
+      mature_business_metrics:
+        market_share_stability: ""
+        operational_efficiency_trends: ""
+        return_on_invested_capital: 0
+        
+    distressed_business_indicators:
+      early_warning_signs:
+        - "Declining gross margins"
+        - "Increasing debt service burden"
+        - "Deteriorating working capital"
+        - "Customer concentration risk"
+        
+      turnaround_potential:
+        core_business_viability: ""
+        asset_quality: ""
+        management_capability: ""
+        stakeholder_support: ""
+
+  reporting_outputs:
+    executive_summary:
+      overall_financial_health: ""
+      key_findings: []
+      critical_issues: []
+      recommended_priorities: []
+      
+    detailed_diagnostic_report:
+      comprehensive_analysis: {}
+      benchmarking_results: {}
+      trend_analysis: {}
+      action_plan: {}
+      
+    financial_dashboard:
+      key_metrics_summary: {}
+      trend_charts: {}
+      benchmark_comparisons: {}
+      alert_indicators: {}
+
+implementation_methodology:
+  data_collection:
+    required_financial_statements:
+      - "Income statements (3 years)"
+      - "Balance sheets (3 years)"
+      - "Cash flow statements (3 years)"
+      - "Monthly financial reports (12 months)"
+      - "Budget vs. actual reports"
+      - "Accounts receivable aging"
+      - "Accounts payable aging"
+      
+    additional_information:
+      - "Industry benchmarking data"
+      - "Customer concentration analysis"
+      - "Loan agreements and covenants"
+      - "Management discussion of results"
+      
+  analysis_process:
+    quantitative_analysis:
+      - "Financial ratio calculations"
+      - "Trend analysis"
+      - "Variance analysis"
+      - "Benchmarking comparisons"
+      
+    qualitative_assessment:
+      - "Management interviews"
+      - "Process observations"
+      - "System evaluations"
+      - "Risk assessments"
+      
+  validation_procedures:
+    data_verification:
+      - "Cross-check financial statements"
+      - "Validate key assumptions"
+      - "Confirm industry benchmarks"
+      - "Review calculation accuracy"
+      
+    insight_validation:
+      - "Test findings with management"
+      - "Compare with external perspectives"
+      - "Validate improvement opportunities"
+      - "Confirm action plan feasibility"
+
+success_criteria:
+  diagnostic_quality:
+    accuracy_measures:
+      - "Financial calculations verified"
+      - "Industry benchmarks current"
+      - "Trend analysis statistically valid"
+      - "Risk assessment comprehensive"
+      
+    insight_value:
+      - "Actionable recommendations identified"
+      - "Root causes understood"
+      - "Improvement opportunities quantified"
+      - "Implementation roadmap clear"
+      
+  client_outcomes:
+    immediate_value:
+      - "Clear understanding of financial position"
+      - "Identified improvement opportunities"
+      - "Prioritized action plan"
+      - "Enhanced financial management capability"
+      
+    long_term_impact:
+      - "Improved financial performance"
+      - "Enhanced business sustainability"
+      - "Better strategic decision making"
+      - "Increased stakeholder confidence"
+
+usage_guidelines:
+  preparation:
+    - "Gather 3 years of complete financial statements"
+    - "Obtain industry benchmarking data"
+    - "Schedule management interviews"
+    - "Review business model and strategy"
+    
+  execution:
+    - "Start with quantitative ratio analysis"
+    - "Compare trends and benchmarks"
+    - "Conduct qualitative assessments"
+    - "Validate findings with management"
+    - "Develop prioritized recommendations"
+    
+  follow_up:
+    - "Present findings to key stakeholders"
+    - "Develop detailed implementation plan"
+    - "Establish monitoring and review schedule"
+    - "Provide ongoing support as needed"
+
+notes:
+  - "Customize analysis based on industry characteristics"
+  - "Consider business life cycle stage in assessments"
+  - "Focus on forward-looking insights, not just historical analysis"
+  - "Emphasize actionable recommendations over just diagnosis"
+  - "Build client financial management capability through the process"

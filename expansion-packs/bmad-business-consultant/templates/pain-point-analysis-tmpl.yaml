@@ -1,0 +1,274 @@
+name: "Pain Point Analysis Template"
+description: "Systematic customer pain point analysis using COUNT/URGENCY/IMPACT methodology for problem prioritization"
+version: "1.0"
+category: "Customer Research"
+tags: ["pain-points", "customer-research", "problem-analysis", "prioritization"]
+
+placeholders:
+  market: "Target market or customer segment analyzed"
+  research_source: "Source of research data (online, interviews, surveys)"
+  analysis_scope: "Scope of pain point analysis"
+  timeframe: "Research timeframe and data collection period"
+
+template: |
+  # {{market}} - Customer Pain Point Analysis
+  
+  ## Executive Summary
+  This systematic pain point analysis identifies, categorizes, and prioritizes customer problems for {{market}} using the COUNT/URGENCY/IMPACT methodology to drive solution development and strategic decision-making.
+  
+  **Research Source**: {{research_source}}
+  **Analysis Scope**: {{analysis_scope}}
+  **Research Timeframe**: {{timeframe}}
+  **Analysis Date**: [Current Date]
+  
+  ## Methodology Overview
+  
+  ### Pain Point Analysis Framework
+  - **COUNT**: Number of mentions across all data sources
+  - **URGENCY**: Time-sensitivity of the problem (High/Medium/Low)
+  - **IMPACT**: Severity of consequences if unresolved (High/Medium/Low)
+  - **PRIORITY SCORE**: COUNT × (URGENCY + IMPACT)
+  
+  ### Scoring Criteria
+  **Urgency Levels**:
+  - **High (3)**: Immediate action required, time-critical
+  - **Medium (2)**: Important but not immediately critical
+  - **Low (1)**: Can be addressed over time
+  
+  **Impact Levels**:
+  - **High (3)**: Severe consequences, business-critical
+  - **Medium (2)**: Moderate impact on operations/satisfaction
+  - **Low (1)**: Minor inconvenience or limitation
+  
+  ## Pain Point Analysis Results
+  
+  ### Priority Pain Points Matrix
+  
+  | Rank | Problem | Count | Urgency | Impact | Priority Score | Strategic Value |
+  |------|---------|-------|---------|--------|----------------|-----------------|
+  | 1 | [Problem Title] | [#] | [H/M/L] | [H/M/L] | [Calculated] | [High/Med/Low] |
+  | 2 | [Problem Title] | [#] | [H/M/L] | [H/M/L] | [Calculated] | [High/Med/Low] |
+  | 3 | [Problem Title] | [#] | [H/M/L] | [H/M/L] | [Calculated] | [High/Med/Low] |
+  | 4 | [Problem Title] | [#] | [H/M/L] | [H/M/L] | [Calculated] | [High/Med/Low] |
+  | 5 | [Problem Title] | [#] | [H/M/L] | [H/M/L] | [Calculated] | [High/Med/Low] |
+  
+  ## Detailed Pain Point Analysis
+  
+  ### PROBLEM #1 - [Highest Priority Problem Title]
+  
+  **COUNT**: [number of mentions]
+  **URGENCY**: [High/Medium/Low]
+  **IMPACT**: [High/Medium/Low]
+  **PRIORITY SCORE**: [calculated score]
+  
+  **SEARCH QUERY**: "[likely customer search term]"
+  
+  **CONTEXT**:
+  [2-3 line description of the problem and its manifestation in the market]
+  
+  **KEY QUOTES**:
+  - "[Exact customer quote with source reference]"
+  - "[Exact customer quote with source reference]"
+  - "[Exact customer quote with source reference]"
+  - "[Exact customer quote with source reference]"
+  - "[Exact customer quote with source reference]"
+  
+  **PROBLEM MANIFESTATIONS**:
+  - **[Sub-theme 1]**: [Description of how problem appears]
+  - **[Sub-theme 2]**: [Description of how problem appears]
+  - **[Sub-theme 3]**: [Description of how problem appears]
+  
+  **EMOTIONAL IMPACT**:
+  - **Frustration Level**: [High/Medium/Low based on language analysis]
+  - **Stress Indicators**: [Evidence of stress or anxiety in quotes]
+  - **Urgency Language**: [Time-pressure indicators in customer language]
+  
+  **CURRENT WORKAROUNDS**:
+  - [Description of how customers currently try to solve this]
+  - [Limitations and problems with current approaches]
+  - [Cost and time investment in workarounds]
+  
+  ---
+  
+  ### PROBLEM #2 - [Second Priority Problem Title]
+  
+  **COUNT**: [number of mentions]
+  **URGENCY**: [High/Medium/Low]
+  **IMPACT**: [High/Medium/Low]
+  **PRIORITY SCORE**: [calculated score]
+  
+  **SEARCH QUERY**: "[likely customer search term]"
+  
+  **CONTEXT**:
+  [2-3 line description of the problem and its manifestation in the market]
+  
+  **KEY QUOTES**:
+  - "[Exact customer quote with source reference]"
+  - "[Exact customer quote with source reference]"
+  - "[Exact customer quote with source reference]"
+  - "[Exact customer quote with source reference]"
+  - "[Exact customer quote with source reference]"
+  
+  **PROBLEM MANIFESTATIONS**:
+  - **[Sub-theme 1]**: [Description of how problem appears]
+  - **[Sub-theme 2]**: [Description of how problem appears]
+  - **[Sub-theme 3]**: [Description of how problem appears]
+  
+  **EMOTIONAL IMPACT**:
+  - **Frustration Level**: [High/Medium/Low based on language analysis]
+  - **Stress Indicators**: [Evidence of stress or anxiety in quotes]
+  - **Urgency Language**: [Time-pressure indicators in customer language]
+  
+  **CURRENT WORKAROUNDS**:
+  - [Description of how customers currently try to solve this]
+  - [Limitations and problems with current approaches]
+  - [Cost and time investment in workarounds]
+  
+  ---
+  
+  [Continue pattern for all identified problems with 3+ mentions]
+  
+  ## Pain Point Categories Analysis
+  
+  ### Functional Pain Points
+  **Definition**: Process inefficiencies, tool limitations, capability gaps
+  
+  | Problem | Count | Priority Score | Key Issues |
+  |---------|-------|----------------|------------|
+  | [Problem 1] | [#] | [Score] | [Brief description] |
+  | [Problem 2] | [#] | [Score] | [Brief description] |
+  
+  ### Emotional Pain Points
+  **Definition**: Stress, frustration, confidence issues, anxiety
+  
+  | Problem | Count | Priority Score | Emotional Impact |
+  |---------|-------|----------------|------------------|
+  | [Problem 1] | [#] | [Score] | [Emotional description] |
+  | [Problem 2] | [#] | [Score] | [Emotional description] |
+  
+  ### Financial Pain Points
+  **Definition**: Cost concerns, budget constraints, ROI challenges
+  
+  | Problem | Count | Priority Score | Financial Impact |
+  |---------|-------|----------------|------------------|
+  | [Problem 1] | [#] | [Score] | [Cost/budget description] |
+  | [Problem 2] | [#] | [Score] | [Cost/budget description] |
+  
+  ### Social Pain Points
+  **Definition**: Professional reputation, team dynamics, customer satisfaction
+  
+  | Problem | Count | Priority Score | Social Impact |
+  |---------|-------|----------------|---------------|
+  | [Problem 1] | [#] | [Score] | [Social/reputation description] |
+  | [Problem 2] | [#] | [Score] | [Social/reputation description] |
+  
+  ## Customer Language Analysis
+  
+  ### Pain Point Keywords Frequency
+  | Keyword/Phrase | Frequency | Emotional Intensity | Platform Distribution |
+  |----------------|-----------|--------------------|--------------------|
+  | "struggle" | [count] | [High/Med/Low] | [platforms] |
+  | "frustration" | [count] | [High/Med/Low] | [platforms] |
+  | "challenge" | [count] | [High/Med/Low] | [platforms] |
+  | "problem" | [count] | [High/Med/Low] | [platforms] |
+  | "issue" | [count] | [High/Med/Low] | [platforms] |
+  
+  ### Authentic Customer Voice Patterns
+  **How Customers Describe Problems**:
+  - [Pattern 1: e.g., "I can never get..."]
+  - [Pattern 2: e.g., "It's impossible to..."]
+  - [Pattern 3: e.g., "I wish there was a way to..."]
+  
+  **Emotional Expression Patterns**:
+  - **High Frustration**: [Examples of intense emotional language]
+  - **Resignation**: [Examples of acceptance/giving up language]
+  - **Hope/Seeking**: [Examples of solution-seeking language]
+  
+  **Context and Trigger Situations**:
+  - **When Problems Occur**: [Timing and situational context]
+  - **Trigger Events**: [What causes the problems to surface]
+  - **Frequency Indicators**: [How often problems are experienced]
+  
+  ## Competitive Gap Analysis
+  
+  ### Current Solution Inadequacies
+  | Existing Solution | Customer Complaints | Gap Severity | Opportunity Level |
+  |-------------------|--------------------|--------------|--------------------|
+  | [Solution 1] | [Main complaints] | [High/Med/Low] | [High/Med/Low] |
+  | [Solution 2] | [Main complaints] | [High/Med/Low] | [High/Med/Low] |
+  
+  ### Unmet Needs Identification
+  - **[Unmet Need 1]**: [Description and evidence from quotes]
+  - **[Unmet Need 2]**: [Description and evidence from quotes]
+  - **[Unmet Need 3]**: [Description and evidence from quotes]
+  
+  ### Switching Triggers
+  **What Makes Customers Change Solutions**:
+  - [Trigger 1 with supporting quotes]
+  - [Trigger 2 with supporting quotes]
+  - [Trigger 3 with supporting quotes]
+  
+  ## Strategic Recommendations
+  
+  ### High-Priority Solution Opportunities
+  1. **[Opportunity 1]**: Target the highest-scoring pain point with [solution approach]
+  2. **[Opportunity 2]**: Address emotional pain points through [solution approach]
+  3. **[Opportunity 3]**: Solve multiple related problems with [integrated solution approach]
+  
+  ### Solution Development Priorities
+  **Phase 1 (Immediate)**:
+  - Focus on [top 2-3 pain points] with highest urgency and impact
+  - Target solutions that address multiple sub-themes
+  - Leverage existing customer workarounds for faster adoption
+  
+  **Phase 2 (Medium-term)**:
+  - Expand to address [next tier of pain points]
+  - Develop comprehensive solutions for complex problem clusters
+  - Build platform capabilities for multiple use cases
+  
+  **Phase 3 (Long-term)**:
+  - Address lower-priority but high-volume pain points
+  - Create ecosystem solutions for complete problem resolution
+  - Develop preventive capabilities to avoid problems
+  
+  ### Market Positioning Insights
+  - **Primary Message**: Address the top pain point with authentic customer language
+  - **Differentiation**: Focus on gaps in current solutions
+  - **Value Proposition**: Quantify impact of solving high-priority problems
+  
+  ## Implementation Guidance
+  
+  ### Customer Validation Priorities
+  1. **[Top Pain Point]**: Validate with direct customer interviews
+  2. **[Second Pain Point]**: Test solution concepts with target customers
+  3. **[Third Pain Point]**: Survey broader market for frequency validation
+  
+  ### Solution Development Framework
+  - **MVP Focus**: Address top 3 pain points with minimum viable solution
+  - **Feature Prioritization**: Map features directly to pain point resolution
+  - **Success Metrics**: Measure pain point reduction and customer satisfaction
+  
+  ### Marketing and Messaging
+  - **Primary Messaging**: Use authentic customer language from top pain points
+  - **Content Strategy**: Create content addressing each major pain point
+  - **Channel Strategy**: Target platforms where pain points are most discussed
+  
+  ## Monitoring and Updates
+  
+  ### Pain Point Tracking
+  - **Frequency Monitoring**: Track mention frequency over time
+  - **New Pain Point Detection**: Monitor for emerging problems
+  - **Solution Impact**: Measure pain point reduction after solution introduction
+  
+  ### Research Refresh Schedule
+  - **Monthly**: Quick pulse on top pain points
+  - **Quarterly**: Comprehensive pain point re-analysis
+  - **Annually**: Full market research and pain point study
+  
+  ---
+  
+  **Analysis Methodology**: This pain point analysis follows systematic customer research methodology with COUNT/URGENCY/IMPACT scoring for objective prioritization.
+  
+  **Last Updated**: [Current Date]
+  **Analyst**: [Analyst Name/Team]
+  **Next Review**: [Recommended review timeline]

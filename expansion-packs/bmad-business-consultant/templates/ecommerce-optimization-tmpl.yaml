@@ -1,0 +1,519 @@
+name: "E-commerce Optimization Template"
+description: "Specialized e-commerce business analysis and optimization template for small business consultants working with online retailers, marketplaces, and digital commerce businesses"
+category: "industry-specific"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# E-commerce Optimization Template for Small Business Consulting
+
+template:
+  business_information:
+    client_name: ""
+    business_name: ""
+    ecommerce_model: "" # B2C, B2B, C2C, Marketplace
+    platform_type: "" # Shopify, WooCommerce, Magento, Custom, etc.
+    product_categories: []
+    years_online: 0
+    analysis_date: ""
+    consultant_name: ""
+    sales_channels: []
+    
+  ecommerce_performance_analysis:
+    traffic_metrics:
+      monthly_unique_visitors: 0
+      monthly_page_views: 0
+      average_session_duration: 0
+      bounce_rate: 0
+      pages_per_session: 0
+      organic_traffic_percentage: 0
+      
+    conversion_metrics:
+      overall_conversion_rate: 0
+      mobile_conversion_rate: 0
+      desktop_conversion_rate: 0
+      cart_abandonment_rate: 0
+      checkout_completion_rate: 0
+      email_conversion_rate: 0
+      
+    revenue_metrics:
+      monthly_revenue: 0
+      average_order_value: 0
+      revenue_per_visitor: 0
+      customer_lifetime_value: 0
+      monthly_recurring_revenue: 0
+      seasonal_revenue_patterns: {}
+      
+    customer_metrics:
+      new_vs_returning_customers: {}
+      customer_acquisition_cost: 0
+      customer_retention_rate: 0
+      repeat_purchase_rate: 0
+      customer_satisfaction_score: 0
+
+  website_and_user_experience_analysis:
+    website_performance:
+      page_load_speed: 0
+      mobile_responsiveness: ""
+      search_engine_optimization: ""
+      site_uptime: 0
+      security_measures: []
+      
+    user_experience_assessment:
+      navigation_usability: ""
+      search_functionality: ""
+      product_discovery: ""
+      checkout_process: ""
+      mobile_experience: ""
+      
+    design_and_content:
+      visual_design_quality: ""
+      brand_consistency: ""
+      product_photography: ""
+      content_quality: ""
+      trust_signals: []
+      
+    technical_performance:
+      server_performance: ""
+      database_optimization: ""
+      code_quality: ""
+      integration_efficiency: []
+      scalability_assessment: ""
+
+  product_and_inventory_management:
+    product_catalog:
+      total_products: 0
+      product_categories: []
+      product_performance: {}
+      top_selling_products: []
+      underperforming_products: []
+      
+    inventory_management:
+      inventory_turnover_rate: 0
+      stockout_frequency: 0
+      overstock_percentage: 0
+      inventory_accuracy: 0
+      supplier_performance: {}
+      
+    product_optimization:
+      product_descriptions: ""
+      product_images_quality: ""
+      product_reviews_ratings: 0
+      product_recommendations: ""
+      cross_selling_effectiveness: 0
+      
+    pricing_strategy:
+      pricing_model: ""
+      competitive_pricing_position: ""
+      dynamic_pricing_capability: ""
+      discount_strategy_effectiveness: 0
+      price_elasticity_analysis: {}
+
+  digital_marketing_performance:
+    search_engine_optimization:
+      organic_search_rankings: {}
+      organic_traffic_growth: 0
+      keyword_performance: {}
+      technical_seo_score: 0
+      content_seo_optimization: ""
+      
+    paid_advertising:
+      google_ads_performance: {}
+      facebook_ads_performance: {}
+      other_paid_channels: {}
+      advertising_roi: 0
+      cost_per_acquisition: 0
+      
+    email_marketing:
+      email_list_size: 0
+      email_open_rates: 0
+      email_click_rates: 0
+      email_revenue_attribution: 0
+      automation_effectiveness: 0
+      
+    social_media_marketing:
+      social_media_presence: []
+      social_media_engagement: {}
+      social_commerce_performance: {}
+      influencer_marketing_roi: 0
+      
+    content_marketing:
+      blog_traffic: 0
+      content_engagement: {}
+      content_conversion_rates: 0
+      video_marketing_performance: {}
+
+  customer_acquisition_and_retention:
+    acquisition_channels:
+      channel_performance: {}
+      channel_costs: {}
+      channel_conversion_rates: {}
+      customer_quality_by_channel: {}
+      
+    retention_strategies:
+      loyalty_program_effectiveness: ""
+      repeat_purchase_drivers: []
+      customer_lifecycle_campaigns: []
+      retention_rate_by_cohort: {}
+      
+    customer_support:
+      support_channel_usage: {}
+      response_times: {}
+      resolution_rates: 0
+      customer_satisfaction_scores: 0
+      
+    personalization:
+      personalization_implementation: ""
+      recommendation_engine_performance: 0
+      dynamic_content_effectiveness: 0
+      behavioral_targeting_success: 0
+
+  technology_and_platform_assessment:
+    ecommerce_platform:
+      platform_capabilities: []
+      platform_limitations: []
+      customization_level: ""
+      third_party_integrations: []
+      
+    payment_processing:
+      payment_methods_offered: []
+      payment_completion_rates: {}
+      payment_security: ""
+      transaction_fees: 0
+      
+    shipping_and_fulfillment:
+      shipping_options: []
+      fulfillment_speed: 0
+      shipping_costs: 0
+      delivery_success_rate: 0
+      
+    analytics_and_tracking:
+      analytics_tools_used: []
+      data_quality: ""
+      reporting_capabilities: ""
+      conversion_tracking_accuracy: 0
+
+  operational_efficiency:
+    order_management:
+      order_processing_time: 0
+      order_accuracy_rate: 0
+      inventory_synchronization: ""
+      return_processing_efficiency: 0
+      
+    supply_chain_management:
+      supplier_relationships: {}
+      procurement_efficiency: ""
+      quality_control_processes: []
+      supply_chain_visibility: ""
+      
+    customer_service_operations:
+      service_team_productivity: 0
+      multi_channel_support: ""
+      automation_level: ""
+      escalation_procedures: []
+      
+    financial_operations:
+      accounting_integration: ""
+      financial_reporting: ""
+      tax_compliance: ""
+      cash_flow_management: ""
+
+  competitive_analysis_ecommerce:
+    direct_competitors:
+      competitor_websites: []
+      competitive_advantages: []
+      competitive_weaknesses: []
+      pricing_comparisons: {}
+      
+    market_positioning:
+      unique_value_propositions: []
+      brand_differentiation: ""
+      market_share_estimates: 0
+      competitive_gaps: []
+      
+    competitive_intelligence:
+      competitor_marketing_strategies: []
+      competitor_technology_adoption: []
+      competitor_customer_reviews: {}
+      market_trends_analysis: []
+
+  mobile_commerce_optimization:
+    mobile_performance:
+      mobile_traffic_percentage: 0
+      mobile_conversion_rate: 0
+      mobile_page_speed: 0
+      mobile_user_experience: ""
+      
+    mobile_app_assessment:
+      app_availability: ""
+      app_performance: {}
+      app_user_engagement: {}
+      app_conversion_rates: 0
+      
+    mobile_optimization_opportunities:
+      responsive_design_improvements: []
+      mobile_checkout_optimization: []
+      mobile_payment_options: []
+      progressive_web_app_potential: ""
+
+  data_analytics_and_insights:
+    analytics_maturity:
+      data_collection_quality: ""
+      analytics_tools_sophistication: ""
+      reporting_frequency: ""
+      data_driven_decision_making: ""
+      
+    key_insights:
+      customer_behavior_insights: []
+      product_performance_insights: []
+      marketing_effectiveness_insights: []
+      operational_efficiency_insights: []
+      
+    predictive_analytics:
+      demand_forecasting: ""
+      customer_lifetime_value_prediction: ""
+      churn_prediction: ""
+      inventory_optimization: ""
+
+  growth_opportunities_ecommerce:
+    revenue_growth:
+      conversion_rate_optimization: []
+      average_order_value_increase: []
+      customer_acquisition_scaling: []
+      market_expansion: []
+      
+    operational_improvements:
+      automation_opportunities: []
+      process_optimization: []
+      technology_upgrades: []
+      cost_reduction_initiatives: []
+      
+    new_channel_development:
+      marketplace_expansion: []
+      social_commerce: []
+      b2b_opportunities: []
+      international_expansion: []
+      
+    product_and_service_expansion:
+      product_line_extensions: []
+      subscription_services: []
+      digital_products: []
+      service_additions: []
+
+  ecommerce_specific_challenges:
+    common_challenges:
+      cart_abandonment: []
+      customer_acquisition_costs: []
+      inventory_management: []
+      competition_intensity: []
+      technology_complexity: []
+      
+    challenge_impact_assessment:
+      revenue_impact: {}
+      operational_impact: {}
+      customer_experience_impact: {}
+      
+    solution_strategies:
+      conversion_optimization: []
+      marketing_efficiency: []
+      operational_automation: []
+      customer_experience_enhancement: []
+
+  ecommerce_kpis_and_metrics:
+    traffic_and_engagement_kpis:
+      - "Monthly unique visitors"
+      - "Bounce rate"
+      - "Average session duration"
+      - "Pages per session"
+      - "Email list growth rate"
+      
+    conversion_and_sales_kpis:
+      - "Conversion rate"
+      - "Average order value"
+      - "Cart abandonment rate"
+      - "Revenue per visitor"
+      - "Customer lifetime value"
+      
+    marketing_kpis:
+      - "Customer acquisition cost"
+      - "Return on ad spend (ROAS)"
+      - "Email conversion rate"
+      - "Organic traffic growth"
+      - "Social media conversion rate"
+      
+    operational_kpis:
+      - "Order fulfillment time"
+      - "Inventory turnover"
+      - "Return rate"
+      - "Customer service response time"
+      - "Website uptime"
+
+  optimization_recommendations:
+    conversion_rate_optimization:
+      website_optimization: []
+      checkout_optimization: []
+      product_page_optimization: []
+      mobile_optimization: []
+      
+    marketing_optimization:
+      seo_improvements: []
+      paid_advertising_optimization: []
+      email_marketing_enhancement: []
+      social_media_optimization: []
+      
+    operational_optimization:
+      inventory_management_improvements: []
+      fulfillment_optimization: []
+      customer_service_enhancement: []
+      technology_upgrades: []
+      
+    customer_experience_optimization:
+      personalization_enhancements: []
+      user_experience_improvements: []
+      customer_support_optimization: []
+      loyalty_program_improvements: []
+
+  implementation_roadmap_ecommerce:
+    quick_wins:
+      # 0-30 days
+      immediate_improvements: []
+      low_cost_high_impact: []
+      user_experience_fixes: []
+      
+    short_term_initiatives:
+      # 30-90 days
+      conversion_optimization: []
+      marketing_enhancements: []
+      operational_improvements: []
+      
+    medium_term_projects:
+      # 90-180 days
+      technology_implementations: []
+      process_automation: []
+      channel_expansion: []
+      
+    long_term_strategy:
+      # 180+ days
+      platform_upgrades: []
+      market_expansion: []
+      strategic_initiatives: []
+
+  ecommerce_benchmarks:
+    industry_benchmarks:
+      conversion_rates: {}
+      average_order_values: {}
+      customer_acquisition_costs: {}
+      email_performance: {}
+      
+    performance_comparison:
+      above_benchmark: []
+      at_benchmark: []
+      below_benchmark: []
+      
+    improvement_targets:
+      performance_goals: {}
+      timeline_expectations: []
+      investment_requirements: 0
+
+  technology_roadmap:
+    current_state_assessment:
+      platform_evaluation: ""
+      integration_assessment: []
+      performance_bottlenecks: []
+      security_vulnerabilities: []
+      
+    future_state_vision:
+      technology_requirements: []
+      integration_needs: []
+      scalability_requirements: []
+      security_enhancements: []
+      
+    migration_planning:
+      platform_migration_strategy: ""
+      data_migration_plan: []
+      integration_roadmap: []
+      risk_mitigation: []
+
+ecommerce_specific_tools:
+  analytics_tools:
+    - "Conversion funnel analyzer"
+    - "Cart abandonment tracker"
+    - "Customer lifetime value calculator"
+    - "A/B testing framework"
+    
+  optimization_tools:
+    - "SEO audit checklist"
+    - "Website speed tester"
+    - "Mobile optimization checker"
+    - "User experience evaluator"
+    
+  marketing_tools:
+    - "Email campaign optimizer"
+    - "Social media performance tracker"
+    - "Paid advertising analyzer"
+    - "Content marketing planner"
+
+success_factors:
+  ecommerce_success_drivers:
+    - "High-converting website design"
+    - "Effective digital marketing"
+    - "Excellent customer experience"
+    - "Efficient operations and fulfillment"
+    - "Strong product portfolio"
+    - "Data-driven decision making"
+    - "Mobile optimization"
+    - "Customer retention focus"
+
+common_ecommerce_mistakes:
+  website_mistakes:
+    - "Poor mobile experience"
+    - "Slow page load speeds"
+    - "Complicated checkout process"
+    - "Insufficient product information"
+    
+  marketing_mistakes:
+    - "Poor SEO optimization"
+    - "Ineffective paid advertising"
+    - "Weak email marketing"
+    - "Lack of personalization"
+    
+  operational_mistakes:
+    - "Poor inventory management"
+    - "Slow fulfillment processes"
+    - "Inadequate customer service"
+    - "Insufficient analytics tracking"
+
+usage_guidelines:
+  assessment_approach:
+    data_collection:
+      - "Analyze website analytics data"
+      - "Review marketing performance"
+      - "Assess operational metrics"
+      - "Evaluate customer feedback"
+      
+    analysis_methodology:
+      - "Benchmark against industry standards"
+      - "Identify conversion bottlenecks"
+      - "Assess competitive position"
+      - "Evaluate technology effectiveness"
+      
+  optimization_planning:
+    prioritization:
+      - "Focus on highest impact opportunities"
+      - "Consider implementation complexity"
+      - "Balance short-term and long-term gains"
+      - "Ensure resource availability"
+      
+    implementation_approach:
+      - "Start with quick wins for momentum"
+      - "Test changes systematically"
+      - "Monitor performance continuously"
+      - "Scale successful optimizations"
+
+notes:
+  - "E-commerce success requires excellence across technology, marketing, and operations"
+  - "Customer experience is paramount in competitive online markets"
+  - "Data analytics and testing are essential for continuous optimization"
+  - "Mobile optimization is critical for modern e-commerce success"
+  - "Conversion rate optimization should be an ongoing process"
+  - "Technology choices significantly impact scalability and performance"

@@ -1,0 +1,517 @@
+name: "Proposal Generation Template"
+description: "Comprehensive proposal development template for small business consultants to convert assessment findings into compelling client proposals with clear value propositions and ROI justification"
+category: "business-development"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Proposal Generation Template for Small Business Consulting
+
+template:
+  proposal_information:
+    client_name: ""
+    client_business_name: ""
+    proposal_date: ""
+    consultant_name: ""
+    consultant_firm: ""
+    proposal_version: ""
+    proposal_type: "" # Strategic Consulting, Operational Improvement, Financial Analysis, etc.
+    engagement_duration: ""
+    total_investment: 0
+    
+  executive_summary:
+    current_situation:
+      business_overview: ""
+      key_challenges_identified: []
+      assessment_methodology_used: ""
+      stakeholders_engaged: []
+      
+    opportunity_analysis:
+      improvement_opportunities: []
+      quantified_benefits: {}
+      implementation_feasibility: ""
+      success_probability: ""
+      
+    recommended_solution:
+      strategic_approach: ""
+      key_deliverables: []
+      implementation_timeline: ""
+      expected_outcomes: []
+      
+    investment_and_roi:
+      total_investment_required: 0
+      expected_financial_benefits: 0
+      roi_percentage: 0
+      payback_period_months: 0
+      
+    next_steps:
+      decision_timeline: ""
+      implementation_start_date: ""
+      key_milestones: []
+
+  situation_analysis:
+    business_context:
+      industry_overview: ""
+      market_conditions: ""
+      competitive_landscape: ""
+      regulatory_environment: ""
+      
+    current_state_assessment:
+      financial_performance: {}
+      operational_efficiency: {}
+      market_position: {}
+      organizational_capabilities: {}
+      
+    challenge_analysis:
+      primary_challenges:
+        - challenge: ""
+          impact_description: ""
+          quantified_impact: 0
+          urgency_level: ""
+          
+      root_causes:
+        - root_cause: ""
+          contributing_factors: []
+          evidence_supporting: []
+          
+      consequences_of_inaction:
+        short_term_consequences: []
+        long_term_consequences: []
+        opportunity_costs: []
+
+  solution_approach:
+    strategic_framework:
+      consulting_methodology: ""
+      approach_rationale: ""
+      success_factors: []
+      risk_mitigation_strategies: []
+      
+    solution_components:
+      component_1:
+        name: ""
+        description: ""
+        deliverables: []
+        timeline: ""
+        value_delivered: ""
+        
+      component_2:
+        name: ""
+        description: ""
+        deliverables: []
+        timeline: ""
+        value_delivered: ""
+        
+    implementation_strategy:
+      phased_approach: []
+      change_management_plan: ""
+      stakeholder_engagement: []
+      risk_management: []
+
+  scope_and_deliverables:
+    project_scope:
+      included_activities: []
+      excluded_activities: []
+      boundaries_and_limitations: []
+      assumptions: []
+      
+    deliverable_categories:
+      strategic_deliverables:
+        - deliverable: ""
+          description: ""
+          format: ""
+          timeline: ""
+          acceptance_criteria: []
+          
+      operational_deliverables:
+        - deliverable: ""
+          description: ""
+          format: ""
+          timeline: ""
+          acceptance_criteria: []
+          
+      implementation_support:
+        - deliverable: ""
+          description: ""
+          format: ""
+          timeline: ""
+          acceptance_criteria: []
+          
+    success_metrics:
+      quantitative_metrics: []
+      qualitative_indicators: []
+      measurement_methods: []
+      reporting_schedule: ""
+
+  timeline_and_milestones:
+    project_phases:
+      discovery_and_analysis:
+        duration: ""
+        key_activities: []
+        deliverables: []
+        milestone: ""
+        
+      solution_development:
+        duration: ""
+        key_activities: []
+        deliverables: []
+        milestone: ""
+        
+      implementation_support:
+        duration: ""
+        key_activities: []
+        deliverables: []
+        milestone: ""
+        
+      monitoring_and_optimization:
+        duration: ""
+        key_activities: []
+        deliverables: []
+        milestone: ""
+        
+    critical_path:
+      key_dependencies: []
+      potential_bottlenecks: []
+      contingency_plans: []
+      
+    project_schedule:
+      start_date: ""
+      end_date: ""
+      key_milestones: []
+      client_involvement_required: []
+
+  investment_analysis:
+    investment_breakdown:
+      consulting_fees:
+        strategic_consulting: 0
+        operational_consulting: 0
+        implementation_support: 0
+        ongoing_advisory: 0
+        
+      additional_costs:
+        travel_and_expenses: 0
+        third_party_services: 0
+        technology_tools: 0
+        training_materials: 0
+        
+      total_investment: 0
+      
+    payment_schedule:
+      payment_terms: ""
+      milestone_payments: []
+      retainer_requirements: 0
+      expense_reimbursement: ""
+      
+    value_proposition:
+      direct_financial_benefits: {}
+      operational_improvements: {}
+      strategic_advantages: {}
+      risk_mitigation_value: {}
+
+  roi_and_business_case:
+    financial_impact_analysis:
+      revenue_improvements:
+        - source: ""
+          annual_impact: 0
+          confidence_level: ""
+          timeline_to_realization: ""
+          
+      cost_reductions:
+        - source: ""
+          annual_savings: 0
+          confidence_level: ""
+          timeline_to_realization: ""
+          
+      efficiency_gains:
+        - source: ""
+          productivity_improvement: 0
+          value_quantification: 0
+          measurement_method: ""
+          
+    roi_calculations:
+      year_1_benefits: 0
+      year_2_benefits: 0
+      year_3_benefits: 0
+      total_3_year_benefits: 0
+      
+      investment_recovery:
+        payback_period_months: 0
+        break_even_point: ""
+        cumulative_roi_3_years: 0
+        
+    risk_adjusted_analysis:
+      optimistic_scenario: {}
+      realistic_scenario: {}
+      conservative_scenario: {}
+      
+    qualitative_benefits:
+      strategic_benefits: []
+      operational_benefits: []
+      competitive_advantages: []
+      stakeholder_benefits: []
+
+  team_and_expertise:
+    consulting_team:
+      project_lead:
+        name: ""
+        title: ""
+        experience: ""
+        relevant_expertise: []
+        
+      team_members:
+        - name: ""
+          role: ""
+          experience: ""
+          contribution: ""
+          
+    firm_credentials:
+      firm_experience: ""
+      relevant_case_studies: []
+      industry_expertise: []
+      methodology_credentials: []
+      
+    success_track_record:
+      similar_engagements: []
+      client_testimonials: []
+      measurable_results: []
+      industry_recognition: []
+
+  risk_management:
+    project_risks:
+      delivery_risks:
+        - risk: ""
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+      client_risks:
+        - risk: ""
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+      external_risks:
+        - risk: ""
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+    quality_assurance:
+      quality_control_measures: []
+      review_processes: []
+      client_feedback_mechanisms: []
+      continuous_improvement: []
+
+  terms_and_conditions:
+    engagement_terms:
+      contract_duration: ""
+      termination_clauses: []
+      intellectual_property_rights: ""
+      confidentiality_requirements: []
+      
+    project_governance:
+      steering_committee: []
+      decision_making_process: ""
+      communication_protocols: []
+      change_management_process: ""
+      
+    performance_standards:
+      service_level_agreements: []
+      quality_standards: []
+      reporting_requirements: []
+      escalation_procedures: []
+
+  appendices:
+    supporting_documentation:
+      assessment_summary: ""
+      benchmark_data: []
+      case_studies: []
+      methodology_details: []
+      
+    reference_materials:
+      industry_research: []
+      best_practice_examples: []
+      regulatory_considerations: []
+      technology_specifications: []
+
+proposal_development_process:
+  preparation_phase:
+    information_gathering:
+      - "Review all assessment findings and analysis"
+      - "Compile benchmark data and industry insights"
+      - "Gather client feedback and stakeholder input"
+      - "Research best practices and solution options"
+      
+    solution_design:
+      - "Develop strategic approach and methodology"
+      - "Design implementation roadmap"
+      - "Quantify benefits and ROI"
+      - "Identify risks and mitigation strategies"
+      
+  writing_phase:
+    structure_development:
+      - "Create compelling executive summary"
+      - "Build logical flow from problem to solution"
+      - "Develop detailed scope and deliverables"
+      - "Construct investment and ROI analysis"
+      
+    content_creation:
+      - "Write clear, concise, client-focused content"
+      - "Include relevant data and supporting evidence"
+      - "Use client terminology and industry language"
+      - "Incorporate visual elements and charts"
+      
+  review_and_refinement:
+    internal_review:
+      - "Technical accuracy and completeness"
+      - "Message clarity and persuasiveness"
+      - "ROI calculations and assumptions"
+      - "Risk assessment and mitigation"
+      
+    client_validation:
+      - "Preliminary discussion of key findings"
+      - "Validation of assumptions and approach"
+      - "Refinement based on client feedback"
+      - "Final review and approval process"
+
+proposal_customization_guidelines:
+  industry_adaptations:
+    retail_businesses:
+      - "Focus on operational efficiency and customer experience"
+      - "Emphasize inventory management and sales optimization"
+      - "Include seasonal considerations and market dynamics"
+      
+    service_businesses:
+      - "Highlight service delivery and client satisfaction"
+      - "Focus on utilization and productivity improvements"
+      - "Emphasize relationship building and retention"
+      
+    manufacturing_businesses:
+      - "Emphasize operational efficiency and quality control"
+      - "Focus on supply chain optimization and cost reduction"
+      - "Include safety and regulatory compliance"
+      
+    professional_services:
+      - "Focus on billable utilization and client development"
+      - "Emphasize expertise and reputation building"
+      - "Include practice management and succession planning"
+      
+  business_size_adaptations:
+    small_businesses_under_10_employees:
+      - "Simplify methodology and deliverables"
+      - "Focus on immediate, practical improvements"
+      - "Emphasize owner involvement and development"
+      
+    medium_businesses_10_50_employees:
+      - "Include management development and systems"
+      - "Focus on process improvement and scalability"
+      - "Emphasize performance management and culture"
+      
+    larger_small_businesses_50_plus_employees:
+      - "Include strategic planning and organizational development"
+      - "Focus on systematic improvement and governance"
+      - "Emphasize competitive advantage and market position"
+
+pricing_strategies:
+  value_based_pricing:
+    approach: "Price based on value delivered rather than time invested"
+    calculation: "Percentage of quantified benefits (typically 10-25%)"
+    best_for: "High-impact strategic engagements with measurable ROI"
+    
+  project_based_pricing:
+    approach: "Fixed price for defined scope and deliverables"
+    calculation: "Estimated time × hourly rate + margin for risk"
+    best_for: "Well-defined projects with clear boundaries"
+    
+  time_and_materials:
+    approach: "Hourly or daily rates for time invested"
+    calculation: "Hours × agreed hourly rate + expenses"
+    best_for: "Ongoing advisory relationships or unclear scope"
+    
+  retainer_based:
+    approach: "Monthly fee for ongoing advisory services"
+    calculation: "Percentage of monthly revenue or fixed monthly amount"
+    best_for: "Long-term relationships and ongoing support"
+
+proposal_presentation_guidelines:
+  presentation_structure:
+    opening: "Start with client's challenges and desired outcomes"
+    body: "Present solution with clear logic and evidence"
+    investment: "Position investment as value creation opportunity"
+    closing: "End with clear next steps and decision timeline"
+    
+  visual_design:
+    professional_appearance: "Clean, professional layout and design"
+    client_branding: "Incorporate client colors and terminology where appropriate"
+    visual_elements: "Use charts, graphs, and diagrams to support key points"
+    readability: "Ensure easy reading with clear headings and structure"
+    
+  persuasion_techniques:
+    credibility: "Demonstrate expertise through credentials and case studies"
+    logic: "Use data and analysis to support recommendations"
+    emotion: "Connect to client's goals and concerns"
+    urgency: "Highlight consequences of delay and opportunity costs"
+
+success_metrics:
+  proposal_quality_indicators:
+    - "Clear value proposition and ROI justification"
+    - "Detailed scope and deliverables"
+    - "Realistic timeline and resource requirements"
+    - "Comprehensive risk assessment and mitigation"
+    
+  client_engagement_metrics:
+    - "Time from proposal to decision"
+    - "Number of questions and clarifications requested"
+    - "Stakeholder involvement in review process"
+    - "Feedback quality and specificity"
+    
+  conversion_metrics:
+    - "Proposal acceptance rate"
+    - "Average proposal value"
+    - "Time to contract signature"
+    - "Scope creep and change requests"
+
+common_mistakes:
+  content_mistakes:
+    - "Leading with methodology instead of client benefits"
+    - "Generic solutions not tailored to specific client"
+    - "Unrealistic timelines or overly optimistic ROI"
+    - "Insufficient detail on implementation approach"
+    
+  presentation_mistakes:
+    - "Too much detail in executive summary"
+    - "Burying key messages in lengthy text"
+    - "Inconsistent formatting and poor visual design"
+    - "Failing to address client's specific concerns"
+    
+  business_mistakes:
+    - "Underpricing based on competition rather than value"
+    - "Overpromising outcomes without proper analysis"
+    - "Inadequate risk assessment and contingency planning"
+    - "Poor follow-up and proposal tracking"
+
+usage_instructions:
+  preparation:
+    - "Complete comprehensive client assessment first"
+    - "Gather all relevant data and analysis"
+    - "Understand client's decision-making process"
+    - "Research industry benchmarks and best practices"
+    
+  development:
+    - "Start with executive summary to clarify key messages"
+    - "Build logical flow from current state to desired outcomes"
+    - "Quantify benefits conservatively with supporting evidence"
+    - "Include realistic implementation timeline and milestones"
+    
+  presentation:
+    - "Schedule presentation meeting with key decision makers"
+    - "Prepare for questions and objections"
+    - "Bring supporting materials and references"
+    - "Follow up promptly with additional information"
+
+notes:
+  - "Proposals should tell a story from current challenges to future success"
+  - "Always lead with client benefits rather than consultant capabilities"
+  - "Use client's language and terminology throughout"
+  - "Include specific, measurable outcomes and success metrics"
+  - "Build trust through transparency about risks and limitations"
+  - "Make the investment decision easy with clear value justification"

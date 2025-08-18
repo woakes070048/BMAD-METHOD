@@ -1,0 +1,540 @@
+name: "Marketing Strategy Planning Template"
+description: "Comprehensive marketing strategy development template for small business consultants to help clients create effective marketing plans and campaigns"
+category: "marketing-sales"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Marketing Strategy Planning Template for Small Business Consulting
+
+template:
+  strategy_information:
+    client_name: ""
+    business_name: ""
+    industry: ""
+    strategy_period: ""
+    planning_date: ""
+    consultant_name: ""
+    strategy_owner: ""
+    budget_allocated: 0
+    
+  situation_analysis:
+    market_analysis:
+      market_size_and_trends:
+        total_addressable_market: 0
+        serviceable_addressable_market: 0
+        market_growth_rate: 0
+        market_maturity_stage: ""
+        key_market_trends: []
+        
+      customer_analysis:
+        current_customer_base: 0
+        customer_segments: []
+        customer_demographics: {}
+        customer_psychographics: {}
+        buying_behavior_patterns: []
+        customer_lifetime_value: 0
+        
+      competitive_analysis:
+        direct_competitors: []
+        indirect_competitors: []
+        competitive_advantages: []
+        competitive_disadvantages: []
+        market_share_distribution: {}
+        competitive_positioning: ""
+        
+    internal_analysis:
+      brand_assessment:
+        brand_awareness_level: ""
+        brand_perception: ""
+        brand_differentiation: ""
+        brand_equity_value: ""
+        
+      marketing_capabilities:
+        current_marketing_team: 0
+        marketing_skills_assessment: {}
+        technology_and_tools: []
+        marketing_budget_history: 0
+        
+      product_service_analysis:
+        product_portfolio: []
+        product_lifecycle_stages: {}
+        unique_selling_propositions: []
+        pricing_strategy: ""
+
+  target_market_definition:
+    primary_target_segments:
+      segment_1:
+        segment_name: ""
+        demographic_profile: {}
+        psychographic_profile: {}
+        behavioral_characteristics: []
+        segment_size: 0
+        growth_potential: ""
+        accessibility: ""
+        
+      segment_2:
+        segment_name: ""
+        demographic_profile: {}
+        psychographic_profile: {}
+        behavioral_characteristics: []
+        segment_size: 0
+        growth_potential: ""
+        accessibility: ""
+        
+    secondary_target_segments:
+      - segment_name: ""
+        profile_summary: ""
+        market_potential: ""
+        
+    ideal_customer_profiles:
+      b2b_profile:
+        company_size: ""
+        industry_sectors: []
+        decision_makers: []
+        pain_points: []
+        buying_process: ""
+        
+      b2c_profile:
+        demographic_details: {}
+        lifestyle_characteristics: []
+        shopping_preferences: []
+        media_consumption: []
+
+  marketing_objectives:
+    business_objectives_alignment:
+      primary_business_goals: []
+      marketing_contribution_required: []
+      revenue_targets: 0
+      growth_targets: 0
+      
+    marketing_specific_objectives:
+      awareness_objectives:
+        brand_awareness_target: 0
+        reach_targets: {}
+        share_of_voice_goals: 0
+        
+      acquisition_objectives:
+        new_customer_targets: 0
+        lead_generation_goals: 0
+        conversion_rate_targets: 0
+        customer_acquisition_cost_targets: 0
+        
+      retention_objectives:
+        customer_retention_rate_target: 0
+        repeat_purchase_rate_target: 0
+        customer_lifetime_value_target: 0
+        
+      engagement_objectives:
+        social_media_engagement_targets: {}
+        email_engagement_targets: {}
+        website_engagement_targets: {}
+        
+    smart_goals_framework:
+      - objective: ""
+        specific: ""
+        measurable: ""
+        achievable: ""
+        relevant: ""
+        time_bound: ""
+
+  value_proposition_development:
+    core_value_proposition:
+      primary_benefit: ""
+      target_customer: ""
+      competitive_alternative: ""
+      unique_differentiator: ""
+      proof_points: []
+      
+    value_proposition_canvas:
+      customer_jobs: []
+      pain_points: []
+      gain_creators: []
+      pain_relievers: []
+      products_services: []
+      
+    messaging_framework:
+      primary_message: ""
+      supporting_messages: []
+      proof_points: []
+      call_to_action: ""
+      
+    brand_positioning:
+      positioning_statement: ""
+      brand_personality: []
+      brand_voice_and_tone: ""
+      visual_identity_guidelines: []
+
+  marketing_mix_strategy:
+    product_strategy:
+      product_positioning: ""
+      product_differentiation: []
+      product_development_priorities: []
+      service_enhancements: []
+      packaging_considerations: []
+      
+    pricing_strategy:
+      pricing_model: ""
+      price_positioning: ""
+      pricing_tactics: []
+      discount_strategy: []
+      competitive_pricing_response: ""
+      
+    place_distribution_strategy:
+      distribution_channels: []
+      channel_strategy: ""
+      online_presence_strategy: ""
+      retail_strategy: ""
+      partnership_opportunities: []
+      
+    promotion_strategy:
+      integrated_marketing_approach: ""
+      advertising_strategy: []
+      digital_marketing_strategy: []
+      public_relations_strategy: []
+      sales_promotion_strategy: []
+
+  digital_marketing_strategy:
+    website_strategy:
+      website_objectives: []
+      user_experience_goals: []
+      conversion_optimization: []
+      seo_strategy: []
+      
+    content_marketing:
+      content_objectives: []
+      content_types: []
+      content_calendar_approach: ""
+      content_distribution_strategy: []
+      
+    social_media_strategy:
+      platform_selection: []
+      content_strategy_by_platform: {}
+      engagement_strategy: []
+      social_media_advertising: []
+      
+    email_marketing:
+      email_objectives: []
+      segmentation_strategy: []
+      automation_campaigns: []
+      personalization_approach: ""
+      
+    paid_advertising:
+      search_engine_marketing: []
+      social_media_advertising: []
+      display_advertising: []
+      retargeting_strategy: []
+      
+    analytics_and_tracking:
+      key_performance_indicators: []
+      tracking_implementation: []
+      reporting_framework: []
+
+  customer_journey_mapping:
+    awareness_stage:
+      customer_needs: []
+      touchpoints: []
+      marketing_activities: []
+      success_metrics: []
+      
+    consideration_stage:
+      customer_needs: []
+      touchpoints: []
+      marketing_activities: []
+      success_metrics: []
+      
+    decision_stage:
+      customer_needs: []
+      touchpoints: []
+      marketing_activities: []
+      success_metrics: []
+      
+    retention_stage:
+      customer_needs: []
+      touchpoints: []
+      marketing_activities: []
+      success_metrics: []
+      
+    advocacy_stage:
+      customer_needs: []
+      touchpoints: []
+      marketing_activities: []
+      success_metrics: []
+
+  marketing_channels_strategy:
+    owned_media:
+      website_properties: []
+      email_database: []
+      social_media_accounts: []
+      content_assets: []
+      
+    earned_media:
+      public_relations_strategy: []
+      influencer_partnerships: []
+      word_of_mouth_programs: []
+      user_generated_content: []
+      
+    paid_media:
+      advertising_channels: []
+      budget_allocation: {}
+      campaign_strategies: []
+      performance_expectations: {}
+
+  marketing_budget_allocation:
+    total_marketing_budget: 0
+    budget_allocation_by_channel:
+      digital_advertising: 0
+      content_marketing: 0
+      social_media_marketing: 0
+      email_marketing: 0
+      traditional_advertising: 0
+      events_and_trade_shows: 0
+      public_relations: 0
+      marketing_technology: 0
+      personnel_costs: 0
+      other_marketing_expenses: 0
+      
+    budget_allocation_by_objective:
+      brand_awareness: 0
+      lead_generation: 0
+      customer_acquisition: 0
+      customer_retention: 0
+      
+    roi_expectations:
+      expected_leads_generated: 0
+      expected_customers_acquired: 0
+      expected_revenue_attribution: 0
+      target_marketing_roi: 0
+
+  implementation_planning:
+    campaign_planning:
+      campaign_calendar: {}
+      seasonal_considerations: []
+      product_launch_support: []
+      event_marketing_schedule: []
+      
+    resource_requirements:
+      internal_team_requirements: []
+      external_agency_needs: []
+      technology_and_tools: []
+      content_creation_needs: []
+      
+    project_management:
+      key_milestones: []
+      deliverable_schedule: []
+      responsibility_matrix: {}
+      approval_processes: []
+
+  measurement_and_analytics:
+    key_performance_indicators:
+      awareness_metrics:
+        - "Brand awareness percentage"
+        - "Reach and impressions"
+        - "Share of voice"
+        - "Website traffic"
+        
+      engagement_metrics:
+        - "Social media engagement rate"
+        - "Email open and click rates"
+        - "Website engagement metrics"
+        - "Content performance"
+        
+      conversion_metrics:
+        - "Lead generation numbers"
+        - "Conversion rates by channel"
+        - "Cost per lead"
+        - "Customer acquisition cost"
+        
+      retention_metrics:
+        - "Customer retention rate"
+        - "Repeat purchase rate"
+        - "Customer lifetime value"
+        - "Net promoter score"
+        
+    reporting_framework:
+      daily_monitoring: []
+      weekly_reports: []
+      monthly_analysis: []
+      quarterly_reviews: []
+      
+    analytics_tools:
+      web_analytics: []
+      social_media_analytics: []
+      email_analytics: []
+      crm_analytics: []
+      
+    performance_optimization:
+      a_b_testing_plan: []
+      conversion_optimization: []
+      campaign_optimization: []
+      budget_reallocation_triggers: []
+
+  competitive_strategy:
+    competitive_positioning:
+      competitive_advantages: []
+      differentiation_strategy: ""
+      competitive_response_plan: []
+      
+    competitive_monitoring:
+      competitor_tracking: []
+      competitive_intelligence: []
+      market_share_monitoring: ""
+      
+    competitive_tactics:
+      defensive_strategies: []
+      offensive_strategies: []
+      guerrilla_marketing: []
+
+  innovation_and_testing:
+    marketing_innovation:
+      emerging_channels: []
+      new_technologies: []
+      innovative_campaigns: []
+      
+    testing_framework:
+      hypothesis_development: []
+      test_design: []
+      success_criteria: []
+      learning_application: []
+
+  risk_management:
+    marketing_risks:
+      market_risks: []
+      competitive_risks: []
+      technology_risks: []
+      budget_risks: []
+      
+    risk_mitigation:
+      contingency_plans: []
+      backup_strategies: []
+      crisis_communication: []
+      
+    scenario_planning:
+      best_case_scenario: {}
+      base_case_scenario: {}
+      worst_case_scenario: {}
+
+  strategy_review_and_optimization:
+    performance_review_schedule:
+      monthly_reviews: ""
+      quarterly_assessments: ""
+      annual_strategy_evaluation: ""
+      
+    optimization_framework:
+      performance_analysis: []
+      strategy_adjustments: []
+      budget_reallocation: []
+      
+    continuous_improvement:
+      learning_capture: []
+      best_practice_development: []
+      strategy_evolution: []
+
+implementation_roadmap:
+  phase_1_foundation:
+    # Months 1-2
+    activities:
+      - "Complete situation analysis"
+      - "Define target markets and personas"
+      - "Develop value proposition and messaging"
+      - "Set up measurement framework"
+      
+  phase_2_build:
+    # Months 2-3
+    activities:
+      - "Create marketing materials and content"
+      - "Set up digital marketing infrastructure"
+      - "Launch core marketing campaigns"
+      - "Implement tracking and analytics"
+      
+  phase_3_optimize:
+    # Months 3-6
+    activities:
+      - "Monitor and analyze performance"
+      - "Optimize campaigns and channels"
+      - "Scale successful initiatives"
+      - "Adjust strategy based on learnings"
+      
+  phase_4_scale:
+    # Months 6-12
+    activities:
+      - "Expand successful programs"
+      - "Test new channels and tactics"
+      - "Refine target markets"
+      - "Plan next year's strategy"
+
+success_frameworks:
+  marketing_maturity_assessment:
+    level_1_basic:
+      characteristics: []
+      capabilities: []
+      next_steps: []
+      
+    level_2_developing:
+      characteristics: []
+      capabilities: []
+      next_steps: []
+      
+    level_3_advanced:
+      characteristics: []
+      capabilities: []
+      next_steps: []
+      
+  benchmarking_framework:
+    industry_benchmarks: {}
+    competitive_benchmarks: {}
+    best_practice_benchmarks: {}
+
+tools_and_templates:
+  planning_tools:
+    - "Marketing audit checklist"
+    - "Competitive analysis template"
+    - "Customer persona worksheet"
+    - "Marketing calendar template"
+    
+  campaign_tools:
+    - "Campaign brief template"
+    - "Content planning calendar"
+    - "Social media scheduler"
+    - "Email campaign planner"
+    
+  measurement_tools:
+    - "Marketing dashboard template"
+    - "ROI calculator"
+    - "A/B testing framework"
+    - "Performance report template"
+
+usage_guidelines:
+  strategy_development:
+    preparation:
+      - "Gather comprehensive market and customer data"
+      - "Conduct thorough competitive analysis"
+      - "Review historical marketing performance"
+      - "Align with business strategy and objectives"
+      
+    execution:
+      - "Start with clear situation analysis"
+      - "Define specific, measurable objectives"
+      - "Develop integrated marketing approach"
+      - "Create detailed implementation plan"
+      
+  implementation_management:
+    launch:
+      - "Ensure all stakeholders understand strategy"
+      - "Set up measurement and tracking systems"
+      - "Begin with pilot campaigns where possible"
+      - "Monitor performance closely in early stages"
+      
+    optimization:
+      - "Review performance data regularly"
+      - "Make data-driven adjustments"
+      - "Scale successful initiatives"
+      - "Learn from failures and adjust"
+
+notes:
+  - "Align marketing strategy closely with business objectives"
+  - "Focus on understanding customers deeply before developing tactics"
+  - "Integrate all marketing channels for maximum impact"
+  - "Build measurement and optimization into strategy from the start"
+  - "Be prepared to adapt strategy based on market feedback"
+  - "Invest in building marketing capabilities over time"

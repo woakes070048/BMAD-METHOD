@@ -1,0 +1,452 @@
+name: "Cash Flow Analysis Template"
+description: "Comprehensive cash flow analysis tool for small business consultants to assess and improve client cash flow management"
+category: "financial-analysis"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Cash Flow Analysis Template for Small Business Consulting
+
+template:
+  analysis_information:
+    client_name: ""
+    business_name: ""
+    analysis_period: ""
+    analysis_date: ""
+    consultant_name: ""
+    fiscal_year_end: ""
+    reporting_currency: ""
+    
+  current_cash_position:
+    cash_accounts:
+      checking_accounts: 0
+      savings_accounts: 0
+      money_market_accounts: 0
+      petty_cash: 0
+      total_cash_on_hand: 0
+      
+    near_cash_assets:
+      short_term_investments: 0
+      certificates_of_deposit: 0
+      other_liquid_assets: 0
+      total_near_cash: 0
+      
+    available_credit:
+      business_credit_cards_available: 0
+      line_of_credit_available: 0
+      other_credit_facilities: 0
+      total_available_credit: 0
+      
+    total_liquidity: 0 # Cash + Near Cash + Available Credit
+
+  monthly_cash_flow_analysis:
+    operating_cash_inflows:
+      cash_sales: 0
+      collections_from_receivables: 0
+      other_operating_income: 0
+      total_operating_inflows: 0
+      
+    operating_cash_outflows:
+      cost_of_goods_sold_cash: 0
+      payroll_and_benefits: 0
+      rent_and_utilities: 0
+      marketing_and_advertising: 0
+      professional_services: 0
+      insurance: 0
+      loan_payments: 0
+      taxes: 0
+      other_operating_expenses: 0
+      total_operating_outflows: 0
+      
+    net_operating_cash_flow: 0
+    
+    investing_cash_flows:
+      equipment_purchases: 0
+      technology_investments: 0
+      other_capital_expenditures: 0
+      total_investing_outflows: 0
+      
+    financing_cash_flows:
+      loan_proceeds: 0
+      owner_contributions: 0
+      owner_distributions: 0
+      debt_payments: 0
+      total_financing_flows: 0
+      
+    net_cash_flow: 0
+
+  cash_flow_projections:
+    twelve_month_forecast:
+      month_1:
+        projected_inflows: 0
+        projected_outflows: 0
+        net_cash_flow: 0
+        ending_cash_balance: 0
+        
+      month_2:
+        projected_inflows: 0
+        projected_outflows: 0
+        net_cash_flow: 0
+        ending_cash_balance: 0
+        
+      month_3:
+        projected_inflows: 0
+        projected_outflows: 0
+        net_cash_flow: 0
+        ending_cash_balance: 0
+        
+      # Continue for months 4-12
+      monthly_projections: []
+      
+    seasonal_adjustments:
+      peak_season_months: []
+      slow_season_months: []
+      seasonal_cash_needs: 0
+      seasonal_surplus_months: []
+      
+    scenario_planning:
+      optimistic_scenario:
+        revenue_increase: 20
+        cash_flow_impact: 0
+        
+      realistic_scenario:
+        revenue_change: 0
+        cash_flow_impact: 0
+        
+      pessimistic_scenario:
+        revenue_decrease: 15
+        cash_flow_impact: 0
+
+  cash_conversion_cycle:
+    accounts_receivable_analysis:
+      average_accounts_receivable: 0
+      monthly_credit_sales: 0
+      days_sales_outstanding: 0
+      industry_benchmark_dso: 0
+      
+    inventory_analysis:
+      average_inventory: 0
+      monthly_cost_of_goods_sold: 0
+      days_inventory_outstanding: 0
+      industry_benchmark_dio: 0
+      
+    accounts_payable_analysis:
+      average_accounts_payable: 0
+      monthly_purchases: 0
+      days_payable_outstanding: 0
+      industry_benchmark_dpo: 0
+      
+    cash_conversion_cycle_days: 0 # DSO + DIO - DPO
+    industry_benchmark_ccc: 0
+    
+  cash_flow_ratios:
+    liquidity_ratios:
+      current_ratio: 0
+      quick_ratio: 0
+      cash_ratio: 0
+      operating_cash_flow_ratio: 0
+      
+    efficiency_ratios:
+      cash_flow_to_revenue: 0
+      cash_flow_per_share: 0
+      working_capital_turnover: 0
+      
+    quality_ratios:
+      operating_cash_flow_to_net_income: 0
+      free_cash_flow: 0
+      cash_flow_coverage_ratio: 0
+
+  cash_flow_patterns:
+    monthly_trends:
+      revenue_seasonality: ""
+      expense_seasonality: ""
+      cash_flow_volatility: ""
+      predictability_assessment: ""
+      
+    timing_mismatches:
+      revenue_collection_delays: []
+      expense_payment_timing: []
+      seasonal_working_capital_needs: []
+      
+    cash_flow_drivers:
+      primary_cash_generators: []
+      major_cash_consumers: []
+      discretionary_expenses: []
+      fixed_vs_variable_costs: ""
+
+  working_capital_management:
+    receivables_management:
+      credit_policy_effectiveness: ""
+      collection_procedures: ""
+      bad_debt_rate: 0
+      aging_analysis: {}
+      
+    inventory_management:
+      inventory_turnover_rate: 0
+      stockout_frequency: ""
+      obsolete_inventory_percentage: 0
+      just_in_time_opportunities: []
+      
+    payables_management:
+      payment_terms_optimization: ""
+      early_payment_discounts: []
+      supplier_relationship_quality: ""
+      cash_flow_timing_strategy: ""
+
+  cash_flow_risks:
+    customer_concentration_risk:
+      top_customer_percentage: 0
+      customer_payment_reliability: ""
+      diversification_opportunities: []
+      
+    supplier_dependency_risk:
+      critical_supplier_concentration: 0
+      payment_term_flexibility: ""
+      alternative_supplier_options: []
+      
+    seasonal_cash_flow_risk:
+      seasonal_revenue_variation: 0
+      seasonal_expense_increases: 0
+      financing_needs_for_seasonality: 0
+      
+    economic_sensitivity:
+      recession_impact_assessment: ""
+      interest_rate_sensitivity: ""
+      inflation_impact: ""
+
+  cash_flow_improvement_opportunities:
+    revenue_acceleration:
+      payment_terms_improvement: []
+      invoice_processing_speed: []
+      collection_process_enhancement: []
+      early_payment_incentives: []
+      
+    expense_timing_optimization:
+      payment_schedule_adjustments: []
+      bulk_purchase_opportunities: []
+      expense_timing_strategies: []
+      cost_reduction_initiatives: []
+      
+    working_capital_optimization:
+      inventory_reduction_opportunities: []
+      receivables_acceleration: []
+      payables_extension_opportunities: []
+      
+    financing_alternatives:
+      accounts_receivable_financing: ""
+      inventory_financing: ""
+      equipment_financing: ""
+      working_capital_loans: ""
+
+  cash_flow_management_systems:
+    forecasting_tools:
+      forecasting_accuracy: ""
+      update_frequency: ""
+      scenario_planning_capability: ""
+      automation_level: ""
+      
+    monitoring_systems:
+      daily_cash_monitoring: ""
+      weekly_cash_reports: ""
+      variance_analysis: ""
+      alert_systems: ""
+      
+    decision_support:
+      cash_flow_dashboard: ""
+      key_performance_indicators: []
+      management_reporting: ""
+      board_reporting: ""
+
+  benchmarking_analysis:
+    industry_comparisons:
+      industry_average_ccc: 0
+      industry_cash_flow_margins: 0
+      industry_liquidity_ratios: {}
+      
+    best_practice_gaps:
+      forecasting_sophistication: ""
+      working_capital_efficiency: ""
+      cash_management_processes: ""
+      
+    improvement_potential:
+      cash_flow_optimization_value: 0
+      working_capital_reduction_potential: 0
+      financing_cost_savings: 0
+
+  action_plan:
+    immediate_actions:
+      # 0-30 days
+      cash_position_stabilization: []
+      collection_acceleration: []
+      expense_deferrals: []
+      
+    short_term_improvements:
+      # 30-90 days
+      working_capital_optimization: []
+      process_improvements: []
+      system_enhancements: []
+      
+    long_term_strategies:
+      # 90+ days
+      structural_improvements: []
+      financing_strategy: []
+      growth_cash_planning: []
+
+  monitoring_framework:
+    daily_metrics:
+      - "Cash balance"
+      - "Daily receipts"
+      - "Daily payments"
+      - "Available credit"
+      
+    weekly_metrics:
+      - "Weekly cash flow"
+      - "Accounts receivable aging"
+      - "Accounts payable aging"
+      - "Inventory levels"
+      
+    monthly_metrics:
+      - "Operating cash flow"
+      - "Free cash flow"
+      - "Cash conversion cycle"
+      - "Working capital changes"
+      
+    quarterly_metrics:
+      - "Cash flow trends"
+      - "Seasonal adjustments"
+      - "Forecast accuracy"
+      - "Benchmark comparisons"
+
+  reporting_templates:
+    executive_summary:
+      current_cash_position: ""
+      cash_flow_trend: ""
+      key_risks: []
+      improvement_opportunities: []
+      recommended_actions: []
+      
+    detailed_analysis:
+      cash_flow_breakdown: {}
+      working_capital_analysis: {}
+      seasonal_patterns: {}
+      improvement_recommendations: {}
+      
+    dashboard_metrics:
+      cash_runway_months: 0
+      operating_cash_flow_margin: 0
+      working_capital_efficiency: 0
+      cash_conversion_cycle: 0
+
+cash_flow_tools:
+  forecasting_models:
+    direct_method:
+      description: "Cash receipts and payments based forecasting"
+      best_for: "Short-term forecasting (1-3 months)"
+      accuracy: "High for near-term"
+      
+    indirect_method:
+      description: "Net income adjusted for non-cash items"
+      best_for: "Long-term planning (6-12 months)"
+      accuracy: "Good for strategic planning"
+      
+    rolling_forecast:
+      description: "Continuously updated 13-week forecast"
+      best_for: "Ongoing cash management"
+      update_frequency: "Weekly"
+      
+  scenario_analysis:
+    best_case_scenario:
+      assumptions: []
+      cash_flow_impact: 0
+      probability: 0
+      
+    base_case_scenario:
+      assumptions: []
+      cash_flow_impact: 0
+      probability: 0
+      
+    worst_case_scenario:
+      assumptions: []
+      cash_flow_impact: 0
+      probability: 0
+      
+  sensitivity_analysis:
+    variables_to_test:
+      - "Collection timing (+/- 10 days)"
+      - "Sales volume (+/- 15%)"
+      - "Payment delays (+/- 7 days)"
+      - "Seasonal variations (+/- 20%)"
+
+implementation_guide:
+  data_gathering:
+    required_documents:
+      - "Bank statements (12 months)"
+      - "Accounts receivable aging"
+      - "Accounts payable aging"
+      - "Inventory reports"
+      - "P&L statements"
+      - "Budget vs. actual reports"
+      
+    interview_requirements:
+      - "CFO/Controller interview"
+      - "Sales manager input"
+      - "Operations manager input"
+      - "Accounts receivable clerk"
+      
+  analysis_process:
+    step_1: "Gather historical cash flow data"
+    step_2: "Calculate cash conversion cycle"
+    step_3: "Identify seasonal patterns"
+    step_4: "Analyze working capital efficiency"
+    step_5: "Develop improvement recommendations"
+    step_6: "Create forecasting model"
+    step_7: "Establish monitoring systems"
+    
+  implementation_timeline:
+    week_1: "Data collection and historical analysis"
+    week_2: "Current state assessment and gap analysis"
+    week_3: "Forecasting model development"
+    week_4: "Recommendations and action plan"
+
+success_metrics:
+  cash_flow_improvement:
+    operating_cash_flow_increase: 0
+    working_capital_reduction: 0
+    cash_conversion_cycle_improvement: 0
+    
+  management_capability:
+    forecasting_accuracy_improvement: 0
+    decision_making_speed: ""
+    risk_mitigation_effectiveness: ""
+    
+  business_impact:
+    growth_financing_capability: ""
+    operational_flexibility: ""
+    stakeholder_confidence: ""
+
+usage_instructions:
+  preparation:
+    - "Gather 12 months of financial data"
+    - "Review bank statements and cash flow patterns"
+    - "Interview key financial personnel"
+    - "Understand business seasonality and cycles"
+    
+  analysis:
+    - "Start with historical cash flow analysis"
+    - "Calculate key ratios and metrics"
+    - "Identify patterns and trends"
+    - "Benchmark against industry standards"
+    - "Develop improvement recommendations"
+    
+  follow_up:
+    - "Present findings to management"
+    - "Develop implementation roadmap"
+    - "Establish monitoring systems"
+    - "Schedule regular review meetings"
+
+notes:
+  - "Focus on both historical analysis and forward-looking projections"
+  - "Consider industry-specific cash flow patterns"
+  - "Emphasize actionable recommendations over just analysis"
+  - "Build client capability for ongoing cash flow management"
+  - "Integrate with overall financial planning and budgeting"

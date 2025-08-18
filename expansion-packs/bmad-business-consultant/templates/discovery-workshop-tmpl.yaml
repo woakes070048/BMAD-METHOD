@@ -1,0 +1,461 @@
+name: "Discovery Workshop Template"
+description: "Structured discovery workshop framework for small business consultants to facilitate deep client understanding and needs assessment"
+category: "client-onboarding"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Discovery Workshop Framework for Small Business Consulting
+
+template:
+  workshop_planning:
+    workshop_information:
+      client_name: ""
+      workshop_date: ""
+      duration: "4-6 hours"
+      facilitator: ""
+      location: ""
+      participants: []
+      
+    objectives:
+      primary_goals: []
+      success_criteria: []
+      expected_outcomes: []
+      
+    preparation_checklist:
+      - "Send pre-workshop questionnaire"
+      - "Review client intake information"
+      - "Prepare workshop materials and templates"
+      - "Confirm participant list and roles"
+      - "Book appropriate meeting space"
+      - "Test technology and presentation equipment"
+      - "Prepare workshop agenda and timing"
+      - "Gather industry research and benchmarks"
+
+workshop_agenda:
+  session_1_introduction_alignment:
+    duration: "45 minutes"
+    objectives:
+      - "Set workshop expectations and ground rules"
+      - "Align on business context and current situation"
+      - "Establish shared understanding of challenges"
+      
+    activities:
+      welcome_and_introductions:
+        time: "10 minutes"
+        description: "Participant introductions and role clarification"
+        facilitator_notes: "Create psychological safety and rapport"
+        
+      workshop_overview:
+        time: "15 minutes"
+        description: "Agenda review, objectives, and ground rules"
+        materials_needed: ["Agenda handouts", "Workshop objectives slide"]
+        
+      current_state_assessment:
+        time: "20 minutes"
+        description: "Collaborative discussion of business current state"
+        methodology: "Round-robin sharing with facilitator notes"
+        key_questions:
+          - "How would you describe the business today in one sentence?"
+          - "What are you most proud of in the past year?"
+          - "What keeps you awake at night?"
+          - "If nothing changes, where will you be in 2 years?"
+          
+  session_2_business_model_mapping:
+    duration: "90 minutes"
+    objectives:
+      - "Map current business model components"
+      - "Identify value propositions and customer segments"
+      - "Understand revenue streams and cost structures"
+      
+    activities:
+      business_model_canvas_exercise:
+        time: "60 minutes"
+        description: "Collaborative business model canvas completion"
+        materials_needed: ["Large business model canvas template", "Sticky notes", "Markers"]
+        facilitation_approach: "Guide through each canvas section systematically"
+        
+        canvas_sections:
+          customer_segments:
+            guiding_questions:
+              - "Who are your most valuable customers?"
+              - "What customer segments do you serve?"
+              - "How do you categorize different customer groups?"
+              
+          value_propositions:
+            guiding_questions:
+              - "What value do you deliver to customers?"
+              - "What problems are you solving?"
+              - "What needs are you satisfying?"
+              
+          channels:
+            guiding_questions:
+              - "How do you reach your customers?"
+              - "How do you deliver your value proposition?"
+              - "What channels work best for different segments?"
+              
+          customer_relationships:
+            guiding_questions:
+              - "What type of relationship do you have with customers?"
+              - "How do you acquire customers?"
+              - "How do you retain customers?"
+              
+          revenue_streams:
+            guiding_questions:
+              - "How do you make money?"
+              - "What are customers willing to pay for?"
+              - "What are your different revenue sources?"
+              
+          key_resources:
+            guiding_questions:
+              - "What key resources does your business require?"
+              - "What are your most important assets?"
+              - "What resources are critical for your value proposition?"
+              
+          key_activities:
+            guiding_questions:
+              - "What key activities does your business require?"
+              - "What are the most important things you do?"
+              - "What activities are critical for your value proposition?"
+              
+          key_partnerships:
+            guiding_questions:
+              - "Who are your key partners?"
+              - "What do you outsource or acquire from partners?"
+              - "What strategic alliances do you have?"
+              
+          cost_structure:
+            guiding_questions:
+              - "What are your most important costs?"
+              - "Which resources and activities are most expensive?"
+              - "How do your costs relate to revenue streams?"
+              
+      gap_analysis:
+        time: "30 minutes"
+        description: "Identify gaps and inconsistencies in current business model"
+        methodology: "Facilitated discussion with capture on flip charts"
+        focus_areas:
+          - "Misaligned value propositions"
+          - "Underutilized channels"
+          - "Resource constraints"
+          - "Cost optimization opportunities"
+          
+  session_3_challenge_deep_dive:
+    duration: "75 minutes"
+    objectives:
+      - "Identify and prioritize key business challenges"
+      - "Understand root causes of problems"
+      - "Assess impact and urgency of issues"
+      
+    activities:
+      challenge_identification:
+        time: "20 minutes"
+        description: "Brainstorm all business challenges and opportunities"
+        methodology: "Silent brainstorming followed by grouping"
+        materials_needed: ["Sticky notes", "Flip chart paper", "Markers"]
+        
+      challenge_categorization:
+        time: "15 minutes"
+        description: "Group challenges into categories"
+        categories:
+          - "Financial and cash flow"
+          - "Operations and efficiency"
+          - "Marketing and sales"
+          - "People and organization"
+          - "Strategy and direction"
+          - "External and market factors"
+          
+      root_cause_analysis:
+        time: "25 minutes"
+        description: "Five Whys analysis for top 3 challenges"
+        methodology: "Facilitated questioning technique"
+        template:
+          challenge: ""
+          why_1: ""
+          why_2: ""
+          why_3: ""
+          why_4: ""
+          why_5: ""
+          root_cause: ""
+          
+      impact_urgency_matrix:
+        time: "15 minutes"
+        description: "Plot challenges on impact/urgency matrix"
+        methodology: "Collaborative placement and discussion"
+        quadrants:
+          high_impact_high_urgency: "Crisis/Quick wins"
+          high_impact_low_urgency: "Strategic initiatives"
+          low_impact_high_urgency: "Distractions"
+          low_impact_low_urgency: "Time wasters"
+          
+  session_4_vision_and_goals:
+    duration: "60 minutes"
+    objectives:
+      - "Define future vision and aspirations"
+      - "Set strategic goals and priorities"
+      - "Align stakeholders on direction"
+      
+    activities:
+      vision_creation:
+        time: "25 minutes"
+        description: "Collaborative vision statement development"
+        methodology: "Guided visualization and collaborative writing"
+        prompts:
+          - "Imagine your business 3 years from now, operating at its best"
+          - "What does success look like?"
+          - "How do customers, employees, and stakeholders see you?"
+          - "What impact are you having?"
+          
+      goal_setting:
+        time: "25 minutes"
+        description: "Define SMART goals for next 1-3 years"
+        methodology: "Structured goal-setting framework"
+        goal_categories:
+          financial_goals:
+            revenue_targets: ""
+            profitability_goals: ""
+            cash_flow_objectives: ""
+            
+          operational_goals:
+            efficiency_improvements: ""
+            quality_enhancements: ""
+            capacity_expansions: ""
+            
+          market_goals:
+            customer_acquisition: ""
+            market_expansion: ""
+            competitive_positioning: ""
+            
+          organizational_goals:
+            team_development: ""
+            culture_building: ""
+            capability_enhancement: ""
+            
+      priority_setting:
+        time: "10 minutes"
+        description: "Rank goals by importance and feasibility"
+        methodology: "Dot voting and discussion"
+        
+  session_5_solution_exploration:
+    duration: "45 minutes"
+    objectives:
+      - "Generate potential solutions to key challenges"
+      - "Explore improvement opportunities"
+      - "Identify resource requirements"
+      
+    activities:
+      solution_brainstorming:
+        time: "20 minutes"
+        description: "Generate solutions for prioritized challenges"
+        methodology: "Facilitated brainstorming with idea building"
+        rules:
+          - "No criticism during idea generation"
+          - "Build on others' ideas"
+          - "Quantity over quality initially"
+          - "Encourage wild ideas"
+          
+      solution_evaluation:
+        time: "15 minutes"
+        description: "Assess solutions for feasibility and impact"
+        criteria:
+          impact_potential: "High/Medium/Low"
+          implementation_difficulty: "Easy/Moderate/Hard"
+          resource_requirements: "Low/Medium/High"
+          time_to_results: "Quick/Medium/Long"
+          
+      quick_wins_identification:
+        time: "10 minutes"
+        description: "Identify immediate opportunities for improvement"
+        characteristics:
+          - "Can be implemented within 30-90 days"
+          - "Require minimal resources"
+          - "Have visible positive impact"
+          - "Build momentum for larger changes"
+          
+  session_6_next_steps_and_commitment:
+    duration: "30 minutes"
+    objectives:
+      - "Summarize key insights and agreements"
+      - "Define next steps and responsibilities"
+      - "Establish engagement parameters"
+      
+    activities:
+      insight_summary:
+        time: "10 minutes"
+        description: "Review and confirm key workshop insights"
+        capture_areas:
+          - "Current state assessment"
+          - "Priority challenges"
+          - "Vision and goals"
+          - "Solution opportunities"
+          
+      action_planning:
+        time: "15 minutes"
+        description: "Define immediate next steps"
+        next_steps_template:
+          immediate_actions: []
+          consulting_scope: ""
+          timeline_expectations: ""
+          resource_commitments: ""
+          
+      commitment_and_close:
+        time: "5 minutes"
+        description: "Confirm mutual commitment and next meeting"
+        elements:
+          - "Stakeholder buy-in confirmation"
+          - "Proposal development timeline"
+          - "Follow-up meeting scheduling"
+
+workshop_tools_and_techniques:
+  facilitation_techniques:
+    active_listening:
+      - "Paraphrase and confirm understanding"
+      - "Ask clarifying questions"
+      - "Notice non-verbal communication"
+      - "Manage speaking time equitably"
+      
+    group_dynamics_management:
+      - "Encourage participation from all attendees"
+      - "Manage dominant personalities"
+      - "Handle conflicts constructively"
+      - "Keep discussions focused and productive"
+      
+    energy_management:
+      - "Vary activities between discussion and hands-on"
+      - "Take regular breaks"
+      - "Use movement and interaction"
+      - "Monitor and adjust pace as needed"
+      
+  documentation_methods:
+    visual_capture:
+      - "Use flip charts and sticky notes"
+      - "Create visual summaries"
+      - "Photograph workshop outputs"
+      - "Use digital collaboration tools if remote"
+      
+    note_taking:
+      - "Assign dedicated note-taker"
+      - "Capture key quotes and insights"
+      - "Document decisions and agreements"
+      - "Record action items and owners"
+
+workshop_outputs:
+  deliverables:
+    workshop_summary_report:
+      - "Executive summary of key insights"
+      - "Current state assessment"
+      - "Challenge analysis and prioritization"
+      - "Vision and goal statements"
+      - "Solution opportunities"
+      - "Recommended next steps"
+      
+    visual_artifacts:
+      - "Completed business model canvas"
+      - "Challenge prioritization matrix"
+      - "Solution evaluation summary"
+      - "Action plan framework"
+      
+  follow_up_materials:
+    detailed_proposal:
+      - "Recommended consulting approach"
+      - "Project scope and deliverables"
+      - "Timeline and milestones"
+      - "Investment requirements"
+      
+    implementation_roadmap:
+      - "Phased approach to addressing priorities"
+      - "Resource requirements"
+      - "Success metrics"
+      - "Risk mitigation strategies"
+
+post_workshop_actions:
+  immediate_follow_up:
+    within_24_hours:
+      - "Send thank you note to participants"
+      - "Distribute workshop summary"
+      - "Confirm any immediate commitments"
+      
+    within_48_hours:
+      - "Prepare detailed workshop report"
+      - "Begin proposal development"
+      - "Schedule follow-up meetings"
+      
+    within_1_week:
+      - "Present formal proposal"
+      - "Address any additional questions"
+      - "Finalize engagement terms"
+
+quality_assurance:
+  workshop_effectiveness_metrics:
+    participant_satisfaction:
+      - "Clear objectives achieved"
+      - "Valuable insights generated"
+      - "Strong facilitation quality"
+      - "Productive use of time"
+      
+    outcome_quality:
+      - "Comprehensive current state understanding"
+      - "Clear challenge prioritization"
+      - "Aligned vision and goals"
+      - "Actionable next steps"
+      
+  continuous_improvement:
+    feedback_collection:
+      - "Post-workshop evaluation forms"
+      - "Stakeholder interviews"
+      - "Proposal acceptance rates"
+      - "Client engagement success"
+      
+    process_refinement:
+      - "Update templates based on experience"
+      - "Adjust timing and activities"
+      - "Enhance facilitation techniques"
+      - "Improve documentation methods"
+
+customization_guidelines:
+  industry_adaptations:
+    manufacturing:
+      - "Focus on operational efficiency and supply chain"
+      - "Include lean manufacturing concepts"
+      - "Address safety and compliance requirements"
+      
+    professional_services:
+      - "Emphasize people and process optimization"
+      - "Focus on client experience and delivery"
+      - "Address scalability and standardization"
+      
+    retail:
+      - "Focus on customer experience and inventory"
+      - "Include omnichannel considerations"
+      - "Address seasonal variations and trends"
+      
+    technology:
+      - "Emphasize innovation and scalability"
+      - "Focus on product-market fit"
+      - "Address rapid growth challenges"
+
+usage_instructions:
+  pre_workshop:
+    - "Complete client intake questionnaire first"
+    - "Review all background information"
+    - "Customize agenda based on client needs"
+    - "Prepare industry-specific examples"
+    
+  during_workshop:
+    - "Stay flexible with timing based on group dynamics"
+    - "Focus on understanding rather than solving"
+    - "Encourage honest and open dialogue"
+    - "Capture insights that aren't explicitly stated"
+    
+  post_workshop:
+    - "Synthesize insights quickly while fresh"
+    - "Validate understanding with participants"
+    - "Use insights to develop targeted recommendations"
+    - "Maintain momentum with timely follow-up"
+
+notes:
+  - "Adapt timing and activities based on group size and dynamics"
+  - "Be prepared to adjust agenda based on emerging insights"
+  - "Focus on building trust and rapport throughout"
+  - "Use workshop as opportunity to demonstrate consulting value"
+  - "Document everything - small insights can be significant"

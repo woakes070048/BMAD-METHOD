@@ -1,0 +1,621 @@
+name: "Growth Strategy Template"
+description: "Comprehensive growth strategy development template for small business consultants to help clients identify, evaluate, and implement sustainable growth initiatives"
+category: "operations-growth"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Growth Strategy Template for Small Business Consulting
+
+template:
+  strategy_information:
+    client_name: ""
+    business_name: ""
+    industry: ""
+    current_revenue: 0
+    current_employees: 0
+    years_in_business: 0
+    strategy_date: ""
+    consultant_name: ""
+    planning_horizon: ""
+    growth_objectives: []
+    
+  current_state_analysis:
+    business_performance:
+      financial_metrics:
+        annual_revenue: 0
+        revenue_growth_rate: 0
+        profit_margins: 0
+        cash_flow: 0
+        working_capital: 0
+        
+      operational_metrics:
+        market_share: 0
+        customer_base_size: 0
+        employee_count: 0
+        capacity_utilization: 0
+        operational_efficiency: 0
+        
+      market_position:
+        competitive_position: ""
+        brand_recognition: ""
+        customer_satisfaction: 0
+        customer_retention_rate: 0
+        
+    organizational_capabilities:
+      core_competencies: []
+      unique_resources: []
+      technological_capabilities: []
+      management_capabilities: []
+      financial_resources: []
+      
+    growth_readiness_assessment:
+      leadership_capability: ""
+      organizational_capacity: ""
+      financial_strength: ""
+      market_knowledge: ""
+      innovation_capability: ""
+      change_management_ability: ""
+
+  market_opportunity_analysis:
+    market_assessment:
+      total_addressable_market: 0
+      serviceable_addressable_market: 0
+      market_growth_rate: 0
+      market_trends: []
+      emerging_opportunities: []
+      
+    customer_analysis:
+      customer_segmentation: []
+      unmet_customer_needs: []
+      customer_behavior_trends: []
+      customer_acquisition_opportunities: []
+      
+    competitive_landscape:
+      competitive_gaps: []
+      market_white_spaces: []
+      competitive_advantages: []
+      barriers_to_entry: []
+      
+    industry_dynamics:
+      industry_life_cycle_stage: ""
+      disruption_factors: []
+      regulatory_changes: []
+      technology_impacts: []
+
+  growth_strategy_options:
+    market_penetration:
+      description: "Increase market share in existing markets with existing products"
+      opportunities:
+        customer_acquisition: []
+        increased_usage: []
+        competitive_displacement: []
+        geographic_expansion_within_market: []
+        
+      requirements:
+        marketing_investment: 0
+        sales_capability_enhancement: []
+        operational_scaling: []
+        competitive_response_preparation: []
+        
+      risks:
+        market_saturation: ""
+        competitive_retaliation: ""
+        margin_pressure: ""
+        
+      success_factors:
+        customer_acquisition_efficiency: ""
+        operational_excellence: ""
+        competitive_differentiation: ""
+        
+    market_development:
+      description: "Enter new markets with existing products"
+      opportunities:
+        geographic_expansion: []
+        new_customer_segments: []
+        new_distribution_channels: []
+        international_markets: []
+        
+      requirements:
+        market_research_investment: 0
+        market_entry_costs: 0
+        regulatory_compliance: []
+        local_partnerships: []
+        
+      risks:
+        market_acceptance: ""
+        cultural_differences: ""
+        regulatory_barriers: ""
+        competitive_response: ""
+        
+      success_factors:
+        market_knowledge: ""
+        adaptation_capability: ""
+        local_partnerships: ""
+        
+    product_development:
+      description: "Develop new products for existing markets"
+      opportunities:
+        product_line_extensions: []
+        complementary_products: []
+        innovative_solutions: []
+        service_additions: []
+        
+      requirements:
+        r_and_d_investment: 0
+        product_development_capability: []
+        time_to_market_acceleration: []
+        customer_validation: []
+        
+      risks:
+        development_failure: ""
+        market_rejection: ""
+        technology_obsolescence: ""
+        resource_drain: ""
+        
+      success_factors:
+        innovation_capability: ""
+        customer_insight: ""
+        speed_to_market: ""
+        
+    diversification:
+      description: "Enter new markets with new products"
+      opportunities:
+        related_diversification: []
+        unrelated_diversification: []
+        vertical_integration: []
+        horizontal_integration: []
+        
+      requirements:
+        significant_investment: 0
+        new_capabilities: []
+        risk_management: []
+        portfolio_management: []
+        
+      risks:
+        high_failure_rate: ""
+        resource_dispersion: ""
+        management_complexity: ""
+        
+      success_factors:
+        synergy_realization: ""
+        capability_transfer: ""
+        risk_management: ""
+
+  growth_vector_analysis:
+    organic_growth:
+      internal_expansion:
+        capacity_expansion: []
+        capability_building: []
+        innovation_investments: []
+        market_development: []
+        
+      advantages:
+        control_retention: ""
+        culture_preservation: ""
+        gradual_scaling: ""
+        
+      challenges:
+        slower_growth: ""
+        resource_intensity: ""
+        capability_gaps: ""
+        
+    inorganic_growth:
+      mergers_and_acquisitions:
+        acquisition_targets: []
+        merger_opportunities: []
+        strategic_partnerships: []
+        joint_ventures: []
+        
+      advantages:
+        rapid_scaling: ""
+        capability_acquisition: ""
+        market_access: ""
+        
+      challenges:
+        integration_complexity: ""
+        cultural_conflicts: ""
+        high_costs: ""
+        
+    hybrid_approaches:
+      strategic_alliances: []
+      licensing_agreements: []
+      franchising: []
+      partnership_models: []
+
+  financial_growth_modeling:
+    growth_scenarios:
+      conservative_scenario:
+        revenue_growth_rate: 0
+        market_assumptions: []
+        investment_requirements: 0
+        profitability_impact: 0
+        
+      moderate_scenario:
+        revenue_growth_rate: 0
+        market_assumptions: []
+        investment_requirements: 0
+        profitability_impact: 0
+        
+      aggressive_scenario:
+        revenue_growth_rate: 0
+        market_assumptions: []
+        investment_requirements: 0
+        profitability_impact: 0
+        
+    financial_requirements:
+      funding_needs: 0
+      cash_flow_projections: {}
+      working_capital_requirements: 0
+      capital_expenditure_needs: 0
+      
+    return_on_investment:
+      roi_calculations: {}
+      payback_periods: {}
+      net_present_value: 0
+      internal_rate_of_return: 0
+
+  implementation_planning:
+    growth_initiative_prioritization:
+      initiative_1:
+        name: ""
+        growth_vector: ""
+        investment_required: 0
+        expected_return: 0
+        risk_level: ""
+        implementation_complexity: ""
+        timeline: ""
+        
+      initiative_2:
+        name: ""
+        growth_vector: ""
+        investment_required: 0
+        expected_return: 0
+        risk_level: ""
+        implementation_complexity: ""
+        timeline: ""
+        
+    resource_allocation:
+      human_resources: []
+      financial_resources: 0
+      technology_resources: []
+      external_resources: []
+      
+    capability_development:
+      new_capabilities_needed: []
+      capability_building_plan: []
+      training_requirements: []
+      hiring_needs: []
+      
+    organizational_changes:
+      structure_modifications: []
+      process_changes: []
+      systems_upgrades: []
+      culture_adaptations: []
+
+  risk_assessment_and_mitigation:
+    growth_risks:
+      market_risks:
+        - risk: ""
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+      operational_risks:
+        - risk: ""
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+      financial_risks:
+        - risk: ""
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+      competitive_risks:
+        - risk: ""
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+    risk_mitigation_framework:
+      risk_monitoring: []
+      contingency_planning: []
+      early_warning_systems: []
+      response_protocols: []
+
+  performance_measurement:
+    growth_metrics:
+      financial_metrics:
+        - "Revenue growth rate"
+        - "Profit growth rate"
+        - "Market share growth"
+        - "Return on growth investment"
+        
+      operational_metrics:
+        - "Customer acquisition rate"
+        - "Customer retention rate"
+        - "Operational efficiency"
+        - "Capacity utilization"
+        
+      market_metrics:
+        - "Market penetration rate"
+        - "Brand awareness"
+        - "Customer satisfaction"
+        - "Competitive position"
+        
+    leading_indicators:
+      early_success_signals: []
+      progress_milestones: []
+      performance_triggers: []
+      
+    measurement_framework:
+      data_collection: []
+      reporting_frequency: ""
+      review_processes: []
+      adjustment_triggers: []
+
+  competitive_growth_strategy:
+    competitive_response_planning:
+      anticipated_responses: []
+      counter_strategies: []
+      defensive_measures: []
+      
+    competitive_advantages:
+      sustainable_advantages: []
+      first_mover_benefits: []
+      scale_advantages: []
+      
+    market_positioning:
+      positioning_strategy: ""
+      brand_development: []
+      customer_value_proposition: ""
+
+  innovation_and_differentiation:
+    innovation_strategy:
+      innovation_focus_areas: []
+      innovation_capabilities: []
+      innovation_partnerships: []
+      innovation_investment: 0
+      
+    differentiation_strategy:
+      differentiation_factors: []
+      unique_value_creation: []
+      competitive_barriers: []
+      
+    technology_enablement:
+      technology_investments: []
+      digital_transformation: []
+      automation_opportunities: []
+
+  partnership_and_alliance_strategy:
+    strategic_partnerships:
+      potential_partners: []
+      partnership_objectives: []
+      value_creation_opportunities: []
+      partnership_models: []
+      
+    channel_partnerships:
+      distribution_partners: []
+      channel_strategy: []
+      partner_enablement: []
+      
+    supplier_relationships:
+      strategic_suppliers: []
+      supply_chain_optimization: []
+      supplier_development: []
+
+  international_growth_strategy:
+    market_selection:
+      target_markets: []
+      market_attractiveness: {}
+      entry_barriers: []
+      
+    entry_strategies:
+      export_strategy: []
+      licensing_strategy: []
+      joint_venture_strategy: []
+      direct_investment_strategy: []
+      
+    localization_requirements:
+      product_adaptation: []
+      marketing_localization: []
+      operational_adjustments: []
+
+  digital_growth_strategy:
+    digital_transformation:
+      digital_capabilities: []
+      technology_investments: []
+      data_and_analytics: []
+      
+    digital_channels:
+      online_presence: []
+      e_commerce_strategy: []
+      digital_marketing: []
+      
+    customer_experience:
+      digital_customer_journey: []
+      omnichannel_strategy: []
+      personalization: []
+
+  sustainability_and_responsible_growth:
+    sustainable_practices:
+      environmental_considerations: []
+      social_responsibility: []
+      governance_standards: []
+      
+    stakeholder_value:
+      customer_value_creation: []
+      employee_value_creation: []
+      community_impact: []
+      shareholder_value: []
+      
+    long_term_viability:
+      business_model_sustainability: ""
+      resource_efficiency: []
+      resilience_building: []
+
+  implementation_roadmap:
+    phase_1_foundation:
+      # 0-6 months
+      objectives: []
+      key_activities: []
+      milestones: []
+      success_criteria: []
+      
+    phase_2_acceleration:
+      # 6-18 months
+      objectives: []
+      key_activities: []
+      milestones: []
+      success_criteria: []
+      
+    phase_3_optimization:
+      # 18-36 months
+      objectives: []
+      key_activities: []
+      milestones: []
+      success_criteria: []
+      
+    continuous_improvement:
+      review_cycles: []
+      adaptation_mechanisms: []
+      learning_integration: []
+
+  change_management:
+    organizational_readiness:
+      change_capability_assessment: ""
+      stakeholder_readiness: ""
+      resource_availability: ""
+      
+    change_strategy:
+      communication_plan: []
+      training_programs: []
+      incentive_alignment: []
+      resistance_management: []
+      
+    culture_transformation:
+      cultural_changes_needed: []
+      culture_change_initiatives: []
+      leadership_modeling: []
+
+  monitoring_and_adjustment:
+    performance_monitoring:
+      tracking_systems: []
+      review_schedules: []
+      escalation_procedures: []
+      
+    strategy_adjustment:
+      adjustment_triggers: []
+      modification_processes: []
+      stakeholder_communication: []
+      
+    continuous_learning:
+      lessons_learned_capture: []
+      best_practice_development: []
+      knowledge_sharing: []
+
+growth_strategy_frameworks:
+  ansoff_matrix:
+    market_penetration: {}
+    market_development: {}
+    product_development: {}
+    diversification: {}
+    
+  bcg_growth_share_matrix:
+    stars: []
+    cash_cows: []
+    question_marks: []
+    dogs: []
+    
+  porter_generic_strategies:
+    cost_leadership: {}
+    differentiation: {}
+    focus_strategies: {}
+
+implementation_tools:
+  planning_tools:
+    - "Growth strategy canvas"
+    - "Market opportunity assessment"
+    - "Financial modeling templates"
+    - "Risk assessment matrix"
+    
+  execution_tools:
+    - "Project management framework"
+    - "Performance dashboard"
+    - "Change management toolkit"
+    - "Communication templates"
+    
+  monitoring_tools:
+    - "KPI tracking system"
+    - "Milestone monitoring"
+    - "Variance analysis tools"
+    - "Adjustment protocols"
+
+success_factors:
+  strategic_factors:
+    - "Clear growth vision and strategy"
+    - "Strong market opportunity"
+    - "Sustainable competitive advantage"
+    - "Adequate resource allocation"
+    
+  organizational_factors:
+    - "Leadership commitment"
+    - "Organizational capability"
+    - "Change management effectiveness"
+    - "Performance measurement"
+    
+  execution_factors:
+    - "Implementation discipline"
+    - "Resource availability"
+    - "Timeline management"
+    - "Continuous adaptation"
+
+common_pitfalls:
+  strategic_pitfalls:
+    - "Pursuing growth without profitability"
+    - "Overextending resources"
+    - "Ignoring core business"
+    - "Inadequate market research"
+    
+  execution_pitfalls:
+    - "Poor change management"
+    - "Insufficient resource allocation"
+    - "Lack of performance monitoring"
+    - "Resistance to adaptation"
+
+usage_guidelines:
+  strategy_development:
+    preparation:
+      - "Conduct thorough situation analysis"
+      - "Assess organizational readiness"
+      - "Identify market opportunities"
+      - "Evaluate strategic options"
+      
+    planning:
+      - "Set clear growth objectives"
+      - "Develop detailed implementation plan"
+      - "Allocate necessary resources"
+      - "Establish measurement framework"
+      
+  implementation_management:
+    execution:
+      - "Maintain strategic focus"
+      - "Monitor progress regularly"
+      - "Adapt to changing conditions"
+      - "Communicate effectively"
+      
+    optimization:
+      - "Capture lessons learned"
+      - "Refine strategies and tactics"
+      - "Scale successful initiatives"
+      - "Discontinue underperforming activities"
+
+notes:
+  - "Growth strategy must align with business capabilities and market opportunities"
+  - "Balance growth ambitions with risk management and resource constraints"
+  - "Ensure sustainable growth that creates long-term value"
+  - "Invest in building capabilities needed for future growth"
+  - "Monitor performance and adjust strategy based on results and market changes"
+  - "Engage stakeholders throughout the growth journey"

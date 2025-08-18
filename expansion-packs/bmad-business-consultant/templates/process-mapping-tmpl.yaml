@@ -1,0 +1,578 @@
+name: "Process Mapping Template"
+description: "Comprehensive business process mapping and optimization template for small business consultants to help clients document, analyze, and improve their operational processes"
+category: "operations-growth"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Process Mapping Template for Small Business Consulting
+
+template:
+  mapping_information:
+    client_name: ""
+    business_name: ""
+    process_name: ""
+    process_owner: ""
+    mapping_date: ""
+    consultant_name: ""
+    process_scope: ""
+    mapping_purpose: ""
+    stakeholders_involved: []
+    
+  process_overview:
+    process_description:
+      purpose: ""
+      objectives: []
+      key_inputs: []
+      key_outputs: []
+      customers_served: []
+      
+    process_boundaries:
+      start_trigger: ""
+      end_point: ""
+      included_activities: []
+      excluded_activities: []
+      
+    process_classification:
+      process_type: "" # Core, Support, Management
+      process_level: "" # Level 1, 2, 3, 4
+      criticality: "" # Critical, Important, Supporting
+      frequency: "" # Daily, Weekly, Monthly, Ad-hoc
+      
+    current_performance:
+      cycle_time: 0
+      processing_time: 0
+      wait_time: 0
+      quality_metrics: {}
+      cost_estimates: 0
+      customer_satisfaction: 0
+
+  process_mapping_levels:
+    level_1_high_level:
+      process_steps:
+        - step_number: 1
+          step_name: ""
+          description: ""
+          responsible_party: ""
+          
+        - step_number: 2
+          step_name: ""
+          description: ""
+          responsible_party: ""
+          
+        - step_number: 3
+          step_name: ""
+          description: ""
+          responsible_party: ""
+          
+    level_2_detailed:
+      detailed_steps:
+        step_1:
+          step_name: ""
+          sub_activities: []
+          inputs_required: []
+          outputs_produced: []
+          tools_systems_used: []
+          time_required: 0
+          responsible_role: ""
+          decision_points: []
+          
+        step_2:
+          step_name: ""
+          sub_activities: []
+          inputs_required: []
+          outputs_produced: []
+          tools_systems_used: []
+          time_required: 0
+          responsible_role: ""
+          decision_points: []
+          
+    level_3_granular:
+      micro_activities:
+        activity_1:
+          activity_name: ""
+          detailed_instructions: []
+          specific_tools: []
+          quality_checks: []
+          time_duration: 0
+          skill_requirements: []
+
+  swimlane_mapping:
+    roles_and_responsibilities:
+      role_1:
+        role_name: ""
+        responsibilities: []
+        activities_performed: []
+        decision_authority: []
+        
+      role_2:
+        role_name: ""
+        responsibilities: []
+        activities_performed: []
+        decision_authority: []
+        
+    department_interactions:
+      handoffs: []
+      communication_points: []
+      approval_requirements: []
+      escalation_procedures: []
+      
+    external_interactions:
+      suppliers: []
+      customers: []
+      partners: []
+      regulatory_bodies: []
+
+  process_flow_analysis:
+    flow_characteristics:
+      linear_flow: ""
+      parallel_activities: []
+      loops_and_rework: []
+      decision_branches: []
+      
+    value_stream_mapping:
+      value_adding_activities: []
+      non_value_adding_necessary: []
+      waste_activities: []
+      
+      time_analysis:
+        total_cycle_time: 0
+        value_added_time: 0
+        non_value_added_time: 0
+        wait_time: 0
+        
+    bottleneck_analysis:
+      capacity_constraints: []
+      resource_limitations: []
+      system_bottlenecks: []
+      skill_bottlenecks: []
+
+  decision_points_and_logic:
+    decision_criteria:
+      decision_1:
+        decision_point: ""
+        criteria: []
+        outcomes: []
+        decision_maker: ""
+        escalation_rules: []
+        
+      decision_2:
+        decision_point: ""
+        criteria: []
+        outcomes: []
+        decision_maker: ""
+        escalation_rules: []
+        
+    business_rules:
+      approval_thresholds: []
+      quality_standards: []
+      compliance_requirements: []
+      exception_handling: []
+
+  inputs_and_outputs:
+    process_inputs:
+      input_1:
+        input_name: ""
+        source: ""
+        format_requirements: []
+        quality_criteria: []
+        timing_requirements: ""
+        
+      input_2:
+        input_name: ""
+        source: ""
+        format_requirements: []
+        quality_criteria: []
+        timing_requirements: ""
+        
+    process_outputs:
+      output_1:
+        output_name: ""
+        destination: ""
+        format_specifications: []
+        quality_standards: []
+        delivery_requirements: ""
+        
+      output_2:
+        output_name: ""
+        destination: ""
+        format_specifications: []
+        quality_standards: []
+        delivery_requirements: ""
+        
+    information_flow:
+      data_requirements: []
+      system_dependencies: []
+      reporting_obligations: []
+
+  resources_and_tools:
+    human_resources:
+      roles_required: []
+      skill_levels_needed: []
+      training_requirements: []
+      workload_distribution: {}
+      
+    technology_and_systems:
+      software_applications: []
+      hardware_requirements: []
+      system_integrations: []
+      automation_level: ""
+      
+    physical_resources:
+      equipment_needed: []
+      facility_requirements: []
+      materials_consumed: []
+      
+    information_resources:
+      documents_used: []
+      data_sources: []
+      knowledge_bases: []
+
+  quality_and_controls:
+    quality_checkpoints:
+      checkpoint_1:
+        checkpoint_name: ""
+        quality_criteria: []
+        inspection_method: ""
+        responsible_party: ""
+        corrective_actions: []
+        
+      checkpoint_2:
+        checkpoint_name: ""
+        quality_criteria: []
+        inspection_method: ""
+        responsible_party: ""
+        corrective_actions: []
+        
+    control_mechanisms:
+      preventive_controls: []
+      detective_controls: []
+      corrective_controls: []
+      
+    compliance_requirements:
+      regulatory_compliance: []
+      industry_standards: []
+      internal_policies: []
+
+  risk_and_exception_handling:
+    process_risks:
+      risk_1:
+        risk_description: ""
+        probability: ""
+        impact: ""
+        mitigation_measures: []
+        
+      risk_2:
+        risk_description: ""
+        probability: ""
+        impact: ""
+        mitigation_measures: []
+        
+    exception_scenarios:
+      exception_1:
+        scenario: ""
+        handling_procedure: []
+        escalation_path: []
+        
+      exception_2:
+        scenario: ""
+        handling_procedure: []
+        escalation_path: []
+        
+    contingency_planning:
+      backup_procedures: []
+      alternative_resources: []
+      emergency_protocols: []
+
+  performance_measurement:
+    key_performance_indicators:
+      efficiency_metrics:
+        - "Cycle time"
+        - "Processing time"
+        - "Resource utilization"
+        - "Throughput"
+        
+      quality_metrics:
+        - "Defect rate"
+        - "Rework percentage"
+        - "Customer satisfaction"
+        - "Compliance rate"
+        
+      cost_metrics:
+        - "Cost per transaction"
+        - "Labor cost"
+        - "System cost"
+        - "Total process cost"
+        
+    measurement_methods:
+      data_collection: []
+      measurement_frequency: ""
+      reporting_format: ""
+      review_schedule: ""
+      
+    performance_targets:
+      current_performance: {}
+      target_performance: {}
+      benchmark_comparisons: {}
+
+  process_analysis:
+    current_state_assessment:
+      strengths: []
+      weaknesses: []
+      inefficiencies: []
+      improvement_opportunities: []
+      
+    root_cause_analysis:
+      identified_problems: []
+      root_causes: []
+      contributing_factors: []
+      
+    waste_identification:
+      overproduction: []
+      waiting: []
+      transportation: []
+      over_processing: []
+      inventory: []
+      motion: []
+      defects: []
+      unused_talent: []
+
+  improvement_opportunities:
+    process_optimization:
+      elimination_opportunities: []
+      simplification_possibilities: []
+      automation_potential: []
+      standardization_needs: []
+      
+    technology_improvements:
+      system_upgrades: []
+      new_technology_adoption: []
+      integration_opportunities: []
+      
+    organizational_improvements:
+      role_clarification: []
+      training_needs: []
+      communication_enhancements: []
+      decision_authority_changes: []
+      
+    quality_improvements:
+      error_prevention: []
+      quality_control_enhancements: []
+      customer_feedback_integration: []
+
+  future_state_design:
+    improved_process_flow:
+      new_process_steps: []
+      eliminated_steps: []
+      modified_activities: []
+      
+    organizational_changes:
+      role_modifications: []
+      responsibility_shifts: []
+      reporting_changes: []
+      
+    technology_enhancements:
+      new_systems: []
+      automation_implementations: []
+      integration_improvements: []
+      
+    expected_benefits:
+      efficiency_gains: []
+      quality_improvements: []
+      cost_reductions: []
+      customer_satisfaction_improvements: []
+
+  implementation_planning:
+    change_management:
+      stakeholder_impact: []
+      communication_plan: []
+      training_requirements: []
+      resistance_management: []
+      
+    implementation_phases:
+      phase_1:
+        duration: ""
+        activities: []
+        resources_required: []
+        success_criteria: []
+        
+      phase_2:
+        duration: ""
+        activities: []
+        resources_required: []
+        success_criteria: []
+        
+    resource_requirements:
+      budget_needed: 0
+      personnel_allocation: []
+      technology_investments: []
+      external_support: []
+      
+    timeline_and_milestones:
+      key_milestones: []
+      critical_path: []
+      dependencies: []
+
+  documentation_standards:
+    process_documentation:
+      process_narrative: ""
+      flowchart_symbols: []
+      documentation_format: ""
+      version_control: ""
+      
+    maintenance_procedures:
+      review_schedule: ""
+      update_responsibilities: []
+      change_approval_process: ""
+      
+    training_materials:
+      process_guides: []
+      training_presentations: []
+      quick_reference_cards: []
+
+  stakeholder_engagement:
+    process_team:
+      process_owner: ""
+      subject_matter_experts: []
+      process_participants: []
+      
+    communication_strategy:
+      stakeholder_mapping: []
+      communication_channels: []
+      feedback_mechanisms: []
+      
+    validation_approach:
+      review_sessions: []
+      testing_procedures: []
+      approval_process: ""
+
+tools_and_techniques:
+  mapping_methodologies:
+    flowchart_mapping:
+      standard_symbols: []
+      flow_directions: []
+      decision_notation: []
+      
+    swimlane_diagrams:
+      role_separation: []
+      handoff_identification: []
+      responsibility_clarity: []
+      
+    value_stream_mapping:
+      current_state_map: []
+      future_state_map: []
+      improvement_roadmap: []
+      
+    sipoc_analysis:
+      suppliers: []
+      inputs: []
+      process: []
+      outputs: []
+      customers: []
+
+  analysis_tools:
+    process_analysis_techniques:
+      - "Root cause analysis"
+      - "Pareto analysis"
+      - "Fishbone diagrams"
+      - "Statistical process control"
+      
+    improvement_methodologies:
+      - "Lean process improvement"
+      - "Six Sigma DMAIC"
+      - "Business process reengineering"
+      - "Continuous improvement"
+
+implementation_guidelines:
+  mapping_best_practices:
+    preparation:
+      - "Define clear scope and objectives"
+      - "Identify key stakeholders"
+      - "Gather background information"
+      - "Schedule mapping sessions"
+      
+    execution:
+      - "Start with high-level overview"
+      - "Add detail progressively"
+      - "Validate with process participants"
+      - "Document assumptions and decisions"
+      
+    finalization:
+      - "Review for accuracy and completeness"
+      - "Obtain stakeholder approval"
+      - "Create implementation plan"
+      - "Establish monitoring procedures"
+
+  common_pitfalls:
+    mapping_errors:
+      - "Mapping idealized vs. actual process"
+      - "Insufficient detail for improvement"
+      - "Missing exception scenarios"
+      - "Inadequate stakeholder involvement"
+      
+    implementation_challenges:
+      - "Resistance to change"
+      - "Inadequate training"
+      - "Poor communication"
+      - "Lack of management support"
+
+  success_factors:
+    organizational_readiness:
+      - "Leadership commitment"
+      - "Employee engagement"
+      - "Change management capability"
+      - "Resource availability"
+      
+    technical_readiness:
+      - "System capabilities"
+      - "Data availability"
+      - "Integration requirements"
+      - "Automation possibilities"
+
+usage_instructions:
+  process_selection:
+    prioritization_criteria:
+      - "Business impact"
+      - "Improvement potential"
+      - "Customer impact"
+      - "Implementation feasibility"
+      
+    mapping_scope:
+      - "Start with critical processes"
+      - "Focus on end-to-end flow"
+      - "Include all stakeholders"
+      - "Consider system boundaries"
+      
+  mapping_execution:
+    session_planning:
+      - "Prepare materials and tools"
+      - "Schedule appropriate participants"
+      - "Set clear objectives"
+      - "Plan for follow-up sessions"
+      
+    facilitation_approach:
+      - "Use collaborative techniques"
+      - "Encourage participation"
+      - "Focus on facts, not opinions"
+      - "Document decisions and assumptions"
+      
+  follow_up_actions:
+    validation:
+      - "Review with process participants"
+      - "Test process flow"
+      - "Verify measurements"
+      - "Confirm improvement opportunities"
+      
+    implementation:
+      - "Develop detailed implementation plan"
+      - "Secure necessary resources"
+      - "Communicate changes"
+      - "Monitor progress and results"
+
+notes:
+  - "Focus on actual process flow, not idealized version"
+  - "Include all stakeholders in mapping sessions"
+  - "Document exceptions and variations"
+  - "Validate maps with process participants"
+  - "Use visual tools and techniques effectively"
+  - "Link process improvements to business objectives"

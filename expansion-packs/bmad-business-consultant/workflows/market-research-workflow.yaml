@@ -1,0 +1,278 @@
+name: "Market Research Workflow"
+description: "Comprehensive market research workflow for customer insights, market analysis, and competitive intelligence"
+version: "1.0"
+category: "Market Analysis"
+tags: ["market-research", "customer-analysis", "competitive-intelligence", "market-sizing"]
+
+workflow:
+  stages:
+    - name: "Research Planning and Design"
+      description: "Define research objectives, methodology, and approach"
+      tasks:
+        - name: "Research Objectives Definition"
+          description: "Establish clear research questions and success criteria"
+          agent: "market-researcher"
+          checklist: "market-research-checklist.md"
+          inputs:
+            - research_questions
+            - target_market
+            - decision_requirements
+            - timeline_constraints
+            
+        - name: "Research Methodology Design"
+          description: "Design research approach and data collection methods"
+          agent: "market-researcher"
+          checklist: "market-research-checklist.md"
+          inputs:
+            - research_objectives
+            - budget_constraints
+            - data_requirements
+            - target_respondents
+            
+        - name: "Research Plan Development"
+          description: "Create detailed research plan and timeline"
+          agent: "market-researcher"
+          task: "create-research-plan"
+          outputs:
+            - research_methodology
+            - data_collection_plan
+            - analysis_framework
+            - quality_control_measures
+
+    - name: "Secondary Research and Data Collection"
+      description: "Gather existing market data and industry intelligence"
+      tasks:
+        - name: "Industry and Market Data Collection"
+          description: "Collect comprehensive industry and market information"
+          agent: "market-researcher"
+          checklist: "market-research-checklist.md"
+          inputs:
+            - target_industry
+            - geographic_scope
+            - data_sources
+            
+        - name: "Competitive Landscape Research"
+          description: "Gather competitive intelligence and benchmarking data"
+          agent: "market-researcher"
+          task: "create-competitive-landscape"
+          inputs:
+            - industry: "{{target_industry}}"
+            - competitive_scope: "{{competitor_analysis_scope}}"
+            
+        - name: "Trend and Market Analysis"
+          description: "Analyze market trends and future outlook"
+          agent: "market-researcher"
+          task: "create-trend-analysis"
+          inputs:
+            - market: "{{target_market}}"
+            - trend_timeframe: "{{analysis_timeframe}}"
+
+    - name: "Primary Research Execution"
+      description: "Conduct primary research with customers and stakeholders"
+      tasks:
+        - name: "Customer Segmentation Research"
+          description: "Identify and analyze distinct customer segments"
+          agent: "market-researcher"
+          task: "create-customer-segmentation"
+          inputs:
+            - target_market: "{{primary_market}}"
+            - segmentation_criteria: "{{segmentation_framework}}"
+            
+        - name: "Customer Journey Mapping"
+          description: "Map customer journeys and touchpoints"
+          agent: "market-researcher"
+          task: "create-customer-journey"
+          inputs:
+            - customer_segments: "{{identified_segments}}"
+            - journey_scope: "{{customer_journey_scope}}"
+            
+        - name: "Market Opportunity Assessment"
+          description: "Assess market opportunities and potential"
+          agent: "market-researcher"
+          task: "create-market-opportunity"
+          inputs:
+            - market_space: "{{opportunity_space}}"
+            - assessment_criteria: "{{opportunity_criteria}}"
+
+    - name: "Market Sizing and Quantification"
+      description: "Calculate market size, growth, and economic potential"
+      tasks:
+        - name: "Market Size Analysis"
+          description: "Calculate TAM, SAM, and SOM for target market"
+          agent: "market-researcher"
+          task: "create-market-sizing"
+          inputs:
+            - market_opportunity: "{{target_opportunity}}"
+            - sizing_methodology: "{{sizing_approach}}"
+            
+        - name: "Growth and Forecasting"
+          description: "Develop market growth forecasts and scenarios"
+          checklist: "market-research-checklist.md"
+          inputs:
+            - historical_data
+            - growth_drivers
+            - market_dynamics
+            
+        - name: "Economic Value Assessment"
+          description: "Assess economic value and revenue potential"
+          outputs:
+            - market_value_analysis
+            - revenue_potential
+            - growth_scenarios
+
+    - name: "Competitive Analysis and Intelligence"
+      description: "Detailed competitive analysis and positioning assessment"
+      tasks:
+        - name: "Competitor Profiling"
+          description: "Develop comprehensive competitor profiles"
+          agent: "strategic-analyst"
+          task: "create-competitive-intelligence"
+          inputs:
+            - competitors: "{{primary_competitors}}"
+            - analysis_scope: "{{competitive_analysis_scope}}"
+            
+        - name: "Competitive Positioning Analysis"
+          description: "Analyze competitive positioning and differentiation"
+          checklist: "market-research-checklist.md"
+          inputs:
+            - competitor_profiles
+            - market_segments
+            - value_propositions
+            
+        - name: "Market Share and Performance"
+          description: "Analyze market share distribution and performance"
+          outputs:
+            - market_share_analysis
+            - performance_benchmarks
+            - competitive_dynamics
+
+    - name: "Analysis and Insights Development"
+      description: "Synthesize research findings into actionable insights"
+      tasks:
+        - name: "Data Analysis and Synthesis"
+          description: "Analyze all research data and identify patterns"
+          agent: "market-researcher"
+          checklist: "market-research-checklist.md"
+          inputs:
+            - primary_research_data
+            - secondary_research_findings
+            - competitive_intelligence
+            
+        - name: "Market Analysis Report"
+          description: "Create comprehensive market analysis report"
+          agent: "market-researcher"
+          task: "create-market-analysis"
+          template: "market-analysis-tmpl.yaml"
+          inputs:
+            - market: "{{target_market}}"
+            - analysis_scope: "{{comprehensive_analysis}}"
+            
+        - name: "Strategic Insights and Recommendations"
+          description: "Develop strategic insights and actionable recommendations"
+          outputs:
+            - key_insights
+            - strategic_recommendations
+            - opportunity_priorities
+            - action_plan
+
+    - name: "Validation and Reporting"
+      description: "Validate findings and prepare final research deliverables"
+      tasks:
+        - name: "Research Validation"
+          description: "Validate research findings and conclusions"
+          checklist: "market-research-checklist.md"
+          inputs:
+            - research_findings
+            - methodology_review
+            - data_quality_assessment
+            
+        - name: "Stakeholder Review and Feedback"
+          description: "Review findings with key stakeholders"
+          checklist: "market-research-checklist.md"
+          
+        - name: "Final Research Report"
+          description: "Prepare comprehensive final research report"
+          template: "market-analysis-tmpl.yaml"
+          outputs:
+            - executive_summary
+            - comprehensive_research_report
+            - insights_presentation
+            - recommendations_summary
+
+agents:
+  primary: "market-researcher"
+  supporting:
+    - "strategic-analyst"
+    - "business-model-expert"
+
+deliverables:
+  - name: "Research Plan and Methodology"
+    description: "Detailed research approach and methodology"
+    
+  - name: "Market Analysis Report"
+    template: "market-analysis-tmpl.yaml"
+    
+  - name: "Customer Segmentation Analysis"
+    description: "Detailed customer segments and personas"
+    
+  - name: "Competitive Intelligence Report"
+    description: "Comprehensive competitive analysis and positioning"
+    
+  - name: "Market Sizing and Opportunity Assessment"
+    description: "Market size, growth, and opportunity analysis"
+    
+  - name: "Strategic Insights and Recommendations"
+    description: "Key insights and actionable recommendations"
+
+success_criteria:
+  - "Clear, validated customer segments with detailed insights"
+  - "Accurate market sizing with TAM, SAM, and SOM calculations"
+  - "Comprehensive competitive landscape understanding"
+  - "Actionable strategic insights and recommendations"
+  - "High-quality research methodology and data validation"
+
+timeline:
+  total_duration: "6-12 weeks"
+  stage_durations:
+    planning: "5-7 days"
+    secondary_research: "10-14 days"
+    primary_research: "21-28 days"
+    market_sizing: "7-10 days"
+    competitive_analysis: "10-14 days"
+    analysis_insights: "7-10 days"
+    validation_reporting: "5-7 days"
+
+quality_gates:
+  - stage: "Research Planning and Design"
+    criteria: "Research methodology approved and data collection plan finalized"
+    
+  - stage: "Secondary Research and Data Collection"
+    criteria: "Comprehensive secondary data collected and validated"
+    
+  - stage: "Primary Research Execution"
+    criteria: "Primary research completed with sufficient sample sizes"
+    
+  - stage: "Market Sizing and Quantification"
+    criteria: "Market sizing validated with multiple methodologies"
+    
+  - stage: "Analysis and Insights Development"
+    criteria: "Key insights validated and recommendations developed"
+
+research_methods:
+  quantitative:
+    - "Online surveys and questionnaires"
+    - "Market sizing and statistical analysis"
+    - "Competitive benchmarking studies"
+    - "Customer behavior analytics"
+    
+  qualitative:
+    - "In-depth customer interviews"
+    - "Focus groups and workshops"
+    - "Expert interviews and consultations"
+    - "Ethnographic and observational studies"
+    
+  secondary:
+    - "Industry reports and market studies"
+    - "Government and regulatory data"
+    - "Academic and professional publications"
+    - "Competitor analysis and intelligence"

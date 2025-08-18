@@ -1,0 +1,640 @@
+name: "Client Retention Framework Template"
+description: "Comprehensive client retention and relationship management framework for small business consultants to maximize client lifetime value, generate referrals, and build long-term advisory relationships"
+category: "client-management"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Client Retention Framework Template for Small Business Consulting
+
+template:
+  client_portfolio_analysis:
+    client_segmentation:
+      by_value:
+        tier_1_strategic_clients:
+          client_count: 0
+          revenue_percentage: 0
+          characteristics: []
+          retention_priority: "Critical"
+          
+        tier_2_core_clients:
+          client_count: 0
+          revenue_percentage: 0
+          characteristics: []
+          retention_priority: "High"
+          
+        tier_3_standard_clients:
+          client_count: 0
+          revenue_percentage: 0
+          characteristics: []
+          retention_priority: "Medium"
+          
+        tier_4_emerging_clients:
+          client_count: 0
+          revenue_percentage: 0
+          characteristics: []
+          retention_priority: "Development"
+          
+      by_lifecycle_stage:
+        new_clients_0_12_months: 0
+        developing_clients_1_3_years: 0
+        mature_clients_3_plus_years: 0
+        at_risk_clients: 0
+        
+      by_engagement_type:
+        project_based_clients: 0
+        retainer_clients: 0
+        advisory_clients: 0
+        hybrid_engagement_clients: 0
+        
+    portfolio_health_metrics:
+      overall_retention_rate: 0
+      client_lifetime_value: 0
+      revenue_concentration_risk: 0
+      referral_generation_rate: 0
+      client_satisfaction_score: 0
+      
+    retention_risk_assessment:
+      high_risk_clients:
+        - client_name: ""
+          risk_factors: []
+          probability_of_loss: 0
+          revenue_impact: 0
+          retention_actions: []
+          
+      medium_risk_clients:
+        - client_name: ""
+          risk_factors: []
+          probability_of_loss: 0
+          revenue_impact: 0
+          retention_actions: []
+
+  client_value_analysis:
+    financial_value_metrics:
+      revenue_analysis:
+        annual_revenue_per_client: {}
+        revenue_growth_trend: {}
+        profitability_per_client: {}
+        payment_terms_and_history: {}
+        
+      lifetime_value_calculation:
+        average_client_lifespan: 0
+        average_annual_revenue: 0
+        client_acquisition_cost: 0
+        estimated_lifetime_value: 0
+        
+      expansion_opportunities:
+        additional_service_potential: {}
+        cross_selling_opportunities: []
+        upselling_possibilities: []
+        new_project_pipeline: {}
+        
+    strategic_value_assessment:
+      relationship_value:
+        decision_maker_access: 0
+        organizational_influence: 0
+        industry_credibility: 0
+        learning_opportunities: 0
+        
+      referral_potential:
+        network_quality: 0
+        referral_history: 0
+        advocacy_willingness: 0
+        industry_connections: 0
+        
+      case_study_value:
+        success_story_potential: 0
+        industry_relevance: 0
+        measurable_results: 0
+        marketing_value: 0
+
+  relationship_management_strategy:
+    relationship_mapping:
+      key_stakeholders:
+        - name: ""
+          role: ""
+          influence_level: 0
+          relationship_strength: 0
+          communication_preference: ""
+          value_drivers: []
+          
+      decision_making_dynamics:
+        primary_decision_maker: ""
+        influencers: []
+        budget_holders: []
+        end_users: []
+        
+      relationship_history:
+        engagement_timeline: []
+        key_milestones: []
+        challenges_overcome: []
+        trust_building_moments: []
+        
+    communication_strategy:
+      regular_touchpoints:
+        quarterly_business_reviews:
+          frequency: ""
+          format: ""
+          agenda_template: []
+          success_metrics: []
+          
+        monthly_check_ins:
+          format: ""
+          duration: ""
+          key_topics: []
+          follow_up_process: ""
+          
+        project_milestone_communications:
+          milestone_types: []
+          communication_format: []
+          stakeholder_involvement: []
+          
+      value_demonstration:
+        progress_reporting:
+          metrics_tracked: []
+          reporting_frequency: ""
+          visualization_methods: []
+          business_impact_focus: true
+          
+        success_celebrations:
+          achievement_recognition: []
+          stakeholder_appreciation: []
+          public_acknowledgment: false
+          internal_celebrations: []
+          
+      thought_leadership_sharing:
+        industry_insights: []
+        trend_analysis: []
+        best_practice_sharing: []
+        educational_content: []
+
+  client_satisfaction_management:
+    satisfaction_measurement:
+      satisfaction_surveys:
+        survey_frequency: ""
+        survey_methodology: ""
+        response_rate_target: 0
+        satisfaction_score_target: 0
+        
+      feedback_collection_methods:
+        formal_surveys: false
+        informal_conversations: false
+        project_retrospectives: false
+        stakeholder_interviews: false
+        
+      satisfaction_metrics:
+        overall_satisfaction: 0
+        service_quality_rating: 0
+        value_for_money_perception: 0
+        likelihood_to_recommend: 0
+        likelihood_to_continue: 0
+        
+    issue_resolution_process:
+      early_warning_system:
+        warning_indicators: []
+        monitoring_frequency: ""
+        escalation_triggers: []
+        response_protocols: []
+        
+      complaint_handling:
+        complaint_categories: []
+        resolution_timeframes: {}
+        escalation_procedures: []
+        follow_up_protocols: []
+        
+      relationship_recovery:
+        recovery_strategies: []
+        stakeholder_involvement: []
+        timeline_for_resolution: ""
+        success_measurement: []
+        
+    continuous_improvement:
+      feedback_integration:
+        service_improvement_process: ""
+        client_input_incorporation: ""
+        process_refinement: ""
+        innovation_based_on_feedback: ""
+        
+      service_enhancement:
+        capability_development: []
+        new_service_offerings: []
+        delivery_improvement: []
+        technology_enhancements: []
+
+  value_delivery_optimization:
+    ongoing_value_creation:
+      proactive_value_identification:
+        business_monitoring: []
+        opportunity_spotting: []
+        trend_analysis: []
+        competitive_intelligence: []
+        
+      continuous_optimization:
+        process_improvement: []
+        efficiency_enhancement: []
+        cost_reduction_opportunities: []
+        revenue_enhancement_ideas: []
+        
+      strategic_advisory:
+        strategic_planning_support: false
+        decision_making_consultation: false
+        crisis_management_support: false
+        growth_planning_assistance: false
+        
+    knowledge_transfer:
+      capability_building:
+        skills_development: []
+        training_programs: []
+        best_practice_documentation: []
+        process_institutionalization: []
+        
+      independence_development:
+        self_sufficiency_goals: []
+        gradual_responsibility_transfer: []
+        ongoing_support_reduction: []
+        advisory_relationship_evolution: []
+        
+    innovation_partnership:
+      collaborative_innovation: []
+      pilot_program_participation: []
+      industry_trend_exploration: []
+      future_opportunity_development: []
+
+  retention_strategies_by_client_type:
+    high_value_strategic_clients:
+      retention_approach: "White-glove service with dedicated relationship management"
+      key_strategies:
+        - "Dedicated account management with senior consultant assignment"
+        - "Quarterly strategic business reviews with C-level engagement"
+        - "Priority access to new services and industry expertise"
+        - "Customized thought leadership and industry insights"
+        - "Annual strategic planning session participation"
+        
+      value_proposition:
+        - "Trusted advisor status with deep business understanding"
+        - "Proactive identification of opportunities and risks"
+        - "Access to best practices from other industry leaders"
+        - "Strategic partnership for long-term growth"
+        
+      success_metrics:
+        - "100% retention rate target"
+        - "Net promoter score of 9-10"
+        - "Revenue growth year-over-year"
+        - "Expansion into additional service areas"
+        
+    core_business_clients:
+      retention_approach: "Consistent high-quality service with regular engagement"
+      key_strategies:
+        - "Regular performance reviews and progress updates"
+        - "Proactive communication of relevant opportunities"
+        - "Access to industry benchmarking and best practices"
+        - "Invitation to exclusive events and networking"
+        - "Priority scheduling for urgent needs"
+        
+      value_proposition:
+        - "Reliable partner for consistent business improvement"
+        - "Industry expertise and market knowledge"
+        - "Proven track record of results delivery"
+        - "Cost-effective solution for ongoing needs"
+        
+      success_metrics:
+        - "90%+ retention rate target"
+        - "Net promoter score of 7-10"
+        - "Consistent engagement continuation"
+        - "Regular referral generation"
+        
+    developing_clients:
+      retention_approach: "Growth-focused relationship building with expansion opportunities"
+      key_strategies:
+        - "Success-based engagement with measurable outcomes"
+        - "Educational content and capability building"
+        - "Gradual service expansion based on results"
+        - "Flexible engagement models to match growth"
+        - "Introduction to peer networks and resources"
+        
+      value_proposition:
+        - "Partnership for business growth and development"
+        - "Flexible solutions that scale with business"
+        - "Access to growth-stage expertise and resources"
+        - "Cost-conscious approach with value demonstration"
+        
+      success_metrics:
+        - "80%+ retention rate target"
+        - "Service expansion rate"
+        - "Business growth correlation"
+        - "Satisfaction with value received"
+
+  referral_generation_system:
+    referral_strategy:
+      referral_targets:
+        ideal_referral_profile: []
+        target_industries: []
+        target_business_sizes: []
+        geographic_preferences: []
+        
+      referral_motivation:
+        client_incentives: []
+        recognition_programs: []
+        mutual_value_creation: []
+        relationship_strengthening: []
+        
+    referral_process:
+      referral_identification:
+        referral_conversation_timing: []
+        referral_request_approach: []
+        referral_qualification_criteria: []
+        referral_tracking_system: ""
+        
+      referral_management:
+        introduction_process: []
+        follow_up_protocols: []
+        feedback_to_referrer: []
+        relationship_maintenance: []
+        
+      referral_conversion:
+        initial_meeting_approach: []
+        value_demonstration_strategy: []
+        proposal_development_process: []
+        closing_techniques: []
+        
+    referral_performance_metrics:
+      referral_generation_rate: 0
+      referral_conversion_rate: 0
+      referral_quality_score: 0
+      referrer_satisfaction: 0
+      
+    referral_recognition:
+      thank_you_process: []
+      public_recognition: []
+      reciprocal_referrals: []
+      relationship_investment: []
+
+  long_term_advisory_development:
+    advisory_relationship_evolution:
+      transition_planning:
+        project_to_retainer_transition: []
+        retainer_to_advisory_evolution: []
+        advisory_to_board_progression: []
+        relationship_maturity_stages: []
+        
+      advisory_service_offerings:
+        strategic_advisory: []
+        operational_advisory: []
+        growth_advisory: []
+        crisis_advisory: []
+        
+    trusted_advisor_development:
+      trust_building_activities:
+        consistent_value_delivery: []
+        transparent_communication: []
+        confidentiality_maintenance: []
+        objective_advice_provision: []
+        
+      advisor_positioning:
+        industry_expertise_demonstration: []
+        thought_leadership_establishment: []
+        network_value_provision: []
+        strategic_thinking_showcase: []
+        
+    long_term_value_creation:
+      strategic_partnership: []
+      business_growth_acceleration: []
+      risk_mitigation_support: []
+      opportunity_maximization: []
+
+retention_risk_mitigation:
+  early_warning_indicators:
+    relationship_health_signals:
+      positive_indicators:
+        - "Proactive communication from client"
+        - "Requests for additional services or advice"
+        - "Inclusion in strategic planning discussions"
+        - "Positive feedback and testimonials"
+        - "Timely payment and contract renewals"
+        
+      warning_indicators:
+        - "Decreased communication frequency"
+        - "Delayed responses to requests"
+        - "Budget pressure or cost scrutiny"
+        - "New leadership or organizational changes"
+        - "Competitor engagement or discussions"
+        
+      critical_indicators:
+        - "Payment delays or disputes"
+        - "Scope reduction or service cancellation"
+        - "Negative feedback or complaints"
+        - "Avoidance of relationship meetings"
+        - "Direct discussion of alternative providers"
+        
+  risk_mitigation_strategies:
+    relationship_strengthening:
+      stakeholder_engagement: []
+      value_demonstration: []
+      communication_enhancement: []
+      trust_rebuilding: []
+      
+    service_adjustment:
+      scope_modification: []
+      pricing_flexibility: []
+      delivery_improvement: []
+      additional_value_provision: []
+      
+    competitive_positioning:
+      unique_value_articulation: []
+      switching_cost_emphasis: []
+      relationship_investment_highlight: []
+      competitive_advantage_demonstration: []
+
+client_lifecycle_management:
+  onboarding_optimization:
+    new_client_integration:
+      expectation_setting: []
+      relationship_establishment: []
+      early_value_delivery: []
+      feedback_collection: []
+      
+    first_90_days_focus:
+      relationship_building_priorities: []
+      quick_wins_identification: []
+      communication_rhythm_establishment: []
+      satisfaction_monitoring: []
+      
+  relationship_maturation:
+    year_1_objectives:
+      trust_establishment: []
+      value_demonstration: []
+      relationship_deepening: []
+      expansion_opportunity_identification: []
+      
+    ongoing_relationship_development:
+      strategic_partnership_building: []
+      trusted_advisor_positioning: []
+      long_term_value_creation: []
+      referral_relationship_development: []
+      
+  relationship_transitions:
+    engagement_completion:
+      transition_planning: []
+      ongoing_relationship_maintenance: []
+      future_opportunity_cultivation: []
+      referral_generation: []
+      
+    relationship_evolution:
+      service_model_transitions: []
+      advisory_relationship_development: []
+      strategic_partnership_creation: []
+      long_term_value_alignment: []
+
+performance_measurement:
+  retention_metrics:
+    primary_metrics:
+      client_retention_rate: 0
+      revenue_retention_rate: 0
+      client_lifetime_value: 0
+      net_promoter_score: 0
+      
+    secondary_metrics:
+      client_satisfaction_score: 0
+      referral_generation_rate: 0
+      upselling_success_rate: 0
+      cross_selling_penetration: 0
+      
+    leading_indicators:
+      engagement_frequency: 0
+      response_time_metrics: 0
+      proactive_outreach_frequency: 0
+      value_delivery_consistency: 0
+      
+  financial_impact:
+    revenue_impact:
+      retained_revenue: 0
+      expanded_revenue: 0
+      referral_revenue: 0
+      total_retention_value: 0
+      
+    cost_impact:
+      retention_investment: 0
+      acquisition_cost_avoidance: 0
+      operational_efficiency_gains: 0
+      net_retention_roi: 0
+      
+  relationship_quality_metrics:
+    relationship_strength: 0
+    trust_level_assessment: 0
+    advocacy_potential: 0
+    strategic_value_alignment: 0
+
+technology_and_systems:
+  client_relationship_management:
+    crm_system_requirements:
+      contact_management: []
+      interaction_tracking: []
+      communication_history: []
+      opportunity_management: []
+      
+    automation_opportunities:
+      communication_automation: []
+      follow_up_reminders: []
+      satisfaction_surveys: []
+      reporting_dashboards: []
+      
+  knowledge_management:
+    client_knowledge_capture:
+      business_understanding: []
+      relationship_history: []
+      preference_tracking: []
+      success_factors: []
+      
+    knowledge_sharing:
+      team_collaboration: []
+      best_practice_documentation: []
+      lesson_learned_capture: []
+      continuous_improvement: []
+
+implementation_guidelines:
+  getting_started:
+    assessment_phase:
+      - "Complete client portfolio analysis and segmentation"
+      - "Assess current retention rates and risk factors"
+      - "Identify high-value and at-risk clients"
+      - "Evaluate current relationship management practices"
+      
+    strategy_development:
+      - "Define retention goals and targets by client segment"
+      - "Develop segment-specific retention strategies"
+      - "Create referral generation system and processes"
+      - "Design measurement and monitoring framework"
+      
+    implementation_planning:
+      - "Prioritize retention initiatives by impact and effort"
+      - "Assign ownership and accountability for retention"
+      - "Establish communication and engagement protocols"
+      - "Implement tracking and measurement systems"
+      
+  best_practices:
+    relationship_management:
+      - "Maintain regular, value-focused communication"
+      - "Proactively identify and address client needs"
+      - "Consistently deliver on promises and commitments"
+      - "Invest in understanding client business and industry"
+      
+    value_delivery:
+      - "Focus on business outcomes, not just deliverables"
+      - "Continuously look for new ways to add value"
+      - "Share relevant insights and industry knowledge"
+      - "Help clients achieve their strategic objectives"
+      
+    retention_optimization:
+      - "Monitor relationship health indicators regularly"
+      - "Address issues quickly and transparently"
+      - "Celebrate successes and acknowledge contributions"
+      - "Build multiple stakeholder relationships"
+
+success_case_studies:
+  strategic_client_retention:
+    situation: "Large manufacturing client considering switching to competitor"
+    intervention: "Comprehensive relationship recovery program with enhanced value delivery"
+    results: "Retained client, expanded engagement, generated 3 referrals"
+    lessons_learned: []
+    
+  referral_generation_success:
+    situation: "Satisfied client with strong industry network"
+    intervention: "Systematic referral generation process with incentives"
+    results: "5 qualified referrals, 3 conversions, $200K new revenue"
+    lessons_learned: []
+    
+  advisory_relationship_development:
+    situation: "Project-based client seeking ongoing strategic support"
+    intervention: "Transition to retainer-based advisory relationship"
+    results: "Long-term partnership, increased revenue, strategic influence"
+    lessons_learned: []
+
+usage_instructions:
+  template_application:
+    - "Start with comprehensive client portfolio analysis"
+    - "Segment clients based on value and lifecycle stage"
+    - "Develop targeted retention strategies for each segment"
+    - "Implement systematic relationship management processes"
+    - "Monitor performance and adjust strategies based on results"
+    
+  customization_guidelines:
+    - "Adapt retention strategies to your specific industry and client base"
+    - "Modify communication approaches based on client preferences"
+    - "Adjust metrics and targets to match business objectives"
+    - "Customize referral programs to fit client culture and motivations"
+    
+  success_factors:
+    - "Consistency in relationship management and communication"
+    - "Focus on client value and business outcomes"
+    - "Proactive identification and resolution of issues"
+    - "Investment in understanding client business and industry"
+    - "Long-term perspective on relationship development"
+
+notes:
+  - "Client retention is more cost-effective than client acquisition"
+  - "Focus on relationship quality and value delivery over sales tactics"
+  - "Different client segments require different retention approaches"
+  - "Referrals from satisfied clients are the highest quality leads"
+  - "Long-term advisory relationships provide the highest client lifetime value"
+  - "Technology should support, not replace, personal relationship management"
+  - "Regular measurement and adjustment of retention strategies is essential"

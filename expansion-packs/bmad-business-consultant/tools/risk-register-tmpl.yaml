@@ -1,0 +1,474 @@
+name: "Risk Register Template"
+description: "Comprehensive risk identification, assessment, and management template for systematic risk tracking"
+category: "risk-management"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Risk Register Template for Enterprise Risk Management
+
+template:
+  project_information:
+    project_name: ""
+    risk_owner: ""
+    created_date: ""
+    last_updated: ""
+    review_frequency: "Monthly"
+    risk_tolerance_level: "Medium"
+    
+  risk_categories:
+    strategic_risks:
+      description: "Risks related to strategic objectives and business direction"
+      examples:
+        - "Market disruption"
+        - "Competitive threats"
+        - "Technology obsolescence"
+        - "Regulatory changes"
+        - "Reputation damage"
+    
+    operational_risks:
+      description: "Risks affecting day-to-day operations"
+      examples:
+        - "Process failures"
+        - "System downtime"
+        - "Supply chain disruption"
+        - "Quality issues"
+        - "Human error"
+    
+    financial_risks:
+      description: "Risks impacting financial performance"
+      examples:
+        - "Currency fluctuation"
+        - "Credit risk"
+        - "Liquidity risk"
+        - "Interest rate changes"
+        - "Budget overruns"
+    
+    compliance_risks:
+      description: "Risks related to regulatory and legal compliance"
+      examples:
+        - "Regulatory violations"
+        - "Data privacy breaches"
+        - "Audit findings"
+        - "Legal disputes"
+        - "Standards non-compliance"
+    
+    technology_risks:
+      description: "Risks related to technology and cybersecurity"
+      examples:
+        - "Cybersecurity breaches"
+        - "System failures"
+        - "Data loss"
+        - "Technology obsolescence"
+        - "Integration issues"
+
+  risk_entries:
+    # Template for individual risk entries
+    risk_template:
+      risk_id: "RISK-001"
+      risk_title: ""
+      risk_description: ""
+      risk_category: ""
+      identified_by: ""
+      identification_date: ""
+      
+      probability_assessment:
+        likelihood_score: 0  # 1-5 scale
+        likelihood_description: ""
+        likelihood_rationale: ""
+        
+      impact_assessment:
+        financial_impact_score: 0  # 1-5 scale
+        operational_impact_score: 0  # 1-5 scale
+        strategic_impact_score: 0  # 1-5 scale
+        reputation_impact_score: 0  # 1-5 scale
+        overall_impact_score: 0  # Calculated
+        impact_description: ""
+        impact_rationale: ""
+        
+      risk_scoring:
+        inherent_risk_score: 0  # Probability × Impact
+        inherent_risk_level: ""  # Low, Medium, High, Critical
+        residual_risk_score: 0  # After controls
+        residual_risk_level: ""
+        target_risk_score: 0
+        target_risk_level: ""
+        
+      current_controls:
+        preventive_controls: []
+        detective_controls: []
+        corrective_controls: []
+        control_effectiveness: ""  # Effective, Partially Effective, Ineffective
+        control_gaps: []
+        
+      risk_response:
+        response_strategy: ""  # Accept, Avoid, Mitigate, Transfer
+        action_plans: []
+        responsible_party: ""
+        target_completion_date: ""
+        budget_required: 0
+        dependencies: []
+        
+      monitoring:
+        key_risk_indicators: []
+        monitoring_frequency: ""
+        last_review_date: ""
+        next_review_date: ""
+        status: ""  # Open, In Progress, Closed, Deferred
+        trend: ""  # Increasing, Stable, Decreasing
+
+risk_assessment_scales:
+  probability_scale:
+    1:
+      label: "Very Low"
+      description: "< 5% chance of occurrence"
+      frequency: "Less than once every 5 years"
+    2:
+      label: "Low"
+      description: "5-25% chance of occurrence"
+      frequency: "Once every 2-5 years"
+    3:
+      label: "Medium"
+      description: "25-50% chance of occurrence"
+      frequency: "Once every 1-2 years"
+    4:
+      label: "High"
+      description: "50-75% chance of occurrence"
+      frequency: "Once per year"
+    5:
+      label: "Very High"
+      description: "> 75% chance of occurrence"
+      frequency: "Multiple times per year"
+      
+  impact_scale:
+    financial:
+      1:
+        label: "Minimal"
+        description: "< $10K impact"
+      2:
+        label: "Minor"
+        description: "$10K - $100K impact"
+      3:
+        label: "Moderate"
+        description: "$100K - $1M impact"
+      4:
+        label: "Major"
+        description: "$1M - $10M impact"
+      5:
+        label: "Severe"
+        description: "> $10M impact"
+        
+    operational:
+      1:
+        label: "Minimal"
+        description: "No significant operational impact"
+      2:
+        label: "Minor"
+        description: "Minor disruption, quick recovery"
+      3:
+        label: "Moderate"
+        description: "Moderate disruption, some recovery time"
+      4:
+        label: "Major"
+        description: "Significant disruption, extended recovery"
+      5:
+        label: "Severe"
+        description: "Critical operations severely impacted"
+        
+    strategic:
+      1:
+        label: "Minimal"
+        description: "No impact on strategic objectives"
+      2:
+        label: "Minor"
+        description: "Minor delay in strategic initiatives"
+      3:
+        label: "Moderate"
+        description: "Some strategic objectives at risk"
+      4:
+        label: "Major"
+        description: "Major strategic objectives threatened"
+      5:
+        label: "Severe"
+        description: "Strategic viability threatened"
+        
+    reputation:
+      1:
+        label: "Minimal"
+        description: "No external attention"
+      2:
+        label: "Minor"
+        description: "Limited local attention"
+      3:
+        label: "Moderate"
+        description: "Regional negative attention"
+      4:
+        label: "Major"
+        description: "National negative attention"
+      5:
+        label: "Severe"
+        description: "International crisis, long-term damage"
+
+risk_matrix:
+  # Risk Score = Probability × Highest Impact Score
+  scoring_matrix:
+    1-4: "Low Risk (Green)"
+    5-9: "Medium Risk (Yellow)"
+    10-16: "High Risk (Orange)"
+    17-25: "Critical Risk (Red)"
+    
+  risk_tolerance:
+    low_tolerance:
+      acceptable_score: "≤ 4"
+      action_required: "Minimal monitoring"
+    medium_tolerance:
+      acceptable_score: "≤ 9"
+      action_required: "Regular monitoring and review"
+    high_tolerance:
+      acceptable_score: "≤ 16"
+      action_required: "Active management required"
+    critical_threshold:
+      acceptable_score: "> 16"
+      action_required: "Immediate action required"
+
+risk_response_strategies:
+  accept:
+    description: "Acknowledge risk and take no action"
+    when_to_use: "Low impact, cost of mitigation exceeds risk"
+    considerations:
+      - "Risk within tolerance levels"
+      - "Mitigation cost prohibitive"
+      - "Limited control over risk factors"
+    
+  avoid:
+    description: "Eliminate risk by changing approach"
+    when_to_use: "High impact, unacceptable risk level"
+    considerations:
+      - "Risk exceeds tolerance"
+      - "Alternative approaches available"
+      - "Business objectives can be met differently"
+    
+  mitigate:
+    description: "Reduce probability or impact"
+    when_to_use: "Risk can be reduced to acceptable levels"
+    considerations:
+      - "Cost-effective mitigation available"
+      - "Controls can reduce risk effectively"
+      - "Residual risk acceptable"
+    
+  transfer:
+    description: "Share or transfer risk to third party"
+    when_to_use: "Risk can be transferred cost-effectively"
+    considerations:
+      - "Insurance available"
+      - "Outsourcing options exist"
+      - "Contractual risk transfer possible"
+
+control_types:
+  preventive_controls:
+    description: "Controls that prevent risk occurrence"
+    examples:
+      - "Policies and procedures"
+      - "Access controls"
+      - "Training programs"
+      - "Quality gates"
+      - "Approval processes"
+    
+  detective_controls:
+    description: "Controls that detect risk occurrence"
+    examples:
+      - "Monitoring systems"
+      - "Regular audits"
+      - "Performance dashboards"
+      - "Exception reports"
+      - "Reconciliations"
+    
+  corrective_controls:
+    description: "Controls that correct after risk occurrence"
+    examples:
+      - "Incident response procedures"
+      - "Business continuity plans"
+      - "Recovery procedures"
+      - "Escalation processes"
+      - "Communication protocols"
+
+key_risk_indicators:
+  financial_kris:
+    - "Cash flow variance"
+    - "Budget variance"
+    - "Revenue decline"
+    - "Cost increases"
+    - "Margin compression"
+    
+  operational_kris:
+    - "System downtime"
+    - "Error rates"
+    - "Customer complaints"
+    - "Employee turnover"
+    - "Process cycle time"
+    
+  strategic_kris:
+    - "Market share decline"
+    - "Competitive pressure"
+    - "Regulatory changes"
+    - "Technology disruption"
+    - "Customer satisfaction scores"
+    
+  compliance_kris:
+    - "Audit findings"
+    - "Regulatory inquiries"
+    - "Policy violations"
+    - "Training completion rates"
+    - "Certification status"
+
+reporting_templates:
+  executive_summary:
+    total_risks: 0
+    critical_risks: 0
+    high_risks: 0
+    medium_risks: 0
+    low_risks: 0
+    
+    top_risks:
+      - "Risk description and score"
+      - "Current status and actions"
+      - "Timeline for resolution"
+    
+    emerging_risks: []
+    risk_trend_analysis: ""
+    key_achievements: []
+    recommendations: []
+    
+  detailed_risk_report:
+    risk_category_breakdown: {}
+    control_effectiveness_summary: {}
+    action_plan_status: {}
+    budget_requirements: {}
+    resource_allocation: {}
+    
+  board_risk_dashboard:
+    risk_heat_map: "Visual representation of risks"
+    top_5_risks: []
+    risk_appetite_status: ""
+    emerging_threats: []
+    mitigation_progress: ""
+
+governance_framework:
+  roles_and_responsibilities:
+    chief_risk_officer:
+      - "Overall risk management strategy"
+      - "Risk framework oversight"
+      - "Board and executive reporting"
+      - "Risk culture development"
+    
+    risk_owners:
+      - "Risk identification and assessment"
+      - "Control implementation"
+      - "Regular risk updates"
+      - "Action plan execution"
+    
+    risk_committee:
+      - "Risk strategy approval"
+      - "Risk tolerance setting"
+      - "Major risk decisions"
+      - "Performance oversight"
+    
+    business_units:
+      - "Day-to-day risk monitoring"
+      - "Control operation"
+      - "Incident reporting"
+      - "Risk awareness"
+  
+  review_cycles:
+    daily:
+      - "Critical risk monitoring"
+      - "KRI tracking"
+      - "Incident management"
+    
+    weekly:
+      - "High-risk review"
+      - "Action plan progress"
+      - "Emerging risk assessment"
+    
+    monthly:
+      - "Risk register update"
+      - "Control effectiveness review"
+      - "Management reporting"
+    
+    quarterly:
+      - "Comprehensive risk assessment"
+      - "Board reporting"
+      - "Risk appetite review"
+    
+    annually:
+      - "Risk strategy review"
+      - "Framework assessment"
+      - "Training and awareness"
+
+integration_guidelines:
+  business_planning:
+    - "Include risk assessment in strategic planning"
+    - "Consider risk capacity in target setting"
+    - "Align risk appetite with business strategy"
+    
+  project_management:
+    - "Incorporate risk register in project plans"
+    - "Regular risk reviews in project meetings"
+    - "Risk-based decision making"
+    
+  performance_management:
+    - "Include risk metrics in scorecards"
+    - "Risk-adjusted performance targets"
+    - "Risk awareness in compensation"
+
+usage_instructions:
+  setup:
+    1: "Define risk categories relevant to your organization"
+    2: "Customize impact scales for your context"
+    3: "Set risk tolerance levels"
+    4: "Establish governance structure"
+    
+  operation:
+    1: "Identify and document risks using template"
+    2: "Assess probability and impact"
+    3: "Evaluate existing controls"
+    4: "Develop response strategies"
+    5: "Implement action plans"
+    6: "Monitor and review regularly"
+    
+  maintenance:
+    1: "Update risk assessments regularly"
+    2: "Review control effectiveness"
+    3: "Track KRIs and trends"
+    4: "Report to stakeholders"
+    5: "Continuously improve process"
+
+best_practices:
+  risk_identification:
+    - "Use multiple identification techniques"
+    - "Involve diverse stakeholders"
+    - "Consider internal and external factors"
+    - "Look at root causes, not just symptoms"
+    - "Consider interconnected risks"
+    
+  risk_assessment:
+    - "Use consistent criteria"
+    - "Document assumptions"
+    - "Consider time horizons"
+    - "Account for risk interdependencies"
+    - "Validate assessments regularly"
+    
+  risk_monitoring:
+    - "Use leading indicators where possible"
+    - "Automate monitoring where feasible"
+    - "Set appropriate thresholds"
+    - "Ensure timely reporting"
+    - "Act on early warning signals"
+
+notes:
+  - "Customize template fields based on organizational needs"
+  - "Regularly review and update risk assessments"
+  - "Ensure risk register is integrated with business processes"
+  - "Train stakeholders on risk management principles"
+  - "Maintain consistency in risk assessment approach"
+  - "Document assumptions and rationale for decisions"

@@ -1,0 +1,292 @@
+name: "Business Health Assessment Template"
+description: "Comprehensive business health diagnostic tool for small business consultants to quickly assess client business condition"
+category: "client-onboarding"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Business Health Assessment for Small Business Consulting
+
+template:
+  assessment_information:
+    client_name: ""
+    business_name: ""
+    industry: ""
+    assessment_date: ""
+    consultant_name: ""
+    business_stage: "" # Startup, Growth, Mature, Declining
+    years_in_business: 0
+    number_of_employees: 0
+    
+  financial_health:
+    revenue_metrics:
+      annual_revenue: 0
+      revenue_growth_last_year_percent: 0
+      revenue_consistency: "" # Stable, Seasonal, Volatile
+      main_revenue_sources: []
+      customer_concentration_risk: "" # Low, Medium, High
+      
+    profitability:
+      gross_profit_margin_percent: 0
+      net_profit_margin_percent: 0
+      break_even_status: "" # Above, At, Below
+      cash_flow_status: "" # Positive, Break-even, Negative
+      months_of_runway: 0
+      
+    financial_management:
+      bookkeeping_quality: "" # Excellent, Good, Fair, Poor
+      financial_reporting_frequency: "" # Monthly, Quarterly, Annually, Never
+      budget_planning: "" # Detailed, Basic, None
+      cash_flow_forecasting: "" # Yes, No
+      debt_management: "" # Excellent, Good, Concerning, Critical
+      
+    scoring:
+      financial_health_score: 0 # 1-10 scale
+      
+  operational_health:
+    processes_and_systems:
+      documented_processes: "" # Comprehensive, Basic, Minimal, None
+      quality_control_systems: "" # Robust, Basic, Weak, None
+      inventory_management: "" # Optimized, Adequate, Poor, N/A
+      supplier_relationships: "" # Strong, Good, Weak, Problematic
+      technology_adoption: "" # Advanced, Current, Outdated, Minimal
+      
+    productivity_and_efficiency:
+      workflow_efficiency: "" # Optimized, Good, Fair, Poor
+      employee_productivity: "" # High, Average, Below Average, Poor
+      capacity_utilization: "" # Optimal, Good, Underutilized, Overextended
+      waste_management: "" # Minimal, Acceptable, High, Excessive
+      
+    operations_scoring:
+      operational_efficiency_score: 0 # 1-10 scale
+      
+  market_and_competitive_position:
+    market_dynamics:
+      market_growth: "" # Growing, Stable, Declining
+      competitive_intensity: "" # Low, Medium, High
+      market_share: "" # Leading, Strong, Moderate, Small
+      customer_loyalty: "" # High, Medium, Low
+      brand_recognition: "" # Strong, Moderate, Weak, None
+      
+    competitive_advantages:
+      unique_value_proposition: ""
+      competitive_differentiators: []
+      barriers_to_entry: "" # High, Medium, Low
+      switching_costs: "" # High, Medium, Low
+      
+    market_scoring:
+      market_position_score: 0 # 1-10 scale
+      
+  customer_and_sales:
+    customer_base:
+      customer_segments: []
+      customer_acquisition_cost: 0
+      customer_lifetime_value: 0
+      customer_retention_rate_percent: 0
+      customer_satisfaction_level: "" # High, Medium, Low
+      
+    sales_performance:
+      sales_process_maturity: "" # Advanced, Structured, Basic, Ad-hoc
+      sales_conversion_rate_percent: 0
+      average_deal_size: 0
+      sales_cycle_length_days: 0
+      sales_team_performance: "" # Excellent, Good, Fair, Poor
+      
+    marketing_effectiveness:
+      marketing_strategy_clarity: "" # Clear, Somewhat Clear, Unclear, None
+      digital_marketing_presence: "" # Strong, Moderate, Weak, None
+      marketing_roi_tracking: "" # Comprehensive, Basic, Minimal, None
+      lead_generation_effectiveness: "" # High, Medium, Low, Poor
+      
+    customer_scoring:
+      customer_sales_score: 0 # 1-10 scale
+      
+  human_resources_and_culture:
+    team_and_leadership:
+      leadership_capability: "" # Strong, Good, Developing, Weak
+      employee_engagement: "" # High, Medium, Low
+      skill_level_adequacy: "" # Excellent, Good, Fair, Poor
+      training_and_development: "" # Comprehensive, Basic, Minimal, None
+      succession_planning: "" # Yes, Partial, No
+      
+    organizational_culture:
+      company_culture_strength: "" # Strong, Moderate, Weak
+      communication_effectiveness: "" # Excellent, Good, Fair, Poor
+      change_adaptability: "" # High, Medium, Low
+      innovation_culture: "" # Strong, Developing, Weak, None
+      
+    hr_scoring:
+      human_resources_score: 0 # 1-10 scale
+      
+  strategic_planning_and_governance:
+    strategic_clarity:
+      vision_mission_clarity: "" # Clear, Somewhat Clear, Unclear, None
+      strategic_goals_definition: "" # Specific, General, Vague, None
+      strategic_planning_process: "" # Formal, Informal, Ad-hoc, None
+      goal_tracking_systems: "" # Robust, Basic, Minimal, None
+      
+    governance_and_risk:
+      decision_making_process: "" # Structured, Informal, Chaotic
+      risk_management: "" # Proactive, Reactive, Minimal, None
+      compliance_status: "" # Excellent, Good, Fair, Poor
+      board_advisory_support: "" # Strong, Moderate, Weak, None
+      
+    strategic_scoring:
+      strategic_governance_score: 0 # 1-10 scale
+
+assessment_scoring:
+  overall_health_calculation:
+    # Weighted average of all category scores
+    weights:
+      financial_health: 30
+      operational_efficiency: 20
+      market_position: 20
+      customer_sales: 15
+      human_resources: 10
+      strategic_governance: 5
+      
+    overall_business_health_score: 0 # Calculated weighted average
+    
+  health_ratings:
+    excellent: "8.5 - 10.0"
+    good: "7.0 - 8.4"
+    fair: "5.5 - 6.9"
+    concerning: "4.0 - 5.4"
+    critical: "1.0 - 3.9"
+    
+  priority_areas:
+    immediate_attention_required: []
+    improvement_opportunities: []
+    strengths_to_leverage: []
+
+key_findings:
+  critical_issues:
+    # Issues requiring immediate attention
+    financial_red_flags: []
+    operational_bottlenecks: []
+    market_threats: []
+    organizational_risks: []
+    
+  growth_opportunities:
+    revenue_expansion: []
+    efficiency_improvements: []
+    market_opportunities: []
+    competitive_advantages: []
+    
+  recommendations:
+    immediate_actions: []
+    short_term_initiatives: []
+    long_term_strategic_moves: []
+
+action_plan_framework:
+  phase_1_stabilization:
+    # 0-3 months: Address critical issues
+    financial_stabilization: []
+    operational_fixes: []
+    risk_mitigation: []
+    
+  phase_2_optimization:
+    # 3-12 months: Improve efficiency and performance
+    process_improvements: []
+    system_upgrades: []
+    team_development: []
+    
+  phase_3_growth:
+    # 12+ months: Strategic growth initiatives
+    market_expansion: []
+    product_development: []
+    scaling_strategies: []
+
+benchmarking:
+  industry_comparisons:
+    revenue_per_employee: ""
+    profit_margins: ""
+    growth_rates: ""
+    operational_efficiency: ""
+    
+  best_practices:
+    financial_management: []
+    operational_excellence: []
+    customer_experience: []
+    employee_engagement: []
+
+risk_assessment:
+  business_continuity_risks:
+    single_points_of_failure: []
+    key_person_dependencies: []
+    supplier_concentrations: []
+    customer_concentrations: []
+    
+  financial_risks:
+    cash_flow_risks: []
+    credit_risks: []
+    market_risks: []
+    
+  operational_risks:
+    process_risks: []
+    technology_risks: []
+    compliance_risks: []
+
+follow_up_plan:
+  reassessment_schedule:
+    next_full_assessment: ""
+    quarterly_check_ins: []
+    monthly_metrics_review: []
+    
+  monitoring_kpis:
+    financial_kpis: []
+    operational_kpis: []
+    customer_kpis: []
+    employee_kpis: []
+    
+  support_requirements:
+    consulting_needs: []
+    training_requirements: []
+    system_implementations: []
+    external_expertise: []
+
+reporting_format:
+  executive_summary:
+    overall_health_rating: ""
+    key_strengths: []
+    critical_issues: []
+    top_3_recommendations: []
+    estimated_implementation_timeline: ""
+    
+  detailed_findings:
+    category_breakdowns: {}
+    comparative_analysis: ""
+    risk_assessment_summary: ""
+    
+  action_plan:
+    immediate_priorities: []
+    resource_requirements: []
+    success_metrics: []
+    timeline_milestones: []
+
+usage_instructions:
+  preparation:
+    - "Schedule 2-3 hours for comprehensive assessment"
+    - "Gather financial statements, org charts, process documents"
+    - "Prepare list of stakeholders for interviews"
+    - "Review industry benchmarks and competitive landscape"
+    
+  assessment_process:
+    - "Start with financial health analysis"
+    - "Observe operations and interview key personnel"
+    - "Review customer feedback and market position"
+    - "Assess strategic planning and governance"
+    - "Score each category objectively"
+    
+  follow_up:
+    - "Present findings to client leadership"
+    - "Prioritize recommendations based on impact and urgency"
+    - "Develop detailed implementation roadmap"
+    - "Schedule regular review meetings"
+
+notes:
+  - "Use objective criteria and avoid personal biases"
+  - "Gather evidence to support all assessments"
+  - "Consider industry-specific factors and seasonal variations"
+  - "Focus on actionable insights rather than just problems"
+  - "Maintain confidentiality and professional discretion"

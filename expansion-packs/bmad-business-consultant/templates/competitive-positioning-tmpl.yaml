@@ -1,0 +1,561 @@
+name: "Competitive Positioning Template"
+description: "Comprehensive competitive analysis and positioning template for small business consultants to help clients develop strong competitive strategies and market positioning"
+category: "marketing-sales"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Competitive Positioning Template for Small Business Consulting
+
+template:
+  analysis_information:
+    client_name: ""
+    business_name: ""
+    industry: ""
+    market_segment: ""
+    analysis_date: ""
+    consultant_name: ""
+    geographic_scope: ""
+    analysis_period: ""
+    
+  market_definition:
+    market_boundaries:
+      product_market_scope: ""
+      geographic_market_scope: ""
+      customer_segment_scope: ""
+      price_point_scope: ""
+      
+    market_size_and_structure:
+      total_addressable_market: 0
+      serviceable_addressable_market: 0
+      market_growth_rate: 0
+      market_maturity_stage: ""
+      market_concentration: ""
+      
+    market_dynamics:
+      key_trends: []
+      disruption_factors: []
+      regulatory_influences: []
+      economic_factors: []
+
+  competitive_landscape_mapping:
+    competitor_identification:
+      direct_competitors:
+        - competitor_name: ""
+          market_share: 0
+          revenue_estimate: 0
+          geographic_presence: []
+          target_customers: []
+          
+      indirect_competitors:
+        - competitor_name: ""
+          substitution_threat: ""
+          market_overlap: ""
+          competitive_factor: ""
+          
+      emerging_competitors:
+        - competitor_name: ""
+          growth_rate: 0
+          disruptive_potential: ""
+          funding_status: ""
+          
+    competitive_structure:
+      market_leaders: []
+      challengers: []
+      followers: []
+      niche_players: []
+      
+    market_share_analysis:
+      market_share_distribution: {}
+      share_trends: {}
+      concentration_ratio: 0
+
+  detailed_competitor_analysis:
+    competitor_profiles:
+      competitor_1:
+        basic_information:
+          company_name: ""
+          founded: ""
+          headquarters: ""
+          employees: 0
+          revenue: 0
+          funding_status: ""
+          
+        business_model:
+          value_proposition: ""
+          revenue_streams: []
+          target_customers: []
+          distribution_channels: []
+          
+        product_service_portfolio:
+          core_offerings: []
+          product_quality: ""
+          innovation_rate: ""
+          technology_platform: ""
+          
+        pricing_strategy:
+          pricing_model: ""
+          price_positioning: ""
+          discount_strategies: []
+          value_for_money: ""
+          
+        marketing_and_sales:
+          brand_positioning: ""
+          marketing_channels: []
+          sales_approach: ""
+          customer_service: ""
+          
+        operational_capabilities:
+          production_capacity: ""
+          supply_chain: ""
+          technology_infrastructure: ""
+          quality_systems: ""
+          
+        financial_performance:
+          revenue_growth: 0
+          profitability: ""
+          financial_stability: ""
+          investment_capacity: ""
+          
+        strengths:
+          competitive_advantages: []
+          core_competencies: []
+          market_position_strengths: []
+          
+        weaknesses:
+          competitive_disadvantages: []
+          operational_limitations: []
+          market_vulnerabilities: []
+
+  competitive_positioning_analysis:
+    positioning_dimensions:
+      price_vs_quality:
+        current_position: ""
+        competitor_positions: {}
+        market_gaps: []
+        
+      service_vs_product:
+        current_position: ""
+        competitor_positions: {}
+        differentiation_opportunities: []
+        
+      innovation_vs_reliability:
+        current_position: ""
+        competitor_positions: {}
+        positioning_strategy: ""
+        
+      breadth_vs_depth:
+        current_position: ""
+        competitor_positions: {}
+        specialization_opportunities: []
+        
+    perceptual_mapping:
+      key_attributes: []
+      attribute_importance: {}
+      brand_perceptions: {}
+      positioning_gaps: []
+      
+    value_proposition_comparison:
+      client_value_proposition: ""
+      competitor_value_propositions: {}
+      differentiation_analysis: []
+      improvement_opportunities: []
+
+  competitive_strengths_and_weaknesses:
+    client_analysis:
+      competitive_strengths:
+        - strength: ""
+          impact_level: ""
+          sustainability: ""
+          leverage_potential: ""
+          
+      competitive_weaknesses:
+        - weakness: ""
+          impact_level: ""
+          improvement_urgency: ""
+          mitigation_strategy: ""
+          
+      unique_capabilities:
+        - capability: ""
+          competitive_advantage: ""
+          barrier_to_imitation: ""
+          
+    competitive_benchmarking:
+      performance_metrics: {}
+      operational_metrics: {}
+      financial_metrics: {}
+      customer_metrics: {}
+      
+    swot_analysis:
+      strengths: []
+      weaknesses: []
+      opportunities: []
+      threats: []
+
+  market_positioning_strategy:
+    positioning_options:
+      option_1:
+        positioning_statement: ""
+        target_segment: ""
+        key_differentiators: []
+        risks: []
+        resource_requirements: []
+        
+      option_2:
+        positioning_statement: ""
+        target_segment: ""
+        key_differentiators: []
+        risks: []
+        resource_requirements: []
+        
+      option_3:
+        positioning_statement: ""
+        target_segment: ""
+        key_differentiators: []
+        risks: []
+        resource_requirements: []
+        
+    recommended_positioning:
+      positioning_statement: ""
+      rationale: ""
+      competitive_advantages: []
+      target_segments: []
+      
+    positioning_execution:
+      brand_messaging: ""
+      marketing_communications: []
+      product_development: []
+      pricing_strategy: ""
+      distribution_strategy: ""
+
+  competitive_strategy_development:
+    strategic_options:
+      cost_leadership:
+        feasibility: ""
+        requirements: []
+        risks: []
+        competitive_response: ""
+        
+      differentiation:
+        differentiation_factors: []
+        sustainability: ""
+        customer_value: ""
+        premium_potential: 0
+        
+      focus_strategy:
+        niche_selection: ""
+        specialization_benefits: []
+        market_size_limitations: ""
+        
+    recommended_strategy:
+      primary_strategy: ""
+      supporting_strategies: []
+      implementation_requirements: []
+      success_metrics: []
+      
+    competitive_tactics:
+      defensive_moves: []
+      offensive_moves: []
+      guerrilla_tactics: []
+      alliance_opportunities: []
+
+  customer_perspective_analysis:
+    customer_decision_criteria:
+      primary_criteria: []
+      secondary_criteria: []
+      criteria_weighting: {}
+      
+    brand_perception_research:
+      brand_awareness: {}
+      brand_preference: {}
+      brand_loyalty: {}
+      purchase_consideration: {}
+      
+    customer_satisfaction_comparison:
+      satisfaction_scores: {}
+      net_promoter_scores: {}
+      customer_retention_rates: {}
+      
+    switching_behavior:
+      switching_frequency: ""
+      switching_reasons: []
+      switching_barriers: []
+      loyalty_factors: []
+
+  competitive_intelligence_system:
+    information_sources:
+      primary_sources: []
+      secondary_sources: []
+      digital_monitoring: []
+      industry_contacts: []
+      
+    monitoring_framework:
+      competitor_activities: []
+      market_changes: []
+      customer_feedback: []
+      industry_developments: []
+      
+    analysis_process:
+      data_collection: ""
+      analysis_frequency: ""
+      reporting_format: ""
+      action_triggers: []
+
+  competitive_response_planning:
+    scenario_planning:
+      competitor_moves:
+        - scenario: ""
+          probability: 0
+          impact: ""
+          response_strategy: ""
+          
+      market_changes:
+        - scenario: ""
+          probability: 0
+          impact: ""
+          adaptation_strategy: ""
+          
+    response_strategies:
+      price_competition_response: []
+      product_competition_response: []
+      marketing_competition_response: []
+      
+    early_warning_system:
+      monitoring_indicators: []
+      response_triggers: []
+      escalation_procedures: []
+
+  differentiation_strategy:
+    differentiation_opportunities:
+      product_differentiation:
+        features_and_functionality: []
+        quality_and_reliability: []
+        design_and_aesthetics: []
+        
+      service_differentiation:
+        customer_service_excellence: []
+        technical_support: []
+        convenience_factors: []
+        
+      brand_differentiation:
+        brand_personality: []
+        brand_values: []
+        brand_experience: []
+        
+      channel_differentiation:
+        distribution_innovation: []
+        channel_relationships: []
+        accessibility_improvements: []
+        
+    sustainable_competitive_advantages:
+      resource_based_advantages: []
+      capability_based_advantages: []
+      market_position_advantages: []
+      
+    differentiation_implementation:
+      product_development: []
+      operational_changes: []
+      marketing_adjustments: []
+      investment_requirements: []
+
+  pricing_strategy_vs_competition:
+    competitive_pricing_analysis:
+      price_comparison: {}
+      value_for_money_assessment: {}
+      pricing_strategy_analysis: {}
+      
+    pricing_positioning_options:
+      premium_pricing:
+        rationale: ""
+        requirements: []
+        risks: []
+        
+      competitive_pricing:
+        rationale: ""
+        requirements: []
+        risks: []
+        
+      value_pricing:
+        rationale: ""
+        requirements: []
+        risks: []
+        
+    price_sensitivity_analysis:
+      customer_price_sensitivity: ""
+      competitive_price_responses: []
+      price_elasticity_estimates: {}
+
+  market_share_strategy:
+    market_share_objectives:
+      current_market_share: 0
+      target_market_share: 0
+      market_share_growth_strategy: ""
+      
+    share_growth_tactics:
+      customer_acquisition: []
+      customer_retention: []
+      market_expansion: []
+      
+    share_defense_strategies:
+      competitive_barriers: []
+      customer_loyalty_programs: []
+      switching_cost_creation: []
+
+  innovation_and_competitive_advantage:
+    innovation_positioning:
+      innovation_leadership: ""
+      fast_follower: ""
+      selective_innovation: ""
+      
+    r_and_d_strategy:
+      innovation_focus_areas: []
+      investment_levels: 0
+      innovation_capabilities: []
+      
+    intellectual_property_strategy:
+      patent_strategy: ""
+      trade_secret_protection: []
+      brand_protection: []
+
+  implementation_roadmap:
+    phase_1_positioning_foundation:
+      # 0-90 days
+      activities: []
+      deliverables: []
+      success_metrics: []
+      
+    phase_2_differentiation_building:
+      # 90-180 days
+      activities: []
+      deliverables: []
+      success_metrics: []
+      
+    phase_3_market_execution:
+      # 180-365 days
+      activities: []
+      deliverables: []
+      success_metrics: []
+      
+    ongoing_competitive_management:
+      monitoring_activities: []
+      review_cycles: []
+      adjustment_processes: []
+
+  measurement_and_monitoring:
+    competitive_kpis:
+      market_position_metrics:
+        - "Market share"
+        - "Brand awareness"
+        - "Customer preference"
+        - "Price premium achieved"
+        
+      competitive_performance_metrics:
+        - "Win rate vs. competitors"
+        - "Customer acquisition from competitors"
+        - "Competitive displacement rate"
+        - "Relative customer satisfaction"
+        
+      positioning_effectiveness_metrics:
+        - "Brand perception scores"
+        - "Differentiation recognition"
+        - "Value proposition clarity"
+        - "Purchase consideration"
+        
+    tracking_framework:
+      data_collection_methods: []
+      analysis_frequency: ""
+      reporting_schedule: ""
+      stakeholder_communication: []
+      
+    competitive_dashboard:
+      key_metrics_display: []
+      trend_analysis: []
+      alert_systems: []
+
+  risk_assessment:
+    competitive_risks:
+      market_share_erosion: ""
+      price_wars: ""
+      technology_disruption: ""
+      new_entrant_threats: ""
+      
+    positioning_risks:
+      positioning_failure: ""
+      brand_confusion: ""
+      competitive_copying: ""
+      market_rejection: ""
+      
+    mitigation_strategies:
+      risk_prevention: []
+      contingency_plans: []
+      response_protocols: []
+
+success_criteria:
+  positioning_success_indicators:
+    market_recognition: ""
+    customer_preference: ""
+    competitive_advantage: ""
+    financial_performance: ""
+    
+  strategic_objectives_achievement:
+    market_share_targets: ""
+    revenue_growth_targets: ""
+    profitability_targets: ""
+    brand_value_targets: ""
+
+industry_specific_considerations:
+  technology_sector:
+    innovation_cycles: []
+    platform_effects: []
+    network_effects: []
+    
+  service_sector:
+    relationship_importance: []
+    service_quality_factors: []
+    local_market_dynamics: []
+    
+  manufacturing_sector:
+    cost_structure_advantages: []
+    supply_chain_considerations: []
+    quality_and_reliability: []
+    
+  retail_sector:
+    location_importance: []
+    customer_experience: []
+    inventory_management: []
+
+usage_guidelines:
+  analysis_preparation:
+    research_requirements:
+      - "Gather comprehensive competitor information"
+      - "Collect customer perception data"
+      - "Review industry reports and analysis"
+      - "Conduct stakeholder interviews"
+      
+    data_sources:
+      - "Public company information"
+      - "Industry databases"
+      - "Customer surveys"
+      - "Market research reports"
+      - "Competitive intelligence tools"
+      
+  analysis_execution:
+    methodology:
+      - "Start with broad market analysis"
+      - "Focus on key competitors"
+      - "Analyze from customer perspective"
+      - "Develop positioning options"
+      
+    validation:
+      - "Test positioning concepts with customers"
+      - "Validate assumptions with market data"
+      - "Stress-test strategies against scenarios"
+      - "Ensure implementation feasibility"
+
+notes:
+  - "Focus on sustainable competitive advantages"
+  - "Consider customer perspective throughout analysis"
+  - "Balance offensive and defensive strategies"
+  - "Ensure positioning aligns with capabilities"
+  - "Plan for competitive responses to your moves"
+  - "Regularly update competitive intelligence"

@@ -1,0 +1,818 @@
+name: "Manufacturing Business Template"
+description: "Comprehensive manufacturing business assessment and optimization template for small business consultants to improve production efficiency, quality control, supply chain management, and operational excellence"
+category: "industry-manufacturing"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Manufacturing Business Template for Small Business Consulting
+
+template:
+  business_overview:
+    company_information:
+      business_name: ""
+      manufacturing_type: "" # Custom, Job Shop, Batch, Mass Production, Process
+      industry_sector: "" # Automotive, Electronics, Food & Beverage, Textiles, etc.
+      employee_count: 0
+      annual_revenue: 0
+      years_in_operation: 0
+      
+    manufacturing_profile:
+      production_methodology: "" # Make-to-Stock, Make-to-Order, Assemble-to-Order, Engineer-to-Order
+      primary_products: []
+      product_complexity: "" # Simple, Moderate, Complex, Highly Complex
+      customization_level: "" # Standard, Semi-Custom, Fully Custom
+      
+    facility_information:
+      total_floor_space: 0
+      production_floor_space: 0
+      warehouse_space: 0
+      office_space: 0
+      facility_age: 0
+      facility_condition: ""
+      
+    market_position:
+      target_markets: []
+      customer_segments: []
+      geographic_reach: ""
+      competitive_position: ""
+      market_share: 0
+
+  production_operations:
+    production_planning:
+      planning_horizon: "" # Days/Weeks/Months
+      planning_methodology: "" # MRP, ERP, Lean, Kanban, JIT
+      demand_forecasting: ""
+      capacity_planning: ""
+      scheduling_system: ""
+      
+    production_processes:
+      process_mapping:
+        - process_name: ""
+          process_type: ""
+          cycle_time: 0
+          setup_time: 0
+          capacity_utilization: 0
+          bottleneck_status: false
+          
+      workflow_efficiency:
+        material_flow: 0
+        information_flow: 0
+        process_standardization: 0
+        waste_minimization: 0
+        
+    production_metrics:
+      overall_equipment_effectiveness: 0
+      production_efficiency: 0
+      schedule_adherence: 0
+      throughput_time: 0
+      work_in_process_levels: 0
+      
+    capacity_analysis:
+      theoretical_capacity: 0
+      practical_capacity: 0
+      current_utilization: 0
+      peak_demand_capacity: 0
+      capacity_constraints: []
+      
+    lean_manufacturing_assessment:
+      waste_identification:
+        overproduction: 0
+        waiting: 0
+        transportation: 0
+        over_processing: 0
+        inventory: 0
+        motion: 0
+        defects: 0
+        underutilized_talent: 0
+        
+      lean_implementation:
+        value_stream_mapping: false
+        continuous_improvement: 0
+        employee_engagement: 0
+        standardized_work: 0
+
+  quality_management:
+    quality_system:
+      quality_management_system: "" # ISO 9001, TS 16949, AS9100, etc.
+      quality_certifications: []
+      quality_manual_exists: false
+      quality_procedures_documented: false
+      
+    quality_control:
+      incoming_inspection: ""
+      in_process_inspection: ""
+      final_inspection: ""
+      statistical_process_control: false
+      measurement_systems: []
+      
+    quality_metrics:
+      first_pass_yield: 0
+      defect_rate: 0
+      customer_returns: 0
+      scrap_rate: 0
+      rework_rate: 0
+      
+    quality_costs:
+      prevention_costs: 0
+      appraisal_costs: 0
+      internal_failure_costs: 0
+      external_failure_costs: 0
+      total_quality_costs: 0
+      
+    continuous_improvement:
+      improvement_methodology: "" # Six Sigma, Kaizen, TQM, etc.
+      improvement_projects: 0
+      employee_suggestions: 0
+      cost_savings_realized: 0
+
+  supply_chain_management:
+    supplier_management:
+      number_of_suppliers: 0
+      supplier_evaluation_process: ""
+      supplier_development_programs: false
+      strategic_partnerships: 0
+      local_vs_global_sourcing: ""
+      
+    procurement_processes:
+      purchasing_system: ""
+      inventory_management_system: ""
+      supplier_payment_terms: ""
+      purchase_order_cycle_time: 0
+      
+    inventory_management:
+      raw_materials_inventory:
+        inventory_turns: 0
+        days_on_hand: 0
+        stockout_frequency: 0
+        carrying_cost_percentage: 0
+        
+      work_in_process_inventory:
+        wip_turns: 0
+        wip_days: 0
+        wip_value: 0
+        flow_efficiency: 0
+        
+      finished_goods_inventory:
+        finished_goods_turns: 0
+        finished_goods_days: 0
+        customer_service_level: 0
+        obsolescence_rate: 0
+        
+    supply_chain_performance:
+      supplier_delivery_performance: 0
+      supplier_quality_performance: 0
+      total_supply_chain_cost: 0
+      supply_chain_flexibility: 0
+      
+    logistics_and_distribution:
+      inbound_logistics: ""
+      outbound_logistics: ""
+      warehousing_efficiency: 0
+      transportation_costs: 0
+      delivery_performance: 0
+
+  equipment_and_maintenance:
+    equipment_inventory:
+      production_equipment:
+        - equipment_type: ""
+          quantity: 0
+          age: 0
+          condition: ""
+          utilization_rate: 0
+          maintenance_cost: 0
+          
+      support_equipment:
+        material_handling: []
+        testing_equipment: []
+        utilities_systems: []
+        safety_equipment: []
+        
+    maintenance_management:
+      maintenance_strategy: "" # Reactive, Preventive, Predictive, Proactive
+      maintenance_planning: 0
+      maintenance_scheduling: 0
+      work_order_system: ""
+      
+    maintenance_metrics:
+      equipment_availability: 0
+      mean_time_between_failures: 0
+      mean_time_to_repair: 0
+      maintenance_cost_percentage: 0
+      planned_maintenance_percentage: 0
+      
+    equipment_effectiveness:
+      overall_equipment_effectiveness: 0
+      availability: 0
+      performance: 0
+      quality: 0
+      
+    capital_equipment_planning:
+      equipment_replacement_plan: false
+      technology_upgrade_roadmap: false
+      capital_budget_planning: 0
+      roi_analysis_process: ""
+
+  safety_and_compliance:
+    safety_management:
+      safety_program: ""
+      safety_training: 0
+      safety_meetings: ""
+      incident_reporting: ""
+      
+    safety_metrics:
+      recordable_incident_rate: 0
+      lost_time_incident_rate: 0
+      near_miss_reporting: 0
+      safety_training_hours: 0
+      
+    regulatory_compliance:
+      environmental_compliance:
+        environmental_permits: []
+        waste_management: ""
+        emissions_monitoring: ""
+        environmental_reporting: ""
+        
+      occupational_safety:
+        osha_compliance: ""
+        safety_inspections: 0
+        safety_violations: 0
+        corrective_actions: 0
+        
+      industry_specific_regulations:
+        industry_standards: []
+        certification_requirements: []
+        audit_frequency: ""
+        compliance_costs: 0
+        
+    risk_management:
+      operational_risks: []
+      compliance_risks: []
+      environmental_risks: []
+      mitigation_strategies: []
+
+  cost_management:
+    cost_structure_analysis:
+      direct_materials: 0
+      direct_labor: 0
+      manufacturing_overhead: 0
+      total_manufacturing_cost: 0
+      cost_per_unit: 0
+      
+    cost_accounting_system:
+      costing_methodology: "" # Standard, Actual, Activity-Based
+      cost_allocation_methods: []
+      variance_analysis: false
+      profitability_analysis: ""
+      
+    cost_reduction_opportunities:
+      material_cost_reduction: []
+      labor_efficiency_improvements: []
+      overhead_cost_optimization: []
+      waste_reduction_initiatives: []
+      
+    pricing_strategy:
+      pricing_methodology: ""
+      margin_analysis: 0
+      competitive_pricing: ""
+      value_based_pricing: false
+
+  workforce_management:
+    organizational_structure:
+      management_layers: 0
+      span_of_control: 0
+      reporting_relationships: ""
+      communication_flow: 0
+      
+    skills_and_capabilities:
+      technical_skills_assessment: []
+      skills_gap_analysis: []
+      cross_training_programs: false
+      apprenticeship_programs: false
+      
+    productivity_analysis:
+      labor_productivity: 0
+      efficiency_measurements: []
+      incentive_programs: []
+      performance_management: 0
+      
+    safety_culture:
+      safety_awareness: 0
+      employee_engagement_in_safety: 0
+      safety_suggestion_programs: false
+      behavioral_safety_programs: false
+
+  technology_and_automation:
+    current_technology_assessment:
+      manufacturing_systems:
+        production_control_systems: []
+        quality_management_systems: []
+        maintenance_management_systems: []
+        inventory_management_systems: []
+        
+      automation_level:
+        manual_processes: 0
+        semi_automated_processes: 0
+        fully_automated_processes: 0
+        robotic_automation: 0
+        
+    digital_transformation_readiness:
+      data_collection_capabilities: 0
+      connectivity_infrastructure: 0
+      analytics_capabilities: 0
+      digital_skills: 0
+      
+    technology_opportunities:
+      industry_4_0_readiness: 0
+      iot_implementation_potential: []
+      artificial_intelligence_applications: []
+      predictive_analytics_opportunities: []
+      
+    automation_analysis:
+      automation_candidates:
+        - process: ""
+          automation_potential: 0
+          investment_required: 0
+          roi_estimate: 0
+          implementation_complexity: 0
+
+manufacturing_performance_assessment:
+  operational_excellence_scoring:
+    production_efficiency: 0
+    quality_performance: 0
+    cost_management: 0
+    delivery_performance: 0
+    safety_performance: 0
+    overall_operational_score: 0
+    
+  competitive_benchmarking:
+    industry_benchmarks:
+      productivity_benchmarks: []
+      quality_benchmarks: []
+      cost_benchmarks: []
+      delivery_benchmarks: []
+      
+    best_in_class_comparison:
+      performance_gaps: []
+      improvement_opportunities: []
+      benchmark_targets: []
+      
+  manufacturing_maturity_assessment:
+    process_maturity: 0
+    technology_maturity: 0
+    organizational_maturity: 0
+    improvement_maturity: 0
+    overall_maturity_score: 0
+
+improvement_opportunities:
+  production_optimization:
+    lean_manufacturing_implementation:
+      description: "Implement lean manufacturing principles to eliminate waste and improve efficiency"
+      impact_areas: ["Production efficiency", "Cost reduction", "Quality improvement"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_months: 0
+      
+    capacity_optimization:
+      description: "Optimize production capacity through bottleneck elimination and resource balancing"
+      impact_areas: ["Throughput", "Delivery performance", "Asset utilization"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_months: 0
+      
+    process_standardization:
+      description: "Standardize production processes for consistency and efficiency"
+      impact_areas: ["Quality consistency", "Training efficiency", "Cost reduction"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_months: 0
+
+  quality_enhancement:
+    quality_system_implementation:
+      description: "Implement comprehensive quality management system"
+      impact_areas: ["Product quality", "Customer satisfaction", "Cost of quality"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_months: 0
+      
+    statistical_process_control:
+      description: "Implement SPC for real-time quality monitoring and control"
+      impact_areas: ["Process control", "Defect reduction", "Consistency"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_months: 0
+
+  supply_chain_optimization:
+    supplier_development:
+      description: "Develop strategic supplier partnerships and improve supplier performance"
+      impact_areas: ["Supplier quality", "Delivery reliability", "Cost reduction"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_months: 0
+      
+    inventory_optimization:
+      description: "Optimize inventory levels while maintaining service levels"
+      impact_areas: ["Working capital", "Cash flow", "Storage costs"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_months: 0
+
+  technology_modernization:
+    automation_implementation:
+      description: "Implement automation for repetitive and high-volume processes"
+      impact_areas: ["Labor productivity", "Quality consistency", "Cost reduction"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_months: 0
+      
+    digital_transformation:
+      description: "Implement digital technologies for data-driven decision making"
+      impact_areas: ["Visibility", "Analytics", "Efficiency"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_months: 0
+
+financial_analysis:
+  manufacturing_cost_analysis:
+    cost_structure_breakdown:
+      material_costs_percentage: 0
+      labor_costs_percentage: 0
+      overhead_costs_percentage: 0
+      other_costs_percentage: 0
+      
+    cost_competitiveness:
+      cost_per_unit_vs_benchmark: 0
+      material_cost_efficiency: 0
+      labor_productivity_index: 0
+      overhead_efficiency: 0
+      
+    cost_reduction_potential:
+      material_cost_savings: 0
+      labor_efficiency_savings: 0
+      overhead_optimization: 0
+      total_cost_reduction_potential: 0
+      
+  investment_analysis:
+    capital_investment_requirements:
+      equipment_upgrades: 0
+      facility_improvements: 0
+      technology_systems: 0
+      total_capital_investment: 0
+      
+    operational_investment:
+      training_and_development: 0
+      process_improvement: 0
+      quality_systems: 0
+      total_operational_investment: 0
+      
+    roi_projections:
+      year_1_benefits: 0
+      year_2_benefits: 0
+      year_3_benefits: 0
+      total_3_year_benefits: 0
+      payback_period_months: 0
+      
+  working_capital_analysis:
+    inventory_investment:
+      raw_materials_investment: 0
+      wip_investment: 0
+      finished_goods_investment: 0
+      total_inventory_investment: 0
+      
+    working_capital_optimization:
+      inventory_reduction_potential: 0
+      receivables_optimization: 0
+      payables_optimization: 0
+      cash_flow_improvement: 0
+
+implementation_roadmap:
+  phase_1_foundation_0_6_months:
+    priorities:
+      - "Establish baseline measurements and key performance indicators"
+      - "Implement basic lean manufacturing principles and waste elimination"
+      - "Standardize critical production processes"
+      - "Enhance quality control and measurement systems"
+      
+    key_initiatives:
+      baseline_establishment:
+        deliverable: "Comprehensive performance measurement system"
+        timeline: "60 days"
+        success_criteria: []
+        
+      lean_fundamentals:
+        deliverable: "5S implementation and basic waste elimination"
+        timeline: "90 days"
+        success_criteria: []
+        
+      process_standardization:
+        deliverable: "Standard operating procedures for critical processes"
+        timeline: "120 days"
+        success_criteria: []
+        
+      quality_enhancement:
+        deliverable: "Enhanced quality control and inspection processes"
+        timeline: "150 days"
+        success_criteria: []
+        
+    expected_outcomes:
+      - "Clear visibility into current performance levels"
+      - "Initial productivity and efficiency improvements"
+      - "Standardized and documented processes"
+      - "Improved product quality and consistency"
+      
+  phase_2_optimization_6_12_months:
+    priorities:
+      - "Optimize production flow and eliminate bottlenecks"
+      - "Implement advanced quality management systems"
+      - "Enhance supply chain partnerships and performance"
+      - "Develop workforce capabilities and skills"
+      
+    key_initiatives:
+      production_optimization:
+        deliverable: "Optimized production flow and capacity utilization"
+        timeline: "240 days"
+        success_criteria: []
+        
+      quality_systems:
+        deliverable: "Comprehensive quality management system"
+        timeline: "300 days"
+        success_criteria: []
+        
+      supply_chain_enhancement:
+        deliverable: "Strategic supplier partnerships and improved performance"
+        timeline: "270 days"
+        success_criteria: []
+        
+      workforce_development:
+        deliverable: "Enhanced skills and cross-training programs"
+        timeline: "330 days"
+        success_criteria: []
+        
+    expected_outcomes:
+      - "Significantly improved production efficiency"
+      - "World-class quality management capabilities"
+      - "Optimized supply chain performance"
+      - "Enhanced workforce capabilities and flexibility"
+      
+  phase_3_transformation_12_24_months:
+    priorities:
+      - "Implement advanced manufacturing technologies"
+      - "Achieve operational excellence and continuous improvement culture"
+      - "Develop new product and process capabilities"
+      - "Establish industry leadership position"
+      
+    key_initiatives:
+      technology_implementation:
+        deliverable: "Advanced manufacturing technologies and automation"
+        timeline: "540 days"
+        success_criteria: []
+        
+      operational_excellence:
+        deliverable: "Sustained continuous improvement culture"
+        timeline: "600 days"
+        success_criteria: []
+        
+      capability_development:
+        deliverable: "Enhanced product and process development capabilities"
+        timeline: "660 days"
+        success_criteria: []
+        
+      market_leadership:
+        deliverable: "Industry-leading operational performance"
+        timeline: "720 days"
+        success_criteria: []
+        
+    expected_outcomes:
+      - "Industry-leading manufacturing capabilities"
+      - "Sustainable competitive advantages"
+      - "Innovation and new product development capabilities"
+      - "Market leadership in operational excellence"
+
+manufacturing_best_practices:
+  lean_manufacturing_principles:
+    value_identification:
+      - "Define value from customer perspective"
+      - "Identify value-adding vs non-value-adding activities"
+      - "Focus on customer requirements and specifications"
+      
+    value_stream_mapping:
+      - "Map current state value stream"
+      - "Identify waste and improvement opportunities"
+      - "Design future state value stream"
+      - "Implement transformation plan"
+      
+    flow_optimization:
+      - "Create continuous flow where possible"
+      - "Minimize batch sizes and work-in-process"
+      - "Balance workload across operations"
+      - "Eliminate bottlenecks and constraints"
+      
+    pull_systems:
+      - "Implement kanban systems for material flow"
+      - "Produce only what is needed when needed"
+      - "Minimize inventory and storage requirements"
+      - "Improve responsiveness to customer demand"
+      
+    continuous_improvement:
+      - "Establish kaizen culture and mindset"
+      - "Encourage employee suggestions and involvement"
+      - "Implement systematic problem-solving"
+      - "Pursue perfection through ongoing improvement"
+      
+  quality_management_excellence:
+    prevention_focus:
+      - "Design quality into products and processes"
+      - "Implement robust process controls"
+      - "Provide comprehensive training and certification"
+      - "Establish clear quality standards and expectations"
+      
+    statistical_process_control:
+      - "Monitor process performance in real-time"
+      - "Use control charts for process stability"
+      - "Implement capability studies and analysis"
+      - "Take corrective action before defects occur"
+      
+    continuous_improvement:
+      - "Use quality tools and methodologies systematically"
+      - "Implement corrective and preventive action systems"
+      - "Conduct regular quality audits and assessments"
+      - "Benchmark against best-in-class performance"
+      
+  supply_chain_optimization:
+    supplier_partnership:
+      - "Develop long-term strategic relationships"
+      - "Collaborate on continuous improvement"
+      - "Share information and forecasts"
+      - "Invest in supplier development and capabilities"
+      
+    inventory_management:
+      - "Optimize inventory levels across the supply chain"
+      - "Implement demand-driven replenishment"
+      - "Reduce lead times and variability"
+      - "Improve forecast accuracy and planning"
+
+success_metrics:
+  operational_performance:
+    productivity_metrics:
+      - "Overall Equipment Effectiveness (OEE) - Target: 80%+"
+      - "Labor productivity improvement - Target: 10-15% annually"
+      - "Throughput improvement - Target: 15-25%"
+      - "Capacity utilization - Target: 85%+"
+      
+    quality_metrics:
+      - "First pass yield - Target: 95%+"
+      - "Defect rate - Target: <1000 PPM"
+      - "Customer returns - Target: <0.5%"
+      - "Cost of quality - Target: <3% of sales"
+      
+    delivery_metrics:
+      - "On-time delivery - Target: 98%+"
+      - "Schedule adherence - Target: 95%+"
+      - "Lead time reduction - Target: 25-40%"
+      - "Customer service level - Target: 99%+"
+      
+  financial_performance:
+    cost_metrics:
+      - "Manufacturing cost reduction - Target: 5-10% annually"
+      - "Material cost optimization - Target: 3-5%"
+      - "Labor efficiency improvement - Target: 10-15%"
+      - "Overhead cost reduction - Target: 5-8%"
+      
+    profitability_metrics:
+      - "Gross margin improvement - Target: 2-5 percentage points"
+      - "Return on assets - Target: industry benchmark +20%"
+      - "Working capital turns - Target: 8+ turns annually"
+      - "Cash flow improvement - Target: 15-25%"
+      
+  strategic_performance:
+    competitive_metrics:
+      - "Market share growth - Target: based on strategy"
+      - "Customer satisfaction - Target: 90%+"
+      - "New product introduction success - Target: 80%+"
+      - "Innovation pipeline strength - Target: 3-5 projects"
+
+industry_specific_considerations:
+  automotive_manufacturing:
+    key_focus_areas:
+      - "TS 16949 quality system implementation"
+      - "Just-in-time delivery and supplier integration"
+      - "Advanced product quality planning (APQP)"
+      - "Statistical process control and capability studies"
+      
+    specific_metrics:
+      - "Parts per million (PPM) defect rates"
+      - "Supplier delivery performance (on-time, quantity, quality)"
+      - "Production line efficiency and downtime"
+      - "Warranty and field failure rates"
+      
+  electronics_manufacturing:
+    key_focus_areas:
+      - "Surface mount technology (SMT) optimization"
+      - "Electrostatic discharge (ESD) protection"
+      - "Component traceability and counterfeit prevention"
+      - "Automated optical inspection (AOI) and testing"
+      
+    specific_metrics:
+      - "First pass yield in assembly processes"
+      - "Test coverage and fault detection rates"
+      - "Component placement accuracy and speed"
+      - "Solder joint quality and reliability"
+      
+  food_and_beverage_manufacturing:
+    key_focus_areas:
+      - "Food safety and HACCP implementation"
+      - "Sanitary design and cleaning protocols"
+      - "Traceability and recall procedures"
+      - "Shelf life and product quality maintenance"
+      
+    specific_metrics:
+      - "Food safety audit scores"
+      - "Microbiological and chemical test results"
+      - "Product recall frequency and severity"
+      - "Waste and yield optimization"
+
+common_manufacturing_challenges:
+  operational_challenges:
+    capacity_constraints:
+      challenge: "Limited production capacity to meet demand"
+      solutions:
+        - "Optimize equipment utilization and reduce downtime"
+        - "Implement flexible manufacturing and quick changeovers"
+        - "Consider strategic capacity expansion or outsourcing"
+        - "Improve production planning and scheduling"
+        
+    quality_issues:
+      challenge: "Inconsistent product quality and high defect rates"
+      solutions:
+        - "Implement statistical process control systems"
+        - "Enhance operator training and certification"
+        - "Improve incoming material quality and supplier performance"
+        - "Invest in automated inspection and testing equipment"
+        
+    supply_chain_disruptions:
+      challenge: "Supplier reliability and material availability issues"
+      solutions:
+        - "Develop multiple qualified suppliers for critical materials"
+        - "Implement supplier performance monitoring and development"
+        - "Increase supply chain visibility and communication"
+        - "Optimize inventory levels and safety stock strategies"
+        
+  financial_challenges:
+    cost_competitiveness:
+      challenge: "High manufacturing costs compared to competition"
+      solutions:
+        - "Implement lean manufacturing and waste elimination"
+        - "Automate high-volume, repetitive processes"
+        - "Optimize material usage and reduce scrap"
+        - "Improve labor productivity through training and incentives"
+        
+    cash_flow_management:
+      challenge: "Poor cash flow due to high inventory and long cycles"
+      solutions:
+        - "Reduce inventory levels through improved planning"
+        - "Accelerate collection of accounts receivable"
+        - "Negotiate better payment terms with suppliers"
+        - "Implement make-to-order or pull production systems"
+
+usage_instructions:
+  assessment_preparation:
+    - "Schedule facility tour and production observation time"
+    - "Gather production data, quality metrics, and financial information"
+    - "Interview key personnel including production, quality, and maintenance managers"
+    - "Review existing documentation, procedures, and certification records"
+    
+  assessment_execution:
+    - "Conduct comprehensive facility walkthrough and observation"
+    - "Interview stakeholders using structured template questions"
+    - "Analyze production data and performance metrics"
+    - "Benchmark performance against industry standards"
+    
+  analysis_and_recommendations:
+    - "Complete all template sections systematically"
+    - "Identify top improvement opportunities with quantified benefits"
+    - "Develop prioritized implementation roadmap"
+    - "Create business case with ROI analysis"
+    
+  implementation_support:
+    - "Establish project governance and change management"
+    - "Provide training and capability development"
+    - "Monitor progress and adjust approach as needed"
+    - "Celebrate successes and capture lessons learned"
+
+notes:
+  - "Manufacturing excellence requires focus on safety, quality, delivery, and cost simultaneously"
+  - "Lean manufacturing principles provide proven framework for operational improvement"
+  - "Employee engagement and continuous improvement culture are critical success factors"
+  - "Technology should support and enable process improvements, not replace good fundamentals"
+  - "Supplier partnerships and supply chain optimization are key competitive advantages"
+  - "Quality must be built into processes, not inspected into products"
+  - "Measurement and data-driven decision making are essential for sustained improvement"

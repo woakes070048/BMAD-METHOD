@@ -1,0 +1,161 @@
+name: "Strategic Analysis Workflow"
+description: "Comprehensive strategic analysis workflow combining SWOT, PESTEL, and Porter's Five Forces for complete strategic assessment"
+version: "1.0"
+category: "Strategic Planning"
+tags: ["strategic-analysis", "swot", "pestel", "porters", "comprehensive-assessment"]
+
+workflow:
+  stages:
+    - name: "Planning and Scoping"
+      description: "Define analysis objectives, scope, and methodology"
+      tasks:
+        - name: "Define Analysis Objectives"
+          description: "Establish clear objectives and success criteria for strategic analysis"
+          checklist: "strategic-analysis-checklist.md"
+          inputs:
+            - target_company_or_topic
+            - analysis_scope
+            - stakeholder_requirements
+            - timeline_constraints
+          
+        - name: "Gather Background Information"
+          description: "Collect comprehensive background data and context"
+          agent: "strategic-analyst"
+          tasks:
+            - research_company_background
+            - analyze_industry_context
+            - review_competitive_landscape
+            - identify_key_stakeholders
+
+    - name: "External Environment Analysis"
+      description: "Analyze macro and micro external environment factors"
+      tasks:
+        - name: "PESTEL Analysis"
+          description: "Conduct comprehensive macro-environmental analysis"
+          agent: "strategic-analyst"
+          task: "create-pestel-analysis"
+          template: "pestel-analysis-tmpl.yaml"
+          inputs:
+            - topic: "{{target_industry_or_market}}"
+            - geographic_scope: "{{analysis_geography}}"
+            - timeframe: "{{analysis_timeframe}}"
+            
+        - name: "Porter's Five Forces Analysis" 
+          description: "Assess industry competitive dynamics and attractiveness"
+          agent: "strategic-analyst"
+          task: "create-porters-analysis"
+          inputs:
+            - industry: "{{target_industry}}"
+            - competitive_focus: "{{competitive_priorities}}"
+            
+        - name: "Competitive Intelligence"
+          description: "Gather detailed competitive analysis and positioning"
+          agent: "strategic-analyst"
+          task: "create-competitive-intelligence"
+          inputs:
+            - target: "{{primary_competitors}}"
+            - scope: "{{competitive_analysis_scope}}"
+
+    - name: "Internal Analysis"
+      description: "Analyze internal capabilities, resources, and performance"
+      tasks:
+        - name: "SWOT Analysis"
+          description: "Comprehensive internal and external factor analysis"
+          agent: "strategic-analyst"
+          task: "create-swot-analysis"
+          template: "swot-analysis-tmpl.yaml"
+          inputs:
+            - target: "{{analysis_target}}"
+            - scope: "{{swot_scope}}"
+            - timeframe: "{{analysis_timeframe}}"
+            
+        - name: "Capability Assessment"
+          description: "Evaluate core capabilities and resource analysis"
+          checklist: "strategic-analysis-checklist.md"
+          inputs:
+            - capability_framework
+            - resource_analysis
+            - performance_metrics
+
+    - name: "Strategic Synthesis"
+      description: "Integrate all analyses into comprehensive strategic assessment"
+      tasks:
+        - name: "Cross-Analysis Integration"
+          description: "Synthesize findings across all strategic frameworks"
+          agent: "strategic-analyst"
+          task: "create-strategic-assessment"
+          inputs:
+            - swot_findings
+            - pestel_insights
+            - porters_conclusions
+            - competitive_intelligence
+            
+        - name: "Strategic Options Development"
+          description: "Develop strategic options and recommendations"
+          checklist: "strategic-analysis-checklist.md"
+          outputs:
+            - strategic_options
+            - recommendation_priorities
+            - implementation_roadmap
+
+    - name: "Validation and Finalization"
+      description: "Validate findings and prepare final strategic assessment"
+      tasks:
+        - name: "Stakeholder Review"
+          description: "Review findings with key stakeholders and experts"
+          checklist: "strategic-analysis-checklist.md"
+          
+        - name: "Final Strategic Assessment"
+          description: "Prepare comprehensive strategic assessment report"
+          template: "strategic-assessment-tmpl.yaml"
+          outputs:
+            - executive_summary
+            - strategic_analysis_report
+            - recommendations_summary
+            - implementation_plan
+
+agents:
+  primary: "strategic-analyst"
+  supporting: 
+    - "market-researcher"
+    - "business-model-expert"
+
+deliverables:
+  - name: "PESTEL Analysis Report"
+    template: "pestel-analysis-tmpl.yaml"
+    
+  - name: "Porter's Five Forces Analysis"
+    description: "Industry competitive dynamics assessment"
+    
+  - name: "SWOT Analysis Report"
+    template: "swot-analysis-tmpl.yaml"
+    
+  - name: "Comprehensive Strategic Assessment"
+    description: "Integrated strategic analysis with recommendations"
+    template: "strategic-assessment-tmpl.yaml"
+
+success_criteria:
+  - "Complete coverage of all strategic analysis frameworks"
+  - "High-quality, evidence-based insights and recommendations"
+  - "Stakeholder alignment on strategic priorities and direction"
+  - "Clear, actionable strategic recommendations"
+  - "Professional-quality deliverables suitable for executive presentation"
+
+timeline:
+  total_duration: "4-6 weeks"
+  stage_durations:
+    planning: "3-5 days"
+    external_analysis: "10-14 days"  
+    internal_analysis: "7-10 days"
+    synthesis: "5-7 days"
+    validation: "3-5 days"
+
+quality_gates:
+  - stage: "External Environment Analysis"
+    criteria: "PESTEL and Porter's analyses complete with validated findings"
+    
+  - stage: "Internal Analysis" 
+    criteria: "SWOT analysis complete with evidence-based insights"
+    
+  - stage: "Strategic Synthesis"
+    criteria: "Integrated strategic assessment with clear recommendations"

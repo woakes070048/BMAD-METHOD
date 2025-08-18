@@ -1,0 +1,292 @@
+name: "Client Intake Questionnaire Template"
+description: "Comprehensive client intake form for small business consulting engagements to gather essential information before consulting begins"
+category: "client-onboarding"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Client Intake Questionnaire for Small Business Consulting
+
+template:
+  client_information:
+    contact_details:
+      company_name: ""
+      legal_business_name: ""
+      primary_contact_name: ""
+      title_role: ""
+      email: ""
+      phone: ""
+      address: ""
+      website: ""
+      linkedin_profile: ""
+      
+    business_basics:
+      industry: ""
+      business_type: "" # Corporation, LLC, Partnership, Sole Proprietorship
+      date_established: ""
+      years_in_business: 0
+      business_stage: "" # Startup, Early Growth, Established, Mature, Transition
+      number_of_employees: 0
+      number_of_locations: 0
+      annual_revenue_range: "" # <$100K, $100K-$500K, $500K-$1M, $1M-$5M, $5M+
+      
+  business_overview:
+    mission_and_vision:
+      mission_statement: ""
+      vision_statement: ""
+      core_values: []
+      unique_value_proposition: ""
+      
+    products_and_services:
+      primary_offerings: []
+      secondary_offerings: []
+      new_products_in_development: []
+      seasonal_variations: ""
+      pricing_strategy: "" # Premium, Competitive, Value, Penetration
+      
+    target_market:
+      primary_customer_segments: []
+      ideal_customer_profile: ""
+      geographic_markets: []
+      customer_demographics: ""
+      customer_psychographics: ""
+      
+  current_situation:
+    business_performance:
+      recent_performance_trends: "" # Growing, Stable, Declining
+      biggest_achievements_last_year: []
+      major_challenges_faced: []
+      current_growth_stage: ""
+      market_position: "" # Leader, Strong Player, Challenger, Niche
+      
+    financial_snapshot:
+      revenue_trend: "" # Increasing, Stable, Decreasing
+      profitability_status: "" # Profitable, Break-even, Loss-making
+      cash_flow_situation: "" # Strong, Adequate, Tight, Critical
+      funding_status: "" # Self-funded, Investor-backed, Debt-financed, Seeking funding
+      financial_management_confidence: "" # Very Confident, Confident, Somewhat Confident, Not Confident
+      
+    operational_status:
+      operational_efficiency_rating: "" # Excellent, Good, Fair, Poor
+      technology_adoption_level: "" # Leading Edge, Current, Behind, Minimal
+      process_documentation_level: "" # Comprehensive, Adequate, Basic, Minimal
+      quality_control_systems: "" # Robust, Basic, Informal, None
+      
+  challenges_and_goals:
+    primary_challenges:
+      top_business_challenges: []
+      biggest_pain_points: []
+      obstacles_to_growth: []
+      resource_constraints: []
+      competitive_pressures: []
+      
+    business_goals:
+      short_term_goals_6_months: []
+      medium_term_goals_1_year: []
+      long_term_vision_3_5_years: []
+      revenue_targets: ""
+      expansion_plans: []
+      
+    success_metrics:
+      how_measure_success: []
+      key_performance_indicators: []
+      most_important_metrics: []
+      
+  organizational_structure:
+    leadership_team:
+      key_decision_makers: []
+      leadership_strengths: []
+      leadership_development_needs: []
+      succession_planning_status: "" # In Place, Planned, Needed, Not Applicable
+      
+    team_and_culture:
+      employee_satisfaction_level: "" # High, Medium, Low, Unknown
+      company_culture_description: ""
+      communication_effectiveness: "" # Excellent, Good, Fair, Poor
+      training_and_development_programs: []
+      employee_retention_challenges: []
+      
+  market_and_competition:
+    market_environment:
+      market_growth_trends: "" # Growing, Stable, Declining
+      regulatory_environment: "" # Favorable, Neutral, Challenging
+      economic_impact_on_business: ""
+      seasonal_factors: ""
+      
+    competitive_landscape:
+      main_competitors: []
+      competitive_advantages: []
+      competitive_disadvantages: []
+      market_share_position: ""
+      differentiation_factors: []
+      
+  customer_insights:
+    customer_base:
+      customer_acquisition_methods: []
+      customer_retention_strategies: []
+      customer_satisfaction_level: "" # High, Medium, Low, Unknown
+      customer_feedback_mechanisms: []
+      
+    sales_and_marketing:
+      sales_process_description: ""
+      marketing_strategies_used: []
+      digital_marketing_presence: "" # Strong, Moderate, Weak, None
+      sales_team_structure: ""
+      marketing_budget_percentage: 0
+      
+  consulting_engagement:
+    consulting_objectives:
+      primary_reasons_for_consulting: []
+      specific_outcomes_desired: []
+      areas_of_focus: []
+      previous_consulting_experience: ""
+      
+    engagement_preferences:
+      preferred_engagement_style: "" # Hands-on, Advisory, Collaborative, Independent
+      communication_preferences: []
+      meeting_frequency_preference: ""
+      decision_making_process: ""
+      
+    project_parameters:
+      urgency_level: "" # Critical, High, Medium, Low
+      budget_range: ""
+      timeline_expectations: ""
+      resource_availability: ""
+      success_criteria: []
+      
+  stakeholder_information:
+    key_stakeholders:
+      internal_stakeholders: []
+      external_stakeholders: []
+      stakeholder_buy_in_level: ""
+      potential_resistance_sources: []
+      
+    decision_making:
+      final_decision_makers: []
+      approval_process: ""
+      budget_approval_authority: ""
+      timeline_for_decisions: ""
+
+assessment_priorities:
+  critical_focus_areas:
+    # Client selects top 3-5 areas needing attention
+    financial_management: false
+    operational_efficiency: false
+    marketing_and_sales: false
+    strategic_planning: false
+    organizational_development: false
+    technology_and_systems: false
+    customer_experience: false
+    growth_and_expansion: false
+    risk_management: false
+    change_management: false
+    
+  urgency_matrix:
+    urgent_and_important: []
+    important_not_urgent: []
+    urgent_not_important: []
+    neither_urgent_nor_important: []
+
+additional_information:
+  supporting_documents:
+    financial_statements_available: false
+    business_plan_exists: false
+    org_chart_available: false
+    process_documentation_exists: false
+    customer_data_available: false
+    competitive_analysis_done: false
+    
+  special_circumstances:
+    recent_major_changes: []
+    upcoming_significant_events: []
+    regulatory_requirements: []
+    industry_specific_factors: []
+    confidentiality_requirements: []
+    
+  consultant_access:
+    site_visit_requirements: ""
+    employee_interview_permissions: ""
+    system_access_needed: []
+    confidential_information_access: ""
+
+engagement_logistics:
+  project_management:
+    preferred_project_manager: ""
+    reporting_requirements: []
+    communication_protocols: []
+    meeting_scheduling_preferences: ""
+    
+  deliverables_expectations:
+    report_format_preferences: []
+    presentation_requirements: []
+    implementation_support_needed: ""
+    training_requirements: []
+    
+  follow_up_plans:
+    ongoing_support_interest: ""
+    implementation_assistance_needed: ""
+    performance_monitoring_requests: []
+    relationship_continuation_desires: ""
+
+risk_factors:
+  engagement_risks:
+    potential_scope_creep: []
+    resource_availability_risks: []
+    stakeholder_alignment_risks: []
+    timeline_pressure_factors: []
+    
+  business_risks:
+    financial_stability_concerns: []
+    market_volatility_factors: []
+    operational_vulnerabilities: []
+    competitive_threats: []
+
+quality_assurance:
+  information_verification:
+    data_accuracy_confirmation: ""
+    supporting_evidence_provided: []
+    stakeholder_input_validation: ""
+    
+  completeness_check:
+    all_sections_completed: false
+    follow_up_questions_needed: []
+    additional_information_required: []
+
+next_steps:
+  immediate_actions:
+    proposal_development_timeline: ""
+    additional_meetings_needed: []
+    documentation_requests: []
+    stakeholder_introductions_required: []
+    
+  engagement_planning:
+    project_kickoff_scheduling: ""
+    team_assembly_requirements: []
+    resource_allocation_planning: []
+    success_metrics_finalization: []
+
+usage_instructions:
+  pre_meeting_preparation:
+    - "Send questionnaire 2-3 days before initial meeting"
+    - "Request supporting documents in advance"
+    - "Review company website and public information"
+    - "Prepare industry-specific questions"
+    
+  meeting_guidelines:
+    - "Allow 90-120 minutes for comprehensive discussion"
+    - "Use questionnaire as conversation guide, not rigid script"
+    - "Ask follow-up questions for clarification"
+    - "Observe non-verbal cues and organizational dynamics"
+    
+  post_meeting_actions:
+    - "Summarize key findings and send to client for confirmation"
+    - "Identify gaps requiring additional information"
+    - "Begin developing preliminary recommendations"
+    - "Schedule follow-up meetings as needed"
+
+notes:
+  - "Customize questions based on industry and business size"
+  - "Be sensitive to confidentiality concerns"
+  - "Focus on understanding rather than judging"
+  - "Look for alignment between stated goals and actual needs"
+  - "Pay attention to what's NOT said as well as what is said"

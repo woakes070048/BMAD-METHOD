@@ -1,0 +1,94 @@
+name: "SWOT Analysis Template"
+description: "Professional SWOT (Strengths, Weaknesses, Opportunities, Threats) analysis template for strategic assessment"
+version: "1.0"
+category: "Strategic Analysis"
+tags: ["swot", "strategic-analysis", "competitive-analysis", "business-strategy"]
+
+placeholders:
+  target: "Company, product, or business topic to analyze"
+  scope: "Analysis scope (company, industry, product, market)"
+  timeframe: "Analysis timeframe (current, historical, future outlook)"
+  context: "Additional context or specific focus areas"
+
+template: |
+  # {{target}} - SWOT Analysis
+  
+  ## Executive Summary
+  This SWOT analysis provides a comprehensive strategic assessment of {{target}}, examining internal strengths and weaknesses alongside external opportunities and threats. The analysis is conducted using current market information and professional business consulting methodology.
+  
+  **Analysis Scope**: {{scope}}
+  **Timeframe**: {{timeframe}}
+  **Context**: {{context}}
+  
+  ## Introduction and Background
+  [Provide introduction and definition of {{target}}, including market context, business model overview, and key background information. If analyzing a public company, include stock ticker and market position.]
+  
+  ## SWOT Analysis Framework
+  
+  ### Strengths (Internal Positive Factors)
+  **Key Internal Advantages and Competitive Strengths**
+  
+  * **[Strength 1]**: [Detailed explanation of why this is a competitive advantage and how it contributes to business success]
+  * **[Strength 2]**: [Evidence-based description of this internal capability and its strategic importance]
+  * **[Strength 3]**: [Analysis of this strength's sustainability and competitive protection]
+  * **[Strength 4]**: [Assessment of how this strength enables market opportunities]
+  * **[Strength 5]**: [Evaluation of this strength's contribution to value creation]
+  
+  ### Weaknesses (Internal Negative Factors)
+  **Key Internal Limitations and Areas for Improvement**
+  
+  * **[Weakness 1]**: [Specific description of this limitation and its impact on competitive position]
+  * **[Weakness 2]**: [Analysis of this weakness's effect on operational efficiency or market performance]
+  * **[Weakness 3]**: [Assessment of this limitation's strategic implications and urgency]
+  * **[Weakness 4]**: [Evaluation of this weakness's potential for improvement or mitigation]
+  * **[Weakness 5]**: [Description of how this limitation affects customer value or satisfaction]
+  
+  ### Opportunities (External Positive Factors)
+  **Key External Opportunities for Growth and Development**
+  
+  * **[Opportunity 1]**: [Detailed analysis of this market opportunity and its potential impact]
+  * **[Opportunity 2]**: [Assessment of this opportunity's timing, feasibility, and competitive implications]
+  * **[Opportunity 3]**: [Evaluation of this opportunity's alignment with current capabilities and strategy]
+  * **[Opportunity 4]**: [Analysis of this opportunity's market size, growth potential, and requirements]
+  * **[Opportunity 5]**: [Description of this opportunity's strategic value and implementation pathway]
+  
+  ### Threats (External Negative Factors)
+  **Key External Risks and Challenges**
+  
+  * **[Threat 1]**: [Comprehensive analysis of this threat's probability, severity, and potential impact]
+  * **[Threat 2]**: [Assessment of this threat's timeline and potential defensive strategies]
+  * **[Threat 3]**: [Evaluation of this threat's industry-wide vs. company-specific nature]
+  * **[Threat 4]**: [Analysis of this threat's relationship to competitive dynamics or market changes]
+  * **[Threat 5]**: [Description of this threat's potential for mitigation or strategic response]
+  
+  ## Strategic Analysis and Implications
+  
+  ### Key Strategic Insights
+  * **Strategic Positioning**: [Analysis of overall competitive position based on SWOT findings]
+  * **Critical Success Factors**: [Identification of key factors for success given the SWOT profile]
+  * **Risk Assessment**: [Evaluation of major risks and vulnerabilities highlighted by analysis]
+  * **Growth Potential**: [Assessment of growth opportunities and required capabilities]
+  
+  ### Strategic Recommendations
+  1. **Leverage Strengths**: [How to maximize competitive advantages and core capabilities]
+  2. **Address Weaknesses**: [Priority areas for improvement and capability development]
+  3. **Capitalize on Opportunities**: [Strategic initiatives to pursue key market opportunities]
+  4. **Mitigate Threats**: [Defensive strategies and risk management approaches]
+  
+  ### SWOT Matrix Analysis
+  | Strategy Type | Description | Priority |
+  |---------------|-------------|----------|
+  | **SO (Strength-Opportunity)** | [Use strengths to pursue opportunities] | [High/Medium/Low] |
+  | **ST (Strength-Threat)** | [Use strengths to counter threats] | [High/Medium/Low] |
+  | **WO (Weakness-Opportunity)** | [Overcome weaknesses to pursue opportunities] | [High/Medium/Low] |
+  | **WT (Weakness-Threat)** | [Minimize weaknesses and avoid threats] | [High/Medium/Low] |
+  
+  ## Conclusion
+  [Strategic conclusion summarizing the key findings, overall strategic position, and primary recommendations for {{target}}. Include assessment of competitive outlook and strategic priorities.]
+  
+  ---
+  
+  **Analysis Methodology**: This SWOT analysis follows professional business consulting standards, utilizing current market data, competitive intelligence, and strategic analysis frameworks.
+  
+  **Last Updated**: [Current Date]
+  **Analyst**: [Analyst Name/Team]

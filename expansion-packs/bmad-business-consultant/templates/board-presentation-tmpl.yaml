@@ -1,0 +1,355 @@
+name: "Board Presentation Template"
+description: "Professional board-ready presentation template for strategic decisions and business intelligence"
+version: "1.0"
+category: "Executive Communication"
+tags: ["board", "presentation", "strategic", "executive", "governance", "decision-support"]
+
+placeholders:
+  topic: "Main presentation topic"
+  presenter: "Presenter name and title"
+  date: "Presentation date"
+  meeting_type: "Board meeting type (Regular/Special/Committee)"
+  decision_required: "Yes/No and type of decision"
+
+template: |
+  # BOARD PRESENTATION
+  ## {{topic}}
+  
+  **Presenter**: {{presenter}}  
+  **Date**: {{date}}  
+  **Meeting**: {{meeting_type}}  
+  **Decision Required**: {{decision_required}}
+  
+  ---
+  
+  ## SLIDE 1: EXECUTIVE SUMMARY
+  
+  ### Situation Overview
+  - **Issue/Opportunity**: [One sentence description]
+  - **Strategic Impact**: [How this affects company strategy]
+  - **Financial Impact**: [Quantified financial implications]
+  - **Timeline**: [When action is needed]
+  
+  ### Key Messages
+  1. **Primary Message**: [Most important point]
+  2. **Supporting Message**: [Secondary point]
+  3. **Call to Action**: [What the board needs to do]
+  
+  ### Bottom Line
+  > [The essential message in 25 words or less]
+  
+  ---
+  
+  ## SLIDE 2: STRATEGIC CONTEXT
+  
+  ### Market Position
+  | Metric | Current | Industry Avg | Best-in-Class | Gap |
+  |--------|---------|--------------|---------------|-----|
+  | [KPI 1] | [Value] | [Value] | [Value] | [Δ] |
+  | [KPI 2] | [Value] | [Value] | [Value] | [Δ] |
+  | [KPI 3] | [Value] | [Value] | [Value] | [Δ] |
+  
+  ### Strategic Alignment
+  - **Mission Alignment**: ⭐⭐⭐⭐⭐ [How well this aligns]
+  - **Vision Support**: ⭐⭐⭐⭐⭐ [How this advances vision]
+  - **Value Creation**: ⭐⭐⭐⭐⭐ [Value creation potential]
+  
+  ### Competitive Landscape
+  - **Competitive Advantage**: [How this impacts position]
+  - **Threat Level**: [Any competitive threats]
+  - **Market Opportunity**: [Size and timing of opportunity]
+  
+  ---
+  
+  ## SLIDE 3: BUSINESS CASE & ANALYSIS
+  
+  ### Financial Summary (5-Year View)
+  ```
+  Year             1      2      3      4      5    Total
+  Investment   ($X.X)  ($X.X)  ($X.X)  ($X.X)  ($X.X)  ($XX.X)
+  Revenue      $X.X    $X.X    $X.X    $X.X    $X.X    $XX.X
+  Profit       $X.X    $X.X    $X.X    $X.X    $X.X    $XX.X
+  Cash Flow    ($X.X)  $X.X    $X.X    $X.X    $X.X    $XX.X
+  
+  ROI: XX%    NPV: $XX.X    Payback: X.X years
+  ```
+  
+  ### Key Value Drivers
+  1. **Revenue Growth**: $X.X from [source]
+  2. **Cost Reduction**: $X.X from [efficiency]
+  3. **Risk Mitigation**: $X.X value protected
+  4. **Market Expansion**: [new opportunities]
+  
+  ### Risk Assessment
+  | Risk | Probability | Impact | Mitigation |
+  |------|------------|--------|------------|
+  | [Risk 1] | [H/M/L] | $[Amount] | [Strategy] |
+  | [Risk 2] | [H/M/L] | $[Amount] | [Strategy] |
+  | [Risk 3] | [H/M/L] | $[Amount] | [Strategy] |
+  
+  ---
+  
+  ## SLIDE 4: OPTIONS ANALYSIS
+  
+  ### Option A: [Aggressive Strategy]
+  - **Investment**: $[Amount]
+  - **Expected Return**: [ROI%]
+  - **Timeline**: [Months]
+  - **Success Probability**: [%]
+  - **Key Benefits**: [List]
+  - **Major Risks**: [List]
+  
+  ### Option B: [Balanced Approach]
+  - **Investment**: $[Amount]
+  - **Expected Return**: [ROI%]
+  - **Timeline**: [Months]
+  - **Success Probability**: [%]
+  - **Key Benefits**: [List]
+  - **Major Risks**: [List]
+  
+  ### Option C: [Conservative Path]
+  - **Investment**: $[Amount]
+  - **Expected Return**: [ROI%]
+  - **Timeline**: [Months]
+  - **Success Probability**: [%]
+  - **Key Benefits**: [List]
+  - **Major Risks**: [List]
+  
+  ### **RECOMMENDED OPTION**: [Choice] 
+  **Rationale**: [Why this option is best]
+  
+  ---
+  
+  ## SLIDE 5: IMPLEMENTATION ROADMAP
+  
+  ### Phase 1: Foundation (Months 1-3)
+  ```
+  Month 1:  [Key milestones]
+  Month 2:  [Key milestones]
+  Month 3:  [Key milestones]
+  
+  Budget: $X.X    Team: X people    Risks: [Main risks]
+  ```
+  
+  ### Phase 2: Execution (Months 4-9)
+  ```
+  Month 4-6:  [Key milestones]
+  Month 7-9:  [Key milestones]
+  
+  Budget: $X.X    Team: X people    Risks: [Main risks]
+  ```
+  
+  ### Phase 3: Optimization (Months 10-12)
+  ```
+  Month 10-12: [Key milestones]
+  
+  Budget: $X.X    Team: X people    Risks: [Main risks]
+  ```
+  
+  ### Critical Success Factors
+  1. **Leadership Commitment**: [Requirements]
+  2. **Resource Allocation**: [Key resources needed]
+  3. **Stakeholder Alignment**: [Alignment needed]
+  4. **Change Management**: [Change requirements]
+  
+  ---
+  
+  ## SLIDE 6: GOVERNANCE & OVERSIGHT
+  
+  ### Governance Structure
+  ```
+  Board of Directors
+         │
+    Executive Sponsor ([Name])
+         │
+    Steering Committee
+    │        │        │
+  Finance   Operations  Technology
+  ```
+  
+  ### Reporting Schedule
+  - **Board Updates**: [Frequency] - [Format]
+  - **Executive Reports**: [Frequency] - [Format]
+  - **Operational Reviews**: [Frequency] - [Format]
+  - **Exception Reporting**: [Triggers] - [Process]
+  
+  ### Key Performance Indicators
+  | KPI | Target | Current | Trend | Owner |
+  |-----|--------|---------|-------|-------|
+  | [KPI 1] | [Target] | [Value] | [↑↓→] | [Person] |
+  | [KPI 2] | [Target] | [Value] | [↑↓→] | [Person] |
+  | [KPI 3] | [Target] | [Value] | [↑↓→] | [Person] |
+  
+  ### Decision Gates
+  - **Gate 1** (Month 3): [Criteria] → [Go/No-Go Decision]
+  - **Gate 2** (Month 6): [Criteria] → [Continue/Pivot Decision]
+  - **Gate 3** (Month 9): [Criteria] → [Scale/Optimize Decision]
+  
+  ---
+  
+  ## SLIDE 7: STAKEHOLDER IMPACT
+  
+  ### Internal Stakeholders
+  | Stakeholder | Impact | Benefit | Concern | Action Required |
+  |-------------|---------|---------|---------|-----------------|
+  | Employees | [Impact] | [Benefit] | [Concern] | [Action] |
+  | Customers | [Impact] | [Benefit] | [Concern] | [Action] |
+  | Shareholders | [Impact] | [Benefit] | [Concern] | [Action] |
+  | Partners | [Impact] | [Benefit] | [Concern] | [Action] |
+  
+  ### External Stakeholders
+  | Stakeholder | Impact | Management Strategy |
+  |-------------|---------|-------------------|
+  | Regulators | [Impact] | [Strategy] |
+  | Media | [Impact] | [Strategy] |
+  | Community | [Impact] | [Strategy] |
+  | Competitors | [Impact] | [Strategy] |
+  
+  ### Communication Plan
+  - **Internal**: [Strategy and timeline]
+  - **External**: [Strategy and timeline]
+  - **Crisis Communication**: [Contingency plan]
+  
+  ---
+  
+  ## SLIDE 8: MARKET & COMPETITIVE INTELLIGENCE
+  
+  ### Market Dynamics
+  - **Market Size**: $[Amount] and growing at [%] CAGR
+  - **Key Trends**: [List 3-5 major trends]
+  - **Customer Behavior**: [Key shifts in customer needs]
+  - **Technology Impact**: [Disruptive technologies]
+  
+  ### Competitive Analysis
+  | Competitor | Strength | Weakness | Threat Level | Response |
+  |------------|----------|----------|--------------|----------|
+  | [Comp A] | [Strength] | [Weakness] | [H/M/L] | [Response] |
+  | [Comp B] | [Strength] | [Weakness] | [H/M/L] | [Response] |
+  | [Comp C] | [Strength] | [Weakness] | [H/M/L] | [Response] |
+  
+  ### Differentiation Strategy
+  - **Unique Value Proposition**: [What sets us apart]
+  - **Competitive Moats**: [Sustainable advantages]
+  - **Innovation Pipeline**: [Future differentiation]
+  
+  ---
+  
+  ## SLIDE 9: FINANCIAL DEEP DIVE
+  
+  ### Revenue Model
+  ```
+  Revenue Stream 1: [Description]     $X.X (Y%)
+  Revenue Stream 2: [Description]     $X.X (Y%)
+  Revenue Stream 3: [Description]     $X.X (Y%)
+                              Total: $XX.X (100%)
+  ```
+  
+  ### Cost Structure
+  ```
+  Fixed Costs:        $X.X (Y%)
+  Variable Costs:     $X.X (Y%)
+  One-time Costs:     $X.X (Y%)
+                Total: $XX.X (100%)
+  ```
+  
+  ### Sensitivity Analysis
+  | Variable | -10% | Base Case | +10% | Impact |
+  |----------|------|-----------|------|--------|
+  | Revenue | $[X] | $[Y] | $[Z] | [High/Med/Low] |
+  | Costs | $[X] | $[Y] | $[Z] | [High/Med/Low] |
+  | Timeline | [X months] | [Y months] | [Z months] | [High/Med/Low] |
+  
+  ### Scenario Analysis
+  - **Best Case** (30% probability): [Outcome and value]
+  - **Base Case** (50% probability): [Outcome and value]
+  - **Worst Case** (20% probability): [Outcome and value]
+  
+  ---
+  
+  ## SLIDE 10: RECOMMENDATION & NEXT STEPS
+  
+  ### Board Decision Required
+  ```
+  RESOLUTION:
+  "The Board of Directors approves/rejects [specific action] with 
+  a budget allocation of $[amount] over [timeframe], subject to 
+  [conditions], and authorizes management to proceed with 
+  implementation."
+  ```
+  
+  ### Immediate Next Steps (Following Approval)
+  1. **Week 1**: [Critical first action]
+     - Owner: [Name]
+     - Success Criteria: [Measures]
+  
+  2. **Week 2-4**: [Foundation activities]
+     - Owner: [Name]
+     - Success Criteria: [Measures]
+  
+  3. **Month 2**: [Implementation begins]
+     - Owner: [Name]
+     - Success Criteria: [Measures]
+  
+  ### Success Metrics (90-Day View)
+  - **Financial**: [Specific targets]
+  - **Operational**: [Specific targets]
+  - **Strategic**: [Specific targets]
+  - **Stakeholder**: [Specific targets]
+  
+  ### Board Oversight
+  - **Next Update**: [Date and format]
+  - **Escalation Triggers**: [What requires immediate board attention]
+  - **Success Review**: [When to assess overall success]
+  
+  ---
+  
+  ## APPENDIX: SUPPORTING MATERIALS
+  
+  ### A. Detailed Financial Model
+  [Link to comprehensive financial analysis]
+  
+  ### B. Technical Architecture
+  [Link to technical implementation details]
+  
+  ### C. Legal and Regulatory Analysis
+  [Link to compliance and legal review]
+  
+  ### D. Market Research Data
+  [Link to detailed market analysis]
+  
+  ### E. Risk Register
+  [Link to comprehensive risk assessment]
+  
+  ### F. Stakeholder Analysis
+  [Link to detailed stakeholder mapping]
+  
+  ---
+  
+  ## SPEAKER NOTES
+  
+  ### Key Messages to Emphasize
+  1. [Critical point 1]
+  2. [Critical point 2]
+  3. [Critical point 3]
+  
+  ### Anticipated Questions & Answers
+  **Q**: [Expected question]
+  **A**: [Prepared response]
+  
+  **Q**: [Expected question]
+  **A**: [Prepared response]
+  
+  ### Supporting Data Available
+  - Detailed financial models
+  - Market research reports
+  - Technical specifications
+  - Implementation timelines
+  - Risk mitigation plans
+  
+  ---
+  
+  **CONFIDENTIAL & PROPRIETARY**
+  *This presentation contains confidential and proprietary information. Distribution limited to Board members and authorized personnel only.*
+  
+  **Contact**: {{presenter}}
+  **Follow-up**: [Email/Phone for questions]

@@ -1,0 +1,806 @@
+name: "Succession Planning Template"
+description: "Comprehensive succession planning and ownership transition template for small business consultants to guide family businesses, partnerships, and established companies through leadership and ownership transitions"
+category: "succession-planning"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Succession Planning Template for Small Business Consulting
+
+template:
+  business_context:
+    business_information:
+      business_name: ""
+      business_type: "" # Family Business, Partnership, Sole Proprietorship, Corporation
+      industry: ""
+      years_in_operation: 0
+      employee_count: 0
+      annual_revenue: 0
+      annual_profit: 0
+      
+    ownership_structure:
+      current_ownership:
+        - owner_name: ""
+          ownership_percentage: 0
+          role_in_business: ""
+          age: 0
+          years_in_business: 0
+          succession_intentions: ""
+          
+      business_structure:
+        legal_entity_type: ""
+        governance_structure: ""
+        board_composition: []
+        voting_rights_distribution: {}
+        
+    succession_drivers:
+      succession_timeline: ""
+      primary_motivations: []
+      triggering_events: []
+      urgency_level: "" # Low, Medium, High, Critical
+      external_pressures: []
+
+  current_leadership_assessment:
+    existing_leadership:
+      senior_leadership:
+        - name: ""
+          position: ""
+          age: 0
+          tenure: 0
+          succession_readiness: 0
+          retirement_timeline: ""
+          
+      middle_management:
+        - name: ""
+          position: ""
+          age: 0
+          experience: 0
+          promotion_potential: 0
+          development_needs: []
+          
+    leadership_capabilities:
+      strategic_planning: 0
+      operational_management: 0
+      financial_management: 0
+      people_leadership: 0
+      business_development: 0
+      
+    leadership_gaps:
+      critical_skill_gaps: []
+      experience_deficiencies: []
+      knowledge_transfer_needs: []
+      development_priorities: []
+      
+    succession_readiness:
+      immediate_readiness_0_2_years: []
+      medium_term_readiness_2_5_years: []
+      long_term_development_5_plus_years: []
+      external_candidate_needs: []
+
+  family_business_dynamics:
+    family_involvement:
+      family_members_in_business:
+        - name: ""
+          relationship: ""
+          role: ""
+          ownership_stake: 0
+          succession_interest: ""
+          
+      next_generation_assessment:
+        - name: ""
+          age: 0
+          education: ""
+          experience: ""
+          business_interest: 0
+          capability_rating: 0
+          
+    family_governance:
+      family_council_exists: false
+      family_constitution: false
+      family_employment_policy: false
+      conflict_resolution_process: ""
+      
+    family_dynamics:
+      family_unity: 0
+      communication_effectiveness: 0
+      conflict_management: 0
+      shared_vision_alignment: 0
+      
+    cultural_considerations:
+      family_values: []
+      business_traditions: []
+      community_connections: []
+      legacy_preservation_priorities: []
+
+  succession_options_analysis:
+    internal_succession:
+      family_succession:
+        viability: 0
+        candidates: []
+        development_requirements: []
+        timeline: ""
+        pros_and_cons: {}
+        
+      management_buyout:
+        viability: 0
+        candidates: []
+        financing_requirements: 0
+        structure_options: []
+        pros_and_cons: {}
+        
+      employee_stock_ownership_plan:
+        viability: 0
+        implementation_complexity: 0
+        financing_structure: ""
+        tax_implications: []
+        pros_and_cons: {}
+        
+    external_succession:
+      strategic_sale:
+        viability: 0
+        potential_buyers: []
+        valuation_range: ""
+        integration_considerations: []
+        pros_and_cons: {}
+        
+      financial_sale:
+        viability: 0
+        buyer_profile: ""
+        financing_options: []
+        seller_involvement: ""
+        pros_and_cons: {}
+        
+      initial_public_offering:
+        viability: 0
+        readiness_assessment: 0
+        requirements: []
+        timeline: ""
+        pros_and_cons: {}
+        
+    liquidation_options:
+      asset_sale:
+        viability: 0
+        asset_valuation: 0
+        buyer_interest: ""
+        liquidation_timeline: ""
+        
+      business_closure:
+        considerations: []
+        employee_impact: []
+        legal_requirements: []
+        financial_implications: 0
+
+  business_valuation:
+    valuation_approaches:
+      asset_based_valuation:
+        book_value: 0
+        adjusted_book_value: 0
+        liquidation_value: 0
+        replacement_value: 0
+        
+      income_based_valuation:
+        earnings_multiple: 0
+        discounted_cash_flow: 0
+        capitalized_earnings: 0
+        risk_adjusted_return: 0
+        
+      market_based_valuation:
+        comparable_transactions: []
+        public_company_multiples: []
+        industry_benchmarks: []
+        market_conditions_adjustment: 0
+        
+    valuation_factors:
+      financial_performance:
+        revenue_growth_trend: 0
+        profitability_stability: 0
+        cash_flow_predictability: 0
+        debt_service_capacity: 0
+        
+      operational_factors:
+        market_position: 0
+        competitive_advantages: []
+        customer_concentration: 0
+        supplier_dependencies: 0
+        
+      management_factors:
+        management_depth: 0
+        succession_readiness: 0
+        key_person_dependency: 0
+        organizational_capabilities: 0
+        
+    valuation_range:
+      conservative_estimate: 0
+      most_likely_estimate: 0
+      optimistic_estimate: 0
+      factors_affecting_value: []
+
+  transition_planning:
+    ownership_transition:
+      transition_structure:
+        transition_method: ""
+        transition_timeline: ""
+        ownership_transfer_schedule: []
+        voting_control_timeline: []
+        
+      legal_structure:
+        legal_entity_changes: []
+        documentation_requirements: []
+        regulatory_approvals: []
+        professional_advisors: []
+        
+      financial_arrangements:
+        purchase_price_structure: ""
+        payment_terms: ""
+        financing_arrangements: []
+        security_provisions: []
+        
+    management_transition:
+      leadership_development:
+        successor_preparation: []
+        mentoring_programs: []
+        external_experience: []
+        board_oversight: []
+        
+      knowledge_transfer:
+        critical_knowledge_areas: []
+        documentation_requirements: []
+        training_programs: []
+        transition_timeline: []
+        
+      organizational_changes:
+        structure_modifications: []
+        role_redefinitions: []
+        communication_strategy: []
+        change_management: []
+
+  financial_planning:
+    owner_financial_needs:
+      retirement_planning:
+        retirement_income_needs: 0
+        retirement_timeline: ""
+        existing_retirement_assets: 0
+        income_gap_analysis: 0
+        
+      liquidity_requirements:
+        immediate_cash_needs: 0
+        ongoing_income_requirements: 0
+        estate_planning_needs: 0
+        lifestyle_maintenance: 0
+        
+      tax_optimization:
+        current_tax_position: 0
+        transaction_tax_implications: []
+        tax_minimization_strategies: []
+        professional_tax_advice: ""
+        
+    business_financial_planning:
+      transition_financing:
+        internal_financing_capacity: 0
+        external_financing_requirements: 0
+        lender_requirements: []
+        guarantees_and_collateral: []
+        
+      cash_flow_management:
+        operational_cash_flow: 0
+        debt_service_requirements: 0
+        capital_investment_needs: 0
+        working_capital_requirements: 0
+        
+      financial_risk_management:
+        key_person_insurance: 0
+        business_continuity_insurance: 0
+        liability_insurance: 0
+        risk_mitigation_strategies: []
+
+  legal_and_tax_considerations:
+    legal_structure:
+      entity_structure_optimization:
+        current_structure_analysis: ""
+        optimal_structure_recommendation: ""
+        restructuring_requirements: []
+        legal_compliance_issues: []
+        
+      governance_framework:
+        board_of_directors: []
+        advisory_board: []
+        shareholder_agreements: []
+        employment_agreements: []
+        
+    tax_planning:
+      federal_tax_implications:
+        income_tax_planning: []
+        capital_gains_strategies: []
+        estate_tax_planning: []
+        gift_tax_considerations: []
+        
+      state_and_local_taxes:
+        state_tax_implications: []
+        local_tax_considerations: []
+        multi_state_issues: []
+        tax_credit_opportunities: []
+        
+    estate_planning:
+      estate_planning_documents:
+        wills_and_trusts: []
+        power_of_attorney: []
+        healthcare_directives: []
+        business_succession_documents: []
+        
+      wealth_transfer_strategies:
+        gifting_strategies: []
+        trust_structures: []
+        charitable_giving: []
+        generation_skipping: []
+
+  risk_management:
+    succession_risks:
+      timeline_risks:
+        - risk: "Premature departure of key leader"
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+        - risk: "Delayed succession planning"
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+      people_risks:
+        - risk: "Successor not ready or unwilling"
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+        - risk: "Family conflict and disagreement"
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+      financial_risks:
+        - risk: "Insufficient business value for owner needs"
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+        - risk: "Financing challenges for transaction"
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+      business_risks:
+        - risk: "Business performance decline during transition"
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+        - risk: "Key employee departure"
+          probability: ""
+          impact: ""
+          mitigation_strategy: ""
+          
+    contingency_planning:
+      emergency_succession:
+        immediate_leadership: []
+        decision_making_authority: []
+        communication_protocols: []
+        business_continuity: []
+        
+      alternative_scenarios:
+        plan_a_preferred: ""
+        plan_b_alternative: ""
+        plan_c_contingency: ""
+        trigger_points: []
+
+  implementation_roadmap:
+    phase_1_assessment_and_planning_0_6_months:
+      priorities:
+        - "Complete comprehensive succession planning assessment"
+        - "Evaluate succession options and develop preferred strategy"
+        - "Conduct business valuation and financial analysis"
+        - "Assemble professional advisory team"
+        
+      key_deliverables:
+        succession_strategy:
+          deliverable: "Comprehensive succession plan and strategy"
+          timeline: "90 days"
+          success_criteria: []
+          
+        business_valuation:
+          deliverable: "Professional business valuation"
+          timeline: "60 days"
+          success_criteria: []
+          
+        legal_structure_review:
+          deliverable: "Legal structure analysis and recommendations"
+          timeline: "120 days"
+          success_criteria: []
+          
+        advisory_team:
+          deliverable: "Professional advisory team assembly"
+          timeline: "45 days"
+          success_criteria: []
+          
+      expected_outcomes:
+        - "Clear succession strategy and timeline"
+        - "Accurate business valuation and financial planning"
+        - "Optimal legal and tax structure"
+        - "Professional advisory support team"
+        
+    phase_2_preparation_and_development_6_18_months:
+      priorities:
+        - "Develop successor capabilities and readiness"
+        - "Implement business improvements to enhance value"
+        - "Complete legal and financial structure optimization"
+        - "Establish governance and oversight mechanisms"
+        
+      key_deliverables:
+        successor_development:
+          deliverable: "Successor development and preparation program"
+          timeline: "360 days"
+          success_criteria: []
+          
+        value_enhancement:
+          deliverable: "Business improvement and value enhancement initiatives"
+          timeline: "450 days"
+          success_criteria: []
+          
+        structure_optimization:
+          deliverable: "Legal and financial structure implementation"
+          timeline: "300 days"
+          success_criteria: []
+          
+        governance_framework:
+          deliverable: "Governance and oversight system"
+          timeline: "240 days"
+          success_criteria: []
+          
+      expected_outcomes:
+        - "Successor readiness and capability development"
+        - "Enhanced business value and performance"
+        - "Optimized legal and tax structure"
+        - "Strong governance and oversight"
+        
+    phase_3_transition_execution_18_36_months:
+      priorities:
+        - "Execute ownership and management transition"
+        - "Complete financial and legal transaction"
+        - "Transfer knowledge and relationships"
+        - "Monitor and support transition success"
+        
+      key_deliverables:
+        transition_execution:
+          deliverable: "Ownership and management transition implementation"
+          timeline: "540 days"
+          success_criteria: []
+          
+        transaction_completion:
+          deliverable: "Financial and legal transaction closure"
+          timeline: "630 days"
+          success_criteria: []
+          
+        knowledge_transfer:
+          deliverable: "Comprehensive knowledge and relationship transfer"
+          timeline: "720 days"
+          success_criteria: []
+          
+        post_transition_support:
+          deliverable: "Ongoing support and monitoring system"
+          timeline: "1080 days"
+          success_criteria: []
+          
+      expected_outcomes:
+        - "Successful ownership and management transition"
+        - "Completed financial transaction"
+        - "Transferred knowledge and relationships"
+        - "Sustained business performance"
+
+succession_strategies_by_business_type:
+  family_business_succession:
+    next_generation_succession:
+      approach: "Develop and transition to family member successor"
+      key_strategies:
+        - "Assess next generation interest, capability, and readiness"
+        - "Implement comprehensive development and mentoring program"
+        - "Create fair and equitable ownership transition plan"
+        - "Address family dynamics and governance issues"
+        - "Establish performance accountability and oversight"
+        
+      critical_success_factors:
+        - "Clear succession criteria and expectations"
+        - "Family unity and shared vision"
+        - "Successor competence and commitment"
+        - "Fair treatment of all family members"
+        - "Professional governance and oversight"
+        
+    family_sale_to_outsiders:
+      approach: "Sell business to external party while preserving family interests"
+      key_strategies:
+        - "Maximize business value through improvement initiatives"
+        - "Identify and evaluate potential buyers carefully"
+        - "Negotiate terms that protect family legacy and employees"
+        - "Structure transaction to optimize tax and financial outcomes"
+        - "Plan for family members' future roles and financial security"
+        
+  partnership_succession:
+    partner_buyout:
+      approach: "Remaining partners acquire departing partner's interest"
+      key_strategies:
+        - "Establish clear buy-sell agreement and valuation methodology"
+        - "Plan financing for buyout transaction"
+        - "Address management and operational transition"
+        - "Maintain business continuity and client relationships"
+        - "Consider admission of new partners"
+        
+    external_sale:
+      approach: "Partners jointly sell business to external buyer"
+      key_strategies:
+        - "Align all partners on sale strategy and timeline"
+        - "Maximize business value through joint efforts"
+        - "Negotiate collectively for optimal terms"
+        - "Address individual partner needs and preferences"
+        - "Plan for post-sale involvement and restrictions"
+        
+  sole_proprietorship_succession:
+    sale_to_employee:
+      approach: "Transfer business to key employee or management team"
+      key_strategies:
+        - "Identify and develop capable successor"
+        - "Structure affordable financing arrangements"
+        - "Provide training and transition support"
+        - "Maintain involvement during transition period"
+        - "Ensure business continuity and client retention"
+        
+    external_sale:
+      approach: "Sell business to external buyer"
+      key_strategies:
+        - "Prepare business for sale and maximize value"
+        - "Reduce owner dependency and key person risk"
+        - "Market business effectively to potential buyers"
+        - "Negotiate favorable terms and conditions"
+        - "Plan for smooth transition and handover"
+
+valuation_enhancement_strategies:
+  financial_performance_improvement:
+    revenue_growth:
+      - "Develop new products, services, and market opportunities"
+      - "Strengthen customer relationships and retention"
+      - "Implement effective sales and marketing strategies"
+      - "Explore strategic partnerships and alliances"
+      
+    profitability_enhancement:
+      - "Optimize pricing strategies and margin management"
+      - "Reduce operating costs and improve efficiency"
+      - "Eliminate non-core or unprofitable activities"
+      - "Implement effective cost management systems"
+      
+    cash_flow_optimization:
+      - "Improve accounts receivable collection"
+      - "Optimize inventory management and working capital"
+      - "Negotiate favorable supplier payment terms"
+      - "Implement cash flow forecasting and management"
+      
+  operational_excellence:
+    process_improvement:
+      - "Standardize and document key business processes"
+      - "Implement quality management and control systems"
+      - "Automate repetitive and manual processes"
+      - "Develop scalable operational capabilities"
+      
+    management_development:
+      - "Build strong management team and leadership bench"
+      - "Reduce key person dependency and risk"
+      - "Implement effective performance management"
+      - "Create succession plans for key positions"
+      
+    risk_management:
+      - "Identify and mitigate operational risks"
+      - "Diversify customer and supplier base"
+      - "Implement appropriate insurance coverage"
+      - "Develop business continuity and disaster recovery plans"
+      
+  strategic_positioning:
+    competitive_advantage:
+      - "Develop unique value propositions and differentiation"
+      - "Build barriers to entry and competitive moats"
+      - "Invest in technology and innovation capabilities"
+      - "Strengthen brand recognition and reputation"
+      
+    market_position:
+      - "Focus on attractive and growing market segments"
+      - "Build strong customer relationships and loyalty"
+      - "Develop recurring revenue and predictable cash flows"
+      - "Create sustainable competitive advantages"
+
+tax_optimization_strategies:
+  income_tax_planning:
+    timing_strategies:
+      - "Accelerate deductions and defer income when beneficial"
+      - "Time transaction to optimize tax rates and brackets"
+      - "Coordinate with other family members' tax situations"
+      - "Consider multi-year installment sale structures"
+      
+    structure_optimization:
+      - "Choose optimal entity structure for tax efficiency"
+      - "Utilize tax-advantaged retirement and benefit plans"
+      - "Consider S corporation election for pass-through taxation"
+      - "Implement tax-efficient compensation strategies"
+      
+  capital_gains_strategies:
+    gain_deferral:
+      - "Utilize installment sale treatment for gain deferral"
+      - "Consider like-kind exchanges where applicable"
+      - "Structure transactions to qualify for favorable tax treatment"
+      - "Time transactions to optimize capital gains rates"
+      
+    gain_exclusion:
+      - "Utilize Section 1202 qualified small business stock exclusion"
+      - "Consider charitable remainder trust strategies"
+      - "Explore opportunity zone investments for gain deferral"
+      - "Implement tax-efficient gifting strategies"
+      
+  estate_tax_planning:
+    valuation_discounts:
+      - "Utilize minority interest and marketability discounts"
+      - "Implement family limited partnerships or LLCs"
+      - "Create voting and non-voting share structures"
+      - "Time transfers to maximize discount opportunities"
+      
+    wealth_transfer:
+      - "Utilize annual gift tax exclusions effectively"
+      - "Implement grantor trusts for tax-efficient transfers"
+      - "Consider charitable gifting strategies"
+      - "Plan for generation-skipping transfer tax optimization"
+
+performance_measurement:
+  succession_planning_metrics:
+    readiness_indicators:
+      - "Successor development progress and capability assessment"
+      - "Leadership transition timeline adherence"
+      - "Knowledge transfer completion percentage"
+      - "Stakeholder satisfaction and confidence levels"
+      
+    business_performance:
+      - "Financial performance stability during transition"
+      - "Customer retention and satisfaction during transition"
+      - "Employee retention and engagement levels"
+      - "Operational efficiency and quality maintenance"
+      
+    transition_success:
+      - "Ownership transfer completion according to plan"
+      - "Management transition effectiveness"
+      - "Financial objectives achievement"
+      - "Legacy preservation and family satisfaction"
+      
+  financial_impact_metrics:
+    value_creation:
+      - "Business valuation improvement during preparation"
+      - "Transaction value compared to initial expectations"
+      - "Tax efficiency and optimization achievement"
+      - "Owner financial security and retirement readiness"
+      
+    risk_mitigation:
+      - "Key person dependency reduction"
+      - "Business continuity risk minimization"
+      - "Family conflict prevention and resolution"
+      - "Financial and legal risk management"
+
+common_succession_challenges:
+  family_business_challenges:
+    next_generation_readiness:
+      challenge: "Next generation lacks interest, capability, or readiness"
+      solutions:
+        - "Develop comprehensive assessment and development programs"
+        - "Provide external experience and mentoring opportunities"
+        - "Consider professional management with family oversight"
+        - "Explore sale to employees or external parties"
+        
+    family_conflict:
+      challenge: "Family disagreement about succession plans and timing"
+      solutions:
+        - "Implement family governance and communication processes"
+        - "Use professional facilitation and mediation services"
+        - "Develop fair and transparent decision-making processes"
+        - "Create exit strategies for dissenting family members"
+        
+  financial_challenges:
+    insufficient_value:
+      challenge: "Business value insufficient for owner retirement needs"
+      solutions:
+        - "Implement value enhancement strategies and improvements"
+        - "Consider seller financing and earnout structures"
+        - "Explore creative transaction structures and terms"
+        - "Adjust retirement expectations and financial planning"
+        
+    financing_constraints:
+      challenge: "Successors unable to finance purchase of business"
+      solutions:
+        - "Structure seller financing and payment terms"
+        - "Explore external financing and investor participation"
+        - "Consider employee stock ownership plan (ESOP)"
+        - "Implement gradual ownership transfer over time"
+        
+  operational_challenges:
+    key_person_dependency:
+      challenge: "Business too dependent on current owner/leader"
+      solutions:
+        - "Develop strong management team and leadership bench"
+        - "Document critical processes and relationships"
+        - "Build organizational capabilities and systems"
+        - "Gradually transfer responsibilities and relationships"
+        
+    succession_timing:
+      challenge: "Unexpected events force premature succession"
+      solutions:
+        - "Develop emergency succession and continuity plans"
+        - "Maintain adequate key person insurance coverage"
+        - "Create interim leadership and management structures"
+        - "Implement regular succession plan updates and reviews"
+
+professional_advisor_coordination:
+  advisory_team_composition:
+    succession_planning_attorney:
+      role: "Legal structure, documentation, and compliance"
+      selection_criteria: []
+      coordination_requirements: []
+      
+    tax_advisor_cpa:
+      role: "Tax planning, optimization, and compliance"
+      selection_criteria: []
+      coordination_requirements: []
+      
+    business_valuation_expert:
+      role: "Business valuation and financial analysis"
+      selection_criteria: []
+      coordination_requirements: []
+      
+    financial_planner:
+      role: "Personal financial and retirement planning"
+      selection_criteria: []
+      coordination_requirements: []
+      
+    insurance_specialist:
+      role: "Insurance planning and risk management"
+      selection_criteria: []
+      coordination_requirements: []
+      
+  coordination_strategies:
+    regular_team_meetings: ""
+    shared_documentation: ""
+    coordinated_planning: ""
+    integrated_advice: ""
+
+usage_instructions:
+  assessment_approach:
+    - "Conduct confidential interviews with all key stakeholders"
+    - "Analyze business financial performance and valuation factors"
+    - "Assess family dynamics and governance requirements"
+    - "Evaluate succession options and strategic alternatives"
+    
+  planning_process:
+    - "Develop comprehensive succession strategy and timeline"
+    - "Create detailed implementation roadmap with milestones"
+    - "Coordinate with professional advisory team"
+    - "Communicate plan to all relevant stakeholders"
+    
+  implementation_support:
+    - "Monitor progress against plan and timeline"
+    - "Provide ongoing coaching and support to successors"
+    - "Facilitate family governance and communication"
+    - "Coordinate with advisors and service providers"
+    
+  success_factors:
+    - "Start succession planning early, preferably 5-10 years in advance"
+    - "Maintain flexibility and adaptability as circumstances change"
+    - "Focus on business value enhancement throughout process"
+    - "Prioritize family unity and stakeholder alignment"
+    - "Utilize professional expertise and advisory support"
+
+notes:
+  - "Succession planning is a long-term process that requires early and ongoing attention"
+  - "Family dynamics and relationships often determine succession planning success"
+  - "Business value enhancement should be ongoing priority throughout succession planning"
+  - "Tax and legal optimization require professional expertise and coordination"
+  - "Successor development and readiness are critical for internal succession success"
+  - "Contingency planning is essential for unexpected events and circumstances"
+  - "Communication and stakeholder alignment are fundamental to successful transitions"

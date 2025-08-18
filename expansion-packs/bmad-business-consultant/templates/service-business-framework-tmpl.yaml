@@ -1,0 +1,533 @@
+name: "Service Business Framework Template"
+description: "Specialized service business analysis and optimization template for small business consultants working with professional services, consulting, healthcare, and other service-based businesses"
+category: "industry-specific"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Service Business Framework Template for Small Business Consulting
+
+template:
+  business_information:
+    client_name: ""
+    business_name: ""
+    service_type: "" # Professional Services, Healthcare, Consulting, Personal Services, etc.
+    service_delivery_model: "" # On-site, Remote, Hybrid, Facility-based
+    team_size: 0
+    years_in_operation: 0
+    analysis_date: ""
+    consultant_name: ""
+    geographic_coverage: []
+    
+  service_performance_analysis:
+    revenue_metrics:
+      annual_revenue: 0
+      revenue_per_employee: 0
+      revenue_per_client: 0
+      billable_hour_rate: 0
+      utilization_rate: 0
+      realization_rate: 0
+      
+    client_metrics:
+      active_client_count: 0
+      new_clients_per_month: 0
+      client_retention_rate: 0
+      client_lifetime_value: 0
+      client_acquisition_cost: 0
+      repeat_business_percentage: 0
+      
+    operational_metrics:
+      average_project_duration: 0
+      project_completion_rate: 0
+      on_time_delivery_rate: 0
+      quality_score: 0
+      client_satisfaction_score: 0
+      
+    financial_performance:
+      gross_margin_percentage: 0
+      net_profit_margin: 0
+      operating_margin: 0
+      cash_flow_from_operations: 0
+      working_capital_efficiency: 0
+
+  service_delivery_assessment:
+    service_portfolio:
+      core_services: []
+      supplementary_services: []
+      service_profitability: {}
+      service_demand_patterns: {}
+      service_lifecycle_stages: {}
+      
+    delivery_process:
+      service_design_process: ""
+      client_onboarding_process: ""
+      service_delivery_methodology: ""
+      quality_assurance_procedures: []
+      client_feedback_mechanisms: []
+      
+    capacity_management:
+      current_capacity_utilization: 0
+      peak_demand_periods: []
+      capacity_constraints: []
+      resource_allocation_efficiency: ""
+      scalability_assessment: ""
+      
+    service_quality:
+      quality_standards: []
+      quality_control_measures: []
+      error_rates: 0
+      rework_percentage: 0
+      client_complaint_rate: 0
+
+  human_resources_analysis:
+    team_structure:
+      organizational_structure: ""
+      role_definitions: []
+      reporting_relationships: []
+      decision_making_authority: []
+      
+    talent_management:
+      skill_levels_assessment: {}
+      training_and_development: []
+      performance_management: ""
+      compensation_structure: ""
+      retention_rates: 0
+      
+    productivity_analysis:
+      billable_hours_per_employee: 0
+      non_billable_time_allocation: {}
+      productivity_trends: []
+      efficiency_improvement_opportunities: []
+      
+    staff_satisfaction:
+      employee_engagement_score: 0
+      job_satisfaction_levels: ""
+      work_life_balance: ""
+      career_development_opportunities: []
+
+  client_relationship_management:
+    client_segmentation:
+      client_categories: []
+      client_value_tiers: {}
+      service_needs_by_segment: {}
+      profitability_by_segment: {}
+      
+    relationship_quality:
+      client_trust_levels: ""
+      communication_effectiveness: ""
+      responsiveness_ratings: 0
+      problem_resolution_efficiency: ""
+      
+    client_lifecycle_management:
+      acquisition_process: []
+      onboarding_experience: []
+      ongoing_relationship_management: []
+      retention_strategies: []
+      
+    client_feedback_systems:
+      feedback_collection_methods: []
+      satisfaction_measurement: ""
+      complaint_handling_process: ""
+      improvement_implementation: []
+
+  business_development_analysis:
+    sales_and_marketing:
+      lead_generation_methods: []
+      sales_process_effectiveness: ""
+      marketing_roi: 0
+      brand_positioning: ""
+      
+    proposal_and_pricing:
+      proposal_win_rate: 0
+      pricing_strategy: ""
+      value_based_pricing: ""
+      competitive_pricing_position: ""
+      
+    referral_and_networking:
+      referral_rate: 0
+      referral_sources: []
+      networking_effectiveness: ""
+      partnership_opportunities: []
+      
+    market_development:
+      target_market_definition: []
+      market_penetration_rate: 0
+      geographic_expansion_potential: []
+      service_expansion_opportunities: []
+
+  operational_efficiency_evaluation:
+    process_efficiency:
+      service_delivery_processes: []
+      administrative_processes: []
+      support_processes: []
+      process_automation_level: ""
+      
+    technology_utilization:
+      technology_tools_used: []
+      system_integration_level: ""
+      automation_opportunities: []
+      digital_transformation_readiness: ""
+      
+    resource_optimization:
+      resource_allocation_efficiency: ""
+      cost_structure_optimization: []
+      overhead_cost_management: ""
+      variable_cost_control: ""
+      
+    performance_measurement:
+      kpi_tracking_systems: []
+      performance_reporting: ""
+      benchmarking_practices: ""
+      continuous_improvement_processes: []
+
+  financial_management_services:
+    revenue_model:
+      pricing_models: []
+      revenue_streams: []
+      recurring_revenue_percentage: 0
+      project_based_revenue: 0
+      
+    cost_structure:
+      personnel_costs: 0
+      overhead_costs: 0
+      technology_costs: 0
+      marketing_costs: 0
+      professional_development_costs: 0
+      
+    cash_flow_management:
+      accounts_receivable_management: ""
+      payment_terms_optimization: []
+      cash_flow_forecasting: ""
+      seasonal_cash_flow_patterns: {}
+      
+    profitability_analysis:
+      service_line_profitability: {}
+      client_profitability: {}
+      project_profitability: {}
+      margin_improvement_opportunities: []
+
+  competitive_positioning_services:
+    market_analysis:
+      market_size_and_growth: 0
+      competitive_landscape: []
+      market_share_position: 0
+      industry_trends: []
+      
+    competitive_advantages:
+      unique_value_propositions: []
+      core_competencies: []
+      competitive_differentiators: []
+      barriers_to_entry: []
+      
+    positioning_strategy:
+      target_market_positioning: ""
+      service_positioning: ""
+      pricing_positioning: ""
+      brand_positioning: ""
+
+  service_specific_challenges:
+    common_challenges:
+      capacity_management: []
+      talent_acquisition_retention: []
+      client_acquisition: []
+      pricing_pressure: []
+      quality_consistency: []
+      
+    challenge_impact_assessment:
+      revenue_impact: {}
+      operational_impact: {}
+      client_satisfaction_impact: {}
+      team_morale_impact: {}
+      
+    solution_strategies:
+      capacity_optimization: []
+      talent_management_improvements: []
+      business_development_enhancements: []
+      operational_efficiency_gains: []
+
+  growth_opportunities_services:
+    service_expansion:
+      new_service_development: []
+      service_enhancement_opportunities: []
+      cross_selling_potential: []
+      upselling_opportunities: []
+      
+    market_expansion:
+      geographic_expansion: []
+      new_market_segments: []
+      channel_expansion: []
+      partnership_opportunities: []
+      
+    delivery_model_innovation:
+      technology_enabled_delivery: []
+      scalable_delivery_models: []
+      automation_opportunities: []
+      remote_service_capabilities: []
+      
+    strategic_growth:
+      acquisition_opportunities: []
+      merger_possibilities: []
+      strategic_partnerships: []
+      franchise_opportunities: []
+
+  service_quality_framework:
+    quality_dimensions:
+      reliability: ""
+      responsiveness: ""
+      assurance: ""
+      empathy: ""
+      tangibles: ""
+      
+    quality_measurement:
+      client_satisfaction_surveys: []
+      service_quality_metrics: []
+      mystery_client_programs: []
+      peer_review_processes: []
+      
+    quality_improvement:
+      continuous_improvement_programs: []
+      staff_training_initiatives: []
+      process_standardization: []
+      technology_enhancements: []
+
+  technology_and_innovation:
+    current_technology_stack:
+      client_management_systems: []
+      project_management_tools: []
+      communication_platforms: []
+      financial_management_systems: []
+      
+    digital_transformation:
+      automation_opportunities: []
+      digital_service_delivery: []
+      data_analytics_capabilities: []
+      cloud_migration_benefits: []
+      
+    innovation_initiatives:
+      service_innovation: []
+      process_innovation: []
+      technology_innovation: []
+      business_model_innovation: []
+
+  service_specific_kpis:
+    utilization_metrics:
+      - "Billable utilization rate"
+      - "Capacity utilization rate"
+      - "Revenue per billable hour"
+      - "Realization rate"
+      
+    client_metrics:
+      - "Client satisfaction score"
+      - "Client retention rate"
+      - "Net promoter score"
+      - "Client lifetime value"
+      - "Repeat business rate"
+      
+    operational_metrics:
+      - "Project completion rate"
+      - "On-time delivery rate"
+      - "Quality score"
+      - "Employee utilization"
+      - "Response time"
+      
+    financial_metrics:
+      - "Revenue per employee"
+      - "Gross margin per project"
+      - "Operating margin"
+      - "Cash conversion cycle"
+      - "Working capital efficiency"
+
+  improvement_recommendations:
+    service_delivery_improvements:
+      process_optimization: []
+      quality_enhancements: []
+      efficiency_gains: []
+      client_experience_improvements: []
+      
+    business_development_improvements:
+      marketing_effectiveness: []
+      sales_process_optimization: []
+      pricing_strategy_refinement: []
+      partnership_development: []
+      
+    operational_improvements:
+      resource_optimization: []
+      technology_upgrades: []
+      performance_management: []
+      cost_reduction_initiatives: []
+      
+    growth_initiatives:
+      service_expansion: []
+      market_development: []
+      capability_building: []
+      strategic_partnerships: []
+
+  implementation_roadmap_services:
+    immediate_priorities:
+      # 0-30 days
+      quick_wins: []
+      critical_fixes: []
+      client_satisfaction_improvements: []
+      
+    short_term_initiatives:
+      # 30-90 days
+      process_improvements: []
+      technology_implementations: []
+      training_programs: []
+      
+    medium_term_projects:
+      # 90-180 days
+      service_development: []
+      market_expansion: []
+      system_upgrades: []
+      
+    long_term_strategy:
+      # 180+ days
+      strategic_initiatives: []
+      major_investments: []
+      transformation_projects: []
+
+  industry_specific_considerations:
+    professional_services:
+      expertise_demonstration: []
+      thought_leadership: []
+      professional_development: []
+      industry_regulations: []
+      
+    healthcare_services:
+      patient_care_quality: []
+      regulatory_compliance: []
+      technology_adoption: []
+      staff_certification: []
+      
+    consulting_services:
+      knowledge_management: []
+      methodology_development: []
+      case_study_development: []
+      expert_network_building: []
+      
+    personal_services:
+      customer_experience_focus: []
+      convenience_factors: []
+      personalization: []
+      local_market_dynamics: []
+
+  service_business_benchmarks:
+    industry_benchmarks:
+      utilization_rates: 0
+      profit_margins: 0
+      client_retention_rates: 0
+      revenue_growth_rates: 0
+      
+    performance_comparison:
+      above_average: []
+      average: []
+      below_average: []
+      
+    improvement_targets:
+      performance_goals: {}
+      timeline_expectations: []
+      investment_requirements: 0
+
+  risk_management_services:
+    service_delivery_risks:
+      quality_risks: []
+      capacity_risks: []
+      client_satisfaction_risks: []
+      regulatory_risks: []
+      
+    business_risks:
+      client_concentration_risk: []
+      talent_retention_risk: []
+      competitive_risks: []
+      economic_sensitivity: []
+      
+    mitigation_strategies:
+      risk_prevention: []
+      risk_monitoring: []
+      contingency_planning: []
+      insurance_coverage: []
+
+service_specific_tools:
+  capacity_planning_tools:
+    - "Utilization tracking template"
+    - "Capacity forecasting model"
+    - "Resource allocation optimizer"
+    - "Demand planning template"
+    
+  client_management_tools:
+    - "Client satisfaction survey"
+    - "Client profitability analysis"
+    - "Relationship mapping tool"
+    - "Feedback management system"
+    
+  operational_tools:
+    - "Service delivery checklist"
+    - "Quality control framework"
+    - "Performance dashboard"
+    - "Process improvement toolkit"
+
+success_factors:
+  service_business_drivers:
+    - "High-quality service delivery"
+    - "Strong client relationships"
+    - "Efficient resource utilization"
+    - "Skilled and motivated team"
+    - "Effective business development"
+    - "Competitive differentiation"
+    - "Continuous improvement culture"
+    - "Financial management discipline"
+
+common_service_business_mistakes:
+  delivery_mistakes:
+    - "Inconsistent service quality"
+    - "Poor scope management"
+    - "Inadequate client communication"
+    - "Insufficient quality controls"
+    
+  business_development_mistakes:
+    - "Weak value proposition"
+    - "Poor sales process"
+    - "Inadequate market research"
+    - "Ineffective pricing strategy"
+    
+  operational_mistakes:
+    - "Poor resource planning"
+    - "Inadequate performance measurement"
+    - "Insufficient talent development"
+    - "Weak financial controls"
+
+usage_guidelines:
+  assessment_methodology:
+    data_collection:
+      - "Review financial and operational data"
+      - "Interview key stakeholders"
+      - "Observe service delivery processes"
+      - "Collect client feedback"
+      
+    analysis_approach:
+      - "Benchmark against industry standards"
+      - "Identify operational inefficiencies"
+      - "Assess competitive position"
+      - "Evaluate growth opportunities"
+      
+  recommendation_development:
+    prioritization_criteria:
+      - "Impact on client satisfaction"
+      - "Revenue and profitability impact"
+      - "Implementation feasibility"
+      - "Resource requirements"
+      
+    implementation_planning:
+      - "Develop phased approach"
+      - "Secure stakeholder buy-in"
+      - "Allocate necessary resources"
+      - "Establish monitoring systems"
+
+notes:
+  - "Service businesses depend heavily on people and relationships"
+  - "Quality consistency is critical for service business success"
+  - "Capacity management directly impacts profitability"
+  - "Client satisfaction and retention are key success drivers"
+  - "Technology can significantly enhance service delivery efficiency"
+  - "Continuous improvement is essential in competitive service markets"

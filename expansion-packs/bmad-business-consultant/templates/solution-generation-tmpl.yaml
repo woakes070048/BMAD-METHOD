@@ -1,0 +1,279 @@
+name: "Solution Generation Template"
+description: "Systematic solution concept generation template using pain point analysis to create multiple solution approaches with different business models"
+version: "1.0"
+category: "Solution Design"
+tags: ["solution-design", "innovation", "business-models", "product-strategy"]
+
+placeholders:
+  market: "Target market or customer segment"
+  problem: "Primary problem being solved"
+  pain_points_summary: "Summary of key pain points from research"
+  business_focus: "Business model or solution approach focus"
+
+template: |
+  # {{market}} - Solution Concept Portfolio
+  
+  ## Executive Summary
+  This solution generation analysis creates multiple innovative solution concepts for {{market}} based on systematic pain point research, designed to address specific customer problems through different business model approaches.
+  
+  **Primary Problem**: {{problem}}
+  **Market Focus**: {{market}}
+  **Business Focus**: {{business_focus}}
+  **Pain Points Summary**: {{pain_points_summary}}
+  
+  ## Solution Generation Methodology
+  
+  ### Problem-Solution Mapping Framework
+  - **Pain Point Analysis**: Direct mapping from customer research data
+  - **Solution Diversification**: Multiple approaches with different business models
+  - **Feasibility Assessment**: Technical and business viability evaluation
+  - **Market Validation**: Customer evidence and solution-market fit
+  
+  ### Business Model Categories Explored
+  - **Software/Digital Solutions**: Apps, platforms, SaaS offerings
+  - **Service-Based Solutions**: Consulting, managed services, training
+  - **Marketplace Solutions**: B2B/B2C marketplaces, networks, platforms
+  - **Hybrid Solutions**: Physical + digital, service + software combinations
+  
+  ## Solution Concept Portfolio
+  
+  ### SOLUTION TYPE 1: [Primary Solution Approach Name]
+  
+  **CORE CONCEPT**:
+  [2-3 sentence explanation of how this solution would work, including key mechanism and value delivery method]
+  
+  **SOLVES THESE SPECIFIC PAIN POINTS**:
+  - **"[Customer Quote 1]"** → [Specific explanation of how solution addresses this pain point]
+  - **"[Customer Quote 2]"** → [Specific explanation of how solution addresses this pain point]
+  - **"[Customer Quote 3]"** → [Specific explanation of how solution addresses this pain point]
+  - **"[Customer Quote 4]"** → [Specific explanation of how solution addresses this pain point]
+  
+  **POTENTIAL FEATURES**:
+  - **Core Feature 1**: [Description of essential capability addressing main pain point]
+  - **Core Feature 2**: [Description of essential capability addressing secondary pain point]
+  - **Advanced Feature 3**: [Description of enhanced capability for deeper problem resolution]
+  - **Integration Feature 4**: [Description of connectivity or workflow enhancement]
+  
+  **BUSINESS MODEL**:
+  - **Revenue Stream(s)**: [Primary and secondary revenue models - subscription, transaction, service fees, etc.]
+  - **Target User**: [Specific user persona and decision-maker profile]
+  - **Key Partnerships**: [Strategic partnerships needed for success]
+  - **Pricing Strategy**: [High-level pricing approach and value proposition]
+  
+  **COMPETITIVE ADVANTAGE**:
+  - **Unique Value**: [What makes this solution different from alternatives]
+  - **Barrier to Entry**: [Defensible aspects of the solution]
+  - **Network Effects**: [How solution gets stronger with more users]
+  
+  **POTENTIAL CHALLENGES**:
+  - **Technical Challenge**: [Main technical or development hurdle]
+  - **Market Challenge**: [Customer adoption or market penetration obstacle]
+  - **Business Challenge**: [Revenue model or scalability concern]
+  
+  **IMPLEMENTATION COMPLEXITY**: [High/Medium/Low]
+  **MARKET OPPORTUNITY SIZE**: [Large/Medium/Small]
+  **DEVELOPMENT TIMELINE**: [Estimated time to market]
+  
+  ---
+  
+  ### SOLUTION TYPE 2: [Alternative Solution Approach Name]
+  
+  **CORE CONCEPT**:
+  [2-3 sentence explanation of fundamentally different approach to solving the same problems]
+  
+  **SOLVES THESE SPECIFIC PAIN POINTS**:
+  - **"[Customer Quote 1]"** → [Different approach to addressing this pain point]
+  - **"[Customer Quote 2]"** → [Different approach to addressing this pain point]
+  - **"[Customer Quote 3]"** → [Different approach to addressing this pain point]
+  - **"[Customer Quote 4]"** → [Different approach to addressing this pain point]
+  
+  **POTENTIAL FEATURES**:
+  - **Core Feature 1**: [Description focusing on different solution methodology]
+  - **Core Feature 2**: [Description with alternative value delivery mechanism]
+  - **Advanced Feature 3**: [Description of unique capabilities of this approach]
+  - **Integration Feature 4**: [Description of ecosystem or partnership integrations]
+  
+  **BUSINESS MODEL**:
+  - **Revenue Stream(s)**: [Different revenue model from Solution 1]
+  - **Target User**: [Potentially different user segment or decision-maker]
+  - **Key Partnerships**: [Different partnership requirements]
+  - **Pricing Strategy**: [Alternative pricing model and value structure]
+  
+  **COMPETITIVE ADVANTAGE**:
+  - **Unique Value**: [Distinct differentiation from Solution 1 and competitors]
+  - **Barrier to Entry**: [Different defensible elements]
+  - **Market Position**: [Alternative positioning strategy]
+  
+  **POTENTIAL CHALLENGES**:
+  - **Technical Challenge**: [Specific to this solution approach]
+  - **Market Challenge**: [Different adoption or penetration challenges]
+  - **Business Challenge**: [Unique business model or scaling challenges]
+  
+  **IMPLEMENTATION COMPLEXITY**: [High/Medium/Low]
+  **MARKET OPPORTUNITY SIZE**: [Large/Medium/Small]
+  **DEVELOPMENT TIMELINE**: [Estimated time to market]
+  
+  ---
+  
+  ### SOLUTION TYPE 3: [Third Solution Approach Name]
+  
+  **CORE CONCEPT**:
+  [2-3 sentence explanation of third distinct approach, potentially service-based or marketplace model]
+  
+  **SOLVES THESE SPECIFIC PAIN POINTS**:
+  - **"[Customer Quote 1]"** → [Service or marketplace approach to this pain point]
+  - **"[Customer Quote 2]"** → [Service or marketplace approach to this pain point]  
+  - **"[Customer Quote 3]"** → [Service or marketplace approach to this pain point]
+  - **"[Customer Quote 4]"** → [Service or marketplace approach to this pain point]
+  
+  **POTENTIAL FEATURES**:
+  - **Service Feature 1**: [Human-delivered or community-based capability]
+  - **Platform Feature 2**: [Marketplace or network functionality]
+  - **Automation Feature 3**: [Technology-enabled service enhancement]
+  - **Quality Feature 4**: [Quality assurance or verification capability]
+  
+  **BUSINESS MODEL**:
+  - **Revenue Stream(s)**: [Service fees, commissions, or marketplace model]
+  - **Target User**: [Service-oriented user profile and needs]
+  - **Key Partnerships**: [Service providers, vendors, or community partners]
+  - **Pricing Strategy**: [Service-based or transaction-based pricing]
+  
+  **COMPETITIVE ADVANTAGE**:
+  - **Service Quality**: [Superior service delivery or experience]
+  - **Network Effects**: [Community or marketplace advantages]
+  - **Expertise**: [Specialized knowledge or capability advantages]
+  
+  **POTENTIAL CHALLENGES**:
+  - **Service Challenge**: [Quality control or service delivery scalability]
+  - **Marketplace Challenge**: [Two-sided market or network development]
+  - **Business Challenge**: [Service business scaling or margin challenges]
+  
+  **IMPLEMENTATION COMPLEXITY**: [High/Medium/Low]
+  **MARKET OPPORTUNITY SIZE**: [Large/Medium/Small]
+  **DEVELOPMENT TIMELINE**: [Estimated time to market]
+  
+  ---
+  
+  [Continue pattern for additional solution concepts if needed]
+  
+  ## Solution Comparison Matrix
+  
+  | Criteria | Solution 1 | Solution 2 | Solution 3 | Assessment Notes |
+  |----------|-----------|-----------|-----------|------------------|
+  | **Pain Point Coverage** | [Score/Rating] | [Score/Rating] | [Score/Rating] | [Which covers most pain points] |
+  | **Technical Feasibility** | [High/Med/Low] | [High/Med/Low] | [High/Med/Low] | [Development complexity] |
+  | **Market Opportunity** | [Large/Med/Small] | [Large/Med/Small] | [Large/Med/Small] | [Market size potential] |
+  | **Competitive Advantage** | [Strong/Med/Weak] | [Strong/Med/Weak] | [Strong/Med/Weak] | [Defensibility] |
+  | **Time to Market** | [Months] | [Months] | [Months] | [Speed to launch] |
+  | **Resource Requirements** | [High/Med/Low] | [High/Med/Low] | [High/Med/Low] | [Investment needed] |
+  | **Revenue Potential** | [High/Med/Low] | [High/Med/Low] | [High/Med/Low] | [Revenue opportunity] |
+  | **Scalability** | [High/Med/Low] | [High/Med/Low] | [High/Med/Low] | [Growth potential] |
+  
+  ## Strategic Analysis and Recommendations
+  
+  ### Solution Prioritization
+  
+  **RECOMMENDED PRIMARY SOLUTION**: [Solution Name]
+  **Rationale**: [Why this solution is recommended as the primary focus, considering pain point coverage, feasibility, and market opportunity]
+  
+  **RECOMMENDED SECONDARY SOLUTION**: [Solution Name]  
+  **Rationale**: [Why this solution should be considered as backup or parallel development]
+  
+  ### Market Validation Strategy
+  
+  **Primary Solution Validation**:
+  1. **Customer Problem Validation**: [How to validate the core problem with target customers]
+  2. **Solution Concept Testing**: [How to test the solution approach with potential users]
+  3. **Market Size Validation**: [How to validate market opportunity and demand]
+  4. **Competitive Response**: [How to assess competitive threats and responses]
+  
+  **Validation Metrics**:
+  - **Problem Validation**: [Specific metrics to measure problem confirmation]
+  - **Solution Interest**: [Metrics to measure customer interest in solution]
+  - **Willingness to Pay**: [Indicators of customer willingness to pay]
+  - **Usage Intent**: [Metrics for actual usage intention]
+  
+  ### Implementation Roadmap
+  
+  **Phase 1: Validation and MVP (Months 1-3)**
+  - Customer problem validation interviews
+  - Solution concept testing and refinement
+  - MVP feature definition and development planning
+  - Initial market validation and customer discovery
+  
+  **Phase 2: MVP Development and Testing (Months 4-8)**  
+  - MVP development and initial feature set
+  - Beta customer testing and feedback collection
+  - Business model validation and pricing testing
+  - Go-to-market strategy development
+  
+  **Phase 3: Market Launch and Scaling (Months 9-18)**
+  - Product launch and customer acquisition
+  - Feature expansion based on customer feedback
+  - Market expansion and scaling operations
+  - Additional solution development consideration
+  
+  ### Risk Analysis and Mitigation
+  
+  **Primary Risks**:
+  1. **Market Risk**: [Customer adoption slower than expected]
+     - **Mitigation**: [Specific strategies to address adoption challenges]
+  
+  2. **Technical Risk**: [Development more complex than anticipated]
+     - **Mitigation**: [Technical risk reduction strategies]
+  
+  3. **Competitive Risk**: [Competitors respond quickly with similar solutions]
+     - **Mitigation**: [Competitive advantage protection strategies]
+  
+  4. **Business Model Risk**: [Revenue model doesn't work as expected]
+     - **Mitigation**: [Alternative revenue model options]
+  
+  ### Resource Requirements
+  
+  **Team Composition Needed**:
+  - **Product Development**: [Technical skills and roles required]
+  - **Market Development**: [Marketing and sales capabilities needed]
+  - **Operations**: [Operational and support capabilities required]
+  - **Partnerships**: [Partnership development and management needs]
+  
+  **Funding Requirements**:
+  - **Development Costs**: [Estimated development investment]
+  - **Market Launch**: [Marketing and customer acquisition budget]
+  - **Operations**: [Ongoing operational costs and infrastructure]
+  - **Total Investment**: [Overall funding requirement estimate]
+  
+  ## Next Steps and Action Plan
+  
+  ### Immediate Actions (Next 30 Days)
+  1. **[Action 1]**: [Specific next step for solution validation]
+  2. **[Action 2]**: [Customer research or market validation activity]
+  3. **[Action 3]**: [Technical feasibility assessment or planning]
+  
+  ### Short-term Milestones (3 Months)
+  1. **[Milestone 1]**: [Customer validation completion]
+  2. **[Milestone 2]**: [Solution concept refinement]
+  3. **[Milestone 3]**: [MVP planning and resource allocation]
+  
+  ### Long-term Objectives (6-12 Months)
+  1. **[Objective 1]**: [MVP development and testing]
+  2. **[Objective 2]**: [Market launch preparation]
+  3. **[Objective 3]**: [Business model validation and optimization]
+  
+  ## Conclusion
+  
+  This solution portfolio provides multiple strategic options for addressing the identified pain points in {{market}}. The recommended approach balances pain point coverage, market opportunity, technical feasibility, and competitive advantage to maximize success probability.
+  
+  **Key Success Factors**:
+  - Strong customer validation before significant investment
+  - Focus on solving the highest-priority pain points first
+  - Iterative development with continuous customer feedback
+  - Clear differentiation from existing market solutions
+  - Scalable business model with sustainable competitive advantage
+  
+  ---
+  
+  **Solution Generation Methodology**: This analysis follows systematic solution design methodology using customer pain point mapping and business model innovation frameworks.
+  
+  **Last Updated**: [Current Date]
+  **Solution Strategist**: [Strategist Name/Team]
+  **Next Review**: [Recommended review timeline]

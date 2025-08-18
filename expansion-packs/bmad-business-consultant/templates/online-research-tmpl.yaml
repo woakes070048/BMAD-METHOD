@@ -1,0 +1,268 @@
+name: "Online Market Research Template"
+description: "Comprehensive template for digital market research using advanced search operators and systematic data collection"
+version: "1.0"
+category: "Digital Market Research"
+tags: ["online-research", "search-operators", "digital-intelligence", "customer-discovery"]
+
+placeholders:
+  market: "Target market, industry, or niche to research"
+  research_focus: "Specific research objectives and focus areas"
+  platforms: "Preferred research platforms (forums, social, reviews, all)"
+  depth: "Research depth (quick scan, comprehensive, deep dive)"
+
+template: |
+  # {{market}} - Online Market Research Report
+  
+  ## Executive Summary
+  This comprehensive online market research provides digital intelligence and customer insights for {{market}} using systematic search operators and community analysis methodology.
+  
+  **Research Focus**: {{research_focus}}
+  **Platforms Covered**: {{platforms}}
+  **Research Depth**: {{depth}}
+  **Research Date**: [Current Date]
+  
+  ## Research Methodology
+  
+  ### Digital Research Framework
+  - **Advanced Search Operators**: Targeted Google search strategies
+  - **Community Intelligence**: Forums, social media, and online communities
+  - **Customer Voice Capture**: Authentic quotes and pain point extraction
+  - **Systematic Data Collection**: Structured approach across multiple platforms
+  
+  ### Search Strategy Implementation
+  
+  #### 🔍 Forums and Communities Research
+  **Search Query Template**:
+  ```
+  "{{market}}"
+  inurl:forum|viewthread|showthread|viewtopic|showtopic|"index.php?topic"|"index.php?board" 
+  intext:"reading this topic"|"next thread"|"next topic"|"send private message"|
+  "I think"|"I feel"|"I was"|"I have been"|"I experienced"|"my experience"|
+  "in my opinion"|"IMO"|"my biggest struggle"|"my biggest fear"|"I found that"|
+  "I learned"|"I realized"|"my advice"|"struggles"|"problems"|"issues"|
+  "challenge"|"difficulties"|"hardships"|"pain point"|"barriers"|"obstacles"|
+  "concerns"|"frustrations"|"worries"|"hesitations"|"what I wish I knew"|"what I regret" 
+  -site:reddit.com -site:quora.com
+  ```
+  
+  **Research Results**:
+  - **Forums Researched**: [List of forums found and analyzed]
+  - **Threads Analyzed**: [Number of relevant discussion threads]
+  - **Key Communities**: [Most active and relevant communities]
+  - **Data Quality**: [Assessment of discussion quality and relevance]
+  
+  #### 📱 Reddit Research
+  **Search Query Template**:
+  ```
+  "{{market}}" (
+      site:reddit.com 
+      inurl:comments|inurl:thread 
+      | intext:"I think"|"I feel"|"I was"|"I have been"|"I experienced"|"my experience"|"in my opinion"|"IMO"|
+      "my biggest struggle"|"my biggest fear"|"I found that"|"I learned"|"I realized"|"my advice"|
+      "struggles"|"problems"|"issues"|"challenge"|"difficulties"|"hardships"|"pain point"|
+      "barriers"|"obstacles"|"concerns"|"frustrations"|"worries"|"hesitations"|"what I wish I knew"|"what I regret"
+  )
+  ```
+  
+  **Research Results**:
+  - **Subreddits Analyzed**: [List of relevant subreddits]
+  - **Post Types**: [Discussion posts, advice requests, complaint threads]
+  - **Engagement Levels**: [Comment counts and interaction quality]
+  - **Community Insights**: [Subreddit-specific patterns and themes]
+  
+  #### ❓ Quora Research
+  **Search Query Template**:
+  ```
+  "{{market}}" (
+      site:quora.com 
+      inurl:answer 
+      | intext:"I think"|"I feel"|"I was"|"I have been"|"I experienced"|"my experience"|"in my opinion"|"IMO"|
+      "my biggest struggle"|"my biggest fear"|"I found that"|"I learned"|"I realized"|"my advice"|
+      "struggles"|"problems"|"issues"|"challenge"|"difficulties"|"hardships"|"pain point"|
+      "barriers"|"obstacles"|"concerns"|"frustrations"|"worries"|"hesitations"|"what I wish I knew"|"what I regret"
+  )
+  ```
+  
+  **Research Results**:
+  - **Questions Analyzed**: [Number of relevant questions and answers]
+  - **Expert Responses**: [Professional vs. personal experience answers]
+  - **Question Categories**: [Types of questions being asked]
+  - **Answer Quality**: [Depth and expertise level of responses]
+  
+  #### 🎥 YouTube Research
+  **Search Query Template**:
+  ```
+  "{{market}}" (
+      site:youtube.com 
+      inurl:watch 
+      | intext:"comment"|"discussion"|"join the conversation"|"see more comments"|"user reviews"|
+      "I think"|"I feel"|"I was"|"I have been"|"I experienced"|"my experience"|"in my opinion"|"IMO"|
+      "my biggest struggle"|"my biggest fear"|"I found that"|"I learned"|"I realized"|"my advice"|
+      "struggles"|"problems"|"issues"|"challenge"|"difficulties"|"hardships"|"pain point"|
+      "barriers"|"obstacles"|"concerns"|"frustrations"|"worries"|"hesitations"|"what I wish I knew"|"what I regret"
+  )
+  ```
+  
+  **Research Results**:
+  - **Videos Analyzed**: [Number and types of relevant videos]
+  - **Comment Analysis**: [Volume and quality of user comments]
+  - **Content Categories**: [Tutorial, review, discussion video types]
+  - **User Engagement**: [Like/dislike ratios, comment sentiment]
+  
+  #### 💼 LinkedIn Research
+  **Search Query Template**:
+  ```
+  "{{market}}" site:linkedin.com/posts
+  ("challenge" OR "problem" OR "struggle" OR
+  "frustration" OR "issue" OR "difficulty" OR "pain point") 
+  -company -hiring -careers
+  ```
+  
+  **Research Results**:
+  - **Professional Posts**: [Industry professional discussions]
+  - **Business Challenges**: [Work-related problems and solutions]
+  - **Industry Trends**: [Professional insights and trends]
+  - **Thought Leadership**: [Expert opinions and advice]
+  
+  #### 🏫 Community Platforms (Skool, Discord, Slack)
+  **Search Query Template**:
+  ```
+  "{{market}}" site:skool.com (
+  "I think" OR "I feel" OR "I was" OR "I have been" OR "I experienced" OR 
+  "my experience" OR "in my opinion" OR "IMO" OR "my biggest struggle" OR 
+  "my biggest fear" OR "I found that" OR "I learned" OR "I realized" OR 
+  "my advice" OR "struggles" OR "problems" OR "issues" OR "challenge" OR 
+  "difficulties" OR "hardships" OR "pain point" OR "barriers" OR "obstacles" OR 
+  "concerns" OR "frustrations" OR "worries" OR "hesitations" OR 
+  "what I wish I knew" OR "what I regret"
+  ) ("comment" OR "reply" OR "discussion") -members -introduction -about -create
+  ```
+  
+  **Research Results**:
+  - **Learning Communities**: [Educational platform discussions]
+  - **Member Interactions**: [Peer-to-peer advice and support]
+  - **Course Feedback**: [Learning experience challenges]
+  - **Community Insights**: [Group dynamics and common issues]
+  
+  ## Pain Point Keywords Analysis
+  
+  ### Core Pain Point Indicators Found
+  **Emotional Expressions**:
+  - think, feel, was, been, experienced, opinion, advice
+  - struggles, problems, issues, challenge, difficulties
+  - hardships, pain, barriers, obstacles, concerns
+  - frustrations, worries, hesitations, regret, fear
+  
+  **Frequency Analysis**:
+  | Keyword Category | Frequency | Platform Distribution | Intensity Level |
+  |------------------|-----------|----------------------|-----------------|
+  | "struggle" | [count] | [platforms where found] | [High/Med/Low] |
+  | "frustration" | [count] | [platforms where found] | [High/Med/Low] |
+  | "challenge" | [count] | [platforms where found] | [High/Med/Low] |
+  | "problem" | [count] | [platforms where found] | [High/Med/Low] |
+  
+  ## Research Findings
+  
+  ### Platform-Specific Insights
+  
+  #### Forums and Traditional Communities
+  - **Discussion Depth**: [Assessment of conversation quality]
+  - **Problem Detail**: [Level of specific problem descriptions]
+  - **Solution Sharing**: [Community help and advice patterns]
+  - **Expert Presence**: [Industry experts participating]
+  
+  #### Social Media Platforms
+  - **Real-Time Issues**: [Current and immediate problems]
+  - **Viral Concerns**: [Widely shared frustrations]
+  - **Peer Support**: [Community response to problems]
+  - **Trend Emergence**: [New issues gaining attention]
+  
+  #### Professional Networks
+  - **Business Impact**: [Work and productivity challenges]
+  - **Industry Standards**: [Professional expectations and gaps]
+  - **Career Concerns**: [Professional development issues]
+  - **Organizational Challenges**: [Company and team problems]
+  
+  ### Customer Voice Patterns
+  
+  #### Language and Communication Style
+  - **Formality Level**: [Professional vs. casual communication]
+  - **Emotional Intensity**: [Frustration levels and expressions]
+  - **Solution Orientation**: [Help-seeking vs. complaining]
+  - **Community Norms**: [Platform-specific communication patterns]
+  
+  #### Problem Expression Patterns
+  - **Direct Statements**: [Clear problem descriptions]
+  - **Story-Based**: [Narrative problem explanations]
+  - **Comparative**: [Comparison to alternatives or past experiences]
+  - **Future-Focused**: [Desired outcomes and aspirations]
+  
+  ## Data Quality Assessment
+  
+  ### Source Credibility
+  - **Platform Reliability**: [Assessment of platform data quality]
+  - **User Authenticity**: [Real users vs. promotional content]
+  - **Information Recency**: [How current the discussions are]
+  - **Discussion Quality**: [Depth and substance of conversations]
+  
+  ### Research Coverage
+  - **Market Representation**: [How well research covers the target market]
+  - **Demographic Diversity**: [Range of customer types represented]
+  - **Geographic Distribution**: [Regional differences in problems]
+  - **Use Case Variety**: [Different scenarios and applications]
+  
+  ## Strategic Implications
+  
+  ### Immediate Opportunities
+  1. **[Opportunity 1]**: [Description based on research findings]
+  2. **[Opportunity 2]**: [Description based on research findings]
+  3. **[Opportunity 3]**: [Description based on research findings]
+  
+  ### Market Gaps Identified
+  1. **[Gap 1]**: [Unmet need or inadequate solution]
+  2. **[Gap 2]**: [Unmet need or inadequate solution]
+  3. **[Gap 3]**: [Unmet need or inadequate solution]
+  
+  ### Competitive Intelligence
+  - **Competitor Mentions**: [How competitors are discussed]
+  - **Solution Limitations**: [Problems with existing solutions]
+  - **Switching Triggers**: [What makes customers change solutions]
+  - **Unmet Expectations**: [What customers wish existed]
+  
+  ## Next Steps and Recommendations
+  
+  ### Priority Research Areas
+  1. **[Priority 1]**: [Follow-up research needed]
+  2. **[Priority 2]**: [Follow-up research needed]
+  3. **[Priority 3]**: [Follow-up research needed]
+  
+  ### Data Analysis Recommendations
+  - **Pain Point Analysis**: Systematic extraction and prioritization
+  - **Solution Generation**: Problem-to-solution mapping
+  - **Customer Segmentation**: Pattern-based customer grouping
+  - **Messaging Development**: Authentic language capture
+  
+  ### Validation Activities
+  - **Customer Interviews**: Direct validation of findings
+  - **Survey Research**: Quantitative validation of patterns
+  - **Prototype Testing**: Solution concept validation
+  - **Community Engagement**: Direct interaction with target customers
+  
+  ## Appendices
+  
+  ### Search Query Reference
+  [Complete list of all search queries used with results summary]
+  
+  ### Platform Research Log
+  [Detailed log of platforms researched, time spent, and data quality]
+  
+  ### Raw Data Organization
+  [Structure and organization of collected raw data for analysis]
+  
+  ---
+  
+  **Research Methodology**: This research follows advanced digital market research methodologies using systematic search operators and community intelligence gathering.
+  
+  **Last Updated**: [Current Date]
+  **Researcher**: [Researcher Name/Team]
+  **Next Review**: [Recommended follow-up timeline]

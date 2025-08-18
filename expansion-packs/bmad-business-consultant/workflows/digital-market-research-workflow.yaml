@@ -1,0 +1,317 @@
+name: "Digital Market Research Workflow"
+description: "Complete end-to-end digital market research workflow from market selection to solution concepts and marketing messages"
+version: "1.0"
+category: "Digital Market Intelligence"
+tags: ["digital-research", "customer-discovery", "solution-development", "market-intelligence"]
+
+workflow:
+  stages:
+    - name: "Market Definition and Research Planning"
+      description: "Define target market and plan comprehensive digital research strategy"
+      tasks:
+        - name: "Market Selection and Scoping"
+          description: "Select target market and define research objectives"
+          agent: "digital-market-researcher"
+          inputs:
+            - market_opportunity
+            - research_objectives
+            - success_criteria
+            - timeline_constraints
+          outputs:
+            - market_definition
+            - research_scope
+            - success_metrics
+            
+        - name: "Research Strategy Development"
+          description: "Plan digital research approach and methodology"
+          checklist: "market-research-checklist.md"
+          inputs:
+            - target_market
+            - research_depth
+            - platform_preferences
+          outputs:
+            - research_methodology
+            - platform_strategy
+            - search_query_plan
+
+    - name: "Digital Data Collection"
+      description: "Execute systematic online research using advanced search operators"
+      tasks:
+        - name: "Online Market Research Execution"
+          description: "Conduct comprehensive online research across multiple platforms"
+          agent: "digital-market-researcher"
+          task: "create-online-market-research"
+          template: "online-research-tmpl.yaml"
+          inputs:
+            - market: "{{target_market}}"
+            - research_focus: "{{research_objectives}}"
+            - platforms: "{{preferred_platforms}}"
+            - depth: "{{research_depth}}"
+            
+        - name: "Search Operator Research"
+          description: "Execute advanced search strategies for customer discovery"
+          agent: "digital-market-researcher"
+          task: "search-forums-communities"
+          inputs:
+            - search_queries: "{{generated_search_queries}}"
+            - platforms: "{{target_platforms}}"
+            
+        - name: "Social Media Intelligence"
+          description: "Gather customer insights from social media platforms"
+          agent: "digital-market-researcher"
+          task: "social-media-research"
+          inputs:
+            - platforms: "{{social_media_focus}}"
+            - hashtags: "{{relevant_hashtags}}"
+            - communities: "{{target_communities}}"
+
+    - name: "Pain Point Analysis and Customer Intelligence"
+      description: "Extract and analyze customer pain points using systematic methodology"
+      tasks:
+        - name: "Customer Pain Point Extraction"
+          description: "Extract customer pain points using structured methodology"
+          agent: "digital-market-researcher"
+          task: "extract-customer-pain-points"
+          template: "pain-point-analysis-tmpl.yaml"
+          inputs:
+            - research_data: "{{collected_research_data}}"
+            - analysis_depth: "{{comprehensive_analysis}}"
+            
+        - name: "Pain Point Prioritization"
+          description: "Apply COUNT/URGENCY/IMPACT scoring to prioritize problems"
+          agent: "digital-market-researcher"
+          task: "analyze-research-data"
+          inputs:
+            - pain_points_data: "{{extracted_pain_points}}"
+            - scoring_criteria: "{{prioritization_framework}}"
+            
+        - name: "Customer Voice Analysis"
+          description: "Analyze customer language patterns and communication styles"
+          checklist: "market-research-checklist.md"
+          outputs:
+            - customer_language_patterns
+            - emotional_indicators
+            - communication_preferences
+
+    - name: "Solution Concept Development"
+      description: "Generate solution concepts based on identified pain points"
+      tasks:
+        - name: "Solution Generation"
+          description: "Create multiple solution concepts using pain point analysis"
+          agent: "digital-market-researcher"
+          task: "generate-solution-concepts"
+          template: "solution-generation-tmpl.yaml"
+          inputs:
+            - market: "{{target_market}}"
+            - problem: "{{primary_problem}}"
+            - pain_points_data: "{{prioritized_pain_points}}"
+            
+        - name: "Business Model Innovation"
+          description: "Develop business models for solution concepts"
+          agent: "business-model-expert"
+          task: "create-business-model-canvas"
+          inputs:
+            - solution_concepts: "{{generated_solutions}}"
+            - market_context: "{{market_research_findings}}"
+            
+        - name: "Solution Validation Planning"
+          description: "Plan validation approach for solution concepts"
+          checklist: "business-model-design-checklist.md"
+          outputs:
+            - validation_strategy
+            - testing_methodology
+            - success_criteria
+
+    - name: "Customer Persona Development"
+      description: "Develop detailed buyer personas using Jobs-to-be-Done framework"
+      tasks:
+        - name: "Buyer Persona Creation"
+          description: "Create comprehensive buyer personas from research data"
+          agent: "digital-market-researcher"
+          task: "create-buyer-personas"
+          template: "buyer-persona-tmpl.yaml"
+          inputs:
+            - market: "{{target_market}}"
+            - research_data: "{{customer_intelligence}}"
+            - persona_focus: "{{b2b_or_b2c}}"
+            
+        - name: "Jobs-to-be-Done Analysis"
+          description: "Define customer jobs and desired outcomes"
+          checklist: "market-research-checklist.md"
+          inputs:
+            - customer_research: "{{pain_point_analysis}}"
+            - solution_context: "{{solution_concepts}}"
+          outputs:
+            - main_customer_jobs
+            - supporting_jobs
+            - outcome_expectations
+
+    - name: "Marketing Message Development"
+      description: "Develop compelling marketing messages using customer language"
+      tasks:
+        - name: "Before-After-Bridge Messaging"
+          description: "Create core marketing messages using customer voice"
+          agent: "digital-market-researcher"
+          task: "develop-marketing-messages"
+          template: "marketing-message-tmpl.yaml"
+          inputs:
+            - market: "{{target_market}}"
+            - problem: "{{primary_problem}}"
+            - solution: "{{recommended_solution}}"
+            - customer_research: "{{customer_voice_analysis}}"
+            
+        - name: "Message Testing Strategy"
+          description: "Plan message testing and validation approach"
+          checklist: "market-research-checklist.md"
+          outputs:
+            - message_testing_plan
+            - validation_metrics
+            - optimization_strategy
+
+    - name: "Strategic Synthesis and Recommendations"
+      description: "Synthesize all research into actionable strategic recommendations"
+      tasks:
+        - name: "Market Intelligence Integration"
+          description: "Integrate all research findings into comprehensive analysis"
+          agent: "strategic-analyst"
+          task: "create-strategic-assessment"
+          inputs:
+            - market_research: "{{digital_research_findings}}"
+            - customer_intelligence: "{{pain_point_analysis}}"
+            - solution_concepts: "{{generated_solutions}}"
+            
+        - name: "Go-to-Market Strategy"
+          description: "Develop go-to-market recommendations based on research"
+          agent: "business-model-expert"
+          inputs:
+            - buyer_personas: "{{developed_personas}}"
+            - marketing_messages: "{{core_messaging}}"
+            - solution_portfolio: "{{solution_concepts}}"
+          outputs:
+            - gtm_strategy
+            - channel_recommendations
+            - positioning_strategy
+            
+        - name: "Implementation Roadmap"
+          description: "Create actionable implementation plan and next steps"
+          outputs:
+            - implementation_timeline
+            - resource_requirements
+            - success_metrics
+            - validation_milestones
+
+agents:
+  primary: "digital-market-researcher"
+  supporting:
+    - "strategic-analyst"
+    - "business-model-expert"
+    - "market-researcher"
+
+deliverables:
+  - name: "Digital Market Research Report"
+    template: "online-research-tmpl.yaml"
+    description: "Comprehensive online research findings with search operator results"
+    
+  - name: "Customer Pain Point Analysis"
+    template: "pain-point-analysis-tmpl.yaml"
+    description: "Prioritized pain point analysis with COUNT/URGENCY/IMPACT scoring"
+    
+  - name: "Solution Concept Portfolio"
+    template: "solution-generation-tmpl.yaml"
+    description: "Multiple solution concepts with business model recommendations"
+    
+  - name: "Buyer Persona Profiles"
+    template: "buyer-persona-tmpl.yaml"
+    description: "Detailed buyer personas with Jobs-to-be-Done analysis"
+    
+  - name: "Marketing Message Framework"
+    template: "marketing-message-tmpl.yaml"
+    description: "Core marketing messages using Before-After-Bridge framework"
+    
+  - name: "Strategic Recommendations Report"
+    description: "Comprehensive strategic recommendations and implementation roadmap"
+
+success_criteria:
+  - "Rich collection of authentic customer pain points with supporting quotes"
+  - "Clear prioritization of problems using objective scoring methodology"
+  - "Multiple viable solution concepts with different business models"
+  - "Detailed buyer personas backed by customer research data"
+  - "Compelling marketing messages using authentic customer language"
+  - "Actionable strategic recommendations with clear next steps"
+
+timeline:
+  total_duration: "4-8 weeks"
+  stage_durations:
+    market_definition: "3-5 days"
+    data_collection: "7-14 days"
+    pain_point_analysis: "5-7 days"
+    solution_development: "7-10 days"
+    persona_development: "5-7 days"
+    message_development: "3-5 days"
+    strategic_synthesis: "5-7 days"
+
+quality_gates:
+  - stage: "Digital Data Collection"
+    criteria: "Sufficient customer data collected with high-quality quotes and pain points"
+    
+  - stage: "Pain Point Analysis"
+    criteria: "Clear problem prioritization with supporting customer evidence"
+    
+  - stage: "Solution Concept Development"
+    criteria: "Multiple viable solution concepts addressing top pain points"
+    
+  - stage: "Customer Persona Development"
+    criteria: "Detailed personas with Jobs-to-be-Done backed by research data"
+    
+  - stage: "Marketing Message Development"
+    criteria: "Compelling messages using authentic customer language"
+
+research_methods:
+  digital_platforms:
+    - "Forums and online communities"
+    - "Reddit and social media platforms"
+    - "Quora and Q&A sites"
+    - "YouTube comments and discussions"
+    - "LinkedIn professional networks"
+    - "Discord and Slack communities"
+    - "Review sites and marketplaces"
+    
+  search_techniques:
+    - "Advanced Google search operators"
+    - "Pain point keyword targeting"
+    - "Customer quote extraction"
+    - "Community intelligence gathering"
+    - "Competitive mention monitoring"
+    - "Trend and pattern analysis"
+    
+  analysis_frameworks:
+    - "COUNT/URGENCY/IMPACT scoring"
+    - "Jobs-to-be-Done methodology"
+    - "Before-After-Bridge messaging"
+    - "Customer journey mapping"
+    - "Pain point categorization"
+    - "Solution-problem mapping"
+
+validation_activities:
+  - "Customer interview validation of pain points"
+  - "Solution concept testing with target customers"
+  - "Message resonance testing and feedback"
+  - "Buyer persona validation through surveys"
+  - "Competitive analysis and market validation"
+  - "Business model viability assessment"
+
+integration_points:
+  strategic_analysis:
+    - "SWOT analysis incorporating digital research findings"
+    - "PESTEL analysis with online community insights"
+    - "Porter's Five Forces with competitive intelligence"
+    
+  business_model_design:
+    - "Business Model Canvas with customer research integration"
+    - "Value proposition design based on pain point analysis"
+    - "Revenue model validation with willingness-to-pay data"
+    
+  traditional_market_research:
+    - "Primary research validation of digital findings"
+    - "Survey design based on digital research insights"
+    - "Focus group planning with pain point themes"

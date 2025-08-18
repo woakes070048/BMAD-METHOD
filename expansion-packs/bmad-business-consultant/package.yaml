@@ -1,0 +1,304 @@
+# package.yaml
+
+package_info:
+  name: bmad-business-consultant
+  version: 1.0.0
+  description: Comprehensive business consulting expansion pack for BMAD-METHOD
+  author: BMAD-METHOD Team
+  license: BMAD-METHOD Enterprise License
+  homepage: https://github.com/bmad-method/bmad-business-consultant
+  repository: https://github.com/bmad-method/bmad-business-consultant.git
+  
+compatibility:
+  bmad_method: ">=4.0.0"
+  erpnext: ">=15.0.0"
+  python: ">=3.8.0"
+  node: ">=16.0.0"
+  
+dependencies:
+  python:
+    - frappe-client>=2.0.0
+    - pandas>=1.3.0
+    - numpy>=1.21.0
+    - redis>=4.0.0
+    - celery>=5.0.0
+    - pyyaml>=6.0
+    - requests>=2.28.0
+    - python-dotenv>=0.19.0
+    - sqlalchemy>=1.4.0
+    - alembic>=1.7.0
+    - pytest>=7.0.0
+    - pytest-cov>=3.0.0
+    
+  system:
+    - redis-server
+    - postgresql-client
+    - nginx
+    - supervisor
+    
+components:
+  agents:
+    count: 12
+    files:
+      - agents/strategic-growth-advisor.md
+      - agents/financial-performance-analyst.md
+      - agents/operations-excellence-expert.md
+      - agents/customer-experience-expert.md
+      - agents/technology-innovation-expert.md
+      - agents/hr-talent-specialist.md
+      - agents/manufacturing-operations-expert.md
+      - agents/supply-chain-specialist.md
+      - agents/quality-assurance-expert.md
+      - agents/professional-services-advisor.md
+      - agents/succession-planning-expert.md
+      
+  templates:
+    count: 30
+    categories:
+      - strategic_planning: 6
+      - financial_analysis: 5
+      - operational_excellence: 5
+      - marketing_sales: 4
+      - hr_organizational: 4
+      - technology_innovation: 3
+      - risk_compliance: 3
+      
+  tasks:
+    count: 12
+    files:
+      - tasks/strategic-planning-analysis.md
+      - tasks/financial-performance-review.md
+      - tasks/operational-efficiency-assessment.md
+      - tasks/customer-journey-mapping.md
+      - tasks/hr-assessment-analysis.md
+      - tasks/digital-readiness-assessment.md
+      - tasks/manufacturing-efficiency-analysis.md
+      - tasks/succession-planning-analysis.md
+      - tasks/client-retention-analysis.md
+      - tasks/pricing-strategy-development.md
+      - tasks/merger-acquisition-analysis.md
+      - tasks/healthcare-practice-optimization.md
+      
+  checklists:
+    count: 8
+    files:
+      - checklists/pre-engagement-checklist.md
+      - checklists/data-collection-checklist.md
+      - checklists/manufacturing-compliance-checklist.md
+      - checklists/professional-services-checklist.md
+      - checklists/hr-compliance-checklist.md
+      - checklists/succession-planning-checklist.md
+      - checklists/technology-startup-checklist.md
+      - checklists/digital-transformation-checklist.md
+      
+  workflows:
+    count: 6
+    files:
+      - workflows/quick-assessment-workflow.md
+      - workflows/comprehensive-business-assessment-workflow.md
+      - workflows/digital-transformation-implementation-workflow.md
+      - workflows/business-succession-transition-workflow.md
+      - workflows/strategic-turnaround-recovery-workflow.md
+      - workflows/mergers-acquisitions-transaction-workflow.md
+      
+  knowledge:
+    count: 6
+    files:
+      - knowledge/manufacturing-excellence-knowledge.md
+      - knowledge/digital-transformation-knowledge.md
+      - knowledge/professional-services-excellence-knowledge.md
+      - knowledge/business-succession-family-business-knowledge.md
+      - knowledge/strategic-planning-growth-knowledge.md
+      - knowledge/hr-talent-management-knowledge.md
+      
+  teams:
+    count: 4
+    files:
+      - teams/strategic-transformation-team.yaml
+      - teams/crisis-turnaround-team.yaml
+      - teams/digital-innovation-team.yaml
+      - teams/business-growth-team.yaml
+      
+  integrations:
+    count: 1
+    files:
+      - integrations/erpnext-connector.yaml
+      
+installation:
+  steps:
+    - name: Check prerequisites
+      command: python scripts/check_prerequisites.py
+      
+    - name: Install dependencies
+      command: pip install -r requirements.txt
+      
+    - name: Setup database
+      command: python scripts/setup_database.py
+      
+    - name: Load agents
+      command: python scripts/load_agents.py
+      
+    - name: Configure integrations
+      command: python scripts/configure_integrations.py
+      
+    - name: Verify installation
+      command: python scripts/verify_installation.py
+      
+  post_install:
+    - message: "BMAD Business Consultant successfully installed!"
+    - message: "Run 'bmad-cli agent list' to see available agents"
+    - message: "Check DEPLOYMENT_GUIDE.md for configuration options"
+    
+configuration:
+  files:
+    - config/agents.yaml
+    - config/workflows.yaml
+    - config/teams.yaml
+    - config/integrations.yaml
+    - .env.example
+    
+  environment_variables:
+    required:
+      - BMAD_ENV
+      - DB_TYPE
+      - DB_HOST
+      - DB_NAME
+      - DB_USER
+      - DB_PASSWORD
+    optional:
+      - ERPNEXT_URL
+      - ERPNEXT_API_KEY
+      - REDIS_URL
+      - LOG_LEVEL
+      - ENABLE_ANALYTICS
+      
+scripts:
+  utility:
+    - scripts/initialize.py
+    - scripts/check_prerequisites.py
+    - scripts/load_agents.py
+    - scripts/verify_installation.py
+    - scripts/test_connection.py
+    
+  management:
+    - scripts/start_consultant.sh
+    - scripts/stop_consultant.sh
+    - scripts/restart_consultant.sh
+    - scripts/backup.sh
+    - scripts/restore.sh
+    
+  development:
+    - scripts/run_tests.sh
+    - scripts/generate_docs.py
+    - scripts/validate_yaml.py
+    - scripts/lint.sh
+    
+testing:
+  unit_tests:
+    directory: tests/unit/
+    command: pytest tests/unit/
+    
+  integration_tests:
+    directory: tests/integration/
+    command: pytest tests/integration/
+    
+  performance_tests:
+    directory: tests/performance/
+    command: locust -f tests/performance/locustfile.py
+    
+  coverage:
+    minimum: 80
+    command: pytest --cov=bmad_consultant --cov-report=html
+    
+documentation:
+  files:
+    - README.md
+    - DEPLOYMENT_GUIDE.md
+    - CONTRIBUTING.md
+    - LICENSE
+    - docs/api-reference.md
+    - docs/user-guide.md
+    - docs/agents/README.md
+    - docs/workflows/README.md
+    - docs/integration/README.md
+    
+monitoring:
+  health_check:
+    endpoint: /health
+    interval: 60
+    
+  metrics:
+    - agent_response_time
+    - workflow_completion_rate
+    - api_request_count
+    - error_rate
+    - resource_utilization
+    
+  logging:
+    level: INFO
+    files:
+      - logs/application.log
+      - logs/error.log
+      - logs/access.log
+      - logs/agents/
+      
+security:
+  authentication:
+    type: JWT
+    expiry: 86400
+    
+  authorization:
+    type: RBAC
+    roles:
+      - admin
+      - consultant
+      - analyst
+      - viewer
+      
+  encryption:
+    data_at_rest: AES-256
+    data_in_transit: TLS_1.3
+    
+  compliance:
+    - GDPR
+    - SOC2
+    - ISO27001
+    
+performance:
+  limits:
+    max_concurrent_users: 100
+    max_agents_per_user: 5
+    max_workflow_duration: 86400
+    max_request_size: 10MB
+    
+  optimization:
+    caching: true
+    connection_pooling: true
+    lazy_loading: true
+    compression: true
+    
+metadata:
+  tags:
+    - business-consulting
+    - ai-agents
+    - erpnext-integration
+    - workflow-automation
+    - strategic-planning
+    - financial-analysis
+    - operations-excellence
+    
+  categories:
+    - Business Intelligence
+    - Consulting Tools
+    - AI/ML Applications
+    - Enterprise Software
+    
+  keywords:
+    - BMAD-METHOD
+    - business consultant
+    - AI agents
+    - ERPNext
+    - workflow automation
+    - strategic planning
+    - financial analysis
+    - operations optimization

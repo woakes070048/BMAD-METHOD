@@ -1,0 +1,391 @@
+name: "Comprehensive Risk Assessment Template"
+description: "Complete risk assessment framework for enterprise risk management and strategic decision-making"
+version: "1.0"
+category: "Risk Management"
+tags: ["risk", "assessment", "enterprise", "management", "compliance", "governance"]
+
+placeholders:
+  assessment_scope: "Scope of risk assessment"
+  assessment_date: "Date of assessment"
+  assessor: "Lead risk assessor"
+  review_period: "Risk review period"
+  risk_appetite: "Organization's risk appetite level"
+
+template: |
+  # COMPREHENSIVE RISK ASSESSMENT
+  ## {{assessment_scope}}
+  
+  **Assessment Date**: {{assessment_date}}  
+  **Lead Assessor**: {{assessor}}  
+  **Review Period**: {{review_period}}  
+  **Risk Appetite**: {{risk_appetite}}
+  
+  ---
+  
+  ## EXECUTIVE SUMMARY
+  
+  ### Risk Profile Overview
+  - **Total Risks Identified**: [Number]
+  - **Critical Risks**: [Number] requiring immediate attention
+  - **High Risks**: [Number] requiring mitigation planning
+  - **Overall Risk Score**: [Score]/100
+  - **Risk Trend**: [Improving/Stable/Deteriorating]
+  
+  ### Key Findings
+  1. **Highest Risk**: [Description] - Score: [X]
+  2. **Emerging Risk**: [Description] - Trend: [Direction]
+  3. **Systemic Risk**: [Description] - Impact: [Organization-wide]
+  
+  ### Critical Actions Required
+  - [ ] **Immediate** (0-30 days): [Action]
+  - [ ] **Short-term** (1-3 months): [Action]
+  - [ ] **Medium-term** (3-12 months): [Action]
+  
+  ---
+  
+  ## RISK ASSESSMENT METHODOLOGY
+  
+  ### Assessment Framework
+  **Standard**: [ISO 31000 / COSO ERM / NIST / Custom]
+  **Scope**: [Project/Department/Enterprise/Specific Process]
+  **Time Horizon**: [Assessment period]
+  **Perspective**: [Strategic/Operational/Financial/Compliance]
+  
+  ### Risk Scoring Matrix
+  ```
+  PROBABILITY SCALE (1-5):
+  1 = Rare (< 5% chance)
+  2 = Unlikely (5-25% chance)
+  3 = Possible (25-50% chance)
+  4 = Likely (50-75% chance)
+  5 = Almost Certain (> 75% chance)
+  
+  IMPACT SCALE (1-5):
+  1 = Negligible (< $10K impact)
+  2 = Minor ($10K - $100K impact)
+  3 = Moderate ($100K - $1M impact)
+  4 = Major ($1M - $10M impact)
+  5 = Catastrophic (> $10M impact)
+  
+  RISK SCORE = Probability × Impact
+  RISK LEVEL:
+  - Critical: 20-25 (Red)
+  - High: 15-19 (Orange)
+  - Medium: 8-14 (Yellow)
+  - Low: 1-7 (Green)
+  ```
+  
+  ---
+  
+  ## STRATEGIC RISKS
+  
+  ### RISK SR-001: [Strategic Risk Name]
+  **Category**: Strategic Planning
+  **Description**: [Detailed description of the risk]
+  
+  **Impact Assessment**:
+  - **Financial Impact**: $[Amount] potential loss
+  - **Operational Impact**: [Description]
+  - **Reputational Impact**: [Description]
+  - **Regulatory Impact**: [Description]
+  
+  **Probability Assessment**:
+  - **Historical Frequency**: [Data]
+  - **Current Indicators**: [Warning signs]
+  - **Expert Judgment**: [Assessment]
+  - **Overall Probability**: [1-5]
+  
+  **Risk Score**: [Probability × Impact = Total]
+  **Risk Level**: [Critical/High/Medium/Low]
+  
+  **Root Causes**:
+  1. [Primary cause]
+  2. [Secondary cause]
+  3. [Contributing factor]
+  
+  **Current Controls**:
+  - **Preventive**: [What prevents this risk]
+  - **Detective**: [What detects this risk]
+  - **Corrective**: [What responds to this risk]
+  - **Control Effectiveness**: [Effective/Partially Effective/Ineffective]
+  
+  **Risk Treatment Strategy**:
+  - [ ] **Accept**: Rationale if accepting
+  - [ ] **Avoid**: How to eliminate the risk
+  - [ ] **Mitigate**: Reduce probability or impact
+  - [ ] **Transfer**: Insurance or outsourcing
+  
+  **Mitigation Plan**:
+  | Action | Owner | Due Date | Cost | Expected Risk Reduction |
+  |--------|-------|----------|------|------------------------|
+  | [Action 1] | [Person] | [Date] | $[Amount] | [Probability/Impact reduction] |
+  | [Action 2] | [Person] | [Date] | $[Amount] | [Probability/Impact reduction] |
+  
+  **Monitoring Plan**:
+  - **KRIs**: [Key Risk Indicators]
+  - **Thresholds**: [Alert levels]
+  - **Frequency**: [How often to monitor]
+  - **Owner**: [Responsible party]
+  
+  ---
+  
+  ## OPERATIONAL RISKS
+  
+  ### RISK OP-001: [Operational Risk Name]
+  [Follow same format as Strategic Risk template above]
+  
+  ### RISK OP-002: [Process Risk Name]
+  [Follow same format as Strategic Risk template above]
+  
+  ### RISK OP-003: [Technology Risk Name]
+  [Follow same format as Strategic Risk template above]
+  
+  ---
+  
+  ## FINANCIAL RISKS
+  
+  ### RISK FN-001: [Financial Risk Name]
+  [Follow same format as Strategic Risk template above]
+  
+  ### RISK FN-002: [Credit Risk Name]
+  [Follow same format as Strategic Risk template above]
+  
+  ### RISK FN-003: [Market Risk Name]
+  [Follow same format as Strategic Risk template above]
+  
+  ---
+  
+  ## COMPLIANCE & REGULATORY RISKS
+  
+  ### RISK CR-001: [Compliance Risk Name]
+  [Follow same format as Strategic Risk template above]
+  
+  ### RISK CR-002: [Regulatory Risk Name]
+  [Follow same format as Strategic Risk template above]
+  
+  ---
+  
+  ## CYBER & INFORMATION SECURITY RISKS
+  
+  ### RISK CS-001: [Cybersecurity Risk Name]
+  [Follow same format as Strategic Risk template above]
+  
+  ### RISK CS-002: [Data Privacy Risk Name]
+  [Follow same format as Strategic Risk template above]
+  
+  ---
+  
+  ## RISK HEAT MAP
+  
+  ```
+  IMPACT →
+  ↓         LOW    MEDIUM   HIGH   CRITICAL
+  PROBABILITY
+  
+  CRITICAL    5    [R5]     [R8]     [R2]
+              4    [R7]     [R3]     [R1]
+  HIGH        3    [R9]     [R4]     [R6]
+              2   [R10]    [R11]     
+  LOW         1   [R12]    [R13]     
+  
+  Legend:
+  R1 = [Risk Name] - [Category]
+  R2 = [Risk Name] - [Category]
+  ...
+  ```
+  
+  ---
+  
+  ## RISK CONCENTRATION ANALYSIS
+  
+  ### Risk Concentration by Category
+  | Category | Risk Count | Total Score | % of Total Risk |
+  |----------|------------|-------------|-----------------|
+  | Strategic | [Count] | [Score] | [%] |
+  | Operational | [Count] | [Score] | [%] |
+  | Financial | [Count] | [Score] | [%] |
+  | Compliance | [Count] | [Score] | [%] |
+  | Cyber Security | [Count] | [Score] | [%] |
+  
+  ### Risk Concentration by Business Unit
+  | Business Unit | Risk Count | Total Score | % of Total Risk |
+  |---------------|------------|-------------|-----------------|
+  | [Unit A] | [Count] | [Score] | [%] |
+  | [Unit B] | [Count] | [Score] | [%] |
+  | [Unit C] | [Count] | [Score] | [%] |
+  
+  ### Top Risk Correlations
+  1. **Risk Cluster 1**: [Risks that are correlated]
+     - Common Cause: [What links them]
+     - Combined Impact: [If all occur together]
+  
+  2. **Risk Cluster 2**: [Risks that are correlated]
+     - Common Cause: [What links them]
+     - Combined Impact: [If all occur together]
+  
+  ---
+  
+  ## SCENARIO ANALYSIS
+  
+  ### Scenario 1: Base Case
+  **Probability**: 60%
+  **Description**: [Normal operating conditions]
+  **Risk Profile**: [How risks behave in this scenario]
+  **Total Risk Score**: [Aggregate score]
+  **Key Assumptions**: [What this scenario assumes]
+  
+  ### Scenario 2: Stress Case
+  **Probability**: 25%
+  **Description**: [Challenging but plausible conditions]
+  **Risk Profile**: [How risks behave in this scenario]
+  **Total Risk Score**: [Aggregate score]
+  **Key Triggers**: [What would cause this scenario]
+  
+  ### Scenario 3: Crisis Case
+  **Probability**: 15%
+  **Description**: [Severe adverse conditions]
+  **Risk Profile**: [How risks behave in this scenario]
+  **Total Risk Score**: [Aggregate score]
+  **Business Impact**: [Potential consequences]
+  
+  ---
+  
+  ## RISK APPETITE & TOLERANCE
+  
+  ### Risk Appetite Statement
+  > [Organization's formal risk appetite statement]
+  
+  ### Risk Tolerance by Category
+  | Category | Tolerance Level | Current Exposure | Status |
+  |----------|----------------|------------------|--------|
+  | Strategic | [Level] | [Exposure] | [Within/Exceeds] |
+  | Operational | [Level] | [Exposure] | [Within/Exceeds] |
+  | Financial | [Level] | [Exposure] | [Within/Exceeds] |
+  | Compliance | [Level] | [Exposure] | [Within/Exceeds] |
+  | Reputation | [Level] | [Exposure] | [Within/Exceeds] |
+  
+  ### Risk Tolerance Breaches
+  - **Current Breaches**: [List any categories exceeding tolerance]
+  - **Projected Breaches**: [Risks likely to exceed tolerance]
+  - **Corrective Actions**: [Actions to bring within tolerance]
+  
+  ---
+  
+  ## RISK MONITORING & REPORTING
+  
+  ### Key Risk Indicators (KRIs)
+  | KRI | Current Value | Threshold | Trend | Status | Owner |
+  |-----|--------------|-----------|-------|--------|-------|
+  | [KRI 1] | [Value] | [Threshold] | [↑↓→] | [G/Y/R] | [Person] |
+  | [KRI 2] | [Value] | [Threshold] | [↑↓→] | [G/Y/R] | [Person] |
+  | [KRI 3] | [Value] | [Threshold] | [↑↓→] | [G/Y/R] | [Person] |
+  
+  ### Reporting Schedule
+  - **Executive Dashboard**: [Frequency] - [Audience]
+  - **Risk Committee**: [Frequency] - [Format]
+  - **Board Reports**: [Frequency] - [Content]
+  - **Regulatory Reports**: [Frequency] - [Requirements]
+  
+  ### Escalation Procedures
+  1. **Level 1** (Green): Business unit management
+  2. **Level 2** (Yellow): Risk committee
+  3. **Level 3** (Red): Executive team
+  4. **Level 4** (Critical): Board of directors
+  
+  ---
+  
+  ## RISK TREATMENT PORTFOLIO
+  
+  ### Investment Summary
+  | Treatment Type | Investment Required | Risk Reduction | ROI |
+  |----------------|-------------------|----------------|-----|
+  | Risk Mitigation | $[Amount] | [% reduction] | [%] |
+  | Risk Transfer | $[Amount] | [% transferred] | [%] |
+  | Risk Monitoring | $[Amount] | [% better detection] | [%] |
+  | **Total** | **$[Total]** | **[Total reduction]** | **[Overall ROI]** |
+  
+  ### Implementation Timeline
+  ```
+  Q1: [Initiatives and budgets]
+  Q2: [Initiatives and budgets]
+  Q3: [Initiatives and budgets]
+  Q4: [Initiatives and budgets]
+  ```
+  
+  ### Resource Requirements
+  - **Human Resources**: [FTE requirements]
+  - **Technology**: [System/tool requirements]
+  - **External Support**: [Consulting/vendor needs]
+  - **Budget**: [Total investment required]
+  
+  ---
+  
+  ## CONTINUOUS IMPROVEMENT
+  
+  ### Risk Assessment Quality
+  - **Completeness**: [% of risks identified]
+  - **Accuracy**: [Validation of risk scores]
+  - **Timeliness**: [Currency of assessment]
+  - **Usefulness**: [Decision support value]
+  
+  ### Lessons Learned
+  1. **What Worked Well**: [Successes]
+  2. **Areas for Improvement**: [Enhancement opportunities]
+  3. **Process Refinements**: [Methodology improvements]
+  4. **Tool Enhancements**: [System improvements]
+  
+  ### Next Assessment
+  - **Scheduled Review**: [Date]
+  - **Trigger Events**: [What would require earlier review]
+  - **Scope Changes**: [Any planned scope modifications]
+  - **Methodology Updates**: [Framework improvements]
+  
+  ---
+  
+  ## APPENDICES
+  
+  ### A. Detailed Risk Register
+  [Complete risk inventory with all details]
+  
+  ### B. Risk Assessment Worksheets
+  [Supporting calculations and analysis]
+  
+  ### C. Stakeholder Interview Summary
+  [Key inputs from stakeholder consultations]
+  
+  ### D. Industry Benchmarking
+  [Comparison with industry risk profiles]
+  
+  ### E. Regulatory Requirements
+  [Compliance obligations and mapping]
+  
+  ### F. Historical Risk Events
+  [Lessons from past risk materializations]
+  
+  ---
+  
+  ## APPROVAL & SIGN-OFF
+  
+  ### Assessment Team
+  - **Lead Risk Assessor**: _________________ Date: _______
+  - **Business Representative**: _________________ Date: _______
+  - **Technical Expert**: _________________ Date: _______
+  - **Compliance Officer**: _________________ Date: _______
+  
+  ### Management Approval
+  - **Risk Owner**: _________________ Date: _______
+  - **Risk Manager**: _________________ Date: _______
+  - **Department Head**: _________________ Date: _______
+  
+  ### Governance Oversight
+  - **Risk Committee Chair**: _________________ Date: _______
+  - **Chief Risk Officer**: _________________ Date: _______
+  - **Executive Sponsor**: _________________ Date: _______
+  
+  ---
+  
+  **CONFIDENTIALITY NOTICE**
+  *This risk assessment contains sensitive information about organizational vulnerabilities. Distribution should be limited to authorized personnel with a legitimate business need to know.*
+  
+  **Next Review Date**: {{review_period}}
+  **Document Classification**: [Confidential/Restricted/Internal]

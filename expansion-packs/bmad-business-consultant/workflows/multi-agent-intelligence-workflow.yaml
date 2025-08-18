@@ -1,0 +1,415 @@
+name: "Multi-Agent Business Intelligence & Advisory Workflow"
+description: "Orchestrated multi-agent workflow for comprehensive business intelligence, strategic advisory, and decision support"
+version: "1.0"
+category: "Business Intelligence"
+tags: ["multi-agent", "business-intelligence", "strategic-advisory", "executive-decision-support", "swarm-intelligence"]
+
+workflow:
+  stages:
+    - name: "Strategic Question or Decision Context"
+      description: "Capture and frame the strategic question or decision requiring analysis"
+      tasks:
+        - name: "Context Framing"
+          description: "Frame the strategic question with full context"
+          checklist: "strategic-decision-checklist.md"
+          inputs:
+            - strategic_question
+            - decision_urgency
+            - stakeholder_requirements
+            - available_data
+            - constraints_and_limitations
+          outputs:
+            - framed_question
+            - analysis_scope
+            - success_criteria
+            - stakeholder_matrix
+            
+        - name: "Intelligence Requirements"
+          description: "Define specific intelligence needs"
+          inputs:
+            - decision_type
+            - information_gaps
+            - time_constraints
+            - quality_requirements
+          outputs:
+            - intelligence_requirements
+            - data_sources_needed
+            - analysis_priorities
+
+    - name: "Multi-Agent Strategic Analysis"
+      description: "Deploy multiple agents for comprehensive strategic analysis"
+      parallel: true
+      tasks:
+        - name: "CEO Strategic Assessment"
+          description: "Strategic and competitive analysis"
+          agent: "ceo-advisor"
+          task: "strategic-assessment"
+          inputs:
+            - situation: "{{framed_question}}"
+            - market_context: "{{market_data}}"
+            - competitive_landscape: "{{competitive_intelligence}}"
+          outputs:
+            - strategic_implications
+            - competitive_positioning
+            - growth_opportunities
+            - strategic_risks
+            - board_perspective
+            
+        - name: "CFO Financial Analysis"
+          description: "Financial implications and ROI assessment"
+          agent: "cfo-advisor"
+          task: "financial-analysis"
+          inputs:
+            - situation: "{{framed_question}}"
+            - financial_data: "{{financial_context}}"
+            - investment_requirements: "{{resource_needs}}"
+          outputs:
+            - financial_impact
+            - roi_projections
+            - cash_flow_implications
+            - financial_risks
+            - investment_recommendations
+            
+        - name: "COO Operational Assessment"
+          description: "Operational feasibility and efficiency analysis"
+          agent: "coo-advisor"
+          task: "operational-assessment"
+          inputs:
+            - situation: "{{framed_question}}"
+            - operational_data: "{{operational_metrics}}"
+            - capacity_constraints: "{{resource_limitations}}"
+          outputs:
+            - operational_feasibility
+            - efficiency_impacts
+            - process_implications
+            - implementation_complexity
+            - operational_risks
+
+    - name: "Deep Intelligence Gathering"
+      description: "Comprehensive intelligence gathering and pattern analysis"
+      parallel: true
+      tasks:
+        - name: "Market Intelligence Analysis"
+          description: "Market and competitive intelligence"
+          agent: "market-researcher"
+          task: "market-analysis"
+          inputs:
+            - market: "{{target_market}}"
+            - analysis_scope: "{{market_scope}}"
+          outputs:
+            - market_dynamics
+            - customer_insights
+            - competitive_analysis
+            - market_opportunities
+            - market_threats
+            
+        - name: "Pattern and Anomaly Detection"
+          description: "Identify patterns and potential threats"
+          agent: "pattern-detective"
+          task: "detect-patterns"
+          inputs:
+            - historical_data: "{{business_data}}"
+            - timeframe: "{{analysis_period}}"
+            - focus_areas: "{{key_metrics}}"
+          outputs:
+            - identified_patterns
+            - anomalies_detected
+            - trend_analysis
+            - predictive_indicators
+            - early_warnings
+            
+        - name: "Risk Intelligence"
+          description: "Comprehensive risk assessment"
+          agent: "risk-assessor"
+          task: "risk-assessment"
+          inputs:
+            - scope: "{{decision_scope}}"
+            - risk_categories: "all"
+          outputs:
+            - risk_matrix
+            - black_swan_possibilities
+            - risk_mitigation_options
+            - compliance_considerations
+            - crisis_scenarios
+
+    - name: "Solution Architecture and Innovation"
+      description: "Design innovative solutions and implementation strategies"
+      tasks:
+        - name: "Solution Design"
+          description: "Architect comprehensive solution options"
+          agent: "solution-architect"
+          task: "solution-design"
+          inputs:
+            - problem: "{{framed_question}}"
+            - constraints: "{{identified_constraints}}"
+            - opportunities: "{{identified_opportunities}}"
+          outputs:
+            - solution_portfolio
+            - innovation_opportunities
+            - implementation_options
+            - transformation_potential
+            
+        - name: "Digital Market Research"
+          description: "Digital intelligence and customer insights"
+          agent: "digital-market-researcher"
+          task: "online-research"
+          inputs:
+            - market: "{{target_market}}"
+            - research_focus: "{{customer_intelligence_needs}}"
+          outputs:
+            - customer_pain_points
+            - market_sentiment
+            - competitive_gaps
+            - opportunity_validation
+
+    - name: "Synthesis and Integration"
+      description: "Synthesize all agent insights into coherent recommendations"
+      tasks:
+        - name: "Multi-Perspective Synthesis"
+          description: "Integrate insights from all agents"
+          checklist: "strategic-decision-checklist.md"
+          inputs:
+            - ceo_insights: "{{strategic_implications}}"
+            - cfo_insights: "{{financial_impact}}"
+            - coo_insights: "{{operational_feasibility}}"
+            - market_intelligence: "{{market_dynamics}}"
+            - risk_assessment: "{{risk_matrix}}"
+            - solution_options: "{{solution_portfolio}}"
+          outputs:
+            - integrated_analysis
+            - consensus_findings
+            - divergent_views
+            - critical_decisions
+            
+        - name: "Scenario Development"
+          description: "Develop multiple scenarios for decision-making"
+          agent: "ceo-advisor"
+          task: "scenario-analysis"
+          inputs:
+            - integrated_analysis: "{{integrated_analysis}}"
+            - key_variables: "{{critical_factors}}"
+            - uncertainties: "{{identified_uncertainties}}"
+          outputs:
+            - best_case_scenario
+            - base_case_scenario
+            - worst_case_scenario
+            - contingency_plans
+            
+        - name: "Decision Framework"
+          description: "Create structured decision framework"
+          inputs:
+            - scenarios: "{{developed_scenarios}}"
+            - evaluation_criteria: "{{success_criteria}}"
+            - stakeholder_priorities: "{{stakeholder_matrix}}"
+          outputs:
+            - decision_matrix
+            - recommendation_ranking
+            - go_no_go_criteria
+            - decision_timeline
+
+    - name: "Strategic Recommendations and Action Planning"
+      description: "Develop final recommendations and action plans"
+      tasks:
+        - name: "Executive Recommendations"
+          description: "Formulate C-suite level recommendations"
+          agent: "ceo-advisor"
+          task: "board-presentation"
+          template: "board-presentation-tmpl.yaml"
+          inputs:
+            - integrated_analysis: "{{integrated_analysis}}"
+            - scenarios: "{{developed_scenarios}}"
+            - decision_framework: "{{decision_matrix}}"
+          outputs:
+            - executive_recommendations
+            - board_presentation
+            - strategic_rationale
+            - risk_mitigation_plan
+            
+        - name: "Implementation Roadmap"
+          description: "Detailed implementation planning"
+          agent: "solution-architect"
+          task: "implementation-roadmap"
+          template: "implementation-plan-tmpl.yaml"
+          inputs:
+            - selected_solution: "{{recommended_option}}"
+            - resource_allocation: "{{approved_resources}}"
+            - timeline_constraints: "{{execution_timeline}}"
+          outputs:
+            - implementation_roadmap
+            - milestone_schedule
+            - resource_plan
+            - success_metrics
+            
+        - name: "Financial Planning"
+          description: "Financial planning and budgeting"
+          agent: "cfo-advisor"
+          task: "budget-planning"
+          inputs:
+            - implementation_plan: "{{implementation_roadmap}}"
+            - investment_requirements: "{{resource_plan}}"
+          outputs:
+            - budget_allocation
+            - funding_strategy
+            - financial_controls
+            - roi_tracking_plan
+
+    - name: "Validation and Stress Testing"
+      description: "Validate recommendations through critical review"
+      tasks:
+        - name: "Devil's Advocate Review"
+          description: "Critical review of recommendations"
+          agent: "risk-assessor"
+          inputs:
+            - recommendations: "{{executive_recommendations}}"
+            - assumptions: "{{key_assumptions}}"
+            - implementation_plan: "{{implementation_roadmap}}"
+          outputs:
+            - critical_review
+            - identified_weaknesses
+            - alternative_perspectives
+            - strengthening_suggestions
+            
+        - name: "Stress Test Scenarios"
+          description: "Test recommendations under stress conditions"
+          agent: "pattern-detective"
+          task: "anomaly-detection"
+          inputs:
+            - recommendations: "{{executive_recommendations}}"
+            - stress_scenarios: "{{worst_case_conditions}}"
+          outputs:
+            - stress_test_results
+            - breaking_points
+            - resilience_assessment
+            - contingency_requirements
+
+    - name: "Communication and Change Management"
+      description: "Prepare comprehensive communication and change strategy"
+      tasks:
+        - name: "Stakeholder Communication"
+          description: "Develop stakeholder-specific communications"
+          agent: "solution-architect"
+          task: "stakeholder-engagement"
+          inputs:
+            - stakeholder_matrix: "{{stakeholder_analysis}}"
+            - recommendations: "{{executive_recommendations}}"
+            - implementation_plan: "{{implementation_roadmap}}"
+          outputs:
+            - communication_strategy
+            - stakeholder_messages
+            - engagement_timeline
+            - feedback_mechanisms
+            
+        - name: "Change Management Planning"
+          description: "Comprehensive change management strategy"
+          agent: "solution-architect"
+          task: "change-management"
+          template: "change-management-tmpl.yaml"
+          inputs:
+            - transformation_scope: "{{implementation_scope}}"
+            - organizational_readiness: "{{readiness_assessment}}"
+            - stakeholder_impact: "{{impact_analysis}}"
+          outputs:
+            - change_management_plan
+            - training_programs
+            - resistance_mitigation
+            - adoption_strategy
+
+agents:
+  orchestrator: "ceo-advisor"
+  specialist_agents:
+    - "cfo-advisor"
+    - "coo-advisor"
+    - "root-cause-analyst"
+    - "pattern-detective"
+    - "risk-assessor"
+    - "solution-architect"
+    - "market-researcher"
+    - "digital-market-researcher"
+    - "strategic-analyst"
+    - "business-model-expert"
+
+swarm_configurations:
+  strategic_decision:
+    agents: ["ceo-advisor", "cfo-advisor", "coo-advisor", "risk-assessor"]
+    coordination: "parallel_then_synthesize"
+    
+  market_intelligence:
+    agents: ["market-researcher", "digital-market-researcher", "pattern-detective"]
+    coordination: "collaborative_analysis"
+    
+  solution_development:
+    agents: ["solution-architect", "business-model-expert", "coo-advisor"]
+    coordination: "iterative_refinement"
+    
+  risk_assessment:
+    agents: ["risk-assessor", "pattern-detective", "cfo-advisor"]
+    coordination: "comprehensive_coverage"
+
+deliverables:
+  - name: "Executive Decision Brief"
+    template: "executive-briefing-tmpl.yaml"
+    description: "Comprehensive analysis with multi-agent insights"
+    
+  - name: "Board Presentation"
+    template: "board-presentation-tmpl.yaml"
+    description: "Board-ready strategic recommendations"
+    
+  - name: "Implementation Playbook"
+    template: "implementation-plan-tmpl.yaml"
+    description: "Detailed execution roadmap"
+    
+  - name: "Risk Assessment Report"
+    template: "risk-assessment-tmpl.yaml"
+    description: "Comprehensive risk analysis and mitigation"
+    
+  - name: "Financial Analysis"
+    template: "financial-analysis-tmpl.yaml"
+    description: "Complete financial implications and projections"
+    
+  - name: "Market Intelligence Report"
+    template: "market-analysis-tmpl.yaml"
+    description: "Market dynamics and competitive positioning"
+
+success_criteria:
+  - "Decision quality score > 90%"
+  - "Stakeholder alignment > 85%"
+  - "Risk identification completeness > 95%"
+  - "Implementation readiness > 80%"
+  - "Financial projection accuracy > 85%"
+  - "Time to decision < target timeline"
+
+timeline:
+  urgent_decision: "24-48 hours"
+  standard_decision: "5-7 days"
+  strategic_initiative: "2-4 weeks"
+  transformation_program: "4-8 weeks"
+
+quality_assurance:
+  - "Multi-agent validation of findings"
+  - "Cross-functional perspective integration"
+  - "Statistical significance of patterns"
+  - "Scenario stress testing"
+  - "Independent critical review"
+  - "Stakeholder validation checkpoints"
+
+intelligence_sources:
+  internal:
+    - "ERP systems"
+    - "CRM data"
+    - "Financial systems"
+    - "Operational databases"
+    - "Performance dashboards"
+    
+  external:
+    - "Market research databases"
+    - "Competitive intelligence"
+    - "Industry reports"
+    - "Regulatory updates"
+    - "Economic indicators"
+    
+  digital:
+    - "Online communities"
+    - "Social media"
+    - "Review platforms"
+    - "News and media"
+    - "Patent databases"

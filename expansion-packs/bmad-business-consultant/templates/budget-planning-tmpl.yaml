@@ -1,0 +1,511 @@
+name: "Budget Planning Template"
+description: "Comprehensive budget planning and management template for small business consultants to help clients create, monitor, and optimize their financial plans"
+category: "financial-analysis"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Budget Planning Template for Small Business Consulting
+
+template:
+  budget_information:
+    client_name: ""
+    business_name: ""
+    budget_period: ""
+    budget_year: ""
+    budget_type: "" # Annual, Quarterly, Monthly, Project-based
+    preparation_date: ""
+    consultant_name: ""
+    budget_owner: ""
+    approval_authority: ""
+    
+  strategic_context:
+    business_objectives:
+      primary_goals: []
+      strategic_initiatives: []
+      growth_targets: []
+      market_expansion_plans: []
+      
+    key_assumptions:
+      economic_environment: ""
+      market_conditions: ""
+      competitive_landscape: ""
+      regulatory_changes: []
+      seasonal_factors: []
+      
+    success_metrics:
+      financial_kpis: []
+      operational_kpis: []
+      customer_kpis: []
+      employee_kpis: []
+
+  revenue_budget:
+    revenue_streams:
+      primary_products_services:
+        - name: ""
+          current_year_actual: 0
+          budget_year_target: 0
+          growth_rate: 0
+          volume_assumptions: 0
+          pricing_assumptions: 0
+          seasonality_factors: {}
+          
+      secondary_revenue:
+        - name: ""
+          current_year_actual: 0
+          budget_year_target: 0
+          growth_assumptions: ""
+          
+    monthly_revenue_budget:
+      january: 0
+      february: 0
+      march: 0
+      april: 0
+      may: 0
+      june: 0
+      july: 0
+      august: 0
+      september: 0
+      october: 0
+      november: 0
+      december: 0
+      total_annual_revenue: 0
+      
+    revenue_drivers:
+      customer_acquisition:
+        new_customers_target: 0
+        average_customer_value: 0
+        customer_acquisition_cost: 0
+        
+      customer_retention:
+        retention_rate_target: 0
+        repeat_business_percentage: 0
+        upselling_revenue: 0
+        
+      pricing_strategy:
+        price_increases_planned: 0
+        discount_structure: {}
+        promotional_impact: 0
+
+  expense_budget:
+    cost_of_goods_sold:
+      direct_materials: 0
+      direct_labor: 0
+      manufacturing_overhead: 0
+      subcontractor_costs: 0
+      shipping_fulfillment: 0
+      total_cogs: 0
+      cogs_percentage_of_revenue: 0
+      
+    operating_expenses:
+      personnel_costs:
+        salaries_wages: 0
+        benefits_payroll_taxes: 0
+        commissions_bonuses: 0
+        training_development: 0
+        total_personnel: 0
+        
+      facility_costs:
+        rent_lease: 0
+        utilities: 0
+        maintenance_repairs: 0
+        insurance: 0
+        security: 0
+        total_facility: 0
+        
+      marketing_sales:
+        advertising: 0
+        digital_marketing: 0
+        trade_shows_events: 0
+        sales_materials: 0
+        customer_entertainment: 0
+        total_marketing_sales: 0
+        
+      administrative_costs:
+        professional_services: 0
+        office_supplies: 0
+        telecommunications: 0
+        software_subscriptions: 0
+        bank_fees: 0
+        total_administrative: 0
+        
+      technology_costs:
+        software_licenses: 0
+        hardware_maintenance: 0
+        cloud_services: 0
+        technology_support: 0
+        total_technology: 0
+        
+    monthly_expense_budget:
+      january: 0
+      february: 0
+      march: 0
+      april: 0
+      may: 0
+      june: 0
+      july: 0
+      august: 0
+      september: 0
+      october: 0
+      november: 0
+      december: 0
+      total_annual_expenses: 0
+
+  capital_budget:
+    capital_expenditures:
+      equipment_purchases: 0
+      technology_investments: 0
+      facility_improvements: 0
+      vehicle_purchases: 0
+      other_capital_items: 0
+      total_capex: 0
+      
+    capital_planning:
+      depreciation_schedule: {}
+      financing_requirements: 0
+      roi_expectations: 0
+      payback_periods: {}
+      
+    investment_priorities:
+      critical_investments: []
+      growth_investments: []
+      maintenance_investments: []
+      deferred_investments: []
+
+  cash_flow_budget:
+    operating_cash_flow:
+      cash_receipts:
+        customer_collections: 0
+        other_operating_receipts: 0
+        total_receipts: 0
+        
+      cash_payments:
+        supplier_payments: 0
+        payroll_payments: 0
+        operating_expense_payments: 0
+        tax_payments: 0
+        total_payments: 0
+        
+      net_operating_cash_flow: 0
+      
+    investing_cash_flow:
+      capital_expenditures: 0
+      asset_disposals: 0
+      net_investing_cash_flow: 0
+      
+    financing_cash_flow:
+      loan_proceeds: 0
+      loan_payments: 0
+      owner_contributions: 0
+      owner_distributions: 0
+      net_financing_cash_flow: 0
+      
+    net_cash_flow: 0
+    beginning_cash_balance: 0
+    ending_cash_balance: 0
+
+  profitability_budget:
+    gross_profit_analysis:
+      total_revenue: 0
+      total_cogs: 0
+      gross_profit: 0
+      gross_profit_margin: 0
+      
+    operating_profit_analysis:
+      gross_profit: 0
+      total_operating_expenses: 0
+      operating_profit: 0
+      operating_profit_margin: 0
+      
+    net_profit_analysis:
+      operating_profit: 0
+      interest_expense: 0
+      other_income_expense: 0
+      pre_tax_income: 0
+      taxes: 0
+      net_income: 0
+      net_profit_margin: 0
+
+  budget_scenarios:
+    optimistic_scenario:
+      revenue_upside: 20
+      cost_control_improvement: 5
+      net_income_impact: 0
+      
+    base_case_scenario:
+      revenue_target: 0
+      expense_budget: 0
+      expected_net_income: 0
+      
+    pessimistic_scenario:
+      revenue_shortfall: 15
+      cost_overrun: 10
+      net_income_impact: 0
+      
+    scenario_planning:
+      probability_assessments: {}
+      contingency_plans: {}
+      risk_mitigation_strategies: []
+
+  budget_monitoring:
+    variance_analysis:
+      revenue_variances:
+        volume_variance: 0
+        price_variance: 0
+        mix_variance: 0
+        total_revenue_variance: 0
+        
+      expense_variances:
+        cogs_variance: 0
+        operating_expense_variance: 0
+        total_expense_variance: 0
+        
+      profit_variances:
+        gross_profit_variance: 0
+        operating_profit_variance: 0
+        net_profit_variance: 0
+        
+    performance_indicators:
+      budget_accuracy_metrics:
+        revenue_forecast_accuracy: 0
+        expense_forecast_accuracy: 0
+        profit_forecast_accuracy: 0
+        
+      operational_metrics:
+        revenue_per_employee: 0
+        expense_per_employee: 0
+        productivity_indicators: {}
+        
+    reporting_schedule:
+      daily_monitoring: []
+      weekly_reviews: []
+      monthly_analysis: []
+      quarterly_reforecasting: []
+
+  budget_controls:
+    approval_processes:
+      expense_approval_limits: {}
+      capital_expenditure_approvals: {}
+      budget_revision_process: ""
+      
+    spending_controls:
+      purchase_order_requirements: ""
+      expense_pre_approval_process: ""
+      budget_variance_triggers: {}
+      
+    monitoring_controls:
+      budget_vs_actual_reporting: ""
+      variance_investigation_thresholds: {}
+      corrective_action_protocols: []
+
+  department_budgets:
+    sales_department:
+      personnel_costs: 0
+      commission_structure: {}
+      marketing_budget: 0
+      travel_entertainment: 0
+      revenue_targets: 0
+      
+    operations_department:
+      personnel_costs: 0
+      equipment_maintenance: 0
+      supplies_materials: 0
+      efficiency_targets: {}
+      
+    administration:
+      personnel_costs: 0
+      professional_services: 0
+      office_expenses: 0
+      technology_costs: 0
+
+  budget_analysis_tools:
+    ratio_analysis:
+      profitability_ratios:
+        gross_profit_margin_target: 0
+        operating_profit_margin_target: 0
+        net_profit_margin_target: 0
+        
+      efficiency_ratios:
+        asset_turnover_target: 0
+        inventory_turnover_target: 0
+        receivables_turnover_target: 0
+        
+      liquidity_ratios:
+        current_ratio_target: 0
+        quick_ratio_target: 0
+        cash_ratio_target: 0
+        
+    break_even_analysis:
+      break_even_revenue: 0
+      break_even_units: 0
+      margin_of_safety: 0
+      
+    sensitivity_analysis:
+      revenue_sensitivity: {}
+      cost_sensitivity: {}
+      profit_sensitivity: {}
+
+  budget_improvement_opportunities:
+    revenue_enhancement:
+      pricing_optimization: []
+      volume_growth_strategies: []
+      new_revenue_streams: []
+      customer_value_improvements: []
+      
+    cost_optimization:
+      expense_reduction_opportunities: []
+      efficiency_improvements: []
+      automation_possibilities: []
+      vendor_negotiation_targets: []
+      
+    working_capital_management:
+      inventory_optimization: []
+      receivables_improvement: []
+      payables_optimization: []
+      
+    investment_optimization:
+      roi_improvement_projects: []
+      capital_allocation_efficiency: []
+      technology_investments: []
+
+  budget_communication:
+    stakeholder_engagement:
+      management_team_involvement: ""
+      department_head_participation: ""
+      employee_communication_plan: ""
+      
+    budget_presentation:
+      executive_summary_format: ""
+      detailed_budget_documents: []
+      visual_presentations: []
+      
+    training_and_support:
+      budget_management_training: []
+      tool_and_system_training: []
+      ongoing_support_plan: ""
+
+  budget_integration:
+    strategic_planning_alignment:
+      strategic_goal_mapping: {}
+      initiative_funding_allocation: {}
+      performance_measurement_integration: ""
+      
+    operational_planning:
+      production_planning_integration: ""
+      staffing_plan_alignment: ""
+      capacity_planning_coordination: ""
+      
+    financial_planning:
+      cash_flow_forecasting: ""
+      capital_structure_planning: ""
+      tax_planning_integration: ""
+
+  implementation_roadmap:
+    budget_preparation_timeline:
+      month_1: "Historical analysis and assumptions development"
+      month_2: "Revenue and expense budget development"
+      month_3: "Budget review, revision, and approval"
+      month_4: "Budget rollout and training"
+      
+    budget_management_process:
+      monthly_reviews: ""
+      quarterly_reforecasts: ""
+      annual_budget_cycle: ""
+      
+    continuous_improvement:
+      process_refinement: []
+      tool_enhancements: []
+      capability_building: []
+
+  budget_tools_and_systems:
+    budgeting_software:
+      current_system_assessment: ""
+      system_requirements: []
+      recommended_solutions: []
+      
+    reporting_tools:
+      dashboard_requirements: []
+      automated_reporting: []
+      analytics_capabilities: []
+      
+    integration_requirements:
+      accounting_system_integration: ""
+      erp_system_connectivity: ""
+      data_source_consolidation: ""
+
+  risk_management:
+    budget_risks:
+      revenue_risks:
+        market_demand_changes: ""
+        competitive_pressure: ""
+        economic_downturns: ""
+        customer_concentration: ""
+        
+      cost_risks:
+        inflation_impact: ""
+        supplier_price_increases: ""
+        labor_cost_escalation: ""
+        regulatory_compliance_costs: ""
+        
+      operational_risks:
+        capacity_constraints: ""
+        quality_issues: ""
+        technology_failures: ""
+        key_person_dependencies: ""
+        
+    risk_mitigation:
+      contingency_budgets: 0
+      flexible_cost_structures: []
+      diversification_strategies: []
+      insurance_coverage: []
+
+  success_metrics:
+    budget_accuracy:
+      revenue_forecast_variance: 0
+      expense_forecast_variance: 0
+      profit_forecast_variance: 0
+      
+    budget_utility:
+      decision_making_improvement: ""
+      cost_control_effectiveness: ""
+      strategic_alignment_achievement: ""
+      
+    business_performance:
+      profitability_improvement: 0
+      cash_flow_enhancement: 0
+      operational_efficiency_gains: 0
+
+usage_guidelines:
+  budget_preparation:
+    data_collection:
+      - "Gather 3 years of historical financial data"
+      - "Review strategic plans and objectives"
+      - "Analyze market and competitive trends"
+      - "Interview department heads and key managers"
+      
+    assumption_development:
+      - "Document all key assumptions"
+      - "Validate assumptions with market research"
+      - "Consider multiple scenarios"
+      - "Review and approve assumptions with management"
+      
+  budget_execution:
+    implementation:
+      - "Communicate budget to all stakeholders"
+      - "Establish monitoring and reporting processes"
+      - "Train managers on budget management"
+      - "Set up variance analysis procedures"
+      
+    monitoring:
+      - "Produce monthly budget vs. actual reports"
+      - "Investigate significant variances"
+      - "Update forecasts based on actual performance"
+      - "Take corrective actions as needed"
+
+notes:
+  - "Involve key stakeholders in budget development process"
+  - "Base budgets on realistic assumptions and historical data"
+  - "Build in appropriate contingencies for risks"
+  - "Use budgets as management tools, not just financial targets"
+  - "Update budgets regularly based on changing conditions"
+  - "Focus on value creation and strategic alignment"

@@ -1,0 +1,185 @@
+name: "Executive Briefing Template"
+description: "Concise executive-level briefing for C-suite and board communications"
+version: "1.0"
+category: "Executive Communication"
+tags: ["executive", "briefing", "c-suite", "board", "strategic", "decision-support"]
+
+placeholders:
+  topic: "Main topic or issue being briefed"
+  date: "Briefing date"
+  audience: "Target executive audience"
+  urgency: "Critical/High/Medium/Low"
+  decision_required: "Yes/No and by when"
+
+template: |
+  # EXECUTIVE BRIEFING: {{topic}}
+  
+  **Date**: {{date}}  
+  **Audience**: {{audience}}  
+  **Urgency**: {{urgency}}  
+  **Decision Required**: {{decision_required}}
+  
+  ---
+  
+  ## SITUATION AT A GLANCE
+  
+  ### The Issue
+  **In one sentence**: [Clear, concise statement of the issue or opportunity]
+  
+  ### Why This Matters Now
+  - **Strategic Impact**: [How this affects strategy]
+  - **Financial Impact**: [Quantified financial implications]
+  - **Risk/Opportunity**: [What's at stake]
+  - **Timing Critical Because**: [Why action is needed now]
+  
+  ### Bottom Line Up Front (BLUF)
+  > [The key message or recommendation in 2-3 sentences maximum]
+  
+  ---
+  
+  ## KEY FACTS & ANALYSIS
+  
+  ### Critical Data Points
+  | Metric | Current | Target | Gap | Trend |
+  |--------|---------|--------|-----|-------|
+  | [KPI 1] | [Value] | [Value] | [Δ] | ↑↓→ |
+  | [KPI 2] | [Value] | [Value] | [Δ] | ↑↓→ |
+  | [KPI 3] | [Value] | [Value] | [Δ] | ↑↓→ |
+  
+  ### What Changed
+  - **Previous State**: [What was]
+  - **Current State**: [What is]
+  - **Trigger Event**: [What caused the change]
+  - **Trajectory Without Action**: [What will be]
+  
+  ### Root Cause Summary
+  **Primary Cause**: [Main root cause in plain language]
+  **Contributing Factors**:
+  1. [Factor 1 - with % contribution if known]
+  2. [Factor 2 - with % contribution if known]
+  3. [Factor 3 - with % contribution if known]
+  
+  ---
+  
+  ## OPTIONS & RECOMMENDATIONS
+  
+  ### Decision Options
+  
+  #### Option A: [Name - e.g., "Aggressive Growth"]
+  - **Action**: [What we would do]
+  - **Investment**: $[Amount] over [Timeline]
+  - **Expected Return**: [ROI/Benefits]
+  - **Risk Level**: [High/Medium/Low]
+  - **Success Probability**: [%]
+  
+  #### Option B: [Name - e.g., "Measured Approach"]
+  - **Action**: [What we would do]
+  - **Investment**: $[Amount] over [Timeline]
+  - **Expected Return**: [ROI/Benefits]
+  - **Risk Level**: [High/Medium/Low]
+  - **Success Probability**: [%]
+  
+  #### Option C: [Name - e.g., "Maintain Status Quo"]
+  - **Action**: [What we would do/not do]
+  - **Investment**: $[Amount] over [Timeline]
+  - **Expected Return**: [ROI/Benefits]
+  - **Risk Level**: [High/Medium/Low]
+  - **Success Probability**: [%]
+  
+  ### Recommendation
+  **We recommend Option [A/B/C] because:**
+  1. [Reason 1 - most compelling]
+  2. [Reason 2 - supporting]
+  3. [Reason 3 - additional benefit]
+  
+  **Trade-offs acknowledged**: [What we're giving up or risking]
+  
+  ---
+  
+  ## IMPLICATIONS & NEXT STEPS
+  
+  ### Strategic Implications
+  - **Competitive Position**: [Impact on market position]
+  - **Customer Impact**: [Effect on customers]
+  - **Operational Impact**: [Changes to operations]
+  - **Cultural Impact**: [Organization changes needed]
+  
+  ### Financial Summary
+  | Item | Year 1 | Year 2 | Year 3 | Total |
+  |------|--------|--------|--------|-------|
+  | Investment | ($X) | ($Y) | ($Z) | ($Total) |
+  | Benefits | $A | $B | $C | $Total |
+  | Net Impact | $Net1 | $Net2 | $Net3 | $NetTotal |
+  | ROI | X% | Y% | Z% | Total% |
+  
+  ### Risk Assessment
+  | Risk | Probability | Impact | Mitigation |
+  |------|------------|--------|------------|
+  | [Risk 1] | [H/M/L] | [H/M/L] | [Strategy] |
+  | [Risk 2] | [H/M/L] | [H/M/L] | [Strategy] |
+  | [Risk 3] | [H/M/L] | [H/M/L] | [Strategy] |
+  
+  ### Decision Required
+  
+  **Specific Decision Needed**:
+  - [ ] Approval to proceed with Option [X]
+  - [ ] Budget allocation of $[Amount]
+  - [ ] Resource authorization for [Resources]
+  - [ ] Strategic priority adjustment
+  - [ ] Other: [Specify]
+  
+  **Decision Deadline**: [Date] because [reason for deadline]
+  
+  ### Immediate Next Steps (Upon Approval)
+  1. **Week 1**: [Critical first action]
+  2. **Week 2-4**: [Foundation building]
+  3. **Month 2**: [Implementation begins]
+  4. **Month 3**: [First milestone]
+  
+  ### Success Metrics
+  We will measure success by:
+  - [ ] [Metric 1]: [Target] by [Date]
+  - [ ] [Metric 2]: [Target] by [Date]
+  - [ ] [Metric 3]: [Target] by [Date]
+  
+  ---
+  
+  ## APPENDICES (If Needed)
+  
+  ### A. Supporting Data
+  [Link to detailed analysis]
+  
+  ### B. Stakeholder Positions
+  - **CFO**: [Position/Concerns]
+  - **COO**: [Position/Concerns]
+  - **CMO**: [Position/Concerns]
+  - **CTO**: [Position/Concerns]
+  
+  ### C. External Factors
+  - **Market Conditions**: [Relevant trends]
+  - **Competitive Moves**: [What competitors are doing]
+  - **Regulatory**: [Compliance considerations]
+  
+  ### D. Alternative Scenarios Considered
+  - Best Case: [Outcome if everything goes right]
+  - Base Case: [Most likely outcome]
+  - Worst Case: [Outcome if things go wrong]
+  
+  ---
+  
+  ## PREPARED BY
+  
+  **Lead**: [Name, Title]  
+  **Team**: [Key contributors]  
+  **Reviewed By**: [Senior reviewer]  
+  **Contact**: [Email/Phone for questions]
+  
+  ---
+  
+  > **Executive Time Estimate**: 5 minutes to read, 10 minutes to discuss
+  
+  **For Detailed Information**: See full report at [location/link]
+  
+  ---
+  
+  *This briefing contains confidential and proprietary information. Distribution limited to: {{audience}}*

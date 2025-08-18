@@ -1,0 +1,480 @@
+name: "Crisis Communication Template"
+description: "Comprehensive crisis communication framework for emergency response and stakeholder management"
+version: "1.0"
+category: "Crisis Management"
+tags: ["crisis", "communication", "emergency", "stakeholder", "public-relations", "reputation"]
+
+placeholders:
+  crisis_type: "Type of crisis"
+  incident_date: "Date/time of incident"
+  severity_level: "Crisis severity level"
+  spokesperson: "Primary spokesperson"
+  crisis_lead: "Crisis management lead"
+
+template: |
+  # CRISIS COMMUNICATION PLAN
+  ## {{crisis_type}} Response
+  
+  **Incident Date/Time**: {{incident_date}}  
+  **Severity Level**: {{severity_level}}  
+  **Primary Spokesperson**: {{spokesperson}}  
+  **Crisis Management Lead**: {{crisis_lead}}
+  
+  ---
+  
+  ## CRISIS STATUS OVERVIEW
+  
+  ### Situation Summary
+  - **What Happened**: [Brief description of the crisis]
+  - **When**: [Timeline of events]
+  - **Where**: [Location/scope of impact]
+  - **Who Affected**: [Stakeholders impacted]
+  - **Current Status**: [Active/Contained/Resolved]
+  
+  ### Impact Assessment
+  - **Safety Impact**: [People safety status]
+  - **Financial Impact**: $[Estimated impact]
+  - **Operational Impact**: [Business operations affected]
+  - **Reputational Impact**: [Brand/reputation implications]
+  - **Regulatory Impact**: [Compliance/legal considerations]
+  
+  ### Response Status
+  - **Emergency Response**: [Status of immediate response]
+  - **Investigation**: [Status of root cause investigation]
+  - **Containment**: [Measures taken to contain crisis]
+  - **Recovery**: [Progress on recovery efforts]
+  
+  ---
+  
+  ## CRISIS COMMUNICATION TEAM
+  
+  ### Core Team
+  - **Crisis Management Lead**: [Name, Title, Phone, Email]
+  - **Primary Spokesperson**: [Name, Title, Phone, Email]
+  - **Communications Director**: [Name, Title, Phone, Email]
+  - **Legal Counsel**: [Name, Title, Phone, Email]
+  - **Operations Lead**: [Name, Title, Phone, Email]
+  
+  ### Support Team
+  - **HR Representative**: [Name, Title, Phone, Email]
+  - **IT/Cyber Security**: [Name, Title, Phone, Email]
+  - **Finance Representative**: [Name, Title, Phone, Email]
+  - **External PR Agency**: [Agency, Contact, Phone, Email]
+  - **Government Relations**: [Name, Title, Phone, Email]
+  
+  ### Decision Authority
+  - **Level 1 Approval**: [Name] - Routine updates
+  - **Level 2 Approval**: [Name] - Significant statements
+  - **Level 3 Approval**: [Name] - Strategic decisions
+  - **CEO Approval Required**: Major public statements
+  
+  ---
+  
+  ## STAKEHOLDER COMMUNICATION MATRIX
+  
+  ### Primary Stakeholders
+  
+  #### Employees
+  **Priority**: CRITICAL
+  **Message**: [Key messages for employees]
+  **Channels**: 
+  - [ ] All-hands email (Immediate)
+  - [ ] Intranet announcement (Within 1 hour)
+  - [ ] Manager briefings (Within 2 hours)
+  - [ ] Town hall meeting (Within 24 hours)
+  **Frequency**: [How often to update]
+  **Owner**: [Responsible person]
+  
+  #### Customers
+  **Priority**: CRITICAL
+  **Message**: [Key messages for customers]
+  **Channels**:
+  - [ ] Customer alert email (Within 1 hour)
+  - [ ] Website banner (Immediate)
+  - [ ] Customer service scripts (Within 30 minutes)
+  - [ ] Account manager notifications (Within 2 hours)
+  **Frequency**: [How often to update]
+  **Owner**: [Responsible person]
+  
+  #### Investors/Shareholders
+  **Priority**: HIGH
+  **Message**: [Key messages for investors]
+  **Channels**:
+  - [ ] Investor relations email (Within 2 hours)
+  - [ ] SEC filing if required (Within regulatory timeframe)
+  - [ ] Analyst call (Within 24 hours if needed)
+  - [ ] Investor portal update (Within 4 hours)
+  **Frequency**: [How often to update]
+  **Owner**: [Responsible person]
+  
+  #### Media
+  **Priority**: HIGH
+  **Message**: [Key messages for media]
+  **Channels**:
+  - [ ] Press release (Within 4 hours)
+  - [ ] Media statement (Immediate if contacted)
+  - [ ] Press conference (If warranted)
+  - [ ] Social media response (Within 1 hour)
+  **Frequency**: [How often to update]
+  **Owner**: [Responsible person]
+  
+  #### Regulators
+  **Priority**: HIGH
+  **Message**: [Key messages for regulators]
+  **Channels**:
+  - [ ] Regulatory notification (As required by law)
+  - [ ] Formal report (Within timeframe specified)
+  - [ ] Direct communication (As needed)
+  **Frequency**: [As required]
+  **Owner**: [Responsible person]
+  
+  #### Partners/Vendors
+  **Priority**: MEDIUM
+  **Message**: [Key messages for partners]
+  **Channels**:
+  - [ ] Partner notification email (Within 4 hours)
+  - [ ] Vendor alert (Within 6 hours)
+  - [ ] Partner portal update (Within 8 hours)
+  **Frequency**: [How often to update]
+  **Owner**: [Responsible person]
+  
+  #### Community/Public
+  **Priority**: MEDIUM
+  **Message**: [Key messages for community]
+  **Channels**:
+  - [ ] Community statement (Within 8 hours)
+  - [ ] Local media (As appropriate)
+  - [ ] Social media (Ongoing monitoring)
+  **Frequency**: [How often to update]
+  **Owner**: [Responsible person]
+  
+  ---
+  
+  ## KEY MESSAGES & MESSAGING FRAMEWORK
+  
+  ### Core Message
+  > [Single, consistent core message across all communications]
+  
+  ### Key Messages by Audience
+  
+  #### Employees
+  1. **Safety First**: [Safety and well-being message]
+  2. **Transparency**: [Commitment to open communication]
+  3. **Support**: [Available resources and support]
+  4. **Business Continuity**: [Impact on operations and jobs]
+  
+  #### Customers
+  1. **Service Continuity**: [Impact on service/products]
+  2. **Customer Support**: [Enhanced support during crisis]
+  3. **Data Protection**: [Security of customer data/info]
+  4. **Resolution Timeline**: [Expected resolution timeframe]
+  
+  #### Investors
+  1. **Financial Impact**: [Quantified impact assessment]
+  2. **Business Resilience**: [Company's ability to recover]
+  3. **Risk Management**: [Preparedness and response capabilities]
+  4. **Strategic Direction**: [Impact on long-term strategy]
+  
+  #### Media/Public
+  1. **Accountability**: [Taking responsibility appropriately]
+  2. **Transparency**: [Commitment to factual communication]
+  3. **Corrective Action**: [Steps being taken to resolve]
+  4. **Prevention**: [Measures to prevent recurrence]
+  
+  ### Messaging Do's and Don'ts
+  
+  #### DO:
+  - [ ] Stick to verified facts
+  - [ ] Express appropriate concern/empathy
+  - [ ] Take responsibility where appropriate
+  - [ ] Provide regular updates
+  - [ ] Refer to investigation when uncertain
+  - [ ] Emphasize corrective actions
+  
+  #### DON'T:
+  - [ ] Speculate about causes
+  - [ ] Assign blame prematurely
+  - [ ] Make promises you can't keep
+  - [ ] Minimize the situation inappropriately
+  - [ ] Use technical jargon
+  - [ ] Ignore stakeholder concerns
+  
+  ---
+  
+  ## COMMUNICATION TEMPLATES
+  
+  ### Internal Email to Employees
+  ```
+  Subject: Important Update Regarding [Crisis Type]
+  
+  Dear Team,
+  
+  I am writing to inform you about [brief description of situation] that occurred [when/where].
+  
+  Here's what we know:
+  - [Fact 1]
+  - [Fact 2]
+  - [Fact 3]
+  
+  Your safety and well-being are our top priority. [Specific safety measures/support available]
+  
+  Impact on operations: [Clear description of business impact]
+  
+  What we're doing:
+  - [Action 1]
+  - [Action 2]
+  - [Action 3]
+  
+  I will update you [frequency] as we learn more. If you have questions, please [contact method].
+  
+  Thank you for your continued dedication during this challenging time.
+  
+  [Signature]
+  ```
+  
+  ### Customer Communication
+  ```
+  Subject: Service Update - [Brief Description]
+  
+  Dear Valued Customer,
+  
+  We are writing to inform you of [situation description] that may affect [service/product impact].
+  
+  What happened: [Brief, factual description]
+  When: [Timeline]
+  Impact on you: [Specific impact on customer]
+  
+  What we're doing to resolve this:
+  - [Action 1 with timeline]
+  - [Action 2 with timeline]
+  - [Action 3 with timeline]
+  
+  Expected resolution: [Realistic timeline]
+  
+  How we're supporting you:
+  - [Support measure 1]
+  - [Support measure 2]
+  - [Enhanced customer service]
+  
+  For questions or assistance: [Contact information]
+  
+  We sincerely apologize for any inconvenience and appreciate your patience.
+  
+  [Signature]
+  ```
+  
+  ### Press Statement
+  ```
+  FOR IMMEDIATE RELEASE
+  
+  [Company] Statement on [Crisis Type]
+  
+  [City, Date] - [Company name] today confirmed [brief factual description of situation].
+  
+  [Quote from senior executive expressing concern and outlining response]
+  
+  The company is [actions being taken] and expects [timeline for resolution].
+  
+  [Additional relevant details, staying factual]
+  
+  [Company] is committed to [appropriate closing statement about values/commitment].
+  
+  For more information:
+  [Media contact information]
+  
+  About [Company]: [Brief company description]
+  ```
+  
+  ### Social Media Response
+  ```
+  We are aware of [situation] and are actively addressing it. Safety is our top priority. We are [key action] and will provide updates as available. [Link to full statement]
+  ```
+  
+  ---
+  
+  ## MEDIA MANAGEMENT
+  
+  ### Media Response Protocol
+  1. **Initial Contact**: Direct all media to designated spokesperson
+  2. **Response Timeline**: Acknowledge within 1 hour, full response within 4 hours
+  3. **Message Consistency**: All spokespeople use approved talking points
+  4. **Documentation**: Log all media interactions
+  
+  ### Spokesperson Talking Points
+  #### Opening Statement
+  - [Key facts about the situation]
+  - [Expression of concern/empathy]
+  - [Overview of response actions]
+  
+  #### Key Points to Emphasize
+  1. [Point 1 with supporting details]
+  2. [Point 2 with supporting details]
+  3. [Point 3 with supporting details]
+  
+  #### Anticipated Questions & Responses
+  **Q**: [Expected question]
+  **A**: [Approved response]
+  
+  **Q**: [Expected question]
+  **A**: [Approved response]
+  
+  **Q**: [Expected question]
+  **A**: [Approved response]
+  
+  ### Difficult Questions Management
+  - **"No comment" alternatives**: [Better ways to handle sensitive questions]
+  - **Bridge phrases**: [Ways to redirect to key messages]
+  - **Escalation**: [When to refer to legal/senior management]
+  
+  ---
+  
+  ## DIGITAL & SOCIAL MEDIA STRATEGY
+  
+  ### Social Media Monitoring
+  - **Platforms**: [Twitter, Facebook, LinkedIn, Instagram, etc.]
+  - **Keywords**: [Terms to monitor]
+  - **Frequency**: [How often to check]
+  - **Response Team**: [Who responds]
+  
+  ### Response Strategy
+  - **Acknowledge quickly**: Respond within 1 hour during business hours
+  - **Direct to official channels**: Point to website/official statements
+  - **Maintain tone**: Professional, empathetic, factual
+  - **Don't argue**: Address concerns, don't debate
+  
+  ### Website Crisis Page
+  - [ ] Dedicated crisis information page
+  - [ ] Regular updates with timestamps
+  - [ ] FAQ section
+  - [ ] Contact information
+  - [ ] Download center for official statements
+  
+  ---
+  
+  ## MONITORING & MEASUREMENT
+  
+  ### Media Monitoring
+  - **Traditional Media**: [Monitoring service/method]
+  - **Online News**: [Google Alerts, media monitoring tools]
+  - **Social Media**: [Monitoring tools and frequency]
+  - **Sentiment Analysis**: [Methods for tracking sentiment]
+  
+  ### Key Metrics
+  - **Message Penetration**: [% of coverage with key messages]
+  - **Sentiment**: [Positive/Neutral/Negative coverage ratio]
+  - **Reach**: [Total audience reached]
+  - **Accuracy**: [% of accurate reporting]
+  - **Response Time**: [Average time to respond to inquiries]
+  
+  ### Reporting
+  - **Real-time Dashboard**: [For crisis team monitoring]
+  - **Daily Reports**: [Summary for senior management]
+  - **Post-crisis Analysis**: [Comprehensive review of communication effectiveness]
+  
+  ---
+  
+  ## CRISIS ESCALATION PROCEDURES
+  
+  ### Escalation Triggers
+  - **Level 1**: Local/departmental crisis
+  - **Level 2**: Company-wide crisis
+  - **Level 3**: Public safety or major reputation threat
+  - **Level 4**: Existential threat to organization
+  
+  ### Escalation Actions
+  | Level | Trigger | Communication Response | Approval Required |
+  |-------|---------|----------------------|-------------------|
+  | 1 | [Criteria] | [Response level] | [Department head] |
+  | 2 | [Criteria] | [Response level] | [VP/SVP] |
+  | 3 | [Criteria] | [Response level] | [C-suite] |
+  | 4 | [Criteria] | [Response level] | [CEO/Board] |
+  
+  ---
+  
+  ## POST-CRISIS COMMUNICATION
+  
+  ### Recovery Phase Communication
+  - **Progress Updates**: [Frequency and format]
+  - **Lessons Learned**: [Sharing improvements]
+  - **Thank You Messages**: [Acknowledging stakeholder support]
+  - **Return to Normal**: [Announcing crisis resolution]
+  
+  ### Reputation Recovery
+  - **Positive Story Development**: [Highlighting response effectiveness]
+  - **Stakeholder Appreciation**: [Recognizing support received]
+  - **Improvement Announcements**: [Sharing preventive measures]
+  - **Awards/Recognition**: [External validation of response]
+  
+  ### Long-term Monitoring
+  - **Reputation Tracking**: [Ongoing measurement]
+  - **Stakeholder Relationship**: [Rebuilding where needed]
+  - **Crisis Preparedness Communication**: [Demonstrating readiness]
+  
+  ---
+  
+  ## CRISIS COMMUNICATION CHECKLIST
+  
+  ### Immediate Response (0-1 Hour)
+  - [ ] Activate crisis communication team
+  - [ ] Assess situation and gather facts
+  - [ ] Determine communication level needed
+  - [ ] Notify key internal stakeholders
+  - [ ] Prepare holding statements
+  - [ ] Monitor media and social media
+  - [ ] Brief spokesperson
+  
+  ### Short-term Response (1-4 Hours)
+  - [ ] Issue internal employee communication
+  - [ ] Send customer notifications
+  - [ ] Release initial public statement
+  - [ ] Update website/social media
+  - [ ] Brief customer service teams
+  - [ ] Notify regulatory bodies if required
+  - [ ] Begin stakeholder outreach
+  
+  ### Medium-term Response (4-24 Hours)
+  - [ ] Conduct stakeholder calls as needed
+  - [ ] Issue detailed press release
+  - [ ] Hold press conference if warranted
+  - [ ] Provide regular updates
+  - [ ] Monitor media coverage
+  - [ ] Adjust messaging based on feedback
+  - [ ] Document all communications
+  
+  ### Long-term Response (24+ Hours)
+  - [ ] Continue regular updates
+  - [ ] Plan post-crisis communication
+  - [ ] Evaluate communication effectiveness
+  - [ ] Begin reputation recovery efforts
+  - [ ] Update crisis communication plan
+  - [ ] Conduct team debrief
+  - [ ] Prepare after-action report
+  
+  ---
+  
+  ## RESOURCES & CONTACTS
+  
+  ### Emergency Contacts
+  - **Crisis Hotline**: [24/7 crisis team number]
+  - **Legal Emergency**: [After-hours legal contact]
+  - **PR Agency**: [24/7 PR support]
+  - **Security**: [Security team contact]
+  - **IT Emergency**: [IT crisis response]
+  
+  ### Vendor Contacts
+  - **Media Monitoring**: [Service provider and contact]
+  - **Translation Services**: [For international communication]
+  - **Printing/Distribution**: [For physical materials]
+  - **Web Development**: [For website updates]
+  
+  ### Government/Regulatory Contacts
+  - **Local Emergency Services**: [Police, Fire, EMS]
+  - **Regulatory Bodies**: [Industry-specific regulators]
+  - **Government Relations**: [Government affairs contacts]
+  
+  ---
+  
+  **CLASSIFICATION**: CONFIDENTIAL
+  **LAST UPDATED**: {{incident_date}}
+  **NEXT REVIEW**: [Date]
+  **DOCUMENT OWNER**: {{crisis_lead}}

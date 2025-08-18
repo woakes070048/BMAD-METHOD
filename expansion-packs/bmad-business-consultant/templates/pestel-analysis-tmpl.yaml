@@ -1,0 +1,161 @@
+name: "PESTEL Analysis Template"
+description: "Comprehensive PESTEL (Political, Economic, Social, Technological, Environmental, Legal) analysis template for macro-environmental assessment"
+version: "1.0"
+category: "Strategic Analysis"
+tags: ["pestel", "macro-environment", "strategic-analysis", "external-factors", "risk-assessment"]
+
+placeholders:
+  topic: "Industry, market, or business topic to analyze"
+  geographic_scope: "Geographic scope (global, national, regional, local)"
+  timeframe: "Analysis timeframe (current, 3-5 year outlook)"
+  strategic_focus: "Specific strategic focus or business context"
+
+template: |
+  # {{topic}} - PESTEL Analysis
+  
+  ## Executive Summary
+  This PESTEL analysis examines the macro-environmental factors affecting {{topic}}, providing strategic insights into Political, Economic, Social, Technological, Environmental, and Legal influences that shape the business environment.
+  
+  **Geographic Scope**: {{geographic_scope}}
+  **Timeframe**: {{timeframe}}
+  **Strategic Focus**: {{strategic_focus}}
+  
+  ## Introduction and Context
+  [Provide introduction and definition of {{topic}}, including industry overview, market significance, and relevance of macro-environmental analysis for strategic decision-making.]
+  
+  ## PESTEL Analysis Framework
+  
+  ### 🏛️ Political Factors
+  **Government Policies, Regulations, and Political Environment**
+  
+  * **[Political Factor 1]**: [Analysis of government policy impact, regulatory changes, and political stability effects]
+  * **[Political Factor 2]**: [Assessment of trade policies, international relations, and geopolitical influences]
+  * **[Political Factor 3]**: [Evaluation of taxation policies, incentives, and government spending priorities]
+  * **[Political Factor 4]**: [Description of regulatory environment changes and compliance requirements]
+  
+  **Political Risk Assessment**: [Overall political stability and policy consistency evaluation]
+  
+  ### 💰 Economic Factors
+  **Economic Conditions, Trends, and Financial Environment**
+  
+  * **[Economic Factor 1]**: [Analysis of economic growth, recession risks, and business cycle impacts]
+  * **[Economic Factor 2]**: [Assessment of inflation, interest rates, and monetary policy effects]
+  * **[Economic Factor 3]**: [Evaluation of exchange rates, currency stability, and international trade]
+  * **[Economic Factor 4]**: [Description of employment levels, labor costs, and wage trends]
+  
+  **Economic Outlook**: [Short and medium-term economic forecast and implications]
+  
+  ### 👥 Social Factors
+  **Demographics, Cultural Trends, and Social Changes**
+  
+  * **[Social Factor 1]**: [Analysis of demographic shifts, population trends, and generational changes]
+  * **[Social Factor 2]**: [Assessment of cultural attitudes, lifestyle changes, and consumer behavior]
+  * **[Social Factor 3]**: [Evaluation of education levels, skill availability, and workforce characteristics]
+  * **[Social Factor 4]**: [Description of social movements, values shifts, and community expectations]
+  
+  **Social Trend Analysis**: [Key social drivers and their strategic implications]
+  
+  ### 🔬 Technological Factors
+  **Innovation, Digital Transformation, and Technology Trends**
+  
+  * **[Tech Factor 1]**: [Analysis of emerging technologies, innovation rates, and R&D investment]
+  * **[Tech Factor 2]**: [Assessment of digital transformation, automation, and AI adoption]
+  * **[Tech Factor 3]**: [Evaluation of infrastructure development and connectivity improvements]
+  * **[Tech Factor 4]**: [Description of technology disruption and industry transformation]
+  
+  **Technology Impact**: [Assessment of technology as enabler vs. disruptor]
+  
+  ### 🌍 Environmental Factors
+  **Climate, Sustainability, and Environmental Considerations**
+  
+  * **[Environmental Factor 1]**: [Analysis of climate change impacts, weather patterns, and natural disasters]
+  * **[Environmental Factor 2]**: [Assessment of sustainability trends, green technology adoption, and ESG priorities]
+  * **[Environmental Factor 3]**: [Evaluation of resource availability, scarcity issues, and supply chain impacts]
+  * **[Environmental Factor 4]**: [Description of pollution concerns, environmental regulations, and compliance costs]
+  
+  **Environmental Strategy**: [Sustainability requirements and environmental adaptation needs]
+  
+  ### ⚖️ Legal Factors
+  **Laws, Regulations, and Legal Environment**
+  
+  * **[Legal Factor 1]**: [Analysis of industry-specific regulations, compliance requirements, and legal changes]
+  * **[Legal Factor 2]**: [Assessment of employment law, labor regulations, and workplace standards]
+  * **[Legal Factor 3]**: [Evaluation of consumer protection, health and safety, and quality standards]
+  * **[Legal Factor 4]**: [Description of intellectual property law, data privacy, and cybersecurity regulations]
+  
+  **Legal Compliance**: [Key legal risks and compliance priorities]
+  
+  ## Macro-Environmental Impact Assessment
+  
+  ### Factor Prioritization Matrix
+  | PESTEL Factor | Impact Level | Probability | Time Horizon | Strategic Priority |
+  |---------------|--------------|-------------|--------------|-------------------|
+  | **Political** | [High/Med/Low] | [High/Med/Low] | [Short/Med/Long] | [Critical/Important/Monitor] |
+  | **Economic** | [High/Med/Low] | [High/Med/Low] | [Short/Med/Long] | [Critical/Important/Monitor] |
+  | **Social** | [High/Med/Low] | [High/Med/Low] | [Short/Med/Long] | [Critical/Important/Monitor] |
+  | **Technological** | [High/Med/Low] | [High/Med/Low] | [Short/Med/Long] | [Critical/Important/Monitor] |
+  | **Environmental** | [High/Med/Low] | [High/Med/Low] | [Short/Med/Long] | [Critical/Important/Monitor] |
+  | **Legal** | [High/Med/Low] | [High/Med/Low] | [Short/Med/Long] | [Critical/Important/Monitor] |
+  
+  ### Cross-Factor Interactions
+  * **Political-Economic**: [How political factors influence economic conditions]
+  * **Social-Technological**: [Intersection of social trends and technology adoption]
+  * **Environmental-Legal**: [Environmental pressures driving legal/regulatory changes]
+  * **Economic-Social**: [Economic conditions affecting social trends and behaviors]
+  
+  ## Strategic Implications
+  
+  ### Opportunities Identified
+  1. **[Opportunity 1]**: [Macro-environmental opportunity and strategic potential]
+  2. **[Opportunity 2]**: [Market or business development opportunity from external factors]
+  3. **[Opportunity 3]**: [Innovation or competitive advantage opportunity]
+  
+  ### Threats and Risks
+  1. **[Threat 1]**: [Major external threat and potential impact]
+  2. **[Threat 2]**: [Regulatory or compliance risk]
+  3. **[Threat 3]**: [Market or competitive threat from external changes]
+  
+  ### Strategic Responses Required
+  * **Adaptation Strategies**: [How to adapt to unchangeable external factors]
+  * **Influence Strategies**: [How to influence changeable external factors]
+  * **Contingency Planning**: [Preparation for alternative scenarios]
+  * **Monitoring Systems**: [Early warning systems for environmental changes]
+  
+  ## Scenario Planning
+  
+  ### Best Case Scenario
+  [Description of favorable macro-environmental conditions and their implications]
+  
+  ### Most Likely Scenario
+  [Description of expected macro-environmental evolution and strategic requirements]
+  
+  ### Worst Case Scenario
+  [Description of challenging macro-environmental conditions and contingency responses]
+  
+  ## Action Plan and Recommendations
+  
+  ### Immediate Actions (0-6 months)
+  1. **[Action 1]**: [Urgent response to critical macro-environmental factors]
+  2. **[Action 2]**: [Compliance or regulatory preparation activities]
+  3. **[Action 3]**: [Risk mitigation or opportunity preparation]
+  
+  ### Medium-term Initiatives (6-18 months)
+  1. **[Initiative 1]**: [Strategic adaptation or capability development]
+  2. **[Initiative 2]**: [Market positioning or competitive response]
+  3. **[Initiative 3]**: [Investment or resource allocation decisions]
+  
+  ### Long-term Strategic Considerations (18+ months)
+  1. **[Consideration 1]**: [Fundamental business model or strategy adaptations]
+  2. **[Consideration 2]**: [Market expansion or contraction decisions]
+  3. **[Consideration 3]**: [Innovation or transformation requirements]
+  
+  ## Conclusion
+  [Strategic conclusion summarizing the key macro-environmental insights, critical success factors, and strategic priorities for {{topic}}. Include assessment of overall environmental favorability and strategic recommendations.]
+  
+  ---
+  
+  **Analysis Methodology**: This PESTEL analysis follows professional strategic analysis standards, utilizing current macro-environmental data and expert assessment.
+  
+  **Last Updated**: [Current Date]
+  **Analyst**: [Analyst Name/Team]
+  **Next Review**: [Recommended review timeline]

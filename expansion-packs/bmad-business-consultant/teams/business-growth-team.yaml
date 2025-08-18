@@ -1,0 +1,518 @@
+# business-growth-team.yaml
+
+team_name: Business Growth and Expansion Team
+description: Strategic agent team focused on market expansion, revenue growth, customer acquisition, and business development initiatives
+version: 1.0.0
+activation_phrase: "/BMad-BC business-growth-team"
+
+# Team Composition and Roles
+team_members:
+  - role: Growth Strategy Lead
+    agent: strategic-growth-advisor
+    responsibilities:
+      - Growth strategy development
+      - Market opportunity assessment
+      - Competitive positioning
+      - Partnership and M&A strategy
+      - Innovation and new ventures
+    
+  - role: Revenue Optimization Expert
+    agent: financial-performance-analyst
+    responsibilities:
+      - Pricing strategy and optimization
+      - Revenue modeling and forecasting
+      - Unit economics analysis
+      - Investment prioritization
+      - Performance tracking and ROI
+    
+  - role: Customer Success Champion
+    agent: customer-experience-expert
+    responsibilities:
+      - Customer acquisition strategy
+      - Customer retention and loyalty
+      - Customer experience optimization
+      - Voice of customer programs
+      - Customer success metrics
+    
+  - role: Market Development Leader
+    agent: professional-services-advisor
+    responsibilities:
+      - Market research and analysis
+      - Channel development
+      - Business development
+      - Proposal and sales support
+      - Partner enablement
+    
+  - role: Operations Scale Expert
+    agent: operations-excellence-expert
+    responsibilities:
+      - Scalability assessment
+      - Capacity planning
+      - Process standardization
+      - Quality assurance
+      - Fulfillment optimization
+
+# Growth Strategy Framework
+growth_framework:
+  growth_pillars:
+    - pillar: Market Penetration
+      strategies:
+        - Increase market share
+        - Customer acquisition
+        - Competitive displacement
+        - Usage expansion
+        - Cross-selling/upselling
+      owner: customer-experience-expert
+      
+    - pillar: Market Development
+      strategies:
+        - Geographic expansion
+        - New customer segments
+        - New channels
+        - International markets
+        - Vertical markets
+      owner: professional-services-advisor
+      
+    - pillar: Product Development
+      strategies:
+        - New product lines
+        - Product enhancements
+        - Service additions
+        - Solution bundles
+        - Platform extensions
+      owner: strategic-growth-advisor
+      
+    - pillar: Diversification
+      strategies:
+        - Adjacent markets
+        - New business models
+        - Strategic acquisitions
+        - Joint ventures
+        - Ecosystem plays
+      owner: strategic-growth-advisor
+
+# Market Analysis Process
+market_analysis:
+  market_research:
+    primary_research:
+      - Customer interviews
+      - Market surveys
+      - Focus groups
+      - Pilot programs
+      - A/B testing
+    secondary_research:
+      - Industry reports
+      - Competitive analysis
+      - Market sizing
+      - Trend analysis
+      - Economic indicators
+      
+  opportunity_assessment:
+    evaluation_criteria:
+      - Market size and growth
+      - Competitive intensity
+      - Profitability potential
+      - Strategic fit
+      - Resource requirements
+    scoring_framework:
+      - Attractiveness (1-10)
+      - Feasibility (1-10)
+      - Strategic value (1-10)
+      - Risk level (1-10)
+      - Timeline to revenue
+      
+  competitive_intelligence:
+    monitoring_areas:
+      - Product launches
+      - Pricing changes
+      - Market positioning
+      - Customer wins/losses
+      - Partnership announcements
+    analysis_outputs:
+      - Competitive positioning map
+      - SWOT analysis
+      - Battle cards
+      - Win/loss analysis
+      - Response strategies
+
+# Customer Growth Strategy
+customer_strategy:
+  acquisition_tactics:
+    inbound_marketing:
+      - Content marketing
+      - SEO optimization
+      - Social media marketing
+      - Webinars and events
+      - Referral programs
+    outbound_sales:
+      - Direct sales
+      - Channel partners
+      - Strategic accounts
+      - Inside sales
+      - Field sales
+      
+  retention_programs:
+    - Customer success management
+    - Loyalty and rewards programs
+    - Community building
+    - Education and training
+    - Advisory boards
+    
+  expansion_strategies:
+    - Account penetration
+    - Product adoption
+    - Usage increase
+    - Upselling campaigns
+    - Cross-selling initiatives
+    
+  customer_metrics:
+    acquisition:
+      - Customer acquisition cost (CAC)
+      - Conversion rates
+      - Sales cycle length
+      - Pipeline velocity
+      - Win rates
+    retention:
+      - Churn rate
+      - Net retention rate
+      - Customer lifetime value (CLV)
+      - Customer satisfaction (CSAT)
+      - Net promoter score (NPS)
+
+# Revenue Growth Initiatives
+revenue_initiatives:
+  pricing_optimization:
+    strategies:
+      - Value-based pricing
+      - Dynamic pricing
+      - Bundling strategies
+      - Tiered pricing
+      - Usage-based pricing
+    analysis:
+      - Price elasticity
+      - Competitor pricing
+      - Customer willingness to pay
+      - Margin analysis
+      - Discount optimization
+      
+  new_revenue_streams:
+    opportunities:
+      - Subscription models
+      - Professional services
+      - Data monetization
+      - Platform fees
+      - Licensing revenue
+    evaluation:
+      - Market demand
+      - Capability requirements
+      - Investment needs
+      - Cannibalization risk
+      - Synergy potential
+      
+  sales_effectiveness:
+    improvements:
+      - Sales process optimization
+      - Sales enablement tools
+      - Training and coaching
+      - Territory optimization
+      - Compensation alignment
+    metrics:
+      - Quota attainment
+      - Sales productivity
+      - Average deal size
+      - Sales velocity
+      - Cost of sales
+
+# Partnership and Channel Strategy
+partnership_strategy:
+  partner_types:
+    - Strategic partners
+    - Technology partners
+    - Channel partners
+    - Referral partners
+    - Integration partners
+    
+  partner_programs:
+    enablement:
+      - Training and certification
+      - Marketing support
+      - Sales tools
+      - Technical resources
+      - Joint planning
+    incentives:
+      - Revenue sharing
+      - Lead sharing
+      - Co-marketing funds
+      - Deal registration
+      - Tiered benefits
+      
+  partner_management:
+    - Partner recruitment
+    - Onboarding process
+    - Performance tracking
+    - Relationship management
+    - Conflict resolution
+    
+  success_metrics:
+    - Partner-sourced revenue
+    - Partner satisfaction
+    - Partner productivity
+    - Joint customer wins
+    - Time to productivity
+
+# Expansion Planning
+expansion_framework:
+  geographic_expansion:
+    assessment_criteria:
+      - Market size and growth
+      - Competitive landscape
+      - Regulatory environment
+      - Cultural fit
+      - Infrastructure requirements
+    entry_strategies:
+      - Direct investment
+      - Partnerships
+      - Acquisitions
+      - Franchising
+      - Licensing
+      
+  vertical_expansion:
+    target_industries:
+      - Industry attractiveness
+      - Solution fit
+      - Reference customers
+      - Domain expertise
+      - Channel access
+    go-to-market:
+      - Industry messaging
+      - Specialized solutions
+      - Vertical partners
+      - Industry events
+      - Thought leadership
+      
+  international_expansion:
+    considerations:
+      - Market prioritization
+      - Localization requirements
+      - Legal and regulatory
+      - Currency and pricing
+      - Support infrastructure
+    phases:
+      - Market validation
+      - Pilot launch
+      - Scale-up
+      - Full operations
+      - Optimization
+
+# Innovation and New Ventures
+innovation_strategy:
+  innovation_portfolio:
+    horizons:
+      - Horizon 1: Core business (70%)
+      - Horizon 2: Emerging opportunities (20%)
+      - Horizon 3: Transformational bets (10%)
+    investment_allocation:
+      - Resource commitment
+      - Risk tolerance
+      - Timeline expectations
+      - Success metrics
+      - Exit criteria
+      
+  new_venture_process:
+    stages:
+      - Ideation and concept
+      - Business case development
+      - Pilot and validation
+      - Scale decision
+      - Full launch
+    gates:
+      - Strategic fit
+      - Market validation
+      - Financial viability
+      - Capability assessment
+      - Risk evaluation
+      
+  innovation_metrics:
+    - Pipeline value
+    - Speed to market
+    - Success rate
+    - Revenue from new products
+    - Innovation ROI
+
+# Performance Management
+growth_metrics:
+  leading_indicators:
+    - Pipeline growth
+    - Lead generation
+    - Customer engagement
+    - Partner recruitment
+    - Product adoption
+    
+  lagging_indicators:
+    - Revenue growth
+    - Market share
+    - Customer acquisition
+    - Profitability
+    - Return on investment
+    
+  operational_metrics:
+    - Sales productivity
+    - Marketing efficiency
+    - Channel performance
+    - Customer satisfaction
+    - Operational scalability
+    
+  strategic_metrics:
+    - Market position
+    - Competitive wins
+    - Innovation index
+    - Brand strength
+    - Ecosystem health
+
+# Risk Management
+growth_risks:
+  market_risks:
+    - Market saturation
+    - Competitive response
+    - Economic downturn
+    - Technology disruption
+    - Regulatory changes
+    
+  execution_risks:
+    - Scaling challenges
+    - Quality degradation
+    - Talent constraints
+    - System limitations
+    - Partner dependencies
+    
+  financial_risks:
+    - Investment requirements
+    - Cash flow impact
+    - Margin pressure
+    - Customer concentration
+    - Currency exposure
+    
+  mitigation_strategies:
+    - Diversification
+    - Phased approach
+    - Contingency planning
+    - Risk monitoring
+    - Scenario planning
+
+# Implementation Roadmap
+growth_phases:
+  phase_1_foundation:
+    duration: 3-6 months
+    focus:
+      - Market analysis
+      - Strategy development
+      - Quick wins
+      - Team building
+      - Infrastructure setup
+    deliverables:
+      - Growth strategy document
+      - Market opportunity assessment
+      - Quick win implementations
+      - Team charter
+      - Baseline metrics
+      
+  phase_2_acceleration:
+    duration: 6-12 months
+    focus:
+      - Market expansion
+      - Customer acquisition
+      - Product launches
+      - Channel development
+      - Capability building
+    deliverables:
+      - Market entry execution
+      - Customer growth metrics
+      - New product revenues
+      - Partner network
+      - Enhanced capabilities
+      
+  phase_3_scale:
+    duration: 12-24 months
+    focus:
+      - Geographic expansion
+      - Portfolio optimization
+      - M&A execution
+      - Platform development
+      - Market leadership
+    deliverables:
+      - New market revenues
+      - Portfolio performance
+      - Acquisition integration
+      - Platform metrics
+      - Market position
+
+# Success Factors
+critical_success_factors:
+  strategic:
+    - Clear growth vision and strategy
+    - Market opportunity validation
+    - Competitive differentiation
+    - Strategic partnerships
+    - Innovation capability
+    
+  operational:
+    - Scalable operations
+    - Quality maintenance
+    - Customer experience
+    - Efficient processes
+    - Technology enablement
+    
+  organizational:
+    - Leadership alignment
+    - Growth mindset
+    - Talent availability
+    - Cultural adaptation
+    - Change management
+    
+  financial:
+    - Investment availability
+    - Sustainable unit economics
+    - Profitability path
+    - Cash flow management
+    - ROI achievement
+
+# Team Collaboration
+collaboration_model:
+  team_rhythms:
+    daily:
+      - Growth metrics review
+      - Pipeline updates
+      - Issue escalation
+    weekly:
+      - Team sync meeting
+      - Customer reviews
+      - Partner updates
+    monthly:
+      - Strategy review
+      - Performance analysis
+      - Market intelligence
+    quarterly:
+      - Board reporting
+      - Strategy refresh
+      - Planning cycle
+      
+  decision_making:
+    consensus_decisions:
+      - Strategy changes
+      - Major investments
+      - Market entry
+      - Partnerships
+      - Acquisitions
+    delegated_decisions:
+      - Tactical execution
+      - Resource allocation
+      - Pricing adjustments
+      - Campaign approval
+      - Pilot programs
+      
+  knowledge_sharing:
+    - Best practice sessions
+    - Market insights forums
+    - Customer feedback reviews
+    - Competitive intelligence briefs
+    - Innovation showcases

@@ -1,0 +1,538 @@
+name: "Sales Process Optimization Template"
+description: "Comprehensive sales process analysis and optimization template for small business consultants to help clients improve sales effectiveness and results"
+category: "marketing-sales"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Sales Process Optimization Template for Small Business Consulting
+
+template:
+  analysis_information:
+    client_name: ""
+    business_name: ""
+    industry: ""
+    analysis_date: ""
+    consultant_name: ""
+    sales_team_size: 0
+    annual_revenue_target: 0
+    current_conversion_rate: 0
+    
+  current_state_assessment:
+    sales_process_overview:
+      current_sales_methodology: ""
+      sales_process_documentation: ""
+      sales_stages_defined: []
+      average_sales_cycle_length: 0
+      sales_team_structure: ""
+      
+    sales_performance_metrics:
+      total_leads_generated: 0
+      qualified_leads: 0
+      opportunities_created: 0
+      deals_closed: 0
+      average_deal_size: 0
+      win_rate_percentage: 0
+      sales_cycle_length_days: 0
+      customer_acquisition_cost: 0
+      
+    sales_team_assessment:
+      individual_performance: []
+      skill_gaps_identified: []
+      training_needs: []
+      motivation_levels: ""
+      compensation_structure: ""
+      
+    sales_tools_and_technology:
+      crm_system_current: ""
+      sales_automation_tools: []
+      communication_tools: []
+      proposal_generation_tools: []
+      performance_tracking_tools: []
+
+  sales_funnel_analysis:
+    lead_generation_stage:
+      lead_sources: {}
+      lead_quality_assessment: ""
+      lead_qualification_criteria: []
+      lead_response_time: 0
+      lead_conversion_rates: {}
+      
+    qualification_stage:
+      qualification_methodology: ""
+      qualification_criteria: []
+      discovery_process: ""
+      needs_assessment_approach: ""
+      budget_qualification: ""
+      
+    presentation_stage:
+      presentation_approach: ""
+      proposal_development_process: ""
+      customization_level: ""
+      competitive_differentiation: []
+      pricing_presentation: ""
+      
+    negotiation_stage:
+      negotiation_strategy: ""
+      common_objections: []
+      objection_handling_approach: ""
+      pricing_flexibility: ""
+      decision_maker_involvement: ""
+      
+    closing_stage:
+      closing_techniques_used: []
+      contract_process: ""
+      approval_requirements: []
+      implementation_handoff: ""
+      
+    post_sale_stage:
+      onboarding_process: ""
+      customer_success_activities: []
+      upselling_cross_selling: ""
+      referral_generation: ""
+
+  sales_process_mapping:
+    detailed_process_steps:
+      step_1_lead_generation:
+        activities: []
+        inputs_required: []
+        outputs_produced: []
+        time_required: 0
+        success_criteria: []
+        common_issues: []
+        
+      step_2_lead_qualification:
+        activities: []
+        inputs_required: []
+        outputs_produced: []
+        time_required: 0
+        success_criteria: []
+        common_issues: []
+        
+      step_3_needs_discovery:
+        activities: []
+        inputs_required: []
+        outputs_produced: []
+        time_required: 0
+        success_criteria: []
+        common_issues: []
+        
+      step_4_solution_presentation:
+        activities: []
+        inputs_required: []
+        outputs_produced: []
+        time_required: 0
+        success_criteria: []
+        common_issues: []
+        
+      step_5_proposal_development:
+        activities: []
+        inputs_required: []
+        outputs_produced: []
+        time_required: 0
+        success_criteria: []
+        common_issues: []
+        
+      step_6_negotiation_closing:
+        activities: []
+        inputs_required: []
+        outputs_produced: []
+        time_required: 0
+        success_criteria: []
+        common_issues: []
+        
+    process_flow_analysis:
+      bottlenecks_identified: []
+      inefficiencies: []
+      redundancies: []
+      missing_steps: []
+      handoff_issues: []
+
+  performance_gap_analysis:
+    conversion_rate_analysis:
+      lead_to_qualified_conversion: 0
+      qualified_to_opportunity_conversion: 0
+      opportunity_to_proposal_conversion: 0
+      proposal_to_close_conversion: 0
+      overall_conversion_rate: 0
+      
+    benchmark_comparisons:
+      industry_average_conversion_rates: {}
+      best_practice_benchmarks: {}
+      competitive_performance: {}
+      
+    root_cause_analysis:
+      low_conversion_causes: []
+      long_sales_cycle_causes: []
+      low_average_deal_size_causes: []
+      high_customer_acquisition_cost_causes: []
+      
+    opportunity_quantification:
+      conversion_rate_improvement_potential: 0
+      sales_cycle_reduction_potential: 0
+      deal_size_increase_potential: 0
+      revenue_impact_potential: 0
+
+  customer_analysis:
+    buyer_personas:
+      primary_buyer:
+        demographic_profile: {}
+        role_responsibilities: []
+        pain_points: []
+        buying_motivations: []
+        decision_criteria: []
+        preferred_communication: []
+        
+      influencer_personas:
+        - role: ""
+          influence_level: ""
+          concerns: []
+          information_needs: []
+          
+    buying_process_analysis:
+      buying_stages: []
+      decision_criteria: []
+      evaluation_process: ""
+      typical_timeline: 0
+      budget_approval_process: ""
+      
+    customer_journey_mapping:
+      awareness_stage:
+        customer_activities: []
+        information_needs: []
+        touchpoints: []
+        sales_activities: []
+        
+      consideration_stage:
+        customer_activities: []
+        information_needs: []
+        touchpoints: []
+        sales_activities: []
+        
+      decision_stage:
+        customer_activities: []
+        information_needs: []
+        touchpoints: []
+        sales_activities: []
+
+  competitive_analysis:
+    competitor_assessment:
+      direct_competitors: []
+      competitive_advantages: []
+      competitive_disadvantages: []
+      competitive_sales_approaches: []
+      
+    win_loss_analysis:
+      reasons_for_wins: []
+      reasons_for_losses: []
+      competitive_losses: {}
+      improvement_opportunities: []
+      
+    competitive_positioning:
+      unique_value_propositions: []
+      competitive_battlecards: []
+      objection_handling_for_competition: []
+
+  sales_methodology_optimization:
+    recommended_sales_methodology:
+      methodology_selection: ""
+      implementation_approach: ""
+      training_requirements: []
+      success_metrics: []
+      
+    process_improvements:
+      lead_qualification_enhancements: []
+      discovery_process_improvements: []
+      presentation_optimization: []
+      closing_technique_refinements: []
+      
+    automation_opportunities:
+      lead_routing_automation: ""
+      follow_up_automation: []
+      proposal_generation_automation: ""
+      reporting_automation: []
+
+  sales_tools_and_technology_optimization:
+    crm_optimization:
+      current_crm_assessment: ""
+      feature_utilization: []
+      data_quality: ""
+      process_alignment: ""
+      improvement_recommendations: []
+      
+    sales_enablement_tools:
+      content_management_needs: []
+      training_and_coaching_tools: []
+      performance_analytics_tools: []
+      communication_tools: []
+      
+    technology_integration:
+      marketing_automation_integration: ""
+      customer_service_integration: ""
+      financial_system_integration: ""
+      reporting_and_analytics: ""
+
+  sales_team_development:
+    skill_assessment:
+      prospecting_skills: ""
+      qualification_skills: ""
+      presentation_skills: ""
+      negotiation_skills: ""
+      closing_skills: ""
+      relationship_building_skills: ""
+      
+    training_plan:
+      onboarding_program: []
+      ongoing_training_needs: []
+      coaching_requirements: []
+      certification_programs: []
+      
+    performance_management:
+      kpi_framework: []
+      performance_review_process: ""
+      incentive_structure: ""
+      career_development_paths: []
+
+  sales_metrics_and_kpis:
+    activity_metrics:
+      calls_made_per_day: 0
+      emails_sent_per_day: 0
+      meetings_scheduled_per_week: 0
+      proposals_sent_per_month: 0
+      
+    pipeline_metrics:
+      pipeline_value: 0
+      pipeline_velocity: 0
+      pipeline_coverage_ratio: 0
+      forecast_accuracy: 0
+      
+    outcome_metrics:
+      revenue_per_salesperson: 0
+      deals_closed_per_month: 0
+      average_deal_size: 0
+      customer_lifetime_value: 0
+      
+    efficiency_metrics:
+      cost_per_lead: 0
+      cost_per_acquisition: 0
+      sales_cycle_efficiency: 0
+      quota_attainment: 0
+
+  optimization_recommendations:
+    process_improvements:
+      immediate_fixes:
+        - recommendation: ""
+          impact: ""
+          effort_required: ""
+          timeline: ""
+          
+      short_term_enhancements:
+        - recommendation: ""
+          impact: ""
+          effort_required: ""
+          timeline: ""
+          
+      long_term_transformations:
+        - recommendation: ""
+          impact: ""
+          effort_required: ""
+          timeline: ""
+          
+    technology_improvements:
+      system_upgrades: []
+      new_tool_implementations: []
+      integration_opportunities: []
+      automation_initiatives: []
+      
+    team_development:
+      hiring_recommendations: []
+      training_priorities: []
+      coaching_enhancements: []
+      performance_management_improvements: []
+
+  implementation_roadmap:
+    phase_1_quick_wins:
+      # 0-30 days
+      activities: []
+      expected_outcomes: []
+      success_metrics: []
+      
+    phase_2_process_optimization:
+      # 30-90 days
+      activities: []
+      expected_outcomes: []
+      success_metrics: []
+      
+    phase_3_technology_enhancement:
+      # 90-180 days
+      activities: []
+      expected_outcomes: []
+      success_metrics: []
+      
+    phase_4_advanced_optimization:
+      # 180+ days
+      activities: []
+      expected_outcomes: []
+      success_metrics: []
+
+  change_management:
+    stakeholder_engagement:
+      sales_team_buy_in: []
+      management_support: []
+      cross_functional_alignment: []
+      
+    communication_plan:
+      announcement_strategy: ""
+      training_communication: []
+      progress_updates: []
+      success_celebrations: []
+      
+    resistance_management:
+      anticipated_resistance: []
+      mitigation_strategies: []
+      change_champions: []
+
+  measurement_and_monitoring:
+    baseline_metrics:
+      current_performance_snapshot: {}
+      benchmarking_data: {}
+      improvement_targets: {}
+      
+    tracking_framework:
+      daily_metrics: []
+      weekly_reviews: []
+      monthly_assessments: []
+      quarterly_evaluations: []
+      
+    reporting_structure:
+      sales_dashboard_elements: []
+      management_reports: []
+      team_performance_reports: []
+      
+    continuous_improvement:
+      feedback_collection: []
+      process_refinement: []
+      best_practice_sharing: []
+
+  risk_management:
+    implementation_risks:
+      adoption_resistance: ""
+      technology_challenges: ""
+      performance_disruption: ""
+      competitive_response: ""
+      
+    mitigation_strategies:
+      risk_prevention: []
+      contingency_plans: []
+      success_monitoring: []
+      
+    success_factors:
+      critical_success_factors: []
+      key_dependencies: []
+      milestone_checkpoints: []
+
+  roi_analysis:
+    investment_requirements:
+      technology_costs: 0
+      training_costs: 0
+      consulting_costs: 0
+      time_investment: 0
+      
+    expected_benefits:
+      revenue_increase: 0
+      conversion_rate_improvement: 0
+      sales_cycle_reduction: 0
+      cost_reduction: 0
+      
+    roi_calculation:
+      total_investment: 0
+      total_benefits: 0
+      net_roi: 0
+      payback_period: 0
+
+specialized_optimizations:
+  industry_specific_approaches:
+    b2b_sales_optimization:
+      account_based_selling: []
+      complex_sales_processes: []
+      relationship_selling: []
+      
+    b2c_sales_optimization:
+      transactional_selling: []
+      emotional_selling: []
+      volume_selling: []
+      
+    service_business_sales:
+      consultative_selling: []
+      value_based_selling: []
+      relationship_building: []
+
+  sales_model_optimizations:
+    inside_sales_optimization:
+      phone_sales_techniques: []
+      virtual_presentation_skills: []
+      remote_relationship_building: []
+      
+    field_sales_optimization:
+      territory_management: []
+      face_to_face_selling: []
+      customer_visit_optimization: []
+      
+    channel_sales_optimization:
+      partner_enablement: []
+      channel_conflict_management: []
+      indirect_sales_management: []
+
+success_criteria:
+  performance_improvements:
+    conversion_rate_increase: 0
+    sales_cycle_reduction: 0
+    average_deal_size_increase: 0
+    revenue_growth: 0
+    
+  process_enhancements:
+    process_standardization: ""
+    automation_implementation: ""
+    data_quality_improvement: ""
+    reporting_accuracy: ""
+    
+  team_development:
+    skill_improvement: ""
+    performance_consistency: ""
+    job_satisfaction: ""
+    retention_improvement: ""
+
+usage_guidelines:
+  assessment_phase:
+    data_collection:
+      - "Gather sales performance data (12+ months)"
+      - "Interview sales team members"
+      - "Review current sales processes"
+      - "Analyze customer feedback"
+      
+    analysis_approach:
+      - "Map current sales process in detail"
+      - "Identify bottlenecks and inefficiencies"
+      - "Benchmark against best practices"
+      - "Quantify improvement opportunities"
+      
+  optimization_phase:
+    design_principles:
+      - "Focus on customer value creation"
+      - "Simplify and standardize processes"
+      - "Leverage technology for efficiency"
+      - "Build in continuous improvement"
+      
+    implementation_approach:
+      - "Start with quick wins for momentum"
+      - "Pilot changes with subset of team"
+      - "Provide comprehensive training"
+      - "Monitor and adjust continuously"
+
+notes:
+  - "Involve sales team in optimization design for better adoption"
+  - "Focus on both process efficiency and effectiveness"
+  - "Align sales process with customer buying journey"
+  - "Invest in technology that supports, not replaces, relationship building"
+  - "Measure and track improvements consistently"
+  - "Be prepared to iterate and refine optimizations"

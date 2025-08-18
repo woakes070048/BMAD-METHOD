@@ -1,0 +1,463 @@
+name: "Break-Even Analysis Template"
+description: "Comprehensive break-even analysis tool for small business consultants to help clients understand profitability thresholds and make informed pricing and volume decisions"
+category: "financial-analysis"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Break-Even Analysis Template for Small Business Consulting
+
+template:
+  analysis_information:
+    client_name: ""
+    business_name: ""
+    product_service_analyzed: ""
+    analysis_date: ""
+    consultant_name: ""
+    time_period: "" # Monthly, Quarterly, Annually
+    analysis_purpose: "" # Pricing, Volume Planning, Product Launch, etc.
+    
+  cost_structure_analysis:
+    fixed_costs:
+      # Costs that don't change with production volume
+      monthly_fixed_costs:
+        rent_lease: 0
+        insurance: 0
+        salaries_fixed_staff: 0
+        loan_payments: 0
+        utilities_base: 0
+        software_subscriptions: 0
+        equipment_depreciation: 0
+        professional_services: 0
+        marketing_fixed: 0
+        other_fixed_costs: 0
+        total_monthly_fixed_costs: 0
+        
+      annual_fixed_costs:
+        licenses_permits: 0
+        annual_insurance: 0
+        equipment_maintenance: 0
+        professional_development: 0
+        annual_subscriptions: 0
+        other_annual_fixed: 0
+        total_annual_fixed_costs: 0
+        
+      total_fixed_costs_per_period: 0
+      
+    variable_costs:
+      # Costs that change directly with production volume
+      variable_cost_components:
+        direct_materials: 0
+        direct_labor: 0
+        commissions: 0
+        shipping_fulfillment: 0
+        payment_processing: 0
+        utilities_variable: 0
+        packaging: 0
+        other_variable_costs: 0
+        
+      total_variable_cost_per_unit: 0
+      variable_cost_percentage: 0 # As percentage of selling price
+      
+    semi_variable_costs:
+      # Costs with both fixed and variable components
+      step_costs:
+        - cost_category: ""
+          fixed_component: 0
+          variable_component: 0
+          step_threshold: 0
+          
+      mixed_costs:
+        - cost_category: ""
+          fixed_portion: 0
+          variable_rate: 0
+
+  revenue_analysis:
+    pricing_structure:
+      primary_selling_price: 0
+      discount_structure: {}
+      average_selling_price: 0
+      price_variations: []
+      
+    revenue_streams:
+      product_revenue:
+        - product_name: ""
+          selling_price: 0
+          variable_cost: 0
+          contribution_margin: 0
+          volume_mix_percentage: 0
+          
+      service_revenue:
+        - service_name: ""
+          hourly_rate: 0
+          cost_per_hour: 0
+          contribution_margin: 0
+          volume_mix_percentage: 0
+          
+    contribution_margin_analysis:
+      contribution_margin_per_unit: 0
+      contribution_margin_ratio: 0
+      weighted_average_contribution_margin: 0
+
+  break_even_calculations:
+    simple_break_even:
+      break_even_units: 0 # Fixed Costs ÷ Contribution Margin per Unit
+      break_even_revenue: 0 # Fixed Costs ÷ Contribution Margin Ratio
+      break_even_customers: 0 # For service businesses
+      
+    break_even_variations:
+      daily_break_even: 0
+      weekly_break_even: 0
+      monthly_break_even: 0
+      quarterly_break_even: 0
+      annual_break_even: 0
+      
+    multi_product_break_even:
+      # For businesses with multiple products/services
+      weighted_average_calculations: {}
+      product_mix_impact: {}
+      
+    break_even_with_profit_target:
+      target_profit: 0
+      units_for_target_profit: 0
+      revenue_for_target_profit: 0
+
+  sensitivity_analysis:
+    price_sensitivity:
+      price_scenarios:
+        - price_change_percentage: -10
+          new_break_even_units: 0
+          impact_assessment: ""
+          
+        - price_change_percentage: -5
+          new_break_even_units: 0
+          impact_assessment: ""
+          
+        - price_change_percentage: 5
+          new_break_even_units: 0
+          impact_assessment: ""
+          
+        - price_change_percentage: 10
+          new_break_even_units: 0
+          impact_assessment: ""
+          
+    cost_sensitivity:
+      fixed_cost_scenarios:
+        - cost_change_percentage: -10
+          new_break_even_units: 0
+          impact_assessment: ""
+          
+        - cost_change_percentage: 10
+          new_break_even_units: 0
+          impact_assessment: ""
+          
+      variable_cost_scenarios:
+        - cost_change_percentage: -10
+          new_break_even_units: 0
+          impact_assessment: ""
+          
+        - cost_change_percentage: 10
+          new_break_even_units: 0
+          impact_assessment: ""
+          
+    volume_impact_analysis:
+      current_volume: 0
+      current_profit_loss: 0
+      volume_scenarios:
+        - volume_level: 0
+          profit_loss: 0
+          margin_of_safety: 0
+
+  margin_of_safety:
+    current_sales_volume: 0
+    break_even_volume: 0
+    margin_of_safety_units: 0
+    margin_of_safety_percentage: 0
+    margin_of_safety_revenue: 0
+    
+    risk_assessment:
+      safety_level: ""
+      risk_tolerance: ""
+      volatility_impact: ""
+
+  operating_leverage:
+    degree_of_operating_leverage: 0
+    operating_leverage_interpretation: ""
+    profit_sensitivity_to_sales_changes: ""
+    
+    leverage_scenarios:
+      sales_increase_10_percent:
+        profit_increase_percentage: 0
+        
+      sales_decrease_10_percent:
+        profit_decrease_percentage: 0
+
+  scenario_planning:
+    best_case_scenario:
+      assumptions:
+        sales_volume_increase: 0
+        price_improvement: 0
+        cost_reduction: 0
+      break_even_impact: 0
+      profitability_impact: 0
+      
+    base_case_scenario:
+      assumptions:
+        expected_sales_volume: 0
+        current_pricing: 0
+        current_costs: 0
+      break_even_status: ""
+      expected_profitability: 0
+      
+    worst_case_scenario:
+      assumptions:
+        sales_volume_decrease: 0
+        price_pressure: 0
+        cost_increases: 0
+      break_even_impact: 0
+      loss_potential: 0
+
+  decision_support_analysis:
+    pricing_decisions:
+      minimum_viable_price: 0
+      price_floor_analysis: ""
+      competitive_pricing_impact: ""
+      value_based_pricing_opportunities: []
+      
+    volume_decisions:
+      capacity_utilization: 0
+      volume_growth_requirements: 0
+      market_penetration_needed: 0
+      
+    cost_management_priorities:
+      fixed_cost_reduction_opportunities: []
+      variable_cost_optimization: []
+      cost_structure_improvement: []
+      
+    product_mix_optimization:
+      high_margin_products: []
+      low_margin_products: []
+      mix_improvement_strategies: []
+
+  industry_benchmarking:
+    industry_standards:
+      typical_break_even_points: 0
+      industry_contribution_margins: 0
+      competitive_cost_structures: {}
+      
+    performance_comparison:
+      relative_break_even_performance: ""
+      cost_efficiency_ranking: ""
+      margin_competitiveness: ""
+
+  time_based_analysis:
+    seasonal_break_even:
+      peak_season_break_even: 0
+      off_season_break_even: 0
+      seasonal_profitability_patterns: {}
+      
+    growth_stage_analysis:
+      startup_break_even_timeline: ""
+      growth_phase_break_even: ""
+      mature_business_break_even: ""
+      
+    break_even_timeline:
+      months_to_break_even: 0
+      cumulative_loss_before_break_even: 0
+      cash_requirements_to_break_even: 0
+
+  risk_analysis:
+    break_even_risks:
+      demand_volatility_risk: ""
+      cost_inflation_risk: ""
+      competitive_pricing_pressure: ""
+      economic_downturn_impact: ""
+      
+    mitigation_strategies:
+      diversification_opportunities: []
+      cost_flexibility_improvements: []
+      pricing_power_enhancement: []
+      
+    contingency_planning:
+      volume_shortfall_responses: []
+      cost_increase_responses: []
+      pricing_pressure_responses: []
+
+  improvement_opportunities:
+    revenue_enhancement:
+      pricing_optimization: []
+      volume_growth_strategies: []
+      product_mix_improvements: []
+      value_added_services: []
+      
+    cost_optimization:
+      fixed_cost_reductions: []
+      variable_cost_improvements: []
+      efficiency_enhancements: []
+      supplier_negotiations: []
+      
+    break_even_improvement_targets:
+      target_break_even_reduction: 0
+      timeline_for_improvements: ""
+      investment_required: 0
+      expected_roi: 0
+
+  monitoring_framework:
+    key_metrics_tracking:
+      daily_metrics:
+        - "Daily sales volume"
+        - "Daily revenue"
+        - "Variable costs incurred"
+        
+      weekly_metrics:
+        - "Weekly contribution margin"
+        - "Progress toward break-even"
+        - "Cost variance analysis"
+        
+      monthly_metrics:
+        - "Monthly break-even achievement"
+        - "Margin of safety calculation"
+        - "Operating leverage impact"
+        
+    early_warning_indicators:
+      - "Declining average selling price"
+      - "Increasing variable costs"
+      - "Volume shortfalls"
+      - "Fixed cost creep"
+      
+    performance_dashboards:
+      break_even_dashboard_elements: []
+      profitability_tracking: []
+      variance_analysis: []
+
+  reporting_templates:
+    executive_summary:
+      current_break_even_status: ""
+      key_findings: []
+      critical_insights: []
+      recommended_actions: []
+      
+    detailed_analysis_report:
+      cost_structure_breakdown: {}
+      break_even_calculations: {}
+      sensitivity_analysis_results: {}
+      improvement_recommendations: {}
+      
+    management_dashboard:
+      break_even_metrics: {}
+      trend_analysis: {}
+      performance_indicators: {}
+
+  action_planning:
+    immediate_actions:
+      # 0-30 days
+      cost_control_measures: []
+      pricing_adjustments: []
+      volume_acceleration: []
+      
+    short_term_initiatives:
+      # 30-90 days
+      process_improvements: []
+      cost_structure_optimization: []
+      market_penetration: []
+      
+    long_term_strategies:
+      # 90+ days
+      business_model_enhancements: []
+      competitive_positioning: []
+      operational_efficiency: []
+
+  specialized_applications:
+    new_product_launch:
+      launch_break_even_analysis: {}
+      market_penetration_requirements: 0
+      investment_recovery_timeline: ""
+      
+    expansion_decisions:
+      new_location_break_even: {}
+      additional_capacity_break_even: {}
+      market_expansion_analysis: {}
+      
+    make_vs_buy_decisions:
+      in_house_break_even: {}
+      outsourcing_break_even: {}
+      decision_criteria: []
+      
+    pricing_strategy:
+      penetration_pricing_impact: {}
+      premium_pricing_scenarios: {}
+      competitive_response_analysis: {}
+
+implementation_guide:
+  data_collection:
+    required_information:
+      - "Detailed cost accounting data"
+      - "Sales volume and pricing history"
+      - "Fixed and variable cost breakdown"
+      - "Product/service mix information"
+      
+    data_sources:
+      - "General ledger accounts"
+      - "Cost accounting systems"
+      - "Sales reports and CRM data"
+      - "Budget and planning documents"
+      
+  analysis_process:
+    step_1: "Classify all costs as fixed, variable, or semi-variable"
+    step_2: "Calculate contribution margins by product/service"
+    step_3: "Determine break-even points and safety margins"
+    step_4: "Perform sensitivity and scenario analysis"
+    step_5: "Identify improvement opportunities"
+    step_6: "Develop action plan and monitoring system"
+    
+  validation_procedures:
+    accuracy_checks:
+      - "Verify cost classifications"
+      - "Validate pricing information"
+      - "Confirm volume assumptions"
+      - "Test calculation formulas"
+      
+    reasonableness_tests:
+      - "Compare to industry benchmarks"
+      - "Review historical performance"
+      - "Test assumptions with management"
+      - "Validate improvement potential"
+
+success_metrics:
+  analysis_quality:
+    - "Accurate cost classification (95%+ accuracy)"
+    - "Comprehensive scenario coverage"
+    - "Actionable recommendations identified"
+    - "Clear improvement pathways defined"
+    
+  business_impact:
+    - "Improved pricing decisions"
+    - "Better cost management"
+    - "Enhanced profitability planning"
+    - "Reduced business risk"
+
+usage_instructions:
+  preparation:
+    - "Gather comprehensive cost and revenue data"
+    - "Interview management about cost behaviors"
+    - "Review historical performance patterns"
+    - "Understand business model and strategy"
+    
+  execution:
+    - "Start with simple single-product analysis"
+    - "Build complexity gradually with multi-product analysis"
+    - "Focus on accuracy of cost classifications"
+    - "Test multiple scenarios and sensitivities"
+    
+  presentation:
+    - "Use visual charts and graphs"
+    - "Focus on actionable insights"
+    - "Explain implications clearly"
+    - "Provide implementation roadmap"
+
+notes:
+  - "Ensure accurate classification of fixed vs. variable costs"
+  - "Consider step costs and capacity constraints"
+  - "Update analysis regularly as business conditions change"
+  - "Use break-even analysis as part of broader financial planning"
+  - "Focus on improving contribution margins as well as volume"

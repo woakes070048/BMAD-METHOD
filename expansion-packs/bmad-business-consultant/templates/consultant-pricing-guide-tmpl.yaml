@@ -1,0 +1,689 @@
+name: "Consultant Pricing Guide Template"
+description: "Comprehensive pricing strategy and methodology template for small business consultants to optimize pricing models, structure engagements, and maximize profitability while delivering client value"
+category: "pricing-strategy"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Consultant Pricing Guide Template for Small Business Consulting
+
+template:
+  consultant_profile:
+    consultant_information:
+      consultant_name: ""
+      firm_name: ""
+      years_of_experience: 0
+      specialization_areas: []
+      target_market: ""
+      geographic_focus: ""
+      
+    current_pricing_situation:
+      current_pricing_model: ""
+      average_hourly_rate: 0
+      average_project_value: 0
+      utilization_rate: 0
+      profit_margin: 0
+      pricing_challenges: []
+      
+    business_objectives:
+      revenue_targets: 0
+      profitability_goals: 0
+      growth_aspirations: []
+      market_positioning: ""
+      value_proposition: ""
+
+  market_analysis:
+    competitive_landscape:
+      direct_competitors:
+        - competitor_name: ""
+          pricing_range: ""
+          service_offerings: []
+          market_position: ""
+          strengths: []
+          weaknesses: []
+          
+      market_positioning:
+        budget_providers: []
+        mid_market_providers: []
+        premium_providers: []
+        your_current_position: ""
+        
+    client_segments:
+      segment_analysis:
+        - segment_name: ""
+          size_characteristics: ""
+          budget_range: ""
+          buying_behavior: ""
+          price_sensitivity: 0
+          value_drivers: []
+          
+    market_rates:
+      hourly_rate_ranges:
+        entry_level: 0
+        experienced: 0
+        senior_expert: 0
+        specialized_expert: 0
+        
+      project_value_ranges:
+        small_projects: 0
+        medium_projects: 0
+        large_projects: 0
+        enterprise_projects: 0
+        
+      retainer_ranges:
+        basic_advisory: 0
+        comprehensive_advisory: 0
+        strategic_partnership: 0
+
+  pricing_methodologies:
+    time_based_pricing:
+      hourly_billing:
+        description: "Charge by the hour for time invested"
+        best_for: ["Well-defined scope", "Variable workload", "Exploratory projects"]
+        pros: ["Predictable income", "Easy to understand", "Effort-based compensation"]
+        cons: ["Income ceiling", "No value capture", "Scope creep risk"]
+        
+        rate_structure:
+          junior_consultant_rate: 0
+          senior_consultant_rate: 0
+          partner_principal_rate: 0
+          specialist_expert_rate: 0
+          
+        implementation_guidelines:
+          - "Establish clear hourly rates by role and experience level"
+          - "Define what activities are billable vs. non-billable"
+          - "Implement accurate time tracking and reporting systems"
+          - "Set minimum billing increments and policies"
+          
+      daily_rate_billing:
+        description: "Charge by the day for consulting services"
+        best_for: ["Full-day engagements", "On-site consulting", "Workshop facilitation"]
+        pros: ["Higher perceived value", "Reduced administrative burden", "Better cash flow"]
+        cons: ["Less flexibility", "Potential for over/under billing", "Client resistance"]
+        
+        rate_structure:
+          full_day_rate: 0
+          half_day_rate: 0
+          workshop_day_rate: 0
+          travel_day_rate: 0
+          
+    project_based_pricing:
+      fixed_price_projects:
+        description: "Set fixed price for defined scope and deliverables"
+        best_for: ["Well-defined projects", "Repeatable services", "Clear outcomes"]
+        pros: ["Predictable costs for client", "Reward for efficiency", "Value-based perception"]
+        cons: ["Scope creep risk", "Estimation challenges", "Resource allocation risk"]
+        
+        pricing_framework:
+          project_complexity_low: 0
+          project_complexity_medium: 0
+          project_complexity_high: 0
+          project_complexity_complex: 0
+          
+        risk_mitigation:
+          - "Define scope clearly with detailed specifications"
+          - "Include change order procedures and pricing"
+          - "Build contingency buffer into pricing"
+          - "Use phased approach for large projects"
+          
+      milestone_based_pricing:
+        description: "Payment tied to completion of specific milestones"
+        best_for: ["Long-term projects", "Phased implementations", "Results-driven work"]
+        pros: ["Reduced client risk", "Improved cash flow management", "Progress-based payment"]
+        cons: ["Milestone definition challenges", "Dependency on client input", "Payment delays"]
+        
+    value_based_pricing:
+      roi_based_pricing:
+        description: "Price based on financial value created for client"
+        best_for: ["Measurable outcomes", "Strategic initiatives", "Process improvements"]
+        calculation_method: "Percentage of documented value created (typically 10-25%)"
+        
+        value_capture_models:
+          percentage_of_savings: 0
+          percentage_of_revenue_increase: 0
+          fixed_fee_plus_success_bonus: 0
+          risk_sharing_model: 0
+          
+      outcome_based_pricing:
+        description: "Payment tied to achievement of specific business outcomes"
+        best_for: ["Performance improvement", "Turnaround situations", "Growth initiatives"]
+        
+        outcome_metrics:
+          financial_outcomes: []
+          operational_outcomes: []
+          strategic_outcomes: []
+          customer_outcomes: []
+          
+    retainer_pricing:
+      ongoing_advisory:
+        description: "Monthly fee for ongoing advisory and support services"
+        best_for: ["Long-term relationships", "Strategic advisory", "Ongoing support"]
+        
+        retainer_levels:
+          basic_advisory:
+            monthly_fee: 0
+            included_services: []
+            hour_allocation: 0
+            
+          strategic_advisory:
+            monthly_fee: 0
+            included_services: []
+            hour_allocation: 0
+            
+          comprehensive_partnership:
+            monthly_fee: 0
+            included_services: []
+            hour_allocation: 0
+
+  pricing_strategy_development:
+    positioning_strategy:
+      value_proposition_definition:
+        unique_differentiators: []
+        client_value_drivers: []
+        competitive_advantages: []
+        expertise_positioning: ""
+        
+      market_positioning:
+        target_position: "" # Budget, Mid-market, Premium, Ultra-premium
+        justification_rationale: ""
+        positioning_evidence: []
+        client_segment_alignment: ""
+        
+    pricing_model_selection:
+      service_type_mapping:
+        assessment_services:
+          recommended_model: ""
+          pricing_range: ""
+          rationale: ""
+          
+        implementation_services:
+          recommended_model: ""
+          pricing_range: ""
+          rationale: ""
+          
+        advisory_services:
+          recommended_model: ""
+          pricing_range: ""
+          rationale: ""
+          
+        training_services:
+          recommended_model: ""
+          pricing_range: ""
+          rationale: ""
+          
+    pricing_optimization:
+      rate_setting_methodology:
+        cost_plus_approach:
+          direct_costs: 0
+          overhead_allocation: 0
+          profit_margin_target: 0
+          calculated_rate: 0
+          
+        market_based_approach:
+          market_rate_research: 0
+          competitive_positioning: 0
+          value_differentiation: 0
+          recommended_rate: 0
+          
+        value_based_approach:
+          client_value_creation: 0
+          value_capture_percentage: 0
+          calculated_value_price: 0
+          
+      packaging_strategies:
+        service_bundling:
+          bundle_1:
+            name: ""
+            included_services: []
+            bundled_price: 0
+            individual_price_sum: 0
+            discount_percentage: 0
+            
+          bundle_2:
+            name: ""
+            included_services: []
+            bundled_price: 0
+            individual_price_sum: 0
+            discount_percentage: 0
+
+  pricing_implementation:
+    rate_card_development:
+      service_categories:
+        strategic_consulting:
+          description: ""
+          hourly_rate: 0
+          daily_rate: 0
+          project_rate_range: ""
+          
+        operational_consulting:
+          description: ""
+          hourly_rate: 0
+          daily_rate: 0
+          project_rate_range: ""
+          
+        financial_consulting:
+          description: ""
+          hourly_rate: 0
+          daily_rate: 0
+          project_rate_range: ""
+          
+        specialized_services:
+          description: ""
+          hourly_rate: 0
+          daily_rate: 0
+          project_rate_range: ""
+          
+    proposal_pricing_framework:
+      pricing_presentation:
+        investment_vs_cost_language: true
+        value_justification: true
+        roi_demonstration: true
+        payment_terms_clarity: true
+        
+      pricing_structure_options:
+        option_1_basic:
+          description: ""
+          price: 0
+          included_services: []
+          
+        option_2_standard:
+          description: ""
+          price: 0
+          included_services: []
+          
+        option_3_premium:
+          description: ""
+          price: 0
+          included_services: []
+          
+    negotiation_guidelines:
+      negotiation_boundaries:
+        minimum_acceptable_rate: 0
+        maximum_discount_percentage: 0
+        value_add_alternatives: []
+        walk_away_scenarios: []
+        
+      common_objections:
+        price_too_high:
+          responses: []
+          alternatives: []
+          
+        budget_constraints:
+          responses: []
+          alternatives: []
+          
+        need_multiple_quotes:
+          responses: []
+          differentiation_strategies: []
+
+  financial_planning:
+    revenue_projections:
+      capacity_planning:
+        available_billable_hours: 0
+        target_utilization_rate: 0
+        billable_hours_target: 0
+        
+      revenue_scenarios:
+        conservative_scenario:
+          average_rate: 0
+          billable_hours: 0
+          total_revenue: 0
+          
+        realistic_scenario:
+          average_rate: 0
+          billable_hours: 0
+          total_revenue: 0
+          
+        optimistic_scenario:
+          average_rate: 0
+          billable_hours: 0
+          total_revenue: 0
+          
+    profitability_analysis:
+      cost_structure:
+        direct_costs:
+          salary_benefits: 0
+          contractor_fees: 0
+          travel_expenses: 0
+          materials_supplies: 0
+          
+        overhead_costs:
+          office_rent: 0
+          technology_systems: 0
+          marketing_business_development: 0
+          professional_services: 0
+          insurance: 0
+          other_overhead: 0
+          
+        total_costs: 0
+        
+      profit_margins:
+        gross_margin: 0
+        operating_margin: 0
+        net_margin: 0
+        
+    cash_flow_management:
+      payment_terms:
+        standard_payment_terms: ""
+        retainer_requirements: 0
+        milestone_payment_schedule: []
+        late_payment_policies: ""
+        
+      collection_strategies:
+        invoice_process: ""
+        follow_up_procedures: []
+        collection_timeline: ""
+        bad_debt_management: ""
+
+  pricing_by_engagement_type:
+    business_assessment_engagements:
+      pricing_approach: "Fixed price based on scope and complexity"
+      typical_duration: "1-3 weeks"
+      pricing_factors:
+        - "Company size and complexity"
+        - "Number of stakeholders to interview"
+        - "Depth of analysis required"
+        - "Timeline and urgency"
+        
+      pricing_ranges:
+        small_business_assessment: 0
+        medium_business_assessment: 0
+        complex_business_assessment: 0
+        
+    implementation_projects:
+      pricing_approach: "Project-based or milestone-based pricing"
+      typical_duration: "3-12 months"
+      pricing_factors:
+        - "Project scope and complexity"
+        - "Implementation timeline"
+        - "Change management requirements"
+        - "Client internal resources"
+        
+      pricing_ranges:
+        process_improvement_project: 0
+        system_implementation_project: 0
+        organizational_change_project: 0
+        
+    ongoing_advisory_services:
+      pricing_approach: "Monthly retainer with defined scope"
+      typical_duration: "6-24 months"
+      pricing_factors:
+        - "Level of strategic involvement"
+        - "Frequency of interaction"
+        - "Scope of advisory services"
+        - "Client relationship maturity"
+        
+      retainer_levels:
+        basic_monthly_advisory: 0
+        strategic_monthly_advisory: 0
+        comprehensive_partnership: 0
+        
+    training_and_workshops:
+      pricing_approach: "Per participant or per session pricing"
+      typical_duration: "Half-day to multi-day programs"
+      pricing_factors:
+        - "Number of participants"
+        - "Customization requirements"
+        - "Location and travel"
+        - "Materials and resources"
+        
+      pricing_models:
+        per_participant_rate: 0
+        per_session_rate: 0
+        custom_program_development: 0
+
+  industry_specific_pricing:
+    manufacturing_consulting:
+      typical_rates:
+        lean_manufacturing: 0
+        quality_systems: 0
+        operational_excellence: 0
+        
+      value_based_opportunities:
+        cost_reduction_projects: 0
+        efficiency_improvements: 0
+        quality_enhancements: 0
+        
+    retail_consulting:
+      typical_rates:
+        operations_optimization: 0
+        customer_experience: 0
+        inventory_management: 0
+        
+      performance_based_pricing:
+        revenue_improvement: 0
+        margin_enhancement: 0
+        cost_reduction: 0
+        
+    professional_services_consulting:
+      typical_rates:
+        practice_management: 0
+        business_development: 0
+        operational_efficiency: 0
+        
+      outcome_based_pricing:
+        utilization_improvement: 0
+        revenue_growth: 0
+        client_retention: 0
+        
+    family_business_consulting:
+      typical_rates:
+        succession_planning: 0
+        governance_development: 0
+        conflict_resolution: 0
+        
+      value_considerations:
+        family_harmony_value: 0
+        business_continuity_value: 0
+        wealth_preservation_value: 0
+
+  pricing_optimization_strategies:
+    value_enhancement:
+      service_differentiation:
+        - "Develop unique methodologies and frameworks"
+        - "Create proprietary tools and assessments"
+        - "Build specialized industry expertise"
+        - "Establish thought leadership and credibility"
+        
+      client_experience_enhancement:
+        - "Provide exceptional service delivery"
+        - "Implement robust project management"
+        - "Offer comprehensive communication and reporting"
+        - "Deliver measurable results and outcomes"
+        
+    pricing_flexibility:
+      dynamic_pricing:
+        - "Adjust pricing based on demand and capacity"
+        - "Offer seasonal or promotional pricing"
+        - "Implement early bird or volume discounts"
+        - "Create loyalty pricing for repeat clients"
+        
+      alternative_structures:
+        - "Offer payment plan options"
+        - "Create subscription-based services"
+        - "Develop licensing or franchise models"
+        - "Explore joint venture and partnership opportunities"
+        
+    market_expansion:
+      geographic_expansion:
+        - "Research pricing in new geographic markets"
+        - "Adjust for local market conditions and competition"
+        - "Consider virtual service delivery models"
+        - "Develop local partnership strategies"
+        
+      service_expansion:
+        - "Add complementary services to existing offerings"
+        - "Develop new service lines based on client needs"
+        - "Create premium service tiers"
+        - "Explore technology-enabled service delivery"
+
+  pricing_performance_measurement:
+    key_metrics:
+      financial_metrics:
+        average_project_value: 0
+        hourly_rate_realization: 0
+        profit_margin_by_service: {}
+        revenue_per_consultant: 0
+        
+      operational_metrics:
+        utilization_rate: 0
+        proposal_win_rate: 0
+        client_retention_rate: 0
+        repeat_business_percentage: 0
+        
+      market_metrics:
+        market_share_growth: 0
+        competitive_positioning: 0
+        brand_recognition: 0
+        referral_rate: 0
+        
+    performance_analysis:
+      pricing_effectiveness:
+        price_sensitivity_analysis: 0
+        discount_impact_analysis: 0
+        value_perception_assessment: 0
+        competitive_price_analysis: 0
+        
+      profitability_analysis:
+        service_line_profitability: {}
+        client_profitability: {}
+        project_profitability: {}
+        overhead_allocation_efficiency: 0
+        
+    continuous_improvement:
+      pricing_reviews:
+        quarterly_rate_reviews: true
+        annual_strategy_reviews: true
+        competitive_analysis_updates: true
+        client_feedback_integration: true
+        
+      optimization_opportunities:
+        underpriced_services: []
+        value_enhancement_opportunities: []
+        market_expansion_potential: []
+        pricing_model_improvements: []
+
+  pricing_tools_and_resources:
+    pricing_calculators:
+      hourly_rate_calculator:
+        desired_annual_income: 0
+        available_billable_hours: 0
+        overhead_cost_percentage: 0
+        profit_margin_target: 0
+        calculated_hourly_rate: 0
+        
+      project_pricing_calculator:
+        estimated_hours: 0
+        hourly_rate: 0
+        expenses: 0
+        risk_buffer_percentage: 0
+        profit_margin: 0
+        total_project_price: 0
+        
+      roi_pricing_calculator:
+        client_value_created: 0
+        value_capture_percentage: 0
+        implementation_costs: 0
+        risk_adjustment: 0
+        recommended_price: 0
+        
+    pricing_templates:
+      rate_card_template: ""
+      proposal_pricing_template: ""
+      retainer_agreement_template: ""
+      value_proposition_template: ""
+      
+    market_research_tools:
+      competitive_analysis_framework: ""
+      client_survey_templates: ""
+      market_rate_research_guide: ""
+      benchmarking_resources: []
+
+common_pricing_mistakes:
+  pricing_strategy_mistakes:
+    underpricing_services:
+      mistake: "Setting rates too low to win business"
+      consequences:
+        - "Reduced profitability and sustainability"
+        - "Attracted price-sensitive, low-value clients"
+        - "Perception of low quality or expertise"
+        - "Difficulty raising rates later"
+      solutions:
+        - "Focus on value delivery and differentiation"
+        - "Target clients who value expertise over low cost"
+        - "Gradually increase rates with existing clients"
+        - "Develop premium service offerings"
+        
+    hourly_rate_addiction:
+      mistake: "Only using hourly billing regardless of situation"
+      consequences:
+        - "Income ceiling based on available hours"
+        - "No reward for efficiency or expertise"
+        - "Difficult to capture full value created"
+        - "Commoditization of services"
+      solutions:
+        - "Develop project-based pricing capabilities"
+        - "Explore value-based pricing opportunities"
+        - "Create packaged service offerings"
+        - "Implement retainer-based services"
+        
+  implementation_mistakes:
+    poor_scope_definition:
+      mistake: "Unclear or incomplete scope definition in proposals"
+      consequences:
+        - "Scope creep and project overruns"
+        - "Client disputes and relationship strain"
+        - "Reduced profitability on fixed-price projects"
+        - "Difficulty collecting payment"
+      solutions:
+        - "Develop detailed scope documentation templates"
+        - "Include change order procedures in all agreements"
+        - "Use phased approach for large or complex projects"
+        - "Regular client communication and expectation management"
+        
+    inadequate_value_communication:
+      mistake: "Focusing on features and activities rather than value and outcomes"
+      consequences:
+        - "Price-based competition and commoditization"
+        - "Difficulty justifying premium pricing"
+        - "Reduced client willingness to pay"
+        - "Weak negotiating position"
+      solutions:
+        - "Develop clear value proposition messaging"
+        - "Quantify and communicate expected outcomes"
+        - "Use case studies and testimonials effectively"
+        - "Focus on business impact in all communications"
+
+usage_instructions:
+  pricing_strategy_development:
+    - "Complete comprehensive market analysis and competitive research"
+    - "Define clear value proposition and differentiation strategy"
+    - "Select appropriate pricing models for different service types"
+    - "Develop detailed pricing framework and rate structures"
+    
+  implementation_planning:
+    - "Create pricing tools and templates for consistent application"
+    - "Train team on pricing strategy and negotiation approaches"
+    - "Implement systems for tracking and measuring pricing performance"
+    - "Develop client communication and proposal presentation materials"
+    
+  ongoing_optimization:
+    - "Regularly review and adjust pricing based on market feedback"
+    - "Monitor competitive pricing and market conditions"
+    - "Analyze profitability by service line and client type"
+    - "Continuously improve value delivery and client outcomes"
+    
+  success_factors:
+    - "Maintain focus on value delivery and client outcomes"
+    - "Build strong relationships and trust with clients"
+    - "Continuously develop expertise and market credibility"
+    - "Measure and demonstrate return on investment for clients"
+
+notes:
+  - "Pricing is a strategic decision that reflects your market positioning and value proposition"
+  - "Value-based pricing requires strong client relationships and measurable outcomes"
+  - "Regular pricing reviews and adjustments are essential for long-term success"
+  - "Different service types and client segments may require different pricing approaches"
+  - "Professional development and expertise enhancement support premium pricing"
+  - "Clear communication of value and outcomes is critical for pricing acceptance"
+  - "Pricing confidence comes from proven track record and client success stories"

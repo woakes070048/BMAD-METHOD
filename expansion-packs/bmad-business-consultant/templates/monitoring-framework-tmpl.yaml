@@ -1,0 +1,319 @@
+name: "Monitoring Framework Template"
+description: "Comprehensive monitoring and early warning system framework design"
+version: "1.0"
+category: "Monitoring & Control"
+tags: ["monitoring", "early-warning", "kpi", "dashboard", "alerts", "control"]
+
+placeholders:
+  system_name: "Name of the monitoring system"
+  scope: "What is being monitored"
+  frequency: "Real-time/Hourly/Daily/Weekly"
+  owner: "System owner"
+  implementation_date: "Target implementation date"
+
+template: |
+  # MONITORING FRAMEWORK: {{system_name}}
+  
+  **Scope**: {{scope}}  
+  **Monitoring Frequency**: {{frequency}}  
+  **System Owner**: {{owner}}  
+  **Implementation Target**: {{implementation_date}}
+  
+  ---
+  
+  ## 1. MONITORING ARCHITECTURE
+  
+  ### System Overview
+  ```
+  DATA SOURCES          PROCESSING           ALERTING            ACTION
+  ============          ==========           ========            ======
+  [ERP System]  ─┐                      ┌─> [Email Alerts] ──> [Response Team]
+  [CRM System]  ─┼─> [Data Pipeline] ─> ├─> [SMS Alerts]  ──> [Automated Fix]
+  [IoT Sensors] ─┤    │                 ├─> [Dashboard]   ──> [Escalation]
+  [Log Files]   ─┤    ↓                 └─> [API Webhook] ──> [Integration]
+  [APIs]        ─┘  [Analytics Engine]
+                          │
+                          ↓
+                    [Pattern Detection]
+                    [Anomaly Detection]
+                    [Predictive Models]
+  ```
+  
+  ### Data Collection Layer
+  | Source | Data Type | Collection Method | Frequency | Volume | Quality Score |
+  |--------|-----------|------------------|-----------|---------|---------------|
+  | [System] | [Metrics] | [API/Query] | [Real-time] | [Records/hour] | [0-100%] |
+  | [System] | [Logs] | [Streaming] | [Continuous] | [GB/day] | [0-100%] |
+  | [System] | [Events] | [Webhook] | [Event-driven] | [Events/day] | [0-100%] |
+  
+  ### Processing Layer
+  - **Stream Processing**: [Technology - e.g., Kafka, Kinesis]
+  - **Batch Processing**: [Technology - e.g., Spark, Hadoop]
+  - **Analytics Engine**: [Technology - e.g., Elasticsearch, Splunk]
+  - **ML Platform**: [Technology - e.g., TensorFlow, SageMaker]
+  
+  ---
+  
+  ## 2. KEY PERFORMANCE INDICATORS (KPIs)
+  
+  ### Tier 1: Critical KPIs (Executive Dashboard)
+  
+  | KPI | Description | Target | Warning | Critical | Update Freq | Owner |
+  |-----|-------------|--------|---------|----------|-------------|-------|
+  | [KPI-001] | [What it measures] | [Green range] | [Yellow threshold] | [Red threshold] | [Frequency] | [Team] |
+  | [KPI-002] | [What it measures] | [Green range] | [Yellow threshold] | [Red threshold] | [Frequency] | [Team] |
+  | [KPI-003] | [What it measures] | [Green range] | [Yellow threshold] | [Red threshold] | [Frequency] | [Team] |
+  
+  ### Tier 2: Operational KPIs
+  
+  | Category | KPI | Formula | Target | Current | Trend | Alert Rule |
+  |----------|-----|---------|--------|---------|-------|------------|
+  | Financial | [Revenue Run Rate] | [Formula] | [$X] | [$Y] | [↑↓→] | [<90% of target] |
+  | Customer | [NPS Score] | [Formula] | [>70] | [65] | [↓] | [<60 or -10 change] |
+  | Operations | [Efficiency] | [Formula] | [>85%] | [82%] | [→] | [<80%] |
+  | Quality | [Defect Rate] | [Formula] | [<2%] | [1.8%] | [↑] | [>2.5%] |
+  
+  ### Tier 3: Leading Indicators
+  
+  | Indicator | Predicts | Lead Time | Correlation | Current Value | Signal Strength |
+  |-----------|----------|-----------|-------------|---------------|-----------------|
+  | [Sales Pipeline] | [Revenue] | [90 days] | [0.85] | [$Amount] | [Strong/Medium/Weak] |
+  | [Support Tickets] | [Churn] | [30 days] | [0.72] | [Count] | [Strong/Medium/Weak] |
+  | [Code Commits] | [Release Quality] | [14 days] | [0.68] | [Number] | [Strong/Medium/Weak] |
+  
+  ---
+  
+  ## 3. ALERT CONFIGURATION
+  
+  ### Alert Hierarchy
+  
+  #### Level 1: CRITICAL (Immediate Response Required)
+  - **Response Time**: < 15 minutes
+  - **Escalation**: Automatic to C-level after 30 minutes
+  - **Channels**: Phone call, SMS, Email, Slack
+  - **Examples**:
+    - System down > 5 minutes
+    - Data breach detected
+    - Revenue drop > 20% in 1 hour
+  
+  #### Level 2: HIGH (Urgent Attention Needed)
+  - **Response Time**: < 1 hour
+  - **Escalation**: To management after 2 hours
+  - **Channels**: Email, Slack, Dashboard
+  - **Examples**:
+    - Performance degradation > 50%
+    - Customer complaints spike > 3x
+    - Inventory critically low
+  
+  #### Level 3: MEDIUM (Investigation Required)
+  - **Response Time**: < 4 hours
+  - **Escalation**: To team lead after 8 hours
+  - **Channels**: Email, Dashboard
+  - **Examples**:
+    - Trend deviation > 15%
+    - Process efficiency drop > 10%
+    - Unusual pattern detected
+  
+  #### Level 4: LOW (Monitor and Track)
+  - **Response Time**: < 24 hours
+  - **Escalation**: Weekly review
+  - **Channels**: Dashboard, Report
+  - **Examples**:
+    - Minor variations
+    - Optimization opportunities
+    - Informational updates
+  
+  ### Alert Rules Engine
+  
+  ```yaml
+  alert_rules:
+    - name: "Revenue Drop Alert"
+      condition: "revenue_hourly < (average_hourly * 0.8)"
+      severity: "HIGH"
+      channels: ["email", "slack"]
+      recipients: ["finance-team", "executives"]
+      cooldown: "1 hour"
+      
+    - name: "System Performance Alert"
+      condition: "response_time > 2000ms OR error_rate > 5%"
+      severity: "CRITICAL"
+      channels: ["pagerduty", "email", "sms"]
+      recipients: ["on-call-engineer", "tech-lead"]
+      cooldown: "15 minutes"
+  ```
+  
+  ---
+  
+  ## 4. DASHBOARD DESIGN
+  
+  ### Executive Dashboard Layout
+  ```
+  ╔══════════════════════════════════════════════════════════════╗
+  ║                    BUSINESS HEALTH MONITOR                   ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║  Overall Status: 🟡 WARNING         Last Update: [Timestamp] ║
+  ╠═══════════════════╤═══════════════════╤═════════════════════╣
+  ║ 📈 REVENUE        │ 👥 CUSTOMERS      │ ⚙️ OPERATIONS      ║
+  ║ MTD: $2.3M (92%)  │ Active: 15,234    │ Uptime: 99.92%     ║
+  ║ Trend: ↘️ -5%     │ NPS: 72 ↗️        │ Efficiency: 87%    ║
+  ║ [Sparkline Graph] │ [Sparkline Graph] │ [Sparkline Graph]  ║
+  ╠═══════════════════╧═══════════════════╧═════════════════════╣
+  ║                    ALERTS & WARNINGS                         ║
+  ║ 🔴 Critical: 0   🟠 High: 2   🟡 Medium: 5   🟢 Low: 12  ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                    PREDICTIVE INSIGHTS                       ║
+  ║ • Revenue at risk next quarter: $450K (85% confidence)      ║
+  ║ • Customer churn spike expected in 2 weeks                  ║
+  ║ • Capacity constraint predicted for Product A               ║
+  ╚══════════════════════════════════════════════════════════════╝
+  ```
+  
+  ### Operational Dashboard Components
+  1. **Real-time Metrics Panel**: Live KPI updates
+  2. **Trend Charts**: Historical patterns
+  3. **Heat Maps**: Geographic or categorical distribution
+  4. **Alert Feed**: Scrolling list of recent alerts
+  5. **Predictive Panel**: Forecasts and warnings
+  6. **Comparison View**: Actual vs. Target vs. Previous Period
+  
+  ---
+  
+  ## 5. RESPONSE PROTOCOLS
+  
+  ### Automated Response Matrix
+  
+  | Trigger | Condition | Automated Action | Human Validation | Rollback Plan |
+  |---------|-----------|-----------------|------------------|---------------|
+  | [High Load] | [CPU > 80%] | [Scale up servers] | [Not required] | [Auto-scale down] |
+  | [Low Inventory] | [Stock < 100] | [Generate PO] | [Required in 4hr] | [Cancel PO] |
+  | [Quality Issue] | [Defects > 5%] | [Stop production] | [Immediate] | [Manual restart] |
+  
+  ### Escalation Matrix
+  
+  | Time Elapsed | Level 1 | Level 2 | Level 3 | Level 4 |
+  |--------------|---------|---------|---------|---------|
+  | 0-15 min | On-call Engineer | - | - | - |
+  | 15-30 min | Team Lead | On-call Engineer | - | - |
+  | 30-60 min | Manager | Team Lead | On-call | - |
+  | 60+ min | Director | Manager | Team Lead | Engineer |
+  | 2+ hours | VP | Director | Manager | Team |
+  | 4+ hours | C-Level | VP | Director | Manager |
+  
+  ---
+  
+  ## 6. PATTERN DETECTION & PREDICTION
+  
+  ### Pattern Library
+  
+  | Pattern ID | Name | Description | Detection Logic | Action |
+  |------------|------|-------------|-----------------|--------|
+  | PTN-001 | [Demand Spike] | [Unusual increase in demand] | [>3σ from mean] | [Capacity alert] |
+  | PTN-002 | [Failure Cascade] | [Sequential system failures] | [3+ failures in 10min] | [Emergency response] |
+  | PTN-003 | [Fraud Pattern] | [Suspicious transaction pattern] | [ML model score >0.8] | [Block & investigate] |
+  
+  ### Predictive Models
+  
+  | Model | Purpose | Accuracy | Update Frequency | Last Trained |
+  |-------|---------|----------|------------------|--------------|
+  | [Churn Prediction] | [Identify at-risk customers] | [87%] | [Weekly] | [Date] |
+  | [Demand Forecast] | [Predict demand 30 days out] | [92%] | [Daily] | [Date] |
+  | [Failure Prediction] | [Predict equipment failure] | [79%] | [Real-time] | [Date] |
+  
+  ---
+  
+  ## 7. REPORTING & COMMUNICATION
+  
+  ### Report Schedule
+  
+  | Report | Audience | Frequency | Format | Distribution |
+  |--------|----------|-----------|--------|--------------|
+  | Executive Summary | C-Suite | Daily | Email/Dashboard | 8:00 AM |
+  | Operational Report | Managers | Shift-end | Dashboard | Continuous |
+  | Incident Report | All stakeholders | Event-driven | Email/Slack | Immediate |
+  | Trend Analysis | Leadership | Weekly | PDF Report | Monday 9:00 AM |
+  | Monthly Review | Board | Monthly | Presentation | First Tuesday |
+  
+  ### Communication Channels
+  
+  - **Critical Alerts**: SMS + Phone Call + Email + Slack
+  - **High Priority**: Email + Slack + Dashboard
+  - **Medium Priority**: Email + Dashboard
+  - **Low Priority**: Dashboard + Weekly Report
+  - **Informational**: Dashboard only
+  
+  ---
+  
+  ## 8. CONTINUOUS IMPROVEMENT
+  
+  ### Performance Metrics for Monitoring System
+  
+  | Metric | Target | Current | Trend | Improvement Action |
+  |--------|--------|---------|-------|-------------------|
+  | Alert Accuracy | >95% | 92% | ↗️ | Tune thresholds |
+  | False Positive Rate | <5% | 8% | ↘️ | ML model update |
+  | Mean Time to Detect | <5 min | 7 min | ↘️ | Increase frequency |
+  | Mean Time to Respond | <15 min | 12 min | ↘️ | Process optimization |
+  | Prediction Accuracy | >85% | 83% | → | Retrain models |
+  
+  ### Feedback Loop
+  
+  1. **Alert Feedback**: Was this alert useful? [Yes/No/Improve]
+  2. **Threshold Adjustment**: Auto-tune based on feedback
+  3. **Model Retraining**: Weekly based on new data
+  4. **Dashboard Optimization**: Monthly user feedback sessions
+  5. **Process Improvement**: Quarterly review and update
+  
+  ---
+  
+  ## 9. IMPLEMENTATION ROADMAP
+  
+  ### Phase 1: Foundation (Weeks 1-4)
+  - [ ] Set up data collection infrastructure
+  - [ ] Define initial KPIs and thresholds
+  - [ ] Create basic dashboards
+  - [ ] Establish alert channels
+  - [ ] Train initial response team
+  
+  ### Phase 2: Enhancement (Weeks 5-8)
+  - [ ] Implement pattern detection
+  - [ ] Deploy predictive models
+  - [ ] Add automated responses
+  - [ ] Integrate with existing systems
+  - [ ] Conduct simulation tests
+  
+  ### Phase 3: Optimization (Weeks 9-12)
+  - [ ] Fine-tune thresholds
+  - [ ] Optimize alert rules
+  - [ ] Enhance dashboards
+  - [ ] Document procedures
+  - [ ] Full team training
+  
+  ### Phase 4: Operations (Ongoing)
+  - [ ] 24/7 monitoring active
+  - [ ] Continuous improvement cycle
+  - [ ] Regular reviews and updates
+  - [ ] Expansion to new areas
+  - [ ] Advanced analytics integration
+  
+  ---
+  
+  ## 10. APPENDICES
+  
+  ### A. Technical Specifications
+  [Detailed technical requirements and architecture]
+  
+  ### B. Data Dictionary
+  [Complete list of metrics, calculations, and sources]
+  
+  ### C. Response Playbooks
+  [Detailed procedures for each alert type]
+  
+  ### D. Training Materials
+  [User guides and training documentation]
+  
+  ---
+  
+  **Document Version**: 1.0  
+  **Last Updated**: [Date]  
+  **Next Review**: [Date]  
+  **Owner**: {{owner}}

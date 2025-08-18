@@ -1,0 +1,455 @@
+# erpnext-connector.yaml
+
+connector_name: ERPNext Business Consultant Integration
+description: Integration configuration for connecting BMAD Business Consultant agents with ERPNext modules
+version: 1.0.0
+compatibility: ERPNext v15+
+
+# Core Integration Points
+integration_modules:
+  - module: Customer
+    agents:
+      - customer-experience-expert
+      - professional-services-advisor
+    capabilities:
+      - Customer data synchronization
+      - Lead and opportunity management
+      - Customer journey tracking
+      - Satisfaction score integration
+      - Account segmentation
+    api_endpoints:
+      - /api/resource/Customer
+      - /api/resource/Lead
+      - /api/resource/Opportunity
+      - /api/resource/Customer_Group
+    
+  - module: Supplier
+    agents:
+      - supply-chain-specialist
+      - operations-excellence-expert
+    capabilities:
+      - Supplier performance tracking
+      - Vendor scorecard integration
+      - Purchase order optimization
+      - Supply chain visibility
+      - Quality metrics tracking
+    api_endpoints:
+      - /api/resource/Supplier
+      - /api/resource/Supplier_Scorecard
+      - /api/resource/Purchase_Order
+      - /api/resource/Material_Request
+    
+  - module: Human Resources
+    agents:
+      - hr-talent-specialist
+      - succession-planning-expert
+    capabilities:
+      - Employee data management
+      - Performance review integration
+      - Training tracking
+      - Succession planning
+      - Organizational charts
+    api_endpoints:
+      - /api/resource/Employee
+      - /api/resource/Appraisal
+      - /api/resource/Training_Event
+      - /api/resource/Leave_Application
+    
+  - module: Manufacturing
+    agents:
+      - manufacturing-operations-expert
+      - quality-assurance-expert
+    capabilities:
+      - Production planning optimization
+      - Quality control integration
+      - BOM management
+      - Work order tracking
+      - OEE calculation
+    api_endpoints:
+      - /api/resource/Work_Order
+      - /api/resource/BOM
+      - /api/resource/Quality_Inspection
+      - /api/resource/Production_Plan
+    
+  - module: Accounting
+    agents:
+      - financial-performance-analyst
+      - strategic-growth-advisor
+    capabilities:
+      - Financial analysis and reporting
+      - Cost center optimization
+      - Budget vs actual tracking
+      - Profitability analysis
+      - Cash flow forecasting
+    api_endpoints:
+      - /api/resource/GL_Entry
+      - /api/resource/Cost_Center
+      - /api/resource/Budget
+      - /api/resource/Account
+    
+  - module: Projects
+    agents:
+      - operations-excellence-expert
+      - professional-services-advisor
+    capabilities:
+      - Project performance tracking
+      - Resource optimization
+      - Timeline management
+      - Milestone tracking
+      - Profitability analysis
+    api_endpoints:
+      - /api/resource/Project
+      - /api/resource/Task
+      - /api/resource/Timesheet
+      - /api/resource/Activity_Cost
+
+# Data Synchronization Settings
+data_sync:
+  frequency: real-time
+  batch_size: 100
+  retry_attempts: 3
+  error_handling: log_and_notify
+  
+  sync_mappings:
+    - source: ERPNext.Customer
+      target: BMad.CustomerProfile
+      fields:
+        - customer_name: name
+        - customer_type: type
+        - territory: region
+        - customer_group: segment
+        - credit_limit: credit_exposure
+        
+    - source: ERPNext.Employee
+      target: BMad.TalentProfile
+      fields:
+        - employee_name: name
+        - department: unit
+        - designation: role
+        - reports_to: manager
+        - date_of_joining: tenure
+        
+    - source: ERPNext.Work_Order
+      target: BMad.ProductionOrder
+      fields:
+        - production_item: product
+        - qty: quantity
+        - planned_start_date: start_date
+        - expected_delivery_date: end_date
+        - status: production_status
+
+# Authentication Configuration
+authentication:
+  method: API_KEY
+  key_location: header
+  key_name: Authorization
+  token_prefix: "Token"
+  
+  permissions:
+    read:
+      - Customer
+      - Supplier
+      - Employee
+      - Work_Order
+      - Project
+      - GL_Entry
+    write:
+      - Customer_Feedback
+      - Supplier_Scorecard
+      - Training_Event
+      - Quality_Inspection
+      - Project_Update
+    execute:
+      - Run_Analysis
+      - Generate_Report
+      - Trigger_Workflow
+
+# Webhook Configuration
+webhooks:
+  enabled: true
+  events:
+    - event: customer.created
+      handler: customer-experience-expert
+      action: analyze_new_customer
+      
+    - event: supplier.evaluated
+      handler: supply-chain-specialist
+      action: update_supplier_rating
+      
+    - event: employee.onboarded
+      handler: hr-talent-specialist
+      action: create_development_plan
+      
+    - event: work_order.completed
+      handler: manufacturing-operations-expert
+      action: calculate_production_metrics
+      
+    - event: project.milestone_reached
+      handler: operations-excellence-expert
+      action: assess_project_health
+
+# Report Generation
+reports:
+  - report_name: Business Performance Dashboard
+    agents:
+      - financial-performance-analyst
+      - strategic-growth-advisor
+    data_sources:
+      - GL_Entry
+      - Sales_Invoice
+      - Purchase_Invoice
+    frequency: daily
+    format: [PDF, Excel, JSON]
+    
+  - report_name: Operational Excellence Metrics
+    agents:
+      - operations-excellence-expert
+      - manufacturing-operations-expert
+    data_sources:
+      - Work_Order
+      - Quality_Inspection
+      - Downtime_Entry
+    frequency: weekly
+    format: [Dashboard, PDF]
+    
+  - report_name: HR Analytics Report
+    agents:
+      - hr-talent-specialist
+      - succession-planning-expert
+    data_sources:
+      - Employee
+      - Attendance
+      - Leave_Application
+      - Appraisal
+    frequency: monthly
+    format: [Excel, PowerBI]
+
+# Custom Fields Integration
+custom_fields:
+  - doctype: Customer
+    fields:
+      - fieldname: consultant_score
+        fieldtype: Float
+        label: Consultant Assessment Score
+        agent: customer-experience-expert
+        
+      - fieldname: growth_potential
+        fieldtype: Select
+        options: [Low, Medium, High, Strategic]
+        label: Growth Potential Rating
+        agent: strategic-growth-advisor
+        
+  - doctype: Employee
+    fields:
+      - fieldname: succession_readiness
+        fieldtype: Percent
+        label: Succession Readiness Score
+        agent: succession-planning-expert
+        
+      - fieldname: talent_category
+        fieldtype: Select
+        options: [High Potential, Core Contributor, Specialist, Development Need]
+        label: Talent Category
+        agent: hr-talent-specialist
+        
+  - doctype: Work_Order
+    fields:
+      - fieldname: oee_score
+        fieldtype: Percent
+        label: Overall Equipment Effectiveness
+        agent: manufacturing-operations-expert
+        
+      - fieldname: quality_rating
+        fieldtype: Rating
+        label: Quality Performance Rating
+        agent: quality-assurance-expert
+
+# Workflow Automation
+workflows:
+  - workflow_name: Customer Onboarding Excellence
+    trigger: customer.created
+    agents:
+      - customer-experience-expert
+      - financial-performance-analyst
+    steps:
+      - Assess customer profile
+      - Set credit limits
+      - Create engagement plan
+      - Schedule review meetings
+      - Generate welcome package
+      
+  - workflow_name: Supplier Performance Review
+    trigger: monthly_schedule
+    agents:
+      - supply-chain-specialist
+      - quality-assurance-expert
+    steps:
+      - Collect performance data
+      - Calculate scorecard metrics
+      - Identify improvement areas
+      - Generate feedback report
+      - Schedule supplier meetings
+      
+  - workflow_name: Production Optimization
+    trigger: work_order.planned
+    agents:
+      - manufacturing-operations-expert
+      - operations-excellence-expert
+    steps:
+      - Analyze production schedule
+      - Optimize resource allocation
+      - Identify bottlenecks
+      - Suggest improvements
+      - Monitor execution
+
+# Analytics Integration
+analytics:
+  dashboards:
+    - name: Executive Strategy Dashboard
+      agents: [strategic-growth-advisor, financial-performance-analyst]
+      widgets:
+        - Revenue trends and forecasts
+        - Market share analysis
+        - Competitive positioning
+        - Strategic initiative progress
+        - Financial KPIs
+        
+    - name: Operations Command Center
+      agents: [operations-excellence-expert, manufacturing-operations-expert]
+      widgets:
+        - Production efficiency metrics
+        - Quality performance trends
+        - Capacity utilization
+        - Downtime analysis
+        - Cost per unit trends
+        
+    - name: People Analytics Hub
+      agents: [hr-talent-specialist, succession-planning-expert]
+      widgets:
+        - Talent pipeline status
+        - Engagement scores
+        - Turnover analysis
+        - Training effectiveness
+        - Succession readiness
+
+# Error Handling
+error_handling:
+  retry_policy:
+    max_attempts: 3
+    backoff_multiplier: 2
+    max_backoff: 60
+    
+  error_types:
+    - type: connection_error
+      action: retry_with_backoff
+      notification: ops_team
+      
+    - type: authentication_error
+      action: refresh_token
+      notification: admin
+      
+    - type: data_validation_error
+      action: log_and_skip
+      notification: data_team
+      
+    - type: rate_limit_error
+      action: exponential_backoff
+      notification: none
+
+# Performance Optimization
+performance:
+  caching:
+    enabled: true
+    ttl: 3600
+    invalidation: on_update
+    
+  batch_processing:
+    enabled: true
+    batch_size: 500
+    parallel_workers: 4
+    
+  rate_limiting:
+    requests_per_minute: 100
+    burst_size: 20
+    
+  connection_pooling:
+    min_connections: 5
+    max_connections: 20
+    connection_timeout: 30
+
+# Security Configuration
+security:
+  encryption:
+    data_at_rest: AES-256
+    data_in_transit: TLS_1.3
+    
+  audit_logging:
+    enabled: true
+    log_level: INFO
+    retention_days: 90
+    
+  access_control:
+    ip_whitelist: []
+    user_roles:
+      - admin: full_access
+      - analyst: read_only
+      - operator: limited_write
+    
+  compliance:
+    - GDPR
+    - SOC2
+    - ISO27001
+
+# Monitoring and Alerting
+monitoring:
+  health_checks:
+    - endpoint: /api/health
+      interval: 60
+      timeout: 10
+      
+  metrics:
+    - api_response_time
+    - sync_success_rate
+    - error_rate
+    - data_volume
+    - agent_utilization
+    
+  alerts:
+    - condition: error_rate > 5%
+      severity: warning
+      notification: email
+      
+    - condition: api_response_time > 2000ms
+      severity: critical
+      notification: pagerduty
+      
+    - condition: sync_success_rate < 95%
+      severity: warning
+      notification: slack
+
+# Deployment Configuration
+deployment:
+  environment_variables:
+    - ERPNEXT_URL
+    - API_KEY
+    - WEBHOOK_SECRET
+    - LOG_LEVEL
+    - CACHE_REDIS_URL
+    
+  dependencies:
+    - frappe-client >= 2.0.0
+    - redis >= 4.0.0
+    - celery >= 5.0.0
+    - pandas >= 1.3.0
+    - numpy >= 1.21.0
+    
+  container:
+    image: bmad-business-consultant:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs
+    environment:
+      - NODE_ENV=production
+      - MAX_WORKERS=4

@@ -1,0 +1,492 @@
+name: "Professional Services Template"
+description: "Specialized professional services business analysis and optimization template for small business consultants working with law firms, accounting practices, consulting firms, and other knowledge-based professional services"
+category: "industry-specific"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Professional Services Template for Small Business Consulting
+
+template:
+  firm_information:
+    client_name: ""
+    firm_name: ""
+    practice_area: "" # Law, Accounting, Consulting, Engineering, Architecture, etc.
+    practice_specializations: []
+    firm_size: 0
+    years_established: 0
+    analysis_date: ""
+    consultant_name: ""
+    geographic_markets: []
+    client_base_type: "" # Individual, Small Business, Corporate, Government
+    
+  practice_performance_analysis:
+    financial_metrics:
+      annual_revenue: 0
+      revenue_growth_rate: 0
+      revenue_per_attorney_partner: 0
+      profit_per_partner: 0
+      billable_hour_rates: {}
+      realization_rates: 0
+      collection_rates: 0
+      
+    utilization_metrics:
+      billable_hours_target: 0
+      actual_billable_hours: 0
+      utilization_rate: 0
+      non_billable_time_allocation: {}
+      administrative_time_percentage: 0
+      
+    client_metrics:
+      active_client_count: 0
+      new_clients_per_month: 0
+      client_retention_rate: 0
+      client_concentration_risk: 0
+      average_client_value: 0
+      referral_rate: 0
+      
+    operational_metrics:
+      matter_completion_rate: 0
+      time_to_matter_completion: 0
+      client_satisfaction_score: 0
+      staff_retention_rate: 0
+      partner_satisfaction: 0
+
+  practice_management_assessment:
+    organizational_structure:
+      governance_model: ""
+      partnership_structure: ""
+      management_hierarchy: []
+      decision_making_processes: ""
+      compensation_model: ""
+      
+    practice_areas:
+      core_practice_areas: []
+      practice_area_performance: {}
+      cross_selling_opportunities: []
+      emerging_practice_areas: []
+      declining_practice_areas: []
+      
+    talent_management:
+      attorney_experience_levels: {}
+      staff_skill_assessment: {}
+      professional_development_programs: []
+      succession_planning: ""
+      recruitment_effectiveness: ""
+      
+    case_matter_management:
+      matter_intake_process: ""
+      case_management_systems: []
+      workflow_efficiency: ""
+      quality_control_procedures: []
+      conflict_checking_procedures: ""
+
+  client_relationship_management:
+    client_segmentation:
+      client_categories: []
+      high_value_clients: []
+      strategic_clients: []
+      client_profitability_analysis: {}
+      
+    client_development:
+      business_development_strategy: ""
+      marketing_effectiveness: ""
+      proposal_win_rate: 0
+      networking_activities: []
+      thought_leadership_initiatives: []
+      
+    client_service_delivery:
+      service_quality_standards: []
+      client_communication_protocols: []
+      project_management_approach: ""
+      value_delivery_framework: ""
+      
+    client_satisfaction:
+      satisfaction_measurement_methods: []
+      feedback_collection_systems: []
+      complaint_handling_procedures: []
+      relationship_maintenance_strategies: []
+
+  financial_management_professional:
+    revenue_model:
+      billing_methods: []
+      fee_structures: []
+      alternative_fee_arrangements: 0
+      retainer_agreements: 0
+      contingency_arrangements: 0
+      
+    cost_structure:
+      personnel_costs: 0
+      overhead_costs: 0
+      technology_costs: 0
+      professional_liability_insurance: 0
+      continuing_education_costs: 0
+      
+    profitability_analysis:
+      practice_area_profitability: {}
+      client_profitability: {}
+      matter_profitability: {}
+      partner_productivity: {}
+      
+    cash_flow_management:
+      accounts_receivable_management: ""
+      billing_efficiency: ""
+      collection_procedures: []
+      trust_account_management: ""
+
+  business_development_marketing:
+    market_positioning:
+      competitive_positioning: ""
+      unique_value_propositions: []
+      brand_reputation: ""
+      market_recognition: []
+      
+    marketing_strategy:
+      target_market_definition: []
+      marketing_channels: []
+      content_marketing: []
+      digital_presence: ""
+      
+    business_development_activities:
+      networking_strategies: []
+      referral_programs: []
+      speaking_engagements: []
+      publication_strategies: []
+      
+    proposal_and_pitch_management:
+      proposal_process: ""
+      win_rate_analysis: {}
+      competitive_factors: []
+      pricing_strategies: []
+
+  technology_and_systems:
+    practice_management_technology:
+      case_management_systems: []
+      time_billing_systems: []
+      document_management: []
+      client_portal_capabilities: []
+      
+    productivity_tools:
+      research_tools: []
+      document_automation: []
+      communication_platforms: []
+      project_management_tools: []
+      
+    cybersecurity_compliance:
+      data_security_measures: []
+      client_confidentiality_protection: []
+      compliance_requirements: []
+      backup_disaster_recovery: []
+      
+    digital_transformation:
+      technology_adoption_level: ""
+      automation_opportunities: []
+      cloud_migration_status: ""
+      ai_integration_potential: []
+
+  quality_and_risk_management:
+    quality_assurance:
+      quality_standards: []
+      peer_review_processes: []
+      continuing_education_requirements: []
+      professional_development: []
+      
+    risk_management:
+      professional_liability_risks: []
+      client_relationship_risks: []
+      regulatory_compliance_risks: []
+      cybersecurity_risks: []
+      
+    compliance_management:
+      professional_licensing: []
+      regulatory_requirements: []
+      ethics_compliance: []
+      trust_accounting_compliance: []
+      
+    insurance_coverage:
+      professional_liability_insurance: ""
+      general_liability_coverage: ""
+      cyber_liability_protection: ""
+      employment_practices_coverage: ""
+
+  competitive_analysis_professional:
+    competitive_landscape:
+      direct_competitors: []
+      competitive_advantages: []
+      competitive_disadvantages: []
+      market_share_position: ""
+      
+    fee_competition:
+      fee_benchmarking: {}
+      pricing_strategies: []
+      value_justification: []
+      cost_competitiveness: ""
+      
+    service_differentiation:
+      unique_capabilities: []
+      specialized_expertise: []
+      service_innovation: []
+      client_experience_advantages: []
+
+  practice_specific_challenges:
+    common_challenges:
+      client_acquisition: []
+      fee_pressure: []
+      talent_retention: []
+      technology_adoption: []
+      regulatory_changes: []
+      
+    specialization_challenges:
+      law_firm_challenges: []
+      accounting_firm_challenges: []
+      consulting_firm_challenges: []
+      engineering_firm_challenges: []
+      
+    solution_strategies:
+      growth_strategies: []
+      efficiency_improvements: []
+      differentiation_tactics: []
+      risk_mitigation: []
+
+  growth_opportunities_professional:
+    practice_expansion:
+      new_service_lines: []
+      geographic_expansion: []
+      market_segment_expansion: []
+      strategic_partnerships: []
+      
+    operational_improvements:
+      efficiency_enhancements: []
+      technology_investments: []
+      process_optimization: []
+      talent_development: []
+      
+    strategic_initiatives:
+      merger_acquisition_opportunities: []
+      alliance_development: []
+      thought_leadership_building: []
+      innovation_initiatives: []
+
+  professional_services_kpis:
+    financial_kpis:
+      - "Revenue per attorney/professional"
+      - "Profit per partner"
+      - "Realization rate"
+      - "Collection rate"
+      - "Billable hours per professional"
+      
+    operational_kpis:
+      - "Utilization rate"
+      - "Matter completion rate"
+      - "Client satisfaction score"
+      - "Staff retention rate"
+      - "New client acquisition rate"
+      
+    business_development_kpis:
+      - "Proposal win rate"
+      - "Referral rate"
+      - "Cross-selling success rate"
+      - "Market share growth"
+      - "Brand recognition metrics"
+      
+    quality_kpis:
+      - "Client complaint rate"
+      - "Malpractice claims"
+      - "Continuing education compliance"
+      - "Peer review scores"
+      - "Professional development hours"
+
+  improvement_recommendations:
+    operational_efficiency:
+      workflow_optimization: []
+      technology_enhancements: []
+      administrative_improvements: []
+      time_management_improvements: []
+      
+    business_development:
+      marketing_effectiveness: []
+      client_acquisition_strategies: []
+      relationship_building: []
+      thought_leadership_development: []
+      
+    financial_management:
+      billing_efficiency: []
+      collection_improvements: []
+      cost_management: []
+      profitability_optimization: []
+      
+    talent_management:
+      recruitment_strategies: []
+      retention_improvements: []
+      professional_development: []
+      succession_planning: []
+
+  implementation_roadmap_professional:
+    immediate_priorities:
+      # 0-30 days
+      operational_fixes: []
+      billing_improvements: []
+      client_service_enhancements: []
+      
+    short_term_initiatives:
+      # 30-90 days
+      technology_implementations: []
+      process_improvements: []
+      marketing_enhancements: []
+      
+    medium_term_projects:
+      # 90-180 days
+      system_upgrades: []
+      talent_development_programs: []
+      business_development_initiatives: []
+      
+    long_term_strategy:
+      # 180+ days
+      strategic_growth_initiatives: []
+      major_technology_investments: []
+      market_expansion_plans: []
+
+  specialization_considerations:
+    law_firm_specific:
+      practice_area_management: []
+      billable_hour_optimization: []
+      case_outcome_tracking: []
+      bar_association_requirements: []
+      
+    accounting_firm_specific:
+      seasonal_workload_management: []
+      tax_season_planning: []
+      audit_quality_control: []
+      cpa_licensing_requirements: []
+      
+    consulting_firm_specific:
+      project_management_excellence: []
+      knowledge_management: []
+      methodology_development: []
+      industry_expertise_building: []
+      
+    engineering_firm_specific:
+      project_delivery_excellence: []
+      technical_capability_development: []
+      safety_compliance: []
+      professional_engineering_standards: []
+
+  regulatory_and_compliance:
+    professional_standards:
+      licensing_requirements: []
+      continuing_education: []
+      ethics_compliance: []
+      professional_conduct: []
+      
+    industry_regulations:
+      practice_specific_regulations: []
+      client_confidentiality_requirements: []
+      conflict_of_interest_management: []
+      trust_account_regulations: []
+      
+    quality_standards:
+      professional_quality_standards: []
+      peer_review_requirements: []
+      malpractice_prevention: []
+      client_service_standards: []
+
+  benchmarking_professional_services:
+    industry_benchmarks:
+      utilization_rates: {}
+      realization_rates: {}
+      profit_margins: {}
+      growth_rates: {}
+      
+    performance_comparison:
+      above_benchmark: []
+      at_benchmark: []
+      below_benchmark: []
+      
+    improvement_targets:
+      performance_goals: {}
+      timeline_expectations: []
+      investment_requirements: 0
+
+professional_services_tools:
+  practice_management_tools:
+    - "Utilization tracking template"
+    - "Client profitability analyzer"
+    - "Practice area performance dashboard"
+    - "Business development tracker"
+    
+  financial_management_tools:
+    - "Realization rate calculator"
+    - "Collection efficiency tracker"
+    - "Profitability analysis template"
+    - "Cash flow forecasting model"
+    
+  quality_management_tools:
+    - "Client satisfaction survey"
+    - "Quality control checklist"
+    - "Compliance monitoring system"
+    - "Risk assessment framework"
+
+success_factors:
+  professional_services_drivers:
+    - "High-quality service delivery"
+    - "Strong client relationships"
+    - "Efficient resource utilization"
+    - "Effective business development"
+    - "Competitive expertise and specialization"
+    - "Strong professional reputation"
+    - "Financial management discipline"
+    - "Continuous professional development"
+
+common_professional_services_mistakes:
+  operational_mistakes:
+    - "Poor time management and billing"
+    - "Inadequate case/matter management"
+    - "Insufficient quality controls"
+    - "Weak project management"
+    
+  business_development_mistakes:
+    - "Inadequate marketing strategy"
+    - "Poor client relationship management"
+    - "Weak referral programs"
+    - "Insufficient thought leadership"
+    
+  financial_mistakes:
+    - "Poor billing and collection practices"
+    - "Inadequate cost management"
+    - "Weak profitability analysis"
+    - "Insufficient cash flow management"
+
+usage_guidelines:
+  assessment_methodology:
+    data_collection:
+      - "Review financial and operational data"
+      - "Interview partners and key professionals"
+      - "Analyze client feedback and satisfaction"
+      - "Assess competitive position"
+      
+    analysis_approach:
+      - "Benchmark against industry standards"
+      - "Identify operational inefficiencies"
+      - "Evaluate growth opportunities"
+      - "Assess competitive advantages"
+      
+  improvement_planning:
+    prioritization:
+      - "Focus on high-impact revenue opportunities"
+      - "Address critical operational issues"
+      - "Consider implementation complexity"
+      - "Align with strategic objectives"
+      
+    implementation_approach:
+      - "Engage key stakeholders early"
+      - "Pilot changes where possible"
+      - "Monitor progress continuously"
+      - "Adapt based on results"
+
+notes:
+  - "Professional services success depends on expertise, relationships, and reputation"
+  - "Billable hour utilization and realization are critical financial drivers"
+  - "Client satisfaction and retention are key to sustainable growth"
+  - "Technology can significantly enhance efficiency and client service"
+  - "Continuous professional development is essential for maintaining competitive advantage"
+  - "Business development and marketing are often underinvested areas with high ROI potential"

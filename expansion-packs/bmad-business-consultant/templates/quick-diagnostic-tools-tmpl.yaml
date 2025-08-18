@@ -1,0 +1,491 @@
+name: "Quick Diagnostic Tools Template"
+description: "Rapid assessment tools for small business consultants to quickly identify key issues and opportunities in 30-60 minutes"
+category: "client-onboarding"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# Quick Diagnostic Tools for Small Business Consulting
+
+template:
+  diagnostic_information:
+    client_name: ""
+    business_name: ""
+    diagnostic_date: ""
+    consultant_name: ""
+    diagnostic_type: "" # 30-minute, 60-minute, phone-based, on-site
+    participants: []
+
+  thirty_minute_health_check:
+    overview:
+      purpose: "Rapid business health assessment for initial client meetings"
+      duration: "30 minutes"
+      format: "Structured conversation with scoring"
+      outcome: "High-level health score and priority recommendations"
+      
+    assessment_areas:
+      financial_pulse_check:
+        questions:
+          - "Are you profitable month-to-month?"
+          - "Do you have positive cash flow?"
+          - "Are you meeting your revenue targets?"
+          - "Do you have 3+ months of operating expenses in cash?"
+        scoring: # 1-4 scale per question
+          financial_score: 0
+          
+      customer_satisfaction:
+        questions:
+          - "Are customers recommending you to others?"
+          - "Are customer complaints rare and quickly resolved?"
+          - "Do you have repeat customers?"
+          - "Are you meeting customer expectations consistently?"
+        scoring:
+          customer_score: 0
+          
+      operational_efficiency:
+        questions:
+          - "Are daily operations running smoothly?"
+          - "Do you have documented processes for key activities?"
+          - "Are employees productive and engaged?"
+          - "Are you utilizing technology effectively?"
+        scoring:
+          operations_score: 0
+          
+      market_position:
+        questions:
+          - "Do you have clear competitive advantages?"
+          - "Are you gaining market share?"
+          - "Do customers choose you over competitors?"
+          - "Are you prepared for market changes?"
+        scoring:
+          market_score: 0
+          
+      strategic_clarity:
+        questions:
+          - "Do you have clear business goals?"
+          - "Is your team aligned on priorities?"
+          - "Do you track key performance metrics?"
+          - "Are you making progress toward your vision?"
+        scoring:
+          strategy_score: 0
+          
+    rapid_assessment:
+      total_score_calculation: "Sum of all area scores (max 80)"
+      health_rating:
+        excellent: "65-80 points"
+        good: "50-64 points"
+        fair: "35-49 points"
+        concerning: "20-34 points"
+        critical: "0-19 points"
+        
+      priority_flags:
+        immediate_attention: []
+        improvement_opportunities: []
+        strengths_to_leverage: []
+
+  sixty_minute_business_snapshot:
+    overview:
+      purpose: "Comprehensive rapid diagnostic for detailed initial assessment"
+      duration: "60 minutes"
+      format: "Structured interview with financial review"
+      outcome: "Detailed diagnostic report with specific recommendations"
+      
+    financial_deep_dive:
+      revenue_analysis:
+        monthly_revenue_trend: ""
+        revenue_sources_breakdown: {}
+        customer_concentration: ""
+        pricing_strategy_effectiveness: ""
+        
+      profitability_review:
+        gross_margin_health: ""
+        expense_control_assessment: ""
+        cash_flow_pattern: ""
+        working_capital_efficiency: ""
+        
+      financial_red_flags:
+        - "Declining revenue for 3+ months"
+        - "Negative cash flow"
+        - "High customer concentration (>30% from one client)"
+        - "Gross margins below industry average"
+        - "Increasing expenses without revenue growth"
+        
+    operational_assessment:
+      process_maturity:
+        documented_procedures: ""
+        quality_control_systems: ""
+        technology_utilization: ""
+        workflow_efficiency: ""
+        
+      team_effectiveness:
+        leadership_capability: ""
+        employee_engagement: ""
+        skill_gaps: ""
+        productivity_levels: ""
+        
+      operational_bottlenecks:
+        capacity_constraints: []
+        process_inefficiencies: []
+        technology_limitations: []
+        skill_shortages: []
+        
+    market_competitive_analysis:
+      market_dynamics:
+        market_growth_trends: ""
+        competitive_pressure: ""
+        customer_behavior_changes: ""
+        regulatory_impacts: ""
+        
+      competitive_position:
+        market_share_trends: ""
+        differentiation_strength: ""
+        pricing_competitiveness: ""
+        brand_recognition: ""
+        
+    strategic_alignment_check:
+      goal_clarity:
+        vision_mission_alignment: ""
+        strategic_priorities: []
+        success_metrics: []
+        progress_tracking: ""
+        
+      execution_capability:
+        resource_allocation: ""
+        implementation_track_record: ""
+        change_management_ability: ""
+        leadership_effectiveness: ""
+
+  specialized_diagnostic_tools:
+    cash_flow_diagnostic:
+      purpose: "Quick assessment of cash flow health and predictability"
+      duration: "15 minutes"
+      
+      key_indicators:
+        cash_position:
+          current_cash_balance: 0
+          months_of_runway: 0
+          emergency_fund_adequacy: ""
+          
+        cash_flow_patterns:
+          seasonal_variations: ""
+          payment_terms_with_customers: ""
+          payment_terms_with_suppliers: ""
+          collection_efficiency: ""
+          
+        cash_flow_risks:
+          customer_payment_delays: ""
+          supplier_payment_pressures: ""
+          seasonal_cash_needs: ""
+          growth_funding_requirements: ""
+          
+      diagnostic_output:
+        cash_flow_health_score: 0
+        immediate_risks: []
+        improvement_opportunities: []
+        
+    growth_readiness_assessment:
+      purpose: "Evaluate business readiness for growth initiatives"
+      duration: "20 minutes"
+      
+      growth_foundations:
+        financial_stability: ""
+        operational_scalability: ""
+        market_opportunity: ""
+        team_capability: ""
+        
+      growth_enablers:
+        systems_and_processes: ""
+        technology_infrastructure: ""
+        funding_availability: ""
+        leadership_bandwidth: ""
+        
+      growth_barriers:
+        resource_constraints: []
+        skill_gaps: []
+        market_limitations: []
+        operational_bottlenecks: []
+        
+      readiness_score: 0
+      
+    digital_maturity_check:
+      purpose: "Assess digital transformation readiness and gaps"
+      duration: "15 minutes"
+      
+      digital_areas:
+        online_presence:
+          website_effectiveness: ""
+          social_media_presence: ""
+          digital_marketing: ""
+          online_reputation: ""
+          
+        business_systems:
+          crm_system_usage: ""
+          financial_system_adequacy: ""
+          inventory_management: ""
+          communication_tools: ""
+          
+        data_and_analytics:
+          data_collection_practices: ""
+          reporting_capabilities: ""
+          decision_making_data_use: ""
+          performance_tracking: ""
+          
+      digital_maturity_score: 0
+      
+    competitive_vulnerability_scan:
+      purpose: "Identify competitive threats and defensive strategies"
+      duration: "10 minutes"
+      
+      vulnerability_areas:
+        market_position_risks:
+          customer_switching_risk: ""
+          new_competitor_threats: ""
+          substitute_product_risks: ""
+          supplier_power_changes: ""
+          
+        business_model_risks:
+          technology_disruption: ""
+          regulatory_changes: ""
+          economic_sensitivity: ""
+          demographic_shifts: ""
+          
+      defensive_strengths:
+        customer_loyalty_factors: []
+        switching_costs: []
+        unique_capabilities: []
+        market_barriers: []
+        
+      vulnerability_score: 0
+
+  industry_specific_diagnostics:
+    retail_business_check:
+      inventory_health:
+        inventory_turnover: ""
+        slow_moving_stock: ""
+        seasonal_planning: ""
+        supplier_relationships: ""
+        
+      customer_experience:
+        foot_traffic_trends: ""
+        conversion_rates: ""
+        average_transaction_value: ""
+        customer_retention: ""
+        
+      location_performance:
+        location_profitability: ""
+        lease_terms_favorability: ""
+        demographic_alignment: ""
+        competition_proximity: ""
+        
+    service_business_assessment:
+      service_delivery:
+        service_quality_consistency: ""
+        delivery_time_reliability: ""
+        customer_satisfaction_levels: ""
+        repeat_business_rate: ""
+        
+      capacity_utilization:
+        billable_hours_percentage: ""
+        pricing_optimization: ""
+        service_mix_profitability: ""
+        scalability_potential: ""
+        
+      professional_development:
+        team_skill_levels: ""
+        certification_requirements: ""
+        training_investments: ""
+        succession_planning: ""
+        
+    manufacturing_diagnostic:
+      production_efficiency:
+        capacity_utilization: ""
+        quality_control_effectiveness: ""
+        waste_reduction_efforts: ""
+        equipment_reliability: ""
+        
+      supply_chain_health:
+        supplier_relationship_quality: ""
+        inventory_optimization: ""
+        lead_time_management: ""
+        supply_chain_risks: ""
+        
+      safety_and_compliance:
+        safety_record: ""
+        regulatory_compliance: ""
+        environmental_impact: ""
+        worker_satisfaction: ""
+
+  diagnostic_outputs:
+    immediate_findings:
+      health_score_summary:
+        overall_business_health: 0
+        category_scores: {}
+        benchmarking_context: ""
+        
+      critical_issues:
+        immediate_attention_required: []
+        significant_risks: []
+        performance_gaps: []
+        
+      opportunities:
+        quick_wins: []
+        growth_opportunities: []
+        efficiency_improvements: []
+        
+    actionable_recommendations:
+      immediate_actions:
+        # Actions that can be taken within 30 days
+        financial_improvements: []
+        operational_fixes: []
+        customer_experience_enhancements: []
+        
+      short_term_initiatives:
+        # Actions for next 90 days
+        process_improvements: []
+        system_upgrades: []
+        team_development: []
+        
+      strategic_considerations:
+        # Longer-term strategic moves
+        market_positioning: []
+        growth_strategies: []
+        competitive_responses: []
+        
+    follow_up_plan:
+      detailed_assessment_areas: []
+      additional_data_needed: []
+      stakeholder_interviews_required: []
+      next_meeting_objectives: []
+
+  diagnostic_methodologies:
+    observation_techniques:
+      workplace_walkthrough:
+        - "Observe workflow efficiency"
+        - "Note safety and organization"
+        - "Assess technology utilization"
+        - "Evaluate team interactions"
+        
+      customer_interaction_review:
+        - "Monitor customer service quality"
+        - "Assess customer experience touchpoints"
+        - "Evaluate response times"
+        - "Note customer feedback handling"
+        
+    interview_techniques:
+      structured_questioning:
+        - "Use open-ended questions for insights"
+        - "Ask for specific examples"
+        - "Probe for root causes"
+        - "Validate responses with follow-ups"
+        
+      stakeholder_perspectives:
+        owner_manager_view: ""
+        employee_perspectives: ""
+        customer_feedback: ""
+        supplier_insights: ""
+        
+    document_review:
+      financial_documents:
+        - "Recent financial statements"
+        - "Cash flow reports"
+        - "Budget vs. actual reports"
+        - "Key performance metrics"
+        
+      operational_documents:
+        - "Process documentation"
+        - "Organizational charts"
+        - "Customer feedback records"
+        - "Vendor contracts"
+
+  scoring_frameworks:
+    quantitative_metrics:
+      financial_ratios:
+        gross_margin: ""
+        net_margin: ""
+        current_ratio: ""
+        debt_to_equity: ""
+        
+      operational_metrics:
+        employee_productivity: ""
+        customer_satisfaction: ""
+        process_efficiency: ""
+        quality_measures: ""
+        
+    qualitative_assessments:
+      leadership_effectiveness: ""
+      market_positioning: ""
+      competitive_advantages: ""
+      growth_potential: ""
+      
+    weighted_scoring:
+      category_weights:
+        financial_health: 35
+        operational_efficiency: 25
+        market_position: 20
+        strategic_clarity: 10
+        team_effectiveness: 10
+
+usage_guidelines:
+  tool_selection:
+    initial_client_meeting: "30-minute health check"
+    detailed_assessment: "60-minute business snapshot"
+    specific_concerns: "Specialized diagnostic tools"
+    industry_focus: "Industry-specific diagnostics"
+    
+  preparation_requirements:
+    minimal_prep_tools:
+      - "30-minute health check"
+      - "Cash flow diagnostic"
+      - "Competitive vulnerability scan"
+      
+    document_review_required:
+      - "60-minute business snapshot"
+      - "Growth readiness assessment"
+      - "Industry-specific diagnostics"
+      
+  facilitation_tips:
+    creating_rapport:
+      - "Start with open-ended questions"
+      - "Show genuine interest in their business"
+      - "Acknowledge their expertise and experience"
+      - "Be curious rather than judgmental"
+      
+    gathering_information:
+      - "Ask for specific examples and metrics"
+      - "Probe gently for sensitive information"
+      - "Use follow-up questions to clarify"
+      - "Observe non-verbal cues and hesitation"
+      
+    maintaining_momentum:
+      - "Keep conversation focused but natural"
+      - "Transition smoothly between topics"
+      - "Summarize understanding periodically"
+      - "End with clear next steps"
+
+quality_assurance:
+  diagnostic_accuracy:
+    information_validation:
+      - "Cross-check responses for consistency"
+      - "Ask for supporting evidence when needed"
+      - "Validate assumptions with data"
+      - "Confirm understanding before concluding"
+      
+    bias_mitigation:
+      - "Use structured questions to reduce bias"
+      - "Seek multiple perspectives when possible"
+      - "Challenge your own assumptions"
+      - "Focus on facts rather than opinions"
+      
+  diagnostic_completeness:
+    coverage_checklist:
+      - "All key business areas addressed"
+      - "Critical success factors identified"
+      - "Major risks and opportunities noted"
+      - "Implementation capacity assessed"
+
+notes:
+  - "Customize diagnostic tools based on industry and business size"
+  - "Use diagnostic results to design targeted consulting engagements"
+  - "Always validate findings with additional data when possible"
+  - "Focus on actionable insights rather than just problems identification"
+  - "Build trust by demonstrating understanding of their business"

@@ -1,0 +1,232 @@
+name: "Business Model Design Workflow"
+description: "Comprehensive business model design and validation workflow using Business Model Canvas methodology"
+version: "1.0"
+category: "Business Model Innovation"
+tags: ["business-model", "canvas", "design-thinking", "validation", "innovation"]
+
+workflow:
+  stages:
+    - name: "Discovery and Research"
+      description: "Understand problem space, customers, and market context"
+      tasks:
+        - name: "Problem and Opportunity Definition"
+          description: "Define the business problem or opportunity to address"
+          agent: "market-researcher"
+          checklist: "business-model-design-checklist.md"
+          inputs:
+            - business_opportunity
+            - target_market
+            - problem_statement
+            - success_criteria
+            
+        - name: "Customer Research and Insights"
+          description: "Conduct customer research and market analysis"
+          agent: "market-researcher"
+          task: "create-customer-segmentation"
+          inputs:
+            - target_market: "{{primary_market}}"
+            - research_scope: "{{customer_research_scope}}"
+            
+        - name: "Market Context Analysis"
+          description: "Analyze market dynamics and competitive landscape"
+          agent: "market-researcher"
+          task: "create-market-analysis"
+          inputs:
+            - market: "{{target_market}}"
+            - competitive_focus: "{{competitive_landscape}}"
+
+    - name: "Value Proposition Design"
+      description: "Design and validate core value propositions for target segments"
+      tasks:
+        - name: "Customer Jobs Analysis"
+          description: "Identify customer jobs, pains, and gains"
+          agent: "business-model-expert"
+          checklist: "business-model-design-checklist.md"
+          inputs:
+            - customer_segments
+            - customer_research_findings
+            
+        - name: "Value Proposition Development"
+          description: "Design value propositions for each customer segment"
+          agent: "business-model-expert"
+          task: "create-value-proposition"
+          inputs:
+            - customer_segments: "{{identified_segments}}"
+            - customer_jobs: "{{customer_jobs_analysis}}"
+            
+        - name: "Value Proposition Validation"
+          description: "Test and validate value propositions with customers"
+          checklist: "business-model-design-checklist.md"
+          outputs:
+            - validated_value_propositions
+            - customer_feedback
+            - iteration_requirements
+
+    - name: "Business Model Canvas Design"
+      description: "Design complete business model using canvas methodology"
+      tasks:
+        - name: "Initial Canvas Design"
+          description: "Create initial Business Model Canvas"
+          agent: "business-model-expert"
+          task: "create-business-model-canvas"
+          template: "business-model-canvas-tmpl.yaml"
+          inputs:
+            - target: "{{business_concept}}"
+            - stage: "{{business_stage}}"
+            - focus: "{{design_focus}}"
+            
+        - name: "Revenue Model Design"
+          description: "Design detailed revenue streams and pricing strategy"
+          agent: "business-model-expert"
+          task: "create-revenue-model"
+          inputs:
+            - value_propositions: "{{designed_value_props}}"
+            - customer_segments: "{{target_segments}}"
+            
+        - name: "Operating Model Design"
+          description: "Define key activities, resources, and partnerships"
+          agent: "business-model-expert"
+          checklist: "business-model-design-checklist.md"
+          inputs:
+            - value_propositions
+            - revenue_streams
+            - operational_requirements
+
+    - name: "Business Model Validation"
+      description: "Test and validate business model assumptions"
+      tasks:
+        - name: "Assumption Mapping"
+          description: "Identify and prioritize key business model assumptions"
+          checklist: "business-model-design-checklist.md"
+          inputs:
+            - business_model_canvas
+            - critical_assumptions
+            
+        - name: "Market Validation"
+          description: "Test business model assumptions with market feedback"
+          agent: "market-researcher"
+          task: "create-market-opportunity"
+          inputs:
+            - business_model: "{{designed_model}}"
+            - validation_scope: "{{market_validation_scope}}"
+            
+        - name: "Financial Validation"
+          description: "Validate financial viability and unit economics"
+          checklist: "business-model-design-checklist.md"
+          outputs:
+            - unit_economics
+            - financial_projections
+            - viability_assessment
+
+    - name: "Business Model Optimization"
+      description: "Refine and optimize business model based on validation"
+      tasks:
+        - name: "Model Iteration"
+          description: "Iterate business model based on validation feedback"
+          agent: "business-model-expert"
+          task: "create-model-innovation"
+          inputs:
+            - current_model: "{{validated_model}}"
+            - feedback: "{{validation_feedback}}"
+            
+        - name: "Competitive Positioning"
+          description: "Optimize model for competitive advantage"
+          agent: "strategic-analyst"
+          task: "create-competitive-intelligence"
+          inputs:
+            - business_model: "{{optimized_model}}"
+            - competitive_landscape: "{{competitor_models}}"
+            
+        - name: "Final Business Model"
+          description: "Finalize optimized business model canvas"
+          agent: "business-model-expert"
+          template: "business-model-canvas-tmpl.yaml"
+          outputs:
+            - final_business_model_canvas
+            - implementation_roadmap
+            - success_metrics
+
+    - name: "Implementation Planning"
+      description: "Develop implementation strategy and roadmap"
+      tasks:
+        - name: "Implementation Strategy"
+          description: "Define implementation approach and timeline"
+          checklist: "business-model-design-checklist.md"
+          inputs:
+            - final_business_model
+            - resource_requirements
+            - market_conditions
+            
+        - name: "Risk Assessment and Mitigation"
+          description: "Identify risks and develop mitigation strategies"
+          checklist: "business-model-design-checklist.md"
+          outputs:
+            - risk_assessment
+            - mitigation_strategies
+            - contingency_plans
+            
+        - name: "Success Metrics and KPIs"
+          description: "Define measurement framework for business model success"
+          outputs:
+            - success_metrics
+            - kpi_framework
+            - monitoring_system
+
+agents:
+  primary: "business-model-expert"
+  supporting:
+    - "market-researcher"
+    - "strategic-analyst"
+
+deliverables:
+  - name: "Customer Research Report"
+    description: "Customer segments and insights analysis"
+    
+  - name: "Value Proposition Canvas"
+    description: "Detailed value propositions for each customer segment"
+    
+  - name: "Business Model Canvas"
+    template: "business-model-canvas-tmpl.yaml"
+    
+  - name: "Business Model Validation Report"
+    description: "Validation findings and recommendations"
+    
+  - name: "Implementation Roadmap"
+    description: "Detailed implementation strategy and timeline"
+
+success_criteria:
+  - "Clear, validated value propositions for target customer segments"
+  - "Coherent business model canvas with validated assumptions"
+  - "Financial viability demonstrated through unit economics"
+  - "Competitive differentiation and positioning established"
+  - "Implementation roadmap with clear milestones and metrics"
+
+timeline:
+  total_duration: "6-10 weeks"
+  stage_durations:
+    discovery: "7-10 days"
+    value_proposition: "10-14 days"
+    canvas_design: "14-21 days"
+    validation: "10-14 days"
+    optimization: "7-10 days"
+    implementation_planning: "5-7 days"
+
+quality_gates:
+  - stage: "Value Proposition Design"
+    criteria: "Value propositions validated with target customers"
+    
+  - stage: "Business Model Canvas Design"
+    criteria: "Complete, coherent business model canvas created"
+    
+  - stage: "Business Model Validation"
+    criteria: "Key assumptions tested and validated with market feedback"
+    
+  - stage: "Business Model Optimization"
+    criteria: "Optimized business model with competitive positioning"
+
+validation_methods:
+  - "Customer interviews and surveys"
+  - "Prototype testing and feedback"
+  - "Market analysis and competitive benchmarking"
+  - "Financial modeling and unit economics analysis"
+  - "Expert review and stakeholder validation"

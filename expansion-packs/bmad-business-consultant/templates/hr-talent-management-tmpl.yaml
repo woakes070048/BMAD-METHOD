@@ -1,0 +1,806 @@
+name: "HR & Talent Management Template"
+description: "Comprehensive human resources and talent management assessment and optimization template for small business consultants to improve recruitment, retention, performance management, and organizational development"
+category: "talent-management"
+type: "template"
+version: "1.0"
+author: "BMAD Business Consultant"
+
+# HR & Talent Management Template for Small Business Consulting
+
+template:
+  organization_overview:
+    business_information:
+      company_name: ""
+      industry: ""
+      employee_count: 0
+      locations: ""
+      business_model: ""
+      growth_stage: "" # Startup, Growth, Mature, Declining
+      annual_revenue: 0
+      
+    leadership_structure:
+      organizational_chart_exists: false
+      management_levels: 0
+      span_of_control: ""
+      decision_making_process: ""
+      leadership_development_program: false
+      
+    current_hr_maturity:
+      hr_department_exists: false
+      hr_staff_count: 0
+      hr_systems_in_place: []
+      compliance_status: ""
+      hr_budget_percentage: 0
+
+  workforce_analysis:
+    employee_demographics:
+      full_time_employees: 0
+      part_time_employees: 0
+      contractors_consultants: 0
+      seasonal_workers: 0
+      remote_workers: 0
+      average_tenure: 0
+      
+    workforce_composition:
+      by_department:
+        - department: ""
+          headcount: 0
+          percentage_of_total: 0
+          key_roles: []
+          
+      by_generation:
+        baby_boomers_percentage: 0
+        gen_x_percentage: 0
+        millennials_percentage: 0
+        gen_z_percentage: 0
+        
+      by_experience_level:
+        entry_level_percentage: 0
+        mid_level_percentage: 0
+        senior_level_percentage: 0
+        executive_level_percentage: 0
+        
+    diversity_and_inclusion:
+      gender_distribution: {}
+      ethnic_diversity: {}
+      age_distribution: {}
+      diversity_initiatives: []
+      inclusion_programs: []
+
+  recruitment_and_hiring:
+    current_recruitment_process:
+      hiring_process_documented: false
+      average_time_to_hire_days: 0
+      cost_per_hire: 0
+      hiring_success_rate: 0
+      source_of_hires: {}
+      
+    recruitment_effectiveness:
+      job_posting_platforms: []
+      recruitment_channels: []
+      employee_referral_program: false
+      referral_success_rate: 0
+      recruitment_marketing_strategy: ""
+      
+    hiring_process_analysis:
+      job_description_quality:
+        - role: ""
+          clarity_score: 0
+          competency_alignment: 0
+          market_competitiveness: 0
+          
+      interview_process:
+        structured_interviews: false
+        interview_stages: 0
+        interviewer_training: false
+        bias_reduction_measures: []
+        
+      candidate_experience:
+        application_process_rating: 0
+        communication_timeliness: 0
+        feedback_provision: false
+        candidate_satisfaction_score: 0
+        
+    recruitment_challenges:
+      talent_shortage_areas: []
+      competition_for_talent: ""
+      employer_brand_strength: 0
+      recruitment_budget_adequacy: ""
+      time_to_fill_issues: []
+
+  performance_management:
+    performance_system_overview:
+      formal_performance_reviews: false
+      review_frequency: ""
+      performance_metrics_defined: false
+      goal_setting_process: ""
+      performance_improvement_plans: false
+      
+    performance_measurement:
+      key_performance_indicators:
+        - role_level: ""
+          kpis: []
+          measurement_frequency: ""
+          target_setting_process: ""
+          
+      performance_rating_system:
+        rating_scale: ""
+        calibration_process: false
+        performance_distribution: {}
+        manager_training_on_ratings: false
+        
+    feedback_and_development:
+      regular_feedback_culture: false
+      360_degree_feedback: false
+      coaching_and_mentoring: false
+      development_planning: false
+      career_pathing: false
+      
+    performance_challenges:
+      underperformance_identification: ""
+      performance_improvement_success_rate: 0
+      manager_capability_gaps: []
+      employee_development_gaps: []
+
+  compensation_and_benefits:
+    compensation_structure:
+      pay_philosophy: ""
+      pay_grades_defined: false
+      market_positioning: ""
+      pay_equity_analysis: false
+      commission_bonus_structure: ""
+      
+    compensation_analysis:
+      salary_benchmarking:
+        - role: ""
+          current_salary_range: ""
+          market_range: ""
+          competitiveness_rating: 0
+          
+      total_compensation:
+        base_salary_percentage: 0
+        variable_pay_percentage: 0
+        benefits_value_percentage: 0
+        total_compensation_competitiveness: 0
+        
+    benefits_program:
+      health_insurance:
+        coverage_percentage: 0
+        employee_contribution: 0
+        plan_quality_rating: 0
+        
+      retirement_benefits:
+        retirement_plan_type: ""
+        employer_contribution: 0
+        participation_rate: 0
+        
+      additional_benefits:
+        paid_time_off_days: 0
+        flexible_work_arrangements: false
+        professional_development_budget: 0
+        wellness_programs: []
+        
+    compensation_challenges:
+      pay_compression_issues: false
+      turnover_due_to_compensation: 0
+      budget_constraints: ""
+      market_competitiveness_gaps: []
+
+  employee_engagement_and_retention:
+    engagement_measurement:
+      employee_surveys_conducted: false
+      engagement_score: 0
+      participation_rate: 0
+      key_engagement_drivers: []
+      
+    retention_analysis:
+      overall_turnover_rate: 0
+      voluntary_turnover_rate: 0
+      involuntary_turnover_rate: 0
+      turnover_by_department: {}
+      turnover_cost_analysis: 0
+      
+    exit_analysis:
+      exit_interviews_conducted: false
+      top_reasons_for_leaving: []
+      regrettable_vs_non_regrettable_turnover: 0
+      improvement_opportunities_identified: []
+      
+    engagement_initiatives:
+      recognition_programs: []
+      team_building_activities: false
+      communication_channels: []
+      employee_feedback_mechanisms: []
+      work_life_balance_programs: []
+      
+    cultural_assessment:
+      company_values_defined: false
+      values_integration: 0
+      cultural_alignment: 0
+      leadership_cultural_modeling: 0
+
+  training_and_development:
+    learning_and_development_strategy:
+      training_budget_percentage: 0
+      development_needs_assessment: false
+      learning_management_system: false
+      training_effectiveness_measurement: false
+      
+    training_programs:
+      new_employee_onboarding:
+        program_duration: 0
+        completion_rate: 0
+        effectiveness_rating: 0
+        feedback_score: 0
+        
+      skills_development:
+        technical_skills_training: []
+        soft_skills_training: []
+        leadership_development: false
+        cross_training_programs: false
+        
+      compliance_training:
+        required_training_programs: []
+        completion_rates: {}
+        tracking_system: false
+        
+    career_development:
+      career_ladder_defined: false
+      succession_planning: false
+      mentoring_programs: false
+      internal_promotion_rate: 0
+      
+    development_challenges:
+      training_budget_adequacy: ""
+      employee_participation: 0
+      skills_gap_identification: []
+      management_development_needs: []
+
+  compliance_and_legal:
+    employment_law_compliance:
+      handbook_current: false
+      policy_updates: ""
+      legal_review_frequency: ""
+      compliance_training: false
+      
+    documentation_and_records:
+      personnel_files_management: ""
+      record_retention_policy: false
+      data_privacy_compliance: false
+      audit_trail_maintenance: false
+      
+    risk_management:
+      workers_compensation: ""
+      unemployment_insurance: ""
+      wage_and_hour_compliance: 0
+      discrimination_harassment_prevention: ""
+      
+    legal_challenges:
+      recent_legal_issues: []
+      potential_compliance_risks: []
+      insurance_coverage_adequacy: ""
+      legal_counsel_relationship: ""
+
+  organizational_development:
+    organizational_design:
+      reporting_structure_clarity: 0
+      role_definition_clarity: 0
+      communication_flow: 0
+      decision_making_efficiency: 0
+      
+    change_management:
+      change_readiness: 0
+      change_communication: 0
+      change_implementation_success: 0
+      employee_adaptability: 0
+      
+    team_effectiveness:
+      team_collaboration: 0
+      cross_functional_cooperation: 0
+      conflict_resolution: 0
+      innovation_culture: 0
+      
+    leadership_effectiveness:
+      management_skills: 0
+      leadership_pipeline: 0
+      succession_readiness: 0
+      leadership_accountability: 0
+
+hr_assessment_scoring:
+  scoring_methodology:
+    scale: "1-10 scale where 1 = Critical Issues, 10 = Best in Class"
+    weighting_factors:
+      recruitment_effectiveness: 20
+      performance_management: 20
+      employee_engagement: 25
+      compensation_competitiveness: 15
+      compliance_risk: 10
+      organizational_development: 10
+      
+  category_scores:
+    recruitment_and_hiring_score: 0
+    performance_management_score: 0
+    compensation_benefits_score: 0
+    engagement_retention_score: 0
+    development_training_score: 0
+    compliance_legal_score: 0
+    organizational_development_score: 0
+    
+  overall_hr_effectiveness_score: 0
+  
+  scoring_guidelines:
+    critical_issues_1_3:
+      - "Significant legal compliance risks"
+      - "Turnover rate above 50% annually"
+      - "No formal HR processes or documentation"
+      - "Compensation significantly below market"
+      
+    needs_improvement_4_6:
+      - "Basic HR processes exist but inconsistently applied"
+      - "Moderate turnover (20-35% annually)"
+      - "Some compliance gaps but manageable"
+      - "Compensation somewhat competitive"
+      
+    good_performance_7_8:
+      - "Well-documented HR processes"
+      - "Low turnover (under 15% annually)"
+      - "Strong compliance record"
+      - "Competitive compensation and benefits"
+      
+    best_in_class_9_10:
+      - "Strategic HR function driving business results"
+      - "Exceptional talent attraction and retention"
+      - "Proactive compliance and risk management"
+      - "Industry-leading employee engagement"
+
+improvement_opportunities:
+  recruitment_optimization:
+    employer_branding:
+      description: "Develop compelling employer brand to attract top talent"
+      impact_areas: ["Candidate quality", "Time to hire", "Cost per hire"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_weeks: 0
+      
+    process_efficiency:
+      description: "Streamline hiring process to reduce time and improve experience"
+      impact_areas: ["Time to hire", "Candidate experience", "Manager productivity"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_weeks: 0
+      
+    sourcing_strategy:
+      description: "Diversify and optimize talent sourcing channels"
+      impact_areas: ["Candidate pipeline", "Diversity", "Cost efficiency"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_weeks: 0
+
+  performance_enhancement:
+    goal_alignment:
+      description: "Align individual goals with business objectives"
+      impact_areas: ["Performance", "Engagement", "Business results"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_weeks: 0
+      
+    feedback_culture:
+      description: "Establish continuous feedback and coaching culture"
+      impact_areas: ["Performance", "Development", "Retention"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_weeks: 0
+      
+    manager_development:
+      description: "Train managers in performance management skills"
+      impact_areas: ["Management effectiveness", "Employee satisfaction"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_weeks: 0
+
+  engagement_and_retention:
+    recognition_programs:
+      description: "Implement systematic employee recognition and rewards"
+      impact_areas: ["Engagement", "Retention", "Performance"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_weeks: 0
+      
+    career_development:
+      description: "Create clear career paths and development opportunities"
+      impact_areas: ["Retention", "Engagement", "Internal promotion"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_weeks: 0
+      
+    work_life_balance:
+      description: "Enhance work-life balance through flexible arrangements"
+      impact_areas: ["Retention", "Productivity", "Well-being"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_weeks: 0
+
+  compensation_optimization:
+    market_alignment:
+      description: "Align compensation with market rates for key positions"
+      impact_areas: ["Retention", "Recruitment", "Cost management"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_weeks: 0
+      
+    pay_equity:
+      description: "Address pay equity gaps and ensure fair compensation"
+      impact_areas: ["Legal compliance", "Employee trust", "Retention"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_weeks: 0
+      
+    total_rewards:
+      description: "Optimize total rewards package including benefits"
+      impact_areas: ["Employee value proposition", "Cost efficiency"]
+      implementation_steps: []
+      expected_benefits: ""
+      investment_required: 0
+      timeline_weeks: 0
+
+roi_analysis:
+  financial_impact_calculations:
+    turnover_cost_reduction:
+      current_annual_turnover_cost: 0
+      target_turnover_reduction_percentage: 0
+      annual_savings_potential: 0
+      
+    recruitment_cost_optimization:
+      current_cost_per_hire: 0
+      target_cost_reduction_percentage: 0
+      annual_hiring_volume: 0
+      annual_savings_potential: 0
+      
+    productivity_improvements:
+      productivity_gain_percentage: 0
+      affected_employee_count: 0
+      average_employee_value: 0
+      annual_productivity_value: 0
+      
+    engagement_impact:
+      engagement_score_improvement: 0
+      productivity_correlation: 0
+      revenue_impact_percentage: 0
+      annual_revenue_increase: 0
+
+  investment_requirements:
+    hr_system_implementations:
+      applicant_tracking_system: 0
+      performance_management_system: 0
+      learning_management_system: 0
+      hr_information_system: 0
+      
+    training_and_development:
+      manager_training_programs: 0
+      employee_development_budget: 0
+      external_consulting_support: 0
+      
+    compensation_adjustments:
+      market_adjustment_budget: 0
+      pay_equity_corrections: 0
+      benefits_enhancements: 0
+      
+    total_investment_required: 0
+    
+  roi_projections:
+    year_1_benefits: 0
+    year_1_costs: 0
+    year_1_net_benefit: 0
+    
+    year_2_benefits: 0
+    year_2_costs: 0
+    year_2_net_benefit: 0
+    
+    year_3_benefits: 0
+    year_3_costs: 0
+    year_3_net_benefit: 0
+    
+    total_3_year_roi_percentage: 0
+    payback_period_months: 0
+
+implementation_roadmap:
+  phase_1_foundation_0_90_days:
+    priorities:
+      - "Complete comprehensive HR audit and gap analysis"
+      - "Address critical compliance and legal risks"
+      - "Implement basic HR documentation and policies"
+      - "Establish essential HR metrics and tracking"
+      
+    key_deliverables:
+      - deliverable: "Updated employee handbook and policies"
+        timeline: "30 days"
+        owner: ""
+        success_criteria: []
+        
+      - deliverable: "HR compliance audit and remediation plan"
+        timeline: "45 days"
+        owner: ""
+        success_criteria: []
+        
+      - deliverable: "Basic HR metrics dashboard"
+        timeline: "60 days"
+        owner: ""
+        success_criteria: []
+        
+    expected_outcomes:
+      - "Reduced legal and compliance risks"
+      - "Clear HR policies and procedures"
+      - "Baseline metrics for future improvement"
+
+  phase_2_optimization_90_180_days:
+    priorities:
+      - "Optimize recruitment and hiring processes"
+      - "Implement performance management system"
+      - "Launch employee engagement initiatives"
+      - "Address compensation competitiveness gaps"
+      
+    key_deliverables:
+      - deliverable: "Streamlined recruitment process"
+        timeline: "120 days"
+        owner: ""
+        success_criteria: []
+        
+      - deliverable: "Performance management system implementation"
+        timeline: "150 days"
+        owner: ""
+        success_criteria: []
+        
+      - deliverable: "Employee engagement survey and action plan"
+        timeline: "135 days"
+        owner: ""
+        success_criteria: []
+        
+    expected_outcomes:
+      - "Improved hiring efficiency and quality"
+      - "Clear performance expectations and feedback"
+      - "Increased employee engagement and satisfaction"
+
+  phase_3_strategic_development_180_365_days:
+    priorities:
+      - "Develop comprehensive training and development programs"
+      - "Implement succession planning and career development"
+      - "Launch advanced engagement and retention initiatives"
+      - "Establish HR analytics and predictive capabilities"
+      
+    key_deliverables:
+      - deliverable: "Learning and development program"
+        timeline: "270 days"
+        owner: ""
+        success_criteria: []
+        
+      - deliverable: "Succession planning process"
+        timeline: "300 days"
+        owner: ""
+        success_criteria: []
+        
+      - deliverable: "Advanced HR analytics capabilities"
+        timeline: "330 days"
+        owner: ""
+        success_criteria: []
+        
+    expected_outcomes:
+      - "Enhanced employee capabilities and skills"
+      - "Strong leadership pipeline and succession readiness"
+      - "Data-driven HR decision making"
+
+industry_adaptations:
+  retail_businesses:
+    focus_areas:
+      - "High turnover management and retention strategies"
+      - "Seasonal workforce planning and management"
+      - "Customer service training and development"
+      - "Flexible scheduling and part-time workforce optimization"
+      
+    specific_metrics:
+      - "Turnover rate by position level and seasonality"
+      - "Customer service quality scores and training effectiveness"
+      - "Schedule adherence and labor cost optimization"
+      
+  service_businesses:
+    focus_areas:
+      - "Professional skills development and certification"
+      - "Client relationship and communication training"
+      - "Utilization optimization and capacity management"
+      - "Knowledge management and best practice sharing"
+      
+    specific_metrics:
+      - "Billable utilization rates and revenue per employee"
+      - "Client satisfaction and retention correlation"
+      - "Professional development completion and certification rates"
+      
+  manufacturing_businesses:
+    focus_areas:
+      - "Safety training and compliance management"
+      - "Technical skills development and cross-training"
+      - "Shift management and 24/7 operations"
+      - "Lean manufacturing and continuous improvement culture"
+      
+    specific_metrics:
+      - "Safety incident rates and training effectiveness"
+      - "Production efficiency and quality correlation"
+      - "Skills versatility and cross-training completion"
+      
+  professional_services:
+    focus_areas:
+      - "Expertise development and thought leadership"
+      - "Project management and client delivery skills"
+      - "Business development and relationship building"
+      - "Knowledge capture and institutional learning"
+      
+    specific_metrics:
+      - "Expertise depth and industry recognition"
+      - "Project delivery quality and client satisfaction"
+      - "Business development contribution and success rates"
+
+business_size_adaptations:
+  small_businesses_under_25_employees:
+    approach: "Focus on essential HR fundamentals and compliance"
+    priorities:
+      - "Basic policy development and legal compliance"
+      - "Simple performance management and feedback"
+      - "Cost-effective recruitment and retention"
+      - "Essential training and development"
+      
+    simplified_processes:
+      - "Streamlined hiring process with basic documentation"
+      - "Informal but regular performance conversations"
+      - "Simple recognition and retention programs"
+      - "Outsourced HR support for complex issues"
+      
+  medium_businesses_25_75_employees:
+    approach: "Develop systematic HR processes and capabilities"
+    priorities:
+      - "Formal HR processes and system implementation"
+      - "Structured performance management and development"
+      - "Competitive compensation and benefits programs"
+      - "Management and leadership development"
+      
+    systematic_processes:
+      - "Documented hiring and onboarding processes"
+      - "Regular performance reviews and goal setting"
+      - "Market-competitive compensation analysis"
+      - "Manager training and development programs"
+      
+  larger_businesses_75_plus_employees:
+    approach: "Strategic HR function with advanced capabilities"
+    priorities:
+      - "Strategic HR planning and workforce analytics"
+      - "Advanced talent management and succession planning"
+      - "Comprehensive total rewards and engagement programs"
+      - "Cultural development and organizational effectiveness"
+      
+    advanced_capabilities:
+      - "Predictive analytics and workforce planning"
+      - "Leadership pipeline and succession management"
+      - "Employee engagement and culture initiatives"
+      - "Change management and organizational development"
+
+success_metrics:
+  operational_metrics:
+    recruitment_efficiency:
+      - "Time to hire (target: industry benchmark or better)"
+      - "Cost per hire reduction (target: 15-25% improvement)"
+      - "Quality of hire (performance ratings and retention)"
+      - "Candidate experience score (target: 4.0+ out of 5.0)"
+      
+    performance_management:
+      - "Performance review completion rate (target: 100%)"
+      - "Goal achievement rate (target: 80%+ of employees)"
+      - "Manager effectiveness scores (target: 4.0+ out of 5.0)"
+      - "Performance improvement success rate"
+      
+    employee_engagement:
+      - "Overall engagement score (target: 4.0+ out of 5.0)"
+      - "Employee satisfaction with management (target: 80%+)"
+      - "Voluntary turnover rate (target: industry benchmark or better)"
+      - "Internal promotion rate (target: 70%+ of leadership roles)"
+      
+  financial_metrics:
+    cost_management:
+      - "HR cost per employee (benchmark comparison)"
+      - "Turnover cost reduction (dollar amount and percentage)"
+      - "Recruitment cost optimization (cost per hire trends)"
+      - "Training ROI (productivity improvement measurement)"
+      
+    business_impact:
+      - "Revenue per employee improvement"
+      - "Customer satisfaction correlation with employee engagement"
+      - "Productivity metrics tied to HR initiatives"
+      - "Overall business performance correlation"
+      
+  strategic_metrics:
+    talent_pipeline:
+      - "Leadership bench strength assessment"
+      - "Critical role succession readiness"
+      - "Skills gap closure rate"
+      - "Employee development completion and application"
+      
+    organizational_health:
+      - "Culture alignment score"
+      - "Change readiness and adaptability"
+      - "Innovation and improvement suggestions"
+      - "Employee advocacy and referral rates"
+
+common_challenges:
+  small_business_hr_challenges:
+    resource_constraints:
+      challenge: "Limited budget and staff for HR functions"
+      solutions:
+        - "Prioritize high-impact, low-cost initiatives"
+        - "Leverage technology for efficiency gains"
+        - "Outsource complex HR functions selectively"
+        - "Focus on prevention rather than reactive management"
+        
+    expertise_gaps:
+      challenge: "Lack of specialized HR knowledge and experience"
+      solutions:
+        - "Partner with HR consultants for strategic guidance"
+        - "Join employer associations for resources and networking"
+        - "Invest in manager training and development"
+        - "Use templates and tools for consistency"
+        
+    compliance_complexity:
+      challenge: "Keeping up with changing employment laws and regulations"
+      solutions:
+        - "Establish relationships with employment law attorneys"
+        - "Subscribe to HR compliance services and updates"
+        - "Implement systematic policy review and update processes"
+        - "Document all HR decisions and actions thoroughly"
+        
+    scaling_challenges:
+      challenge: "HR processes that don't scale with business growth"
+      solutions:
+        - "Design processes with growth in mind"
+        - "Invest in scalable HR technology early"
+        - "Document and systematize successful practices"
+        - "Plan for HR capability development ahead of needs"
+
+usage_instructions:
+  assessment_preparation:
+    - "Schedule 4-6 hours for comprehensive HR assessment"
+    - "Gather employee demographics and organizational charts"
+    - "Collect HR policies, procedures, and documentation"
+    - "Prepare access to key stakeholders for interviews"
+    
+  data_collection:
+    - "Interview leadership team about HR strategy and challenges"
+    - "Survey employees about engagement and satisfaction"
+    - "Review HR metrics and performance data"
+    - "Analyze compensation and benefits competitiveness"
+    
+  analysis_process:
+    - "Complete all template sections systematically"
+    - "Calculate overall HR effectiveness score"
+    - "Identify top 5 improvement opportunities"
+    - "Develop prioritized action plan with timeline"
+    
+  implementation_planning:
+    - "Create phased implementation roadmap"
+    - "Assign ownership and accountability for initiatives"
+    - "Establish measurement and tracking mechanisms"
+    - "Plan for change management and communication"
+
+notes:
+  - "HR effectiveness directly impacts business performance and employee satisfaction"
+  - "Focus on compliance first, then optimization and strategic development"
+  - "Employee engagement is strongly correlated with retention and performance"
+  - "Invest in manager development for maximum impact across all HR areas"
+  - "Use data and metrics to demonstrate HR value and ROI"
+  - "Adapt HR practices to business size, industry, and culture"
+  - "Regular assessment and continuous improvement are essential for HR success"

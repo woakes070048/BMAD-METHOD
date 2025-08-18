@@ -1,0 +1,174 @@
+name: "Business Model Canvas Template"
+description: "Comprehensive Business Model Canvas template using the 9-building-block framework for strategic business model design and analysis"
+version: "1.0"
+category: "Business Model Design"
+tags: ["business-model", "canvas", "strategy", "value-proposition", "revenue-model"]
+
+placeholders:
+  target: "Product, service, or company to analyze"
+  stage: "Business stage (startup, growth, mature, transformation)"
+  focus: "Specific focus area or objective"
+  market_context: "Market and competitive context"
+
+template: |
+  # {{target}} - Business Model Canvas
+  
+  ## Executive Summary
+  This Business Model Canvas provides a comprehensive visual framework for understanding, designing, and analyzing the business model of {{target}}. The canvas follows the proven 9-building-block methodology developed by Alexander Osterwalder and Yves Pigneur.
+  
+  **Business Stage**: {{stage}}
+  **Focus Area**: {{focus}}
+  **Market Context**: {{market_context}}
+  
+  ## Introduction and Background
+  [Provide introduction and definition of {{target}}, including business overview, market position, and strategic context. If analyzing a public company, include stock ticker and financial highlights.]
+  
+  ## Business Model Canvas Framework
+  
+  ### 🤝 Key Partners
+  **Strategic Alliances, Suppliers, and Partner Network**
+  
+  * **[Partner Type 1]**: [Description of partnership value, strategic importance, and contribution to business model]
+  * **[Partner Type 2]**: [Analysis of supplier relationships, dependencies, and strategic value]
+  * **[Partner Type 3]**: [Evaluation of joint ventures, alliances, or ecosystem partnerships]
+  * **[Partner Type 4]**: [Assessment of third-party service providers and their strategic role]
+  
+  **Partnership Strategy**: [Overall approach to partnerships and ecosystem development]
+  
+  ### 🎯 Key Activities
+  **Core Business Processes and Value-Creating Activities**
+  
+  * **[Activity 1]**: [Detailed description of core business process and its importance to value creation]
+  * **[Activity 2]**: [Analysis of operational activities critical to business model execution]
+  * **[Activity 3]**: [Evaluation of platform/network activities and their strategic value]
+  * **[Activity 4]**: [Assessment of innovation, R&D, or problem-solving activities]
+  
+  **Activity Optimization**: [Approach to optimizing and scaling key activities]
+  
+  ### 🛠️ Key Resources
+  **Critical Assets and Capabilities Required**
+  
+  * **[Resource 1]**: [Description of physical assets, infrastructure, or technology resources]
+  * **[Resource 2]**: [Analysis of intellectual property, data, or knowledge assets]
+  * **[Resource 3]**: [Evaluation of human resources, capabilities, and expertise]
+  * **[Resource 4]**: [Assessment of financial resources, capital, or funding requirements]
+  
+  **Resource Strategy**: [Approach to acquiring, developing, and leveraging key resources]
+  
+  ### 💎 Value Propositions
+  **Unique Value Created for Customer Segments**
+  
+  * **[Value Prop 1]**: [Core customer benefit, problem solved, or outcome delivered]
+  * **[Value Prop 2]**: [Unique features, performance, or quality attributes]
+  * **[Value Prop 3]**: [Convenience, accessibility, or experience improvements]
+  * **[Value Prop 4]**: [Cost reduction, risk mitigation, or efficiency gains]
+  
+  **Differentiation Strategy**: [How value propositions create competitive advantage]
+  
+  ### 💝 Customer Relationships
+  **Types of Relationships Established with Customer Segments**
+  
+  * **[Relationship 1]**: [Personal service, dedicated support, or high-touch interactions]
+  * **[Relationship 2]**: [Self-service capabilities, automated interactions, or digital platforms]
+  * **[Relationship 3]**: [Community building, user-generated content, or co-creation]
+  * **[Relationship 4]**: [Subscription model, loyalty programs, or retention strategies]
+  
+  **Relationship Strategy**: [Approach to customer acquisition, retention, and lifetime value]
+  
+  ### 📢 Channels
+  **How Value is Delivered and Customers are Reached**
+  
+  * **[Channel 1]**: [Direct sales, retail, or distribution channel strategy]
+  * **[Channel 2]**: [Digital channels, online platforms, or e-commerce approach]
+  * **[Channel 3]**: [Partner channels, intermediaries, or third-party distribution]
+  * **[Channel 4]**: [Marketing, communication, or customer touchpoint channels]
+  
+  **Channel Strategy**: [Multi-channel approach and channel optimization]
+  
+  ### 👥 Customer Segments
+  **Distinct Groups of People or Organizations Served**
+  
+  * **[Segment 1]**: [Primary customer segment characteristics, needs, and behaviors]
+  * **[Segment 2]**: [Secondary segment profile and specific value requirements]
+  * **[Segment 3]**: [Niche segment or specialized customer group]
+  * **[Segment 4]**: [Multi-sided platform users or ecosystem participants]
+  
+  **Segmentation Strategy**: [Approach to customer segmentation and targeting]
+  
+  ### 💰 Revenue Streams
+  **Cash Generated from Each Customer Segment**
+  
+  * **[Revenue Stream 1]**: [Primary revenue source, pricing model, and payment structure]
+  * **[Revenue Stream 2]**: [Subscription, recurring, or usage-based revenue]
+  * **[Revenue Stream 3]**: [Transaction fees, commissions, or marketplace revenue]
+  * **[Revenue Stream 4]**: [Licensing, advertising, or ancillary revenue sources]
+  
+  **Revenue Strategy**: [Revenue model optimization and diversification approach]
+  
+  ### 💸 Cost Structure
+  **Key Costs Incurred to Operate the Business Model**
+  
+  * **[Cost Category 1]**: [Fixed costs, infrastructure, or operational expenses]
+  * **[Cost Category 2]**: [Variable costs, production, or transaction-based costs]
+  * **[Cost Category 3]**: [Customer acquisition, marketing, or sales costs]
+  * **[Cost Category 4]**: [Technology, R&D, or capability development costs]
+  
+  **Cost Strategy**: [Cost optimization and efficiency improvement approach]
+  
+  ## Business Model Analysis
+  
+  ### Model Coherence Assessment
+  * **Internal Consistency**: [How well all canvas elements work together]
+  * **Value Logic**: [Clarity of value creation and capture mechanism]
+  * **Scalability**: [Ability to grow and scale the business model]
+  * **Sustainability**: [Long-term viability and competitive protection]
+  
+  ### Competitive Positioning
+  * **Differentiation**: [How the business model differs from competitors]
+  * **Competitive Advantages**: [Sustainable advantages created by the model]
+  * **Market Position**: [Strategic position within industry value chain]
+  * **Innovation Potential**: [Opportunities for business model innovation]
+  
+  ### Financial Implications
+  * **Unit Economics**: [Revenue per customer vs. customer acquisition cost]
+  * **Margin Structure**: [Gross margins and contribution economics]
+  * **Capital Requirements**: [Investment needs and funding requirements]
+  * **Growth Economics**: [Financial dynamics of scaling the business]
+  
+  ## Strategic Recommendations
+  
+  ### Business Model Strengths
+  1. **[Strength 1]**: [Key advantage of current business model design]
+  2. **[Strength 2]**: [Competitive moat or sustainable differentiation]
+  3. **[Strength 3]**: [Scalability or efficiency advantage]
+  
+  ### Areas for Improvement
+  1. **[Improvement 1]**: [Specific enhancement to business model elements]
+  2. **[Improvement 2]**: [Optimization opportunity for better performance]
+  3. **[Improvement 3]**: [Innovation potential for competitive advantage]
+  
+  ### Strategic Options
+  1. **[Option 1]**: [Alternative business model configuration or extension]
+  2. **[Option 2]**: [Adjacent market or customer segment opportunity]
+  3. **[Option 3]**: [Partnership or ecosystem expansion possibility]
+  
+  ## Implementation Roadmap
+  
+  ### Phase 1: Foundation (Months 1-3)
+  - [Key implementation milestones and activities]
+  
+  ### Phase 2: Development (Months 4-9)
+  - [Business model development and validation activities]
+  
+  ### Phase 3: Scaling (Months 10-18)
+  - [Growth and optimization initiatives]
+  
+  ## Conclusion
+  [Strategic conclusion summarizing the business model analysis, key insights, and recommendations for {{target}}. Include assessment of model viability and strategic priorities.]
+  
+  ---
+  
+  **Canvas Methodology**: This Business Model Canvas follows the proven 9-building-block framework and professional business model design practices.
+  
+  **Last Updated**: [Current Date]
+  **Analyst**: [Analyst Name/Team]
