@@ -1,0 +1,447 @@
+name: "airtable-to-erpnext-migration"
+title: "Airtable to ERPNext Migration Workflow"
+description: "Comprehensive workflow for migrating Airtable databases and processes to ERPNext"
+version: "1.0.0"
+
+metadata:
+  category: "data_migration"
+  complexity: "medium-high"
+  estimated_duration: "4-12 weeks"
+  target_users: ["data_migration_specialists", "business_analysts", "developers"]
+  prerequisites:
+    - "Airtable base access and API credentials"
+    - "ERPNext development and production environments"
+    - "Business process documentation"
+    - "Data governance requirements"
+
+workflow_steps:
+  analyze_airtable_base:
+    title: "Analyze Airtable Base Structure and Data"
+    description: "Comprehensive analysis of Airtable bases, tables, fields, and relationships"
+    agents: ["airtable-analyzer", "business-analyst"]
+    duration: "1-2 weeks"
+    inputs:
+      - "Airtable base access credentials"
+      - "Base schema and table structures"
+      - "View configurations and filters"
+      - "Formula and automation definitions"
+    outputs:
+      - "Airtable structure analysis report"
+      - "Data volume and complexity assessment"
+      - "Relationship mapping documentation"
+      - "Business logic extraction report"
+      - "Data quality assessment"
+    tasks:
+      - "Extract complete Airtable base schema using API"
+      - "Document all tables, fields, and data types"
+      - "Analyze relationships and linked records"
+      - "Document views, filters, and sorting configurations"
+      - "Extract formulas and calculated field logic"
+      - "Analyze Airtable automations and workflows"
+      - "Assess data quality and consistency issues"
+      - "Document user permissions and sharing settings"
+
+  map_tables_to_doctypes:
+    title: "Map Airtable Tables to ERPNext DocTypes"
+    description: "Design DocType structure and field mappings for ERPNext"
+    agents: ["doctype-designer", "airtable-analyzer", "business-analyst"]
+    duration: "1-2 weeks"
+    dependencies: ["analyze_airtable_base"]
+    inputs:
+      - "Airtable structure analysis"
+      - "ERPNext DocType standards"
+      - "Business process requirements"
+    outputs:
+      - "DocType mapping specifications"
+      - "Field type conversion matrix"
+      - "Relationship design documentation"
+      - "Custom field requirements"
+      - "Data validation rules"
+    tasks:
+      - "Map each Airtable table to appropriate ERPNext DocType"
+      - "Design field mappings with proper ERPNext field types"
+      - "Plan relationship structures using Link and Table fields"
+      - "Define custom fields needed in standard DocTypes"
+      - "Map Airtable formula fields to ERPNext calculations"
+      - "Design permission structures based on Airtable sharing"
+      - "Plan data validation and business rule implementations"
+      - "Design naming conventions and series"
+
+  design_data_migration_strategy:
+    title: "Design Comprehensive Migration Strategy"
+    description: "Create detailed strategy for data migration and validation"
+    agents: ["data-integration-expert", "erpnext-architect"]
+    duration: "1-2 weeks"
+    dependencies: ["map_tables_to_doctypes"]
+    inputs:
+      - "DocType mapping specifications"
+      - "Data volume estimates"
+      - "Business continuity requirements"
+    outputs:
+      - "Migration strategy document"
+      - "Data extraction and transformation plan"
+      - "Migration sequencing and dependencies"
+      - "Validation and quality assurance plan"
+      - "Rollback and contingency procedures"
+    tasks:
+      - "Design data extraction strategy from Airtable API"
+      - "Plan data transformation and cleanup procedures"
+      - "Define migration sequencing based on dependencies"
+      - "Design incremental migration approach for large datasets"
+      - "Plan data validation and verification procedures"
+      - "Design rollback and error recovery mechanisms"
+      - "Plan for business continuity during migration"
+      - "Define success criteria and validation checkpoints"
+
+  create_erpnext_structure:
+    title: "Create ERPNext Structure and Configuration"
+    description: "Implement DocTypes and configure ERPNext for migrated data"
+    agents: ["doctype-designer", "erpnext-architect"]
+    duration: "2-3 weeks"
+    dependencies: ["design_data_migration_strategy"]
+    inputs:
+      - "DocType mapping specifications"
+      - "ERPNext configuration requirements"
+      - "Permission and workflow requirements"
+    outputs:
+      - "Custom DocType implementations"
+      - "Field configurations and validations"
+      - "Permission and role configurations"
+      - "Workflow and automation setup"
+    tasks:
+      - "Create custom DocTypes based on mapping specifications"
+      - "Configure custom fields in standard ERPNext DocTypes"
+      - "Set up field validations and business rules"
+      - "Configure naming series and auto-naming rules"
+      - "Set up user roles and permissions"
+      - "Configure workflows for approval processes"
+      - "Set up print formats and email templates"
+      - "Create necessary custom scripts and automations"
+
+  develop_migration_scripts:
+    title: "Develop Data Migration and Transformation Scripts"
+    description: "Create robust scripts for data extraction, transformation, and loading"
+    agents: ["data-integration-expert", "api-developer"]
+    duration: "2-4 weeks"
+    dependencies: ["create_erpnext_structure"]
+    inputs:
+      - "Migration strategy document"
+      - "Data transformation requirements"
+      - "ERPNext data structure"
+    outputs:
+      - "Data extraction scripts"
+      - "Transformation and cleanup scripts"
+      - "Data loading and validation scripts"
+      - "Error handling and logging mechanisms"
+    tasks:
+      - "Develop Airtable API data extraction scripts"
+      - "Create data transformation and cleaning functions"
+      - "Implement data validation and quality checks"
+      - "Develop ERPNext data loading procedures"
+      - "Create error handling and retry mechanisms"
+      - "Implement comprehensive logging and monitoring"
+      - "Develop incremental migration capabilities"
+      - "Create data comparison and validation tools"
+
+  execute_data_migration:
+    title: "Execute Phased Data Migration"
+    description: "Perform actual data migration with monitoring and validation"
+    agents: ["data-integration-expert", "testing-specialist"]
+    duration: "1-3 weeks"
+    dependencies: ["develop_migration_scripts"]
+    inputs:
+      - "Migration scripts and procedures"
+      - "Test data sets"
+      - "Production migration plan"
+    outputs:
+      - "Migrated data in ERPNext"
+      - "Migration execution reports"
+      - "Data validation results"
+      - "Issue tracking and resolution log"
+    tasks:
+      - "Execute test migrations with sample data sets"
+      - "Perform full migration in staging environment"
+      - "Validate migrated data accuracy and completeness"
+      - "Execute production data migration"
+      - "Monitor migration progress and performance"
+      - "Handle migration errors and data issues"
+      - "Perform post-migration data validation"
+      - "Generate comprehensive migration reports"
+
+  validate_migrated_data:
+    title: "Comprehensive Data Validation and Quality Assurance"
+    description: "Thorough validation of migrated data integrity and accuracy"
+    agents: ["testing-specialist", "business-analyst"]
+    duration: "1-2 weeks"
+    dependencies: ["execute_data_migration"]
+    inputs:
+      - "Migrated data in ERPNext"
+      - "Original Airtable data"
+      - "Validation criteria and test cases"
+    outputs:
+      - "Data validation reports"
+      - "Quality assurance results"
+      - "Data discrepancy analysis"
+      - "Corrective action recommendations"
+    tasks:
+      - "Compare record counts between Airtable and ERPNext"
+      - "Validate data integrity and field mappings"
+      - "Check relationship consistency and links"
+      - "Validate calculated fields and formulas"
+      - "Test data retrieval and search functionality"
+      - "Validate user permissions and access controls"
+      - "Check print formats and report generation"
+      - "Perform business process validation testing"
+
+  recreate_automations_and_workflows:
+    title: "Recreate Airtable Automations in ERPNext"
+    description: "Implement Airtable automations as ERPNext workflows and scripts"
+    agents: ["workflow-specialist", "api-developer"]
+    duration: "2-4 weeks"
+    dependencies: ["validate_migrated_data"]
+    inputs:
+      - "Airtable automation documentation"
+      - "Business process requirements"
+      - "ERPNext workflow capabilities"
+    outputs:
+      - "ERPNext workflow implementations"
+      - "Custom automation scripts"
+      - "Scheduled job configurations"
+      - "Notification and alert systems"
+    tasks:
+      - "Analyze Airtable automation triggers and actions"
+      - "Design equivalent ERPNext workflows"
+      - "Implement custom scripts for complex automations"
+      - "Set up scheduled jobs for recurring processes"
+      - "Configure email notifications and alerts"
+      - "Implement approval workflows and routing"
+      - "Create custom buttons and actions"
+      - "Set up integration webhooks where needed"
+
+  train_users_on_erpnext:
+    title: "User Training and Change Management"
+    description: "Comprehensive user training and change management support"
+    agents: ["business-analyst", "training-specialist"]
+    duration: "2-4 weeks"
+    dependencies: ["recreate_automations_and_workflows"]
+    inputs:
+      - "ERPNext system configuration"
+      - "User role definitions"
+      - "Business process documentation"
+    outputs:
+      - "Training materials and documentation"
+      - "User guides and tutorials"
+      - "Training session completion"
+      - "User adoption metrics"
+    tasks:
+      - "Create comprehensive user training materials"
+      - "Develop role-specific training programs"
+      - "Conduct hands-on training sessions"
+      - "Create video tutorials and documentation"
+      - "Set up user support and help systems"
+      - "Implement change management strategies"
+      - "Monitor user adoption and feedback"
+      - "Provide ongoing support during transition"
+
+  go_live_and_support:
+    title: "Go-Live Support and Post-Migration Optimization"
+    description: "Production cutover and ongoing support for optimized operations"
+    agents: ["bench-operator", "business-analyst", "testing-specialist"]
+    duration: "2-4 weeks"
+    dependencies: ["train_users_on_erpnext"]
+    inputs:
+      - "Fully configured ERPNext system"
+      - "Trained user base"
+      - "Support procedures"
+    outputs:
+      - "Production system cutover"
+      - "Performance monitoring setup"
+      - "User support system"
+      - "Continuous improvement plan"
+    tasks:
+      - "Execute production cutover from Airtable to ERPNext"
+      - "Monitor system performance and user activity"
+      - "Provide immediate post-go-live support"
+      - "Address user issues and system optimizations"
+      - "Set up ongoing performance monitoring"
+      - "Implement feedback collection mechanisms"
+      - "Plan for continuous system improvements"
+      - "Document lessons learned and best practices"
+
+validation_gates:
+  airtable_analysis_complete:
+    description: "Airtable structure and data analysis completed"
+    criteria:
+      - "All tables and fields documented"
+      - "Relationships mapped and validated"
+      - "Data quality assessment completed"
+      - "Business logic extracted and documented"
+
+  doctype_mapping_approved:
+    description: "DocType mapping strategy approved by stakeholders"
+    criteria:
+      - "All table-to-DocType mappings defined"
+      - "Field type conversions validated"
+      - "Relationship structures approved"
+      - "Business stakeholder sign-off obtained"
+
+  migration_strategy_finalized:
+    description: "Data migration strategy designed and approved"
+    criteria:
+      - "Migration approach documented and approved"
+      - "Risk mitigation strategies defined"
+      - "Validation procedures established"
+      - "Rollback procedures tested"
+
+  erpnext_structure_ready:
+    description: "ERPNext structure created and tested"
+    criteria:
+      - "All DocTypes implemented and tested"
+      - "Permissions configured correctly"
+      - "Validations working as expected"
+      - "System ready for data loading"
+
+  migration_scripts_tested:
+    description: "Migration scripts developed and thoroughly tested"
+    criteria:
+      - "All scripts developed and tested"
+      - "Error handling validated"
+      - "Performance benchmarks met"
+      - "Test migrations successful"
+
+  data_migration_successful:
+    description: "Data migration completed successfully"
+    criteria:
+      - "All data migrated without critical errors"
+      - "Data integrity validated"
+      - "Performance within acceptable limits"
+      - "Backup and rollback procedures confirmed"
+
+  data_validation_passed:
+    description: "Migrated data validation completed successfully"
+    criteria:
+      - "Data accuracy validated"
+      - "Business rules functioning correctly"
+      - "Relationships and links verified"
+      - "Quality assurance criteria met"
+
+  automations_implemented:
+    description: "Airtable automations recreated in ERPNext"
+    criteria:
+      - "All critical automations implemented"
+      - "Workflows tested and validated"
+      - "Business processes functioning correctly"
+      - "Performance acceptable"
+
+  users_trained:
+    description: "Users trained and ready for production use"
+    criteria:
+      - "Training programs completed"
+      - "User competency validated"
+      - "Support systems established"
+      - "Change management completed"
+
+  go_live_successful:
+    description: "Production go-live completed successfully"
+    criteria:
+      - "System cutover executed smoothly"
+      - "User adoption progressing well"
+      - "Performance within SLAs"
+      - "Support systems operational"
+
+success_criteria:
+  data_migration:
+    - "100% of critical data migrated accurately"
+    - "Data integrity maintained throughout migration"
+    - "All relationships and links preserved"
+    - "Performance meets or exceeds Airtable experience"
+    - "Zero critical data loss or corruption"
+
+  functionality:
+    - "All business processes functioning in ERPNext"
+    - "Automations working as expected"
+    - "User workflows optimized for ERPNext"
+    - "Reporting and analytics capabilities enhanced"
+    - "Integration points established and tested"
+
+  user_adoption:
+    - "90%+ user adoption within 30 days"
+    - "User satisfaction scores >85%"
+    - "Reduced support tickets over time"
+    - "Improved process efficiency metrics"
+    - "Successful change management outcomes"
+
+migration_patterns:
+  field_type_mappings:
+    single_line_text: "Data field"
+    long_text: "Text or Small Text field"
+    attachment: "Attach field"
+    checkbox: "Check field"
+    multiple_select: "Table with link fields"
+    single_select: "Select field"
+    number: "Int or Float field"
+    currency: "Currency field"
+    percent: "Percent field"
+    date: "Date field"
+    datetime: "Datetime field"
+    phone_number: "Phone field (custom)"
+    email: "Data field with email validation"
+    url: "Data field with URL validation"
+    rating: "Select field with number options"
+    formula: "Read Only field with custom script"
+    rollup: "Custom script in controller"
+    count: "Custom calculation method"
+    lookup: "Link field with fetch_from"
+
+  relationship_mappings:
+    linked_record: "Link field in ERPNext"
+    multiple_linked_records: "Table field with links"
+    lookup_field: "Link field with fetch_from property"
+    rollup_field: "Custom calculation in controller"
+
+quality_assurance:
+  data_quality_checks:
+    - "Record count validation between systems"
+    - "Field value accuracy verification"
+    - "Relationship integrity validation"
+    - "Formula calculation verification"
+    - "Attachment and file migration validation"
+
+  performance_validation:
+    - "Data loading performance benchmarks"
+    - "Query response time validation"
+    - "System resource utilization monitoring"
+    - "Concurrent user capacity testing"
+    - "Large dataset handling validation"
+
+risk_management:
+  migration_risks:
+    - risk: "Data loss during migration"
+      mitigation: "Comprehensive backup and validation procedures"
+      owner: "data-integration-expert"
+    
+    - risk: "Extended downtime during cutover"
+      mitigation: "Incremental migration and minimal cutover window"
+      owner: "bench-operator"
+    
+    - risk: "User resistance to new system"
+      mitigation: "Comprehensive change management and training"
+      owner: "business-analyst"
+    
+    - risk: "Performance degradation with large datasets"
+      mitigation: "Performance testing and optimization"
+      owner: "erpnext-architect"
+
+post_migration_support:
+  immediate_support:
+    - "24/7 support during first week post-go-live"
+    - "Dedicated support team for user issues"
+    - "Performance monitoring and optimization"
+    - "Bug fixes and immediate improvements"
+
+  ongoing_optimization:
+    - "Regular performance monitoring and tuning"
+    - "User feedback collection and implementation"
+    - "Process optimization recommendations"
+    - "Feature enhancement planning"
+    - "System health checks and maintenance"

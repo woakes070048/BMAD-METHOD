@@ -1,0 +1,813 @@
+name: "workflow-patterns"
+title: "ERPNext Workflow Development Patterns"
+description: "Comprehensive patterns for building robust workflows and business process automation in ERPNext v15"
+version: "1.0.0"
+
+# Core Workflow Patterns
+core_workflow_patterns:
+  workflow_design_principles:
+    state_management: |
+      # Define clear workflow states
+      workflow_states = [
+          {
+              "state": "Draft",
+              "doc_status": 0,
+              "allow_edit": ["System Manager", "Sales User"],
+              "style": "Primary"
+          },
+          {
+              "state": "Pending Approval", 
+              "doc_status": 0,
+              "allow_edit": ["Sales Manager"],
+              "style": "Warning"
+          },
+          {
+              "state": "Approved",
+              "doc_status": 1,
+              "allow_edit": [],
+              "style": "Success"
+          },
+          {
+              "state": "Rejected",
+              "doc_status": 2,
+              "allow_edit": ["Sales User"],
+              "style": "Danger"
+          }
+      ]
+    
+    transition_logic: |
+      # Define workflow transitions with conditions
+      workflow_transitions = [
+          {
+              "state": "Draft",
+              "action": "Submit for Approval",
+              "next_state": "Pending Approval",
+              "allowed": ["Sales User"],
+              "condition": "doc.grand_total > 0 and doc.customer"
+          },
+          {
+              "state": "Pending Approval",
+              "action": "Approve",
+              "next_state": "Approved", 
+              "allowed": ["Sales Manager"],
+              "condition": "frappe.session.user != doc.owner"  # No self-approval
+          },
+          {
+              "state": "Pending Approval",
+              "action": "Reject",
+              "next_state": "Rejected",
+              "allowed": ["Sales Manager"],
+              "condition": "doc.rejection_reason"
+          }
+      ]
+    
+    approval_hierarchy: |
+      def get_approval_hierarchy():
+          """Define multi-level approval hierarchy"""
+          return {
+              "levels": [
+                  {
+                      "level": 1,
+                      "roles": ["Team Lead"],
+                      "amount_limit": 10000,
+                      "required": True
+                  },
+                  {
+                      "level": 2,
+                      "roles": ["Manager"],
+                      "amount_limit": 50000,
+                      "required": True
+                  },
+                  {
+                      "level": 3,
+                      "roles": ["Director"],
+                      "amount_limit": 200000,
+                      "required": True
+                  },
+                  {
+                      "level": 4,
+                      "roles": ["CEO"],
+                      "amount_limit": None,  # No limit
+                      "required": False  # Optional final approval
+                  }
+              ]
+          }
+
+  workflow_controller_patterns:
+    workflow_event_handler: |
+      def handle_workflow_state_change(doc, method):
+          """Handle workflow state changes"""
+          
+          # Get previous state
+          if doc.is_new():
+              previous_state = None
+          else:
+              previous_state = doc.get_db_value("workflow_state")
+          
+          current_state = doc.workflow_state
+          
+          # Only process if state actually changed
+          if previous_state != current_state:
+              
+              # State-specific handlers
+              if current_state == "Pending Approval":
+                  handle_approval_request(doc, previous_state)
+              
+              elif current_state == "Approved":
+                  handle_approval_granted(doc, previous_state)
+              
+              elif current_state == "Rejected":
+                  handle_rejection(doc, previous_state)
+              
+              # Log state change
+              log_workflow_state_change(doc, previous_state, current_state)
+              
+              # Send notifications
+              send_workflow_notifications(doc, previous_state, current_state)
+    
+    conditional_workflow_logic: |
+      def check_workflow_conditions(doc, action):
+          """Check conditions before allowing workflow action"""
+          
+          conditions = {
+              "Submit for Approval": [
+                  ("doc.grand_total > 0", "Amount must be greater than zero"),
+                  ("doc.customer", "Customer is required"),
+                  ("len(doc.items) > 0", "At least one item is required")
+              ],
+              
+              "Approve": [
+                  ("frappe.session.user != doc.owner", "Cannot self-approve"),
+                  ("check_approval_authority(doc)", "Insufficient approval authority"),
+                  ("doc.workflow_state == 'Pending Approval'", "Document not ready for approval")
+              ],
+              
+              "Reject": [
+                  ("doc.rejection_reason", "Rejection reason is required"),
+                  ("frappe.session.user != doc.owner", "Cannot self-reject")
+              ]
+          }
+          
+          action_conditions = conditions.get(action, [])
+          
+          for condition, error_message in action_conditions:
+              try:
+                  if not eval(condition):
+                      frappe.throw(_(error_message))
+              except Exception as e:
+                  frappe.throw(_("Condition check failed: {0}").format(error_message))
+    
+    workflow_automation: |
+      def automate_workflow_actions(doc):
+          """Automate certain workflow actions based on conditions"""
+          
+          # Auto-approve small amounts for trusted customers
+          if (doc.workflow_state == "Pending Approval" and 
+              doc.grand_total <= 1000 and 
+              is_trusted_customer(doc.customer)):
+              
+              # Auto-approve
+              doc.workflow_state = "Approved"
+              doc.approved_by = "System Auto-Approval"
+              doc.approval_date = frappe.utils.now()
+              
+              # Add comment
+              doc.add_comment("Workflow", "Auto-approved for trusted customer")
+          
+          # Escalate overdue approvals
+          elif (doc.workflow_state == "Pending Approval" and 
+                is_approval_overdue(doc)):
+              
+              escalate_approval(doc)
+          
+          # Auto-reject if conditions are not met
+          elif should_auto_reject(doc):
+              doc.workflow_state = "Rejected"
+              doc.rejection_reason = "Automated rejection due to policy violation"
+
+  parallel_workflow_patterns:
+    parallel_approval_system: |
+      def create_parallel_approval_workflow(doc):
+          """Create parallel approval workflow for complex documents"""
+          
+          # Define parallel approval tracks
+          approval_tracks = [
+              {
+                  "track": "financial",
+                  "approvers": get_financial_approvers(doc.grand_total),
+                  "required": True
+              },
+              {
+                  "track": "technical", 
+                  "approvers": get_technical_approvers(doc.items),
+                  "required": doc.requires_technical_approval
+              },
+              {
+                  "track": "legal",
+                  "approvers": get_legal_approvers(),
+                  "required": doc.requires_legal_approval
+              }
+          ]
+          
+          # Create approval records for each track
+          for track in approval_tracks:
+              if track["required"]:
+                  create_approval_track(doc, track)
+          
+          return approval_tracks
+    
+    parallel_execution_handler: |
+      def handle_parallel_workflow(doc, method):
+          """Handle parallel workflow execution"""
+          
+          if doc.workflow_state == "Pending Parallel Approval":
+              
+              # Check completion status of all tracks
+              approval_status = check_parallel_approval_status(doc)
+              
+              # All tracks completed
+              if approval_status["all_completed"]:
+                  if approval_status["all_approved"]:
+                      doc.workflow_state = "Approved"
+                      finalize_approval(doc)
+                  else:
+                      doc.workflow_state = "Rejected" 
+                      handle_parallel_rejection(doc, approval_status["rejections"])
+              
+              # Partial completion - update progress
+              else:
+                  update_approval_progress(doc, approval_status)
+    
+    conditional_parallel_flow: |
+      def setup_conditional_parallel_workflow(doc):
+          """Set up conditional parallel workflow branches"""
+          
+          workflow_branches = []
+          
+          # Branch 1: High-value orders need CFO approval
+          if doc.grand_total > 100000:
+              workflow_branches.append({
+                  "branch": "cfo_approval",
+                  "condition": "doc.grand_total > 100000",
+                  "approvers": ["CFO"],
+                  "priority": 1
+              })
+          
+          # Branch 2: International orders need compliance approval
+          if is_international_customer(doc.customer):
+              workflow_branches.append({
+                  "branch": "compliance_approval",
+                  "condition": "is_international_customer(doc.customer)",
+                  "approvers": ["Compliance Officer"],
+                  "priority": 2
+              })
+          
+          # Branch 3: Custom items need technical approval
+          if has_custom_items(doc.items):
+              workflow_branches.append({
+                  "branch": "technical_approval", 
+                  "condition": "has_custom_items(doc.items)",
+                  "approvers": ["Technical Manager"],
+                  "priority": 3
+              })
+          
+          return workflow_branches
+
+  workflow_notification_patterns:
+    notification_system: |
+      def send_workflow_notifications(doc, previous_state, current_state):
+          """Comprehensive workflow notification system"""
+          
+          notification_config = {
+              "Pending Approval": {
+                  "recipients": get_approvers(doc),
+                  "template": "approval_request",
+                  "subject": "Approval Required: {doctype} {name}",
+                  "priority": "high"
+              },
+              
+              "Approved": {
+                  "recipients": [doc.owner] + get_stakeholders(doc),
+                  "template": "approval_granted",
+                  "subject": "Approved: {doctype} {name}",
+                  "priority": "medium"
+              },
+              
+              "Rejected": {
+                  "recipients": [doc.owner],
+                  "template": "approval_rejected", 
+                  "subject": "Rejected: {doctype} {name}",
+                  "priority": "high"
+              }
+          }
+          
+          config = notification_config.get(current_state)
+          if config:
+              send_notification(doc, config)
+    
+    escalation_notifications: |
+      def handle_workflow_escalation(doc):
+          """Handle escalation notifications for overdue approvals"""
+          
+          escalation_rules = [
+              {
+                  "hours": 24,
+                  "action": "remind_approver",
+                  "recipients": get_current_approvers(doc)
+              },
+              {
+                  "hours": 48,
+                  "action": "escalate_to_manager",
+                  "recipients": get_manager_emails(get_current_approvers(doc))
+              },
+              {
+                  "hours": 72,
+                  "action": "executive_escalation",
+                  "recipients": get_executive_team()
+              }
+          ]
+          
+          hours_pending = get_hours_since_state_change(doc)
+          
+          for rule in escalation_rules:
+              if hours_pending >= rule["hours"]:
+                  if not has_escalation_been_sent(doc, rule["action"]):
+                      send_escalation_notification(doc, rule)
+                      mark_escalation_sent(doc, rule["action"])
+    
+    custom_notification_channels: |
+      def send_multi_channel_notifications(doc, notification_type):
+          """Send notifications through multiple channels"""
+          
+          channels = get_notification_channels(notification_type)
+          
+          for channel in channels:
+              if channel["type"] == "email":
+                  send_email_notification(doc, channel)
+              
+              elif channel["type"] == "slack":
+                  send_slack_notification(doc, channel)
+              
+              elif channel["type"] == "sms":
+                  send_sms_notification(doc, channel)
+              
+              elif channel["type"] == "push":
+                  send_push_notification(doc, channel)
+              
+              elif channel["type"] == "webhook":
+                  trigger_webhook_notification(doc, channel)
+
+  workflow_automation_patterns:
+    scheduled_workflow_actions: |
+      def process_scheduled_workflow_actions():
+          """Process scheduled workflow actions"""
+          
+          # Auto-approve overdue low-value orders
+          auto_approve_criteria = {
+              "workflow_state": "Pending Approval",
+              "grand_total": ["<=", 5000],
+              "creation": ["<=", frappe.utils.add_days(frappe.utils.now(), -3)]
+          }
+          
+          overdue_orders = frappe.get_all("Sales Order", 
+              filters=auto_approve_criteria,
+              fields=["name"]
+          )
+          
+          for order in overdue_orders:
+              doc = frappe.get_doc("Sales Order", order.name)
+              doc.workflow_state = "Approved"
+              doc.approved_by = "System Auto-Approval (Overdue)"
+              doc.approval_date = frappe.utils.now()
+              doc.save()
+              
+              # Notify stakeholders
+              notify_auto_approval(doc)
+    
+    conditional_automation: |
+      def setup_conditional_automation_rules(doc):
+          """Set up conditional automation rules"""
+          
+          automation_rules = [
+              {
+                  "condition": "doc.customer_group == 'VIP' and doc.grand_total <= 10000",
+                  "action": "auto_approve",
+                  "delay": 0  # Immediate
+              },
+              {
+                  "condition": "doc.payment_terms_template == 'Cash on Delivery'",
+                  "action": "expedite_approval",
+                  "delay": 0
+              },
+              {
+                  "condition": "get_customer_credit_score(doc.customer) < 50",
+                  "action": "require_additional_approval",
+                  "delay": 0
+              },
+              {
+                  "condition": "doc.delivery_date and doc.delivery_date < frappe.utils.add_days(frappe.utils.today(), 2)",
+                  "action": "urgent_processing",
+                  "delay": 0
+              }
+          ]
+          
+          for rule in automation_rules:
+              if eval(rule["condition"]):
+                  schedule_automation_action(doc, rule)
+    
+    workflow_integration: |
+      def integrate_with_external_workflow(doc, action):
+          """Integrate ERPNext workflow with external systems"""
+          
+          external_integrations = {
+              "approval_system": {
+                  "url": "https://approval-system.company.com/api/requests",
+                  "method": "POST",
+                  "headers": {"Authorization": "Bearer TOKEN"},
+                  "data_mapping": {
+                      "request_id": "name",
+                      "amount": "grand_total",
+                      "requester": "owner",
+                      "department": "department"
+                  }
+              },
+              
+              "audit_system": {
+                  "url": "https://audit-system.company.com/api/logs",
+                  "method": "POST",
+                  "data_mapping": {
+                      "document_type": "doctype",
+                      "document_id": "name", 
+                      "action": "workflow_state",
+                      "user": "modified_by"
+                  }
+              }
+          }
+          
+          for system, config in external_integrations.items():
+              try:
+                  send_to_external_system(doc, config)
+              except Exception as e:
+                  frappe.log_error(f"External integration failed for {system}: {str(e)}")
+
+# Advanced Workflow Patterns
+advanced_workflow_patterns:
+  dynamic_workflow_generation: |
+    def generate_dynamic_workflow(doc_type, business_rules):
+        """Generate workflow dynamically based on business rules"""
+        
+        workflow = {
+            "workflow_name": f"Dynamic {doc_type} Workflow",
+            "document_type": doc_type,
+            "states": [],
+            "transitions": []
+        }
+        
+        # Generate states based on rules
+        for rule in business_rules:
+            if rule["type"] == "approval_rule":
+                workflow["states"].extend(
+                    generate_approval_states(rule)
+                )
+            elif rule["type"] == "validation_rule":
+                workflow["states"].extend(
+                    generate_validation_states(rule)
+                )
+        
+        # Generate transitions
+        workflow["transitions"] = generate_transitions(workflow["states"])
+        
+        return workflow
+  
+  workflow_template_system: |
+    def create_workflow_from_template(template_name, customizations=None):
+        """Create workflow from predefined templates"""
+        
+        templates = {
+            "simple_approval": {
+                "states": ["Draft", "Pending Approval", "Approved", "Rejected"],
+                "transitions": [
+                    ("Draft", "Submit", "Pending Approval"),
+                    ("Pending Approval", "Approve", "Approved"),
+                    ("Pending Approval", "Reject", "Rejected")
+                ]
+            },
+            
+            "multi_level_approval": {
+                "states": ["Draft", "Level 1 Approval", "Level 2 Approval", "Approved", "Rejected"],
+                "transitions": [
+                    ("Draft", "Submit", "Level 1 Approval"),
+                    ("Level 1 Approval", "Level 1 Approve", "Level 2 Approval"),
+                    ("Level 2 Approval", "Final Approve", "Approved"),
+                    ("Level 1 Approval", "Reject", "Rejected"),
+                    ("Level 2 Approval", "Reject", "Rejected")
+                ]
+            },
+            
+            "parallel_approval": {
+                "states": ["Draft", "Parallel Approval", "Final Review", "Approved", "Rejected"],
+                "parallel_tracks": ["Financial", "Technical", "Legal"]
+            }
+        }
+        
+        base_template = templates.get(template_name)
+        if customizations:
+            base_template = apply_customizations(base_template, customizations)
+        
+        return create_workflow_document(base_template)
+  
+  workflow_analytics: |
+    def analyze_workflow_performance():
+        """Analyze workflow performance and bottlenecks"""
+        
+        analytics = {
+            "average_approval_time": calculate_average_approval_time(),
+            "bottleneck_states": identify_bottleneck_states(),
+            "approval_rates": calculate_approval_rates(),
+            "escalation_frequency": calculate_escalation_frequency(),
+            "top_rejectors": get_top_rejectors(),
+            "seasonal_patterns": analyze_seasonal_patterns()
+        }
+        
+        # Generate recommendations
+        recommendations = generate_workflow_recommendations(analytics)
+        
+        return {
+            "analytics": analytics,
+            "recommendations": recommendations,
+            "generated_at": frappe.utils.now()
+        }
+
+# Workflow Testing Patterns  
+workflow_testing_patterns:
+  workflow_unit_tests: |
+    class TestSalesOrderWorkflow(FrappeTestCase):
+        
+        def setUp(self):
+            self.sales_order = create_test_sales_order()
+            
+        def test_workflow_state_transitions(self):
+            """Test valid workflow state transitions"""
+            
+            # Test initial state
+            self.assertEqual(self.sales_order.workflow_state, "Draft")
+            
+            # Test submission
+            self.sales_order.workflow_state = "Pending Approval"
+            self.sales_order.save()
+            self.assertEqual(self.sales_order.workflow_state, "Pending Approval")
+            
+            # Test approval
+            frappe.set_user("sales_manager@test.com")
+            self.sales_order.workflow_state = "Approved"
+            self.sales_order.save()
+            self.assertEqual(self.sales_order.workflow_state, "Approved")
+        
+        def test_workflow_permissions(self):
+            """Test workflow permission enforcement"""
+            
+            # Sales user should not be able to approve
+            frappe.set_user("sales_user@test.com")
+            
+            with self.assertRaises(frappe.PermissionError):
+                self.sales_order.workflow_state = "Approved"
+                self.sales_order.save()
+        
+        def test_workflow_conditions(self):
+            """Test workflow condition validation"""
+            
+            # Should not allow approval without customer
+            self.sales_order.customer = None
+            
+            with self.assertRaises(frappe.ValidationError):
+                self.sales_order.workflow_state = "Pending Approval"
+                self.sales_order.save()
+  
+  workflow_integration_tests: |
+    class TestWorkflowIntegration(FrappeTestCase):
+        
+        def test_complete_workflow_cycle(self):
+            """Test complete workflow from creation to completion"""
+            
+            # Create document
+            doc = create_test_document()
+            
+            # Submit for approval
+            doc.workflow_state = "Pending Approval"
+            doc.save()
+            
+            # Verify notification was sent
+            notifications = get_recent_notifications("approval_request")
+            self.assertTrue(len(notifications) > 0)
+            
+            # Approve document
+            frappe.set_user("approver@test.com")
+            doc.workflow_state = "Approved"
+            doc.save()
+            
+            # Verify approval notification
+            approval_notifications = get_recent_notifications("approval_granted")
+            self.assertTrue(len(approval_notifications) > 0)
+            
+            # Verify document status
+            self.assertEqual(doc.docstatus, 1)
+        
+        def test_workflow_escalation(self):
+            """Test workflow escalation mechanism"""
+            
+            doc = create_overdue_document()
+            
+            # Trigger escalation
+            process_workflow_escalations()
+            
+            # Verify escalation notification was sent
+            escalation_logs = get_escalation_logs(doc.name)
+            self.assertTrue(len(escalation_logs) > 0)
+  
+  workflow_performance_tests: |
+    def test_workflow_performance():
+        """Test workflow performance under load"""
+        
+        import time
+        
+        # Create multiple documents
+        docs = []
+        for i in range(100):
+            doc = create_test_document(f"PERF-{i}")
+            docs.append(doc)
+        
+        # Time workflow processing
+        start_time = time.time()
+        
+        for doc in docs:
+            doc.workflow_state = "Pending Approval"
+            doc.save()
+        
+        processing_time = time.time() - start_time
+        
+        # Assert reasonable processing time (< 5 seconds for 100 docs)
+        assert processing_time < 5.0, f"Workflow processing too slow: {processing_time}s"
+        
+        # Test concurrent workflow actions
+        from concurrent.futures import ThreadPoolExecutor
+        
+        def approve_document(doc_name):
+            doc = frappe.get_doc("Test DocType", doc_name)
+            doc.workflow_state = "Approved"
+            doc.save()
+            return doc.name
+        
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = [executor.submit(approve_document, doc.name) for doc in docs[:50]]
+            results = [future.result() for future in futures]
+        
+        # Verify all documents were processed
+        assert len(results) == 50
+
+# Workflow Monitoring Patterns
+monitoring_patterns:
+  workflow_dashboard: |
+    def get_workflow_dashboard_data():
+        """Get comprehensive workflow monitoring data"""
+        
+        dashboard_data = {
+            "pending_approvals": get_pending_approvals_count(),
+            "overdue_approvals": get_overdue_approvals_count(),
+            "daily_throughput": get_daily_approval_throughput(),
+            "approval_trends": get_approval_trends(),
+            "bottleneck_analysis": analyze_workflow_bottlenecks(),
+            "user_performance": get_approver_performance_metrics()
+        }
+        
+        return dashboard_data
+  
+  workflow_metrics: |
+    def calculate_workflow_metrics():
+        """Calculate key workflow performance metrics"""
+        
+        metrics = {}
+        
+        # Average approval time
+        metrics["avg_approval_time"] = frappe.db.sql("""
+            SELECT AVG(TIMESTAMPDIFF(HOUR, creation, modified)) as avg_hours
+            FROM `tabSales Order`
+            WHERE workflow_state = 'Approved'
+            AND DATE(creation) >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+        """)[0][0]
+        
+        # Approval rate
+        total_submitted = frappe.db.count("Sales Order", {
+            "workflow_state": ["in", ["Approved", "Rejected"]],
+            "creation": [">=", frappe.utils.add_days(frappe.utils.today(), -30)]
+        })
+        
+        approved = frappe.db.count("Sales Order", {
+            "workflow_state": "Approved",
+            "creation": [">=", frappe.utils.add_days(frappe.utils.today(), -30)]
+        })
+        
+        metrics["approval_rate"] = (approved / max(total_submitted, 1)) * 100
+        
+        # Escalation rate
+        escalations = frappe.db.count("Workflow Escalation", {
+            "creation": [">=", frappe.utils.add_days(frappe.utils.today(), -30)]
+        })
+        
+        metrics["escalation_rate"] = (escalations / max(total_submitted, 1)) * 100
+        
+        return metrics
+  
+  workflow_alerts: |
+    def check_workflow_alerts():
+        """Check for workflow issues and send alerts"""
+        
+        alerts = []
+        
+        # Check for overdue approvals
+        overdue_approvals = frappe.db.sql("""
+            SELECT COUNT(*) as count
+            FROM `tabSales Order`
+            WHERE workflow_state = 'Pending Approval'
+            AND creation < DATE_SUB(NOW(), INTERVAL 48 HOUR)
+        """)[0][0]
+        
+        if overdue_approvals > 10:
+            alerts.append({
+                "type": "warning",
+                "message": f"{overdue_approvals} approvals are overdue",
+                "action": "review_overdue_approvals"
+            })
+        
+        # Check for high rejection rate
+        recent_rejections = frappe.db.sql("""
+            SELECT COUNT(*) as count
+            FROM `tabSales Order`
+            WHERE workflow_state = 'Rejected'
+            AND DATE(creation) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        """)[0][0]
+        
+        if recent_rejections > 20:
+            alerts.append({
+                "type": "critical",
+                "message": f"High rejection rate: {recent_rejections} rejections this week",
+                "action": "investigate_rejection_causes"
+            })
+        
+        # Send alerts if any
+        if alerts:
+            send_workflow_alerts(alerts)
+        
+        return alerts
+
+# Workflow Best Practices
+best_practices:
+  design_guidelines:
+    - "Keep workflows simple with minimal states (3-7 states maximum)"
+    - "Ensure clear transition paths between states"
+    - "Use meaningful state names that reflect business process"
+    - "Implement proper permission controls for each state"
+    - "Design for scalability and performance"
+    
+  implementation_tips:
+    - "Always validate workflow conditions before state changes"
+    - "Implement comprehensive error handling in workflow hooks"
+    - "Use background jobs for heavy workflow processing"
+    - "Log all workflow actions for audit trails"
+    - "Test workflow with real user scenarios"
+    
+  performance_optimization:
+    - "Use database indexes on workflow state fields"
+    - "Implement caching for frequently accessed workflow data"
+    - "Optimize notification queries to avoid N+1 problems"
+    - "Use bulk operations for workflow state updates"
+    - "Monitor workflow performance metrics regularly"
+    
+  security_considerations:
+    - "Validate user permissions at each workflow transition"
+    - "Implement approval limits and escalation rules"
+    - "Log all workflow actions for security auditing"
+    - "Prevent unauthorized workflow state manipulation"
+    - "Secure workflow notification channels"
+
+# Anti-Patterns to Avoid
+anti_patterns:
+  common_mistakes:
+    - pattern: "Complex workflows with too many states"
+      issue: "Difficult to maintain and understand"
+      solution: "Break into multiple simpler workflows"
+      
+    - pattern: "Missing permission validation in workflow hooks"
+      issue: "Security vulnerability"
+      solution: "Always check permissions before state changes"
+      
+    - pattern: "Synchronous heavy processing in workflow hooks"
+      issue: "Poor performance and timeouts"
+      solution: "Use background jobs for heavy operations"
+      
+    - pattern: "Not handling workflow errors gracefully"
+      issue: "Documents stuck in invalid states"
+      solution: "Implement comprehensive error handling"
+      
+    - pattern: "Hardcoded approval rules in code"
+      issue: "Difficult to modify business rules"
+      solution: "Use configurable approval rules"

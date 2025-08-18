@@ -1,0 +1,422 @@
+name: "combined-airtable-n8n-conversion"
+title: "Combined Airtable and n8n to ERPNext Conversion"
+description: "Comprehensive workflow for converting integrated Airtable databases and n8n automation workflows into a unified ERPNext solution"
+version: "1.0.0"
+
+metadata:
+  category: "comprehensive_migration"
+  complexity: "high"
+  estimated_duration: "8-20 weeks"
+  target_users: ["solution_architects", "migration_specialists", "business_analysts"]
+  prerequisites:
+    - "Access to both Airtable and n8n systems"
+    - "Understanding of existing integrations between systems"
+    - "ERPNext development and production environments"
+    - "Comprehensive business process documentation"
+
+workflow_steps:
+  analyze_airtable_and_n8n_systems:
+    title: "Analyze Integrated Airtable and n8n Systems"
+    description: "Comprehensive analysis of both systems and their integration points"
+    agents: ["airtable-analyzer", "n8n-workflow-analyst", "business-analyst"]
+    duration: "2-3 weeks"
+    inputs:
+      - "Airtable base access and documentation"
+      - "n8n workflow exports and configurations"
+      - "Integration documentation between systems"
+      - "Business process maps"
+    outputs:
+      - "Integrated system analysis report"
+      - "Data flow mapping between systems"
+      - "Automation dependency matrix"
+      - "Business process integration analysis"
+      - "Technical architecture overview"
+    tasks:
+      - "Analyze Airtable database structures and relationships"
+      - "Document n8n workflow logic and triggers"
+      - "Map data flows between Airtable and n8n systems"
+      - "Identify integration points and dependencies"
+      - "Document business processes spanning both systems"
+      - "Analyze automation triggers from Airtable to n8n"
+      - "Document external system integrations"
+      - "Assess data consistency and synchronization patterns"
+
+  identify_integration_points:
+    title: "Identify and Map System Integration Points"
+    description: "Detailed mapping of how Airtable and n8n systems interact"
+    agents: ["data-integration-expert", "workflow-specialist", "api-architect"]
+    duration: "1-2 weeks"
+    dependencies: ["analyze_airtable_and_n8n_systems"]
+    inputs:
+      - "Integrated system analysis"
+      - "Technical documentation"
+      - "API specifications and webhooks"
+    outputs:
+      - "Integration point specifications"
+      - "Data synchronization patterns"
+      - "Trigger and response mappings"
+      - "Unified data model design"
+    tasks:
+      - "Map Airtable webhook triggers to n8n workflows"
+      - "Document n8n data transformations affecting Airtable"
+      - "Identify shared data entities between systems"
+      - "Map external API calls affecting both systems"
+      - "Document timing dependencies and sequences"
+      - "Analyze error handling between systems"
+      - "Map user authentication and permissions across systems"
+      - "Document reporting and analytics integration points"
+
+  design_unified_erpnext_solution:
+    title: "Design Unified ERPNext Solution Architecture"
+    description: "Create comprehensive ERPNext architecture replacing both systems"
+    agents: ["erpnext-architect", "api-architect", "workflow-specialist"]
+    duration: "3-4 weeks"
+    dependencies: ["identify_integration_points"]
+    inputs:
+      - "Integration point specifications"
+      - "Business requirements consolidated from both systems"
+      - "ERPNext capabilities assessment"
+    outputs:
+      - "Unified solution architecture document"
+      - "DocType design specifications"
+      - "Workflow and automation architecture"
+      - "API and integration design"
+      - "Data model unification plan"
+    tasks:
+      - "Design unified DocType structure consolidating Airtable tables"
+      - "Plan ERPNext workflows replacing n8n automations"
+      - "Design API architecture for external integrations"
+      - "Create user interface and experience design"
+      - "Plan permission and security architecture"
+      - "Design reporting and analytics architecture"
+      - "Plan performance and scalability architecture"
+      - "Create deployment and infrastructure architecture"
+
+  migrate_airtable_data:
+    title: "Migrate and Consolidate Airtable Data"
+    description: "Extract, transform, and load Airtable data into ERPNext"
+    agents: ["data-integration-expert", "airtable-analyzer"]
+    duration: "3-5 weeks"
+    dependencies: ["design_unified_erpnext_solution"]
+    inputs:
+      - "Unified solution architecture"
+      - "Airtable data extraction requirements"
+      - "Data transformation specifications"
+    outputs:
+      - "Migrated Airtable data in ERPNext"
+      - "Data migration validation reports"
+      - "Data quality improvement documentation"
+      - "Migration performance metrics"
+    tasks:
+      - "Implement DocTypes based on unified architecture"
+      - "Extract all data from Airtable bases"
+      - "Transform data according to unified model"
+      - "Load data into ERPNext with validation"
+      - "Implement data quality improvements"
+      - "Validate data integrity and relationships"
+      - "Create data mapping documentation"
+      - "Implement data cleansing and normalization"
+
+  convert_n8n_workflows:
+    title: "Convert n8n Workflows to ERPNext Automation"
+    description: "Transform n8n workflows into native ERPNext automation"
+    agents: ["workflow-converter", "n8n-workflow-analyst", "api-developer"]
+    duration: "4-6 weeks"
+    dependencies: ["migrate_airtable_data"]
+    inputs:
+      - "n8n workflow specifications"
+      - "Migrated ERPNext data structure"
+      - "Integration requirements"
+    outputs:
+      - "ERPNext workflow implementations"
+      - "Custom automation scripts"
+      - "API integration endpoints"
+      - "Scheduled job configurations"
+    tasks:
+      - "Convert n8n triggers to ERPNext document events"
+      - "Transform n8n logic into ERPNext Python code"
+      - "Implement external API integrations in ERPNext"
+      - "Create custom workflows for approval processes"
+      - "Set up scheduled jobs for recurring automations"
+      - "Implement notification and alerting systems"
+      - "Create background job processing systems"
+      - "Implement error handling and retry mechanisms"
+
+  implement_unified_automation:
+    title: "Implement Unified Automation Framework"
+    description: "Create comprehensive automation replacing both systems"
+    agents: ["workflow-specialist", "api-developer", "erpnext-architect"]
+    duration: "2-4 weeks"
+    dependencies: ["convert_n8n_workflows"]
+    inputs:
+      - "Converted automation requirements"
+      - "Business process specifications"
+      - "Performance and scalability requirements"
+    outputs:
+      - "Unified automation framework"
+      - "Process orchestration engine"
+      - "Monitoring and logging system"
+      - "Performance optimization implementations"
+    tasks:
+      - "Implement process orchestration engine"
+      - "Create unified event handling system"
+      - "Set up comprehensive monitoring and logging"
+      - "Implement performance optimization features"
+      - "Create automation configuration management"
+      - "Implement dynamic workflow capabilities"
+      - "Set up automated testing and validation"
+      - "Create automation analytics and reporting"
+
+  create_comprehensive_solution:
+    title: "Create Comprehensive Integrated Solution"
+    description: "Finalize integrated ERPNext solution with all components"
+    agents: ["erpnext-architect", "frappe-ui-developer", "api-architect"]
+    duration: "3-4 weeks"
+    dependencies: ["implement_unified_automation"]
+    inputs:
+      - "All migrated data and automation"
+      - "User experience requirements"
+      - "Integration specifications"
+    outputs:
+      - "Complete ERPNext solution"
+      - "User interface implementations"
+      - "Advanced reporting and analytics"
+      - "Integration with external systems"
+    tasks:
+      - "Implement advanced user interfaces"
+      - "Create comprehensive reporting suite"
+      - "Implement advanced analytics and dashboards"
+      - "Set up complete external system integrations"
+      - "Implement advanced search and filtering"
+      - "Create mobile-responsive interfaces"
+      - "Implement collaboration and communication features"
+      - "Set up advanced security and audit features"
+
+  test_end_to_end_functionality:
+    title: "Comprehensive End-to-End Testing"
+    description: "Thorough testing of complete integrated solution"
+    agents: ["testing-specialist", "business-analyst", "erpnext-architect"]
+    duration: "3-4 weeks"
+    dependencies: ["create_comprehensive_solution"]
+    inputs:
+      - "Complete ERPNext solution"
+      - "Business process test scenarios"
+      - "Integration test requirements"
+    outputs:
+      - "Comprehensive test results"
+      - "Performance benchmarks"
+      - "User acceptance test validation"
+      - "Integration validation reports"
+    tasks:
+      - "Execute comprehensive functional testing"
+      - "Perform integration testing with external systems"
+      - "Conduct performance and load testing"
+      - "Execute user acceptance testing"
+      - "Test data migration accuracy and completeness"
+      - "Validate automation and workflow functionality"
+      - "Test security and permission configurations"
+      - "Conduct disaster recovery and backup testing"
+
+  deploy_complete_system:
+    title: "Deploy Complete Integrated System"
+    description: "Production deployment and go-live support"
+    agents: ["bench-operator", "testing-specialist", "business-analyst"]
+    duration: "2-3 weeks"
+    dependencies: ["test_end_to_end_functionality"]
+    inputs:
+      - "Tested complete solution"
+      - "Deployment procedures"
+      - "Training and support materials"
+    outputs:
+      - "Production ERPNext system"
+      - "User training completion"
+      - "Support system establishment"
+      - "Performance monitoring setup"
+    tasks:
+      - "Deploy complete system to production"
+      - "Execute comprehensive user training programs"
+      - "Set up production monitoring and alerting"
+      - "Provide go-live support and assistance"
+      - "Validate production system functionality"
+      - "Implement performance monitoring baselines"
+      - "Set up ongoing support procedures"
+      - "Create system maintenance schedules"
+
+validation_gates:
+  systems_analysis_complete:
+    description: "Comprehensive analysis of both systems completed"
+    criteria:
+      - "Airtable structure fully documented"
+      - "n8n workflows completely analyzed"
+      - "Integration points identified and mapped"
+      - "Business processes documented across both systems"
+
+  integration_mapping_finalized:
+    description: "Integration points mapped and validated"
+    criteria:
+      - "All data flows between systems documented"
+      - "Automation dependencies identified"
+      - "Integration complexity assessed"
+      - "Unified data model designed"
+
+  architecture_approved:
+    description: "Unified ERPNext solution architecture approved"
+    criteria:
+      - "Technical architecture reviewed and approved"
+      - "Scalability and performance requirements addressed"
+      - "Security architecture validated"
+      - "Integration architecture confirmed"
+
+  data_migration_successful:
+    description: "Airtable data successfully migrated to ERPNext"
+    criteria:
+      - "All data migrated with 100% accuracy"
+      - "Data relationships preserved"
+      - "Data quality improved where applicable"
+      - "Migration performance acceptable"
+
+  automation_conversion_complete:
+    description: "n8n workflows successfully converted"
+    criteria:
+      - "All critical automations converted"
+      - "Business logic preserved and enhanced"
+      - "External integrations maintained"
+      - "Performance meets or exceeds original"
+
+  unified_solution_ready:
+    description: "Complete integrated solution implemented"
+    criteria:
+      - "All components integrated and functional"
+      - "User experience optimized"
+      - "Advanced features implemented"
+      - "System performance optimized"
+
+  testing_comprehensive:
+    description: "End-to-end testing completed successfully"
+    criteria:
+      - "All business processes tested and validated"
+      - "Integration points tested thoroughly"
+      - "Performance benchmarks met"
+      - "User acceptance criteria satisfied"
+
+  deployment_successful:
+    description: "Production deployment completed successfully"
+    criteria:
+      - "System deployed without critical issues"
+      - "Users trained and productive"
+      - "Support systems operational"
+      - "Performance monitoring active"
+
+success_criteria:
+  functional_replacement:
+    - "100% of Airtable functionality preserved or improved"
+    - "100% of n8n automation functionality maintained"
+    - "All integration points working correctly"
+    - "Business processes operating efficiently"
+    - "Advanced features providing additional value"
+
+  performance_improvement:
+    - "System performance equal to or better than combined original systems"
+    - "Reduced complexity and maintenance overhead"
+    - "Improved data consistency and integrity"
+    - "Enhanced reporting and analytics capabilities"
+    - "Better user experience and productivity"
+
+  business_benefits:
+    - "Unified data model eliminating synchronization issues"
+    - "Consolidated user training and support requirements"
+    - "Reduced licensing and operational costs"
+    - "Improved business process visibility and control"
+    - "Enhanced scalability and growth capability"
+
+integration_complexity_matrix:
+  low_complexity:
+    - "Simple data migration with direct field mapping"
+    - "Basic n8n workflows with standard triggers"
+    - "Minimal external system integrations"
+    - "Straightforward business processes"
+
+  medium_complexity:
+    - "Complex data relationships requiring transformation"
+    - "Advanced n8n workflows with conditional logic"
+    - "Multiple external API integrations"
+    - "Moderate business process complexity"
+
+  high_complexity:
+    - "Custom business logic requiring significant transformation"
+    - "Complex n8n workflows with parallel processing"
+    - "Extensive external system ecosystem"
+    - "Highly customized business processes"
+
+risk_management:
+  technical_risks:
+    - risk: "Data loss during complex migration"
+      mitigation: "Comprehensive backup and phased migration approach"
+      owner: "data-integration-expert"
+    
+    - risk: "Integration complexity causing delays"
+      mitigation: "Detailed planning and prototype development"
+      owner: "erpnext-architect"
+    
+    - risk: "Performance degradation with unified system"
+      mitigation: "Performance testing and optimization throughout development"
+      owner: "erpnext-architect"
+
+  business_risks:
+    - risk: "User resistance to significant change"
+      mitigation: "Comprehensive change management and training program"
+      owner: "business-analyst"
+    
+    - risk: "Extended project timeline affecting business operations"
+      mitigation: "Phased approach with interim milestones and deliverables"
+      owner: "project-manager"
+
+quality_assurance:
+  comprehensive_validation:
+    - "Data accuracy validation between all systems"
+    - "Automation functionality preservation verification"
+    - "Integration point testing and validation"
+    - "Performance benchmarking against original systems"
+    - "User experience validation and optimization"
+
+  continuous_improvement:
+    - "Regular stakeholder feedback collection"
+    - "Performance monitoring and optimization"
+    - "Feature enhancement based on user needs"
+    - "System evolution planning and implementation"
+
+deliverables:
+  technical:
+    - "Unified ERPNext application replacing both systems"
+    - "Complete data migration from Airtable"
+    - "Converted n8n automation in ERPNext"
+    - "Integrated external system connections"
+    - "Advanced reporting and analytics"
+
+  documentation:
+    - "Comprehensive system architecture documentation"
+    - "User training materials and guides"
+    - "System administration procedures"
+    - "Integration and API documentation"
+    - "Troubleshooting and support guides"
+
+  operational:
+    - "Trained user base across all functions"
+    - "Established support and maintenance procedures"
+    - "Performance monitoring and alerting systems"
+    - "Backup and disaster recovery procedures"
+    - "Continuous improvement processes"
+
+project_governance:
+  steering_committee:
+    - "Regular progress reviews and decision making"
+    - "Risk assessment and mitigation approval"
+    - "Scope change management"
+    - "Resource allocation decisions"
+
+  quality_gates:
+    - "Architecture review and approval"
+    - "Migration validation checkpoints"
+    - "Integration testing milestones"
+    - "User acceptance validation"
+    - "Go-live readiness assessment"

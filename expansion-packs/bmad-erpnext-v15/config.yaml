@@ -1,0 +1,420 @@
+name: bmad-erpnext-v15
+version: 2.0.0
+short-title: ERPNext v15 Modern App Builder
+description: >-
+  Complete BMAD expansion pack for building modern ERPNext v15 apps with Vue SPA frontend.
+  Includes Vue 3, Frappe UI, PWA support, and comprehensive migration tools for Airtable and n8n.
+author: BMAD Team
+slashPrefix: bmadErpNext
+
+metadata:
+  target_framework: "Frappe Framework v15"
+  target_application: "ERPNext v15"
+  compatibility:
+    frappe: ">=15.0.0,<16.0.0"
+    erpnext: ">=15.0.0,<16.0.0"
+  dependencies:
+    - "frappe"
+    - "erpnext"
+  optional_dependencies:
+    - "payments"
+  frontend_stack:
+    - "Vue 3"
+    - "Vite"
+    - "frappe-ui"
+    - "TailwindCSS"
+    - "Pinia"
+
+environment:
+  bench_path: "/home/frappe/frappe-bench"
+  primary_site: "prima-erpnext.pegashosting.com"
+  user: "frappe"
+  development_directory: "/home/frappe/bmad-erpnext-development"
+  
+existing_apps:
+  installed:
+    - name: "frappe"
+      version: "15.75.0"
+      status: "active"
+    - name: "docflow"
+      type: "custom"
+      description: "Workflow management system"
+      integration_points:
+        - "workflow_engine"
+        - "approval_processes"
+    - name: "n8n_integration"
+      type: "custom"
+      description: "Automation and workflow integration"
+      integration_points:
+        - "webhook_triggers"
+        - "external_apis"
+  available:
+    - name: "erpnext"
+      version: "15.x"
+      status: "ready_to_install"
+    - name: "payments"
+      version: "15.x"
+      status: "ready_to_install"
+
+agents:
+  core:
+    - "erpnext-architect"
+    - "bench-operator"
+    - "doctype-designer"
+    - "api-developer"
+    - "workflow-specialist"
+    - "testing-specialist"
+    - "vue-frontend-architect"
+    - "frappe-ui-developer"
+    - "api-architect"
+    - "pwa-specialist"
+  frontend:
+    - "vue-frontend-architect"
+    - "vue-spa-architect"
+    - "frappe-ui-developer"
+    - "pwa-specialist"
+    - "mobile-ui-specialist"
+  backend:
+    - "api-architect"
+    - "api-developer"
+    - "doctype-designer"
+    - "data-integration-expert"
+  business_analysis:
+    - "business-analyst"
+    - "n8n-workflow-analyst"
+    - "airtable-analyzer"
+  automation:
+    - "n8n-workflow-analyst"
+    - "workflow-converter"
+    - "trigger-mapper"
+  migration:
+    - "airtable-analyzer"
+    - "workflow-converter"
+    - "business-analyst"
+  utilities:
+    - "jinja-template-specialist"
+  compliance:
+    - "frappe-compliance-validator"
+  
+agent_teams:
+  modern_app_team:
+    - "vue-frontend-architect"
+    - "vue-spa-architect"
+    - "frappe-ui-developer"
+    - "api-architect"
+    - "doctype-designer"
+    - "pwa-specialist"
+    - "jinja-template-specialist"
+  development_team:
+    - "erpnext-architect"
+    - "doctype-designer"
+    - "api-developer"
+    - "data-integration-expert"
+    - "jinja-template-specialist"
+  deployment_team:
+    - "bench-operator"
+    - "testing-specialist"
+    - "frappe-compliance-validator"
+  workflow_team:
+    - "workflow-specialist"
+    - "api-developer"
+    - "testing-specialist"
+  business_analysis_team:
+    - "business-analyst"
+    - "erpnext-architect"
+    - "doctype-designer"
+    - "api-architect"
+    - "jinja-template-specialist"
+  n8n_conversion_team:
+    - "n8n-workflow-analyst"
+    - "workflow-converter"
+    - "trigger-mapper"
+    - "api-developer"
+    - "jinja-template-specialist"
+  airtable_migration_team:
+    - "airtable-analyzer"
+    - "business-analyst"
+    - "doctype-designer"
+    - "api-developer"
+    - "data-integration-expert"
+    - "jinja-template-specialist"
+  automation_team:
+    - "workflow-converter"
+    - "trigger-mapper"
+    - "workflow-specialist"
+    - "api-developer"
+  mobile_team:
+    - "mobile-ui-specialist"
+    - "pwa-specialist"
+    - "vue-frontend-architect"
+    - "api-architect"
+
+templates:
+  core:
+    - "doctype-template.yaml"
+    - "api-endpoint-template.yaml"
+    - "workflow-template.yaml"
+    - "test-template.yaml"
+    - "app-structure-template.yaml"
+    - "vue-spa-template.yaml"
+    - "api-module-template.yaml"
+    - "frappe-ui-component-template.yaml"
+  automation:
+    - "n8n-to-erpnext-template.yaml"
+  migration:
+    - "n8n-to-erpnext-template.yaml"
+
+tasks:
+  development:
+    - "create-doctype.md"
+    - "create-api-endpoint.md"
+    - "setup-workflow.md"
+    - "create-unit-tests.md"
+    - "create-vue-spa.md"
+    - "setup-frappe-ui.md"
+    - "implement-pwa.md"
+    - "create-api-module.md"
+  frontend:
+    - "create-vue-spa.md"
+    - "setup-frappe-ui.md"
+    - "implement-pwa.md"
+    - "create-vue-components.md"
+  deployment:
+    - "install-app.md"
+    - "run-migrations.md"
+    - "run-tests.md"
+    - "build-frontend.md"
+  integration:
+    - "integrate-docflow.md"
+    - "setup-n8n-triggers.md"
+  automation:
+    - "convert-n8n-workflow.md"
+  migration:
+    - "convert-n8n-workflow.md"
+
+workflows:
+  modern_app_development:
+    - "analyze_requirements"
+    - "design_architecture"
+    - "setup_app_structure"
+    - "create_vue_spa"
+    - "create_doctypes"
+    - "build_api_modules"
+    - "implement_frappe_ui"
+    - "add_pwa_capabilities"
+    - "setup_workflows"
+    - "create_tests"
+    - "build_and_deploy"
+  
+  app_development:
+    - "analyze_requirements"
+    - "design_architecture"
+    - "create_doctypes"
+    - "build_apis"
+    - "setup_workflows"
+    - "create_tests"
+    - "deploy_and_validate"
+  
+  enhancement:
+    - "analyze_existing_system"
+    - "plan_integration"
+    - "implement_changes"
+    - "test_compatibility"
+    - "deploy_updates"
+  
+  business_analysis_to_app:
+    - "conduct_business_analysis"
+    - "identify_requirements"
+    - "design_solution_architecture"
+    - "create_functional_specifications"
+    - "develop_custom_doctypes"
+    - "implement_business_logic"
+    - "setup_workflows_and_automation"
+    - "create_reports_and_dashboards"
+    - "implement_integrations"
+    - "conduct_testing"
+    - "train_users_and_deploy"
+  
+  n8n_workflow_conversion:
+    - "analyze_n8n_workflow"
+    - "map_triggers_to_erpnext"
+    - "convert_workflow_logic"
+    - "generate_erpnext_code"
+    - "implement_automation"
+    - "setup_webhooks_and_apis"
+    - "configure_scheduled_jobs"
+    - "test_converted_workflow"
+    - "deploy_and_validate"
+  
+  airtable_to_erpnext_migration:
+    - "analyze_airtable_base"
+    - "map_tables_to_doctypes"
+    - "design_data_migration_strategy"
+    - "create_erpnext_structure"
+    - "develop_migration_scripts"
+    - "execute_data_migration"
+    - "validate_migrated_data"
+    - "recreate_automations_and_workflows"
+    - "train_users_on_erpnext"
+    - "go_live_and_support"
+  
+  combined_airtable_n8n_conversion:
+    - "analyze_airtable_and_n8n_systems"
+    - "identify_integration_points"
+    - "design_unified_erpnext_solution"
+    - "migrate_airtable_data"
+    - "convert_n8n_workflows"
+    - "implement_unified_automation"
+    - "create_comprehensive_solution"
+    - "test_end_to_end_functionality"
+    - "deploy_complete_system"
+
+data:
+  reference:
+    - "frappe-field-types.yaml"
+    - "erpnext-patterns.yaml"
+    - "api-patterns.yaml"
+    - "workflow-patterns.yaml"
+    - "testing-patterns.yaml"
+    - "frappe-ui-components.md"
+    - "frappe-ui-patterns.md"
+    - "vue-spa-patterns.md"
+    - "vue-frontend-architecture.md"
+    - "api-whitelisting-guide.md"
+    - "pwa-implementation.md"
+    - "modern-app-architecture.md"
+    - "mobile-desktop-patterns.md"
+    - "data-fetching-patterns.md"
+    - "erpnext-vue-integration.md"
+    - "n8n-node-mappings.yaml"
+    - "frappe-functionality-audit.md"
+    - "frappe-first-principles.md"
+    - "dry-principles-guide.md"
+    - "anti-patterns.md"
+
+checklists:
+  development:
+    - "app-creation-checklist.md"
+    - "development-checklist.md"
+    - "doctype-creation-checklist.md"
+    - "code-review-checklist.md"
+    - "api-development-checklist.md"
+  frontend:
+    - "vue-spa-checklist.md"
+    - "frappe-ui-compliance.md"
+  security:
+    - "security-checklist.md"
+    - "api-security-checklist.md"
+  performance:
+    - "performance-checklist.md"
+  deployment:
+    - "deployment-checklist.md"
+  testing:
+    - "testing-checklist.md"
+  documentation:
+    - "documentation-checklist.md"
+  integration:
+    - "multi-app-compatibility.md"
+
+integration:
+  existing_systems:
+    docflow:
+      description: "Workflow management system"
+      integration_points:
+        - "Use docflow for complex approval processes"
+        - "Leverage existing workflow templates"
+        - "Maintain compatibility with docflow APIs"
+      considerations:
+        - "Check docflow version compatibility"
+        - "Test workflow triggers"
+        - "Validate data flow between systems"
+    
+    n8n_integration:
+      description: "Automation platform integration"
+      integration_points:
+        - "Webhook triggers for external systems"
+        - "Automated data synchronization"
+        - "Event-driven processes"
+      considerations:
+        - "Test webhook endpoints"
+        - "Validate n8n workflow configurations"
+        - "Check authentication and security"
+  
+  migration_capabilities:
+    n8n_workflows:
+      description: "Convert n8n workflows to ERPNext automation"
+      capabilities:
+        - "Analyze n8n workflow JSON structure"
+        - "Map n8n nodes to ERPNext functionality"
+        - "Generate ERPNext automation code"
+        - "Create webhook endpoints and API handlers"
+        - "Convert triggers to ERPNext events"
+        - "Implement scheduled jobs from cron triggers"
+      agents:
+        - "n8n-workflow-analyst"
+        - "workflow-converter"
+        - "trigger-mapper"
+    
+    airtable_bases:
+      description: "Migrate Airtable databases to ERPNext"
+      capabilities:
+        - "Analyze Airtable base structure"
+        - "Map Airtable fields to ERPNext field types"
+        - "Convert relationships and formulas"
+        - "Generate migration scripts"
+        - "Validate data integrity"
+        - "Recreate views as ERPNext reports"
+      agents:
+        - "airtable-analyzer"
+        - "business-analyst"
+    
+    business_analysis:
+      description: "Comprehensive business process analysis"
+      capabilities:
+        - "Conduct stakeholder interviews"
+        - "Document current processes"
+        - "Design ERPNext solutions"
+        - "Create functional specifications"
+        - "Plan implementation roadmaps"
+        - "Estimate costs and timelines"
+      agents:
+        - "business-analyst"
+        - "erpnext-architect"
+
+settings:
+  development:
+    auto_reload: true
+    debug_mode: true
+    log_level: "DEBUG"
+    
+  frontend:
+    vite_dev_server: true
+    hot_module_replacement: true
+    frappe_ui_version: "0.1.171"
+    tailwind_config: true
+    pwa_enabled: true
+  
+  testing:
+    run_parallel_tests: false
+    test_timeout: 300
+    coverage_threshold: 80
+    frontend_tests: true
+  
+  deployment:
+    backup_before_deploy: true
+    validate_before_deploy: true
+    rollback_on_failure: true
+    build_frontend: true
+    optimize_bundle: true
+  
+  automation:
+    n8n_api_timeout: 30
+    webhook_retry_attempts: 3
+    background_job_timeout: 300
+    migration_batch_size: 100
+  
+  migration:
+    airtable_api_timeout: 60
+    data_validation_enabled: true
+    create_backup_before_migration: true
+    preserve_original_ids: true

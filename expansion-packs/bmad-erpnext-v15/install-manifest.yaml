@@ -1,0 +1,326 @@
+version: 2.0.0
+installed_at: '2025-08-12T03:44:33.033Z'
+install_type: expansion-pack
+expansion_pack_id: bmad-erpnext-v15
+expansion_pack_name: bmad-erpnext-v15
+ides_setup:
+  - claude-code
+files:
+  - path: .bmad-erpnext-v15/config.yaml
+    hash: 27a5d8d184846743
+    modified: false
+  - path: .bmad-erpnext-v15/README.md
+    hash: c04f1448a8a60d09
+    modified: false
+  - path: .bmad-erpnext-v15/workflows/n8n-workflow-conversion.yaml
+    hash: fdc2b8b3eaeab3f4
+    modified: false
+  - path: .bmad-erpnext-v15/workflows/modern-app-development.yaml
+    hash: 5462f836d219841a
+    modified: false
+  - path: .bmad-erpnext-v15/workflows/enhancement.yaml
+    hash: 83b04087358be9cc
+    modified: false
+  - path: .bmad-erpnext-v15/workflows/combined-airtable-n8n-conversion.yaml
+    hash: 36e5d9bf5d81cb97
+    modified: false
+  - path: .bmad-erpnext-v15/workflows/business-analysis-to-app.yaml
+    hash: bfa6abb5f80b46d6
+    modified: false
+  - path: .bmad-erpnext-v15/workflows/app-development.yaml
+    hash: 438155b05d5444dc
+    modified: false
+  - path: .bmad-erpnext-v15/workflows/airtable-to-erpnext-migration.yaml
+    hash: a500c37e517014e7
+    modified: false
+  - path: .bmad-erpnext-v15/utils/workflow-management.md
+    hash: b148df3ebb1f9c61
+    modified: false
+  - path: .bmad-erpnext-v15/utils/bmad-doc-template.md
+    hash: 4b2f7c4408835b9e
+    modified: false
+  - path: .bmad-erpnext-v15/templates/workflow-template.yaml
+    hash: cee3b5ae0f514e86
+    modified: false
+  - path: .bmad-erpnext-v15/templates/vue-spa-template.yaml
+    hash: 347e2c09e844ed0b
+    modified: false
+  - path: .bmad-erpnext-v15/templates/test-template.yaml
+    hash: 01fb08b41e203bdc
+    modified: false
+  - path: .bmad-erpnext-v15/templates/n8n-to-erpnext-template.yaml
+    hash: 963953b856f86c59
+    modified: false
+  - path: .bmad-erpnext-v15/templates/frappe-ui-component-template.yaml
+    hash: 4fcbfda5c951e28c
+    modified: false
+  - path: .bmad-erpnext-v15/templates/doctype-template.yaml
+    hash: 7a406fd731d5c240
+    modified: false
+  - path: .bmad-erpnext-v15/templates/app-structure-template.yaml
+    hash: 5171dba68aa9bb79
+    modified: false
+  - path: .bmad-erpnext-v15/templates/api-module-template.yaml
+    hash: db8e03efa54933a8
+    modified: false
+  - path: .bmad-erpnext-v15/templates/api-endpoint-template.yaml
+    hash: ea68b55662f5a2d0
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/setup-workflow.md
+    hash: 28f2142bb115682a
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/setup-n8n-triggers.md
+    hash: d3531381bb8b03fa
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/setup-frappe-ui.md
+    hash: d1429b9ccc48a16a
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/run-tests.md
+    hash: 71341ad87772be44
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/run-migrations.md
+    hash: 362f1d270e0c22b8
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/kb-mode-interaction.md
+    hash: 9c73e5ff25ef4890
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/integrate-docflow.md
+    hash: d1201d6554d1cb58
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/install-app.md
+    hash: 6234bf2a215460c0
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/implement-pwa.md
+    hash: 95b3f7748a212ffb
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/execute-checklist.md
+    hash: 1557c0a856c389b9
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/create-vue-spa.md
+    hash: d1e7c772acf3c962
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/create-vue-components.md
+    hash: 645a7523d9b2e7bf
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/create-unit-tests.md
+    hash: 833f02024d58d46d
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/create-doctype.md
+    hash: 3206a0fb5143476c
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/create-doc.md
+    hash: 395719b8a002f7f9
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/create-api-module.md
+    hash: b0a5569c8dd0916a
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/create-api-endpoint.md
+    hash: 5a2f7f5af6ef05bd
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/convert-n8n-workflow.md
+    hash: 69fa1e8cc0aaa24b
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/build-frontend.md
+    hash: 546d4f1159067163
+    modified: false
+  - path: .bmad-erpnext-v15/tasks/advanced-elicitation.md
+    hash: 28e3b538dc6fe104
+    modified: false
+  - path: .bmad-erpnext-v15/data/workflow-patterns.yaml
+    hash: 1534eca8b2778323
+    modified: false
+  - path: .bmad-erpnext-v15/data/vue-spa-patterns.md
+    hash: 3e843e25abfae55d
+    modified: false
+  - path: .bmad-erpnext-v15/data/vue-frontend-architecture.md
+    hash: 67ac5dbd848d2563
+    modified: false
+  - path: .bmad-erpnext-v15/data/testing-patterns.yaml
+    hash: 7e7e8e9c3d645d19
+    modified: false
+  - path: .bmad-erpnext-v15/data/pwa-implementation.md
+    hash: cdb43e1a7d5a85fa
+    modified: false
+  - path: .bmad-erpnext-v15/data/n8n-node-mappings.yaml
+    hash: 0b9222b573cafd51
+    modified: false
+  - path: .bmad-erpnext-v15/data/modern-app-architecture.md
+    hash: 31850d1056be1f03
+    modified: false
+  - path: .bmad-erpnext-v15/data/mobile-desktop-patterns.md
+    hash: c99335330e269f37
+    modified: false
+  - path: .bmad-erpnext-v15/data/frappe-ui-patterns.md
+    hash: 2cc3f580eb965028
+    modified: false
+  - path: .bmad-erpnext-v15/data/frappe-ui-components.md
+    hash: 30ee560095e2e2d5
+    modified: false
+  - path: .bmad-erpnext-v15/data/frappe-functionality-audit.md
+    hash: e4f2126b11543c23
+    modified: false
+  - path: .bmad-erpnext-v15/data/frappe-first-principles.md
+    hash: a4442b284b51311a
+    modified: false
+  - path: .bmad-erpnext-v15/data/frappe-field-types.yaml
+    hash: f4bc7d7f2ed7e755
+    modified: false
+  - path: .bmad-erpnext-v15/data/erpnext-vue-integration.md
+    hash: df0120cad9d3d687
+    modified: false
+  - path: .bmad-erpnext-v15/data/erpnext-patterns.yaml
+    hash: 527eb1b8e8245cae
+    modified: false
+  - path: .bmad-erpnext-v15/data/elicitation-methods.md
+    hash: 6c4d7716010e8d55
+    modified: false
+  - path: .bmad-erpnext-v15/data/dry-principles-guide.md
+    hash: a53f2f565a88331e
+    modified: false
+  - path: .bmad-erpnext-v15/data/data-fetching-patterns.md
+    hash: e4a0d298c22e098e
+    modified: false
+  - path: .bmad-erpnext-v15/data/bmad-kb.md
+    hash: fd0d443bd30753c5
+    modified: false
+  - path: .bmad-erpnext-v15/data/api-whitelisting-guide.md
+    hash: 95b1fa7f41e83c5b
+    modified: false
+  - path: .bmad-erpnext-v15/data/api-patterns.yaml
+    hash: f21fd29fd953cba5
+    modified: false
+  - path: .bmad-erpnext-v15/data/anti-patterns.md
+    hash: 9cae9922c52abfc1
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/vue-spa-checklist.md
+    hash: 585bedb9d2f4c685
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/testing-checklist.md
+    hash: 9b171aa39de6a061
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/security-checklist.md
+    hash: 8e80de9c3ced65db
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/performance-checklist.md
+    hash: 1760def358b0166a
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/multi-app-compatibility.md
+    hash: 09d6b07bc51e95ad
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/frappe-ui-compliance.md
+    hash: e50e5b96e9a1d67d
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/documentation-checklist.md
+    hash: f05774eda8577e20
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/doctype-creation-checklist.md
+    hash: 2cca0671546eaf59
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/development-checklist.md
+    hash: c849470f7f8d84d7
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/deployment-checklist.md
+    hash: 0e5743fdf97e9144
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/code-review-checklist.md
+    hash: f73661548e9dad71
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/app-creation-checklist.md
+    hash: 8129e431012a049a
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/api-security-checklist.md
+    hash: 51a1d54e6185d58a
+    modified: false
+  - path: .bmad-erpnext-v15/checklists/api-development-checklist.md
+    hash: f4badeecf28749a8
+    modified: false
+  - path: .bmad-erpnext-v15/agents/workflow-specialist.md
+    hash: 05fb03e732fef527
+    modified: false
+  - path: .bmad-erpnext-v15/agents/workflow-converter.md
+    hash: 7df31d7bdbfb247e
+    modified: false
+  - path: .bmad-erpnext-v15/agents/vue-spa-architect.md
+    hash: 2108ec367238d5bc
+    modified: false
+  - path: .bmad-erpnext-v15/agents/vue-frontend-architect.md
+    hash: 74abcf89c9a171c0
+    modified: false
+  - path: .bmad-erpnext-v15/agents/trigger-mapper.md
+    hash: 0c013ebad3b4ec38
+    modified: false
+  - path: .bmad-erpnext-v15/agents/testing-specialist.md
+    hash: f20869e5d7343594
+    modified: false
+  - path: .bmad-erpnext-v15/agents/pwa-specialist.md
+    hash: b75ae82cb11e6000
+    modified: false
+  - path: .bmad-erpnext-v15/agents/n8n-workflow-analyst.md
+    hash: 589ddcf2cb50dfb4
+    modified: false
+  - path: .bmad-erpnext-v15/agents/mobile-ui-specialist.md
+    hash: 9d000dc39646f3b8
+    modified: false
+  - path: .bmad-erpnext-v15/agents/jinja-template-specialist.md
+    hash: 3aa9852786b66bed
+    modified: false
+  - path: .bmad-erpnext-v15/agents/frappe-ui-developer.md
+    hash: 6c665cbe6f38abae
+    modified: false
+  - path: .bmad-erpnext-v15/agents/frappe-compliance-validator.md
+    hash: 2af05ea57a80c6ad
+    modified: false
+  - path: .bmad-erpnext-v15/agents/erpnext-architect.md
+    hash: bc0e06fffb7f99ca
+    modified: false
+  - path: .bmad-erpnext-v15/agents/doctype-designer.md
+    hash: 98b889cd53e53b93
+    modified: false
+  - path: .bmad-erpnext-v15/agents/data-integration-expert.md
+    hash: b4cefa75b8c05d5a
+    modified: false
+  - path: .bmad-erpnext-v15/agents/business-analyst.md
+    hash: ff5ba222a2a08681
+    modified: false
+  - path: .bmad-erpnext-v15/agents/bmad-orchestrator.md
+    hash: 3c100e5e2a2945d7
+    modified: false
+  - path: .bmad-erpnext-v15/agents/bench-operator.md
+    hash: 47c6d466270b7fe9
+    modified: false
+  - path: .bmad-erpnext-v15/agents/api-developer.md
+    hash: e1869b2e0cbe85b1
+    modified: false
+  - path: .bmad-erpnext-v15/agents/api-architect.md
+    hash: 2e884d1eab2a9362
+    modified: false
+  - path: .bmad-erpnext-v15/agents/airtable-analyzer.md
+    hash: eff88f5f67971a7a
+    modified: false
+  - path: .bmad-erpnext-v15/agent-teams/workflow-team.yaml
+    hash: 0ad461c83c5d07f5
+    modified: false
+  - path: .bmad-erpnext-v15/agent-teams/n8n-conversion-team.yaml
+    hash: 1f75334f87057c18
+    modified: false
+  - path: .bmad-erpnext-v15/agent-teams/modern-app-team.yaml
+    hash: e41013160b7bedd2
+    modified: false
+  - path: .bmad-erpnext-v15/agent-teams/mobile-team.yaml
+    hash: 2096c3a6c18b1fce
+    modified: false
+  - path: .bmad-erpnext-v15/agent-teams/development-team.yaml
+    hash: f27db977b900dec5
+    modified: false
+  - path: .bmad-erpnext-v15/agent-teams/deployment-team.yaml
+    hash: 54ba50a19f0fd954
+    modified: false
+  - path: .bmad-erpnext-v15/agent-teams/business-analysis-team.yaml
+    hash: cc864bb81f365ade
+    modified: false
+  - path: .bmad-erpnext-v15/agent-teams/automation-team.yaml
+    hash: b53c4a2736147bfa
+    modified: false
+  - path: .bmad-erpnext-v15/agent-teams/airtable-migration-team.yaml
+    hash: b2c091146a3c3841
+    modified: false

@@ -1,0 +1,424 @@
+name: "business-analysis-to-app"
+title: "Business Analysis to Custom ERPNext App Workflow"
+description: "Complete workflow from business process analysis to fully deployed custom ERPNext application"
+version: "1.0.0"
+
+metadata:
+  category: "full_development"
+  complexity: "high"
+  estimated_duration: "8-16 weeks"
+  target_users: ["business_analysts", "solution_architects", "project_managers"]
+  prerequisites:
+    - "Business stakeholder access"
+    - "ERPNext development environment"
+    - "Project requirements approved"
+    - "Technical team assembled"
+
+workflow_steps:
+  conduct_business_analysis:
+    title: "Conduct Comprehensive Business Analysis"
+    description: "Deep analysis of business processes, requirements, and constraints"
+    agents: ["business-analyst", "erpnext-architect"]
+    duration: "2-3 weeks"
+    inputs:
+      - "Business requirements document"
+      - "Stakeholder contact list"
+      - "Current system documentation"
+      - "Regulatory requirements"
+    outputs:
+      - "Business process maps"
+      - "Requirements specification document"
+      - "Stakeholder analysis report"
+      - "Current state assessment"
+      - "Gap analysis report"
+    tasks:
+      - "Conduct stakeholder interviews and workshops"
+      - "Document current business processes"
+      - "Identify pain points and inefficiencies"
+      - "Map data flows and decision points"
+      - "Analyze regulatory and compliance requirements"
+      - "Document integration requirements"
+      - "Assess change management needs"
+      - "Define success metrics and KPIs"
+
+  identify_requirements:
+    title: "Identify and Prioritize Requirements"
+    description: "Detailed requirements gathering and prioritization"
+    agents: ["business-analyst", "erpnext-architect"]
+    duration: "1-2 weeks"
+    dependencies: ["conduct_business_analysis"]
+    inputs:
+      - "Business process maps"
+      - "Stakeholder feedback"
+      - "Current system capabilities"
+    outputs:
+      - "Functional requirements specification"
+      - "Non-functional requirements"
+      - "User stories and acceptance criteria"
+      - "Requirements traceability matrix"
+      - "Priority and scope definitions"
+    tasks:
+      - "Create detailed functional requirements"
+      - "Define non-functional requirements (performance, security, etc.)"
+      - "Write user stories with acceptance criteria"
+      - "Prioritize requirements using MoSCoW method"
+      - "Validate requirements with stakeholders"
+      - "Create requirements traceability matrix"
+      - "Define project scope and constraints"
+
+  design_solution_architecture:
+    title: "Design ERPNext Solution Architecture"
+    description: "Design comprehensive solution architecture for ERPNext implementation"
+    agents: ["erpnext-architect", "api-architect", "workflow-specialist"]
+    duration: "2-3 weeks"
+    dependencies: ["identify_requirements"]
+    inputs:
+      - "Functional requirements specification"
+      - "Integration requirements"
+      - "Performance requirements"
+      - "Security requirements"
+    outputs:
+      - "Solution architecture document"
+      - "Data model design"
+      - "Integration architecture"
+      - "Security architecture"
+      - "Performance architecture"
+    tasks:
+      - "Design overall solution architecture"
+      - "Create detailed data model and relationships"
+      - "Design API integration points"
+      - "Plan user interface architecture"
+      - "Design security and access control"
+      - "Plan workflow and automation architecture"
+      - "Design reporting and analytics architecture"
+      - "Create deployment architecture"
+
+  create_functional_specifications:
+    title: "Create Detailed Functional Specifications"
+    description: "Detailed specifications for development team"
+    agents: ["business-analyst", "doctype-designer", "api-architect"]
+    duration: "1-2 weeks"
+    dependencies: ["design_solution_architecture"]
+    inputs:
+      - "Solution architecture document"
+      - "User stories and requirements"
+      - "Design mockups and wireframes"
+    outputs:
+      - "Technical specifications document"
+      - "DocType specifications"
+      - "API specifications"
+      - "Workflow specifications"
+      - "UI/UX specifications"
+    tasks:
+      - "Create detailed DocType specifications"
+      - "Define API endpoint specifications"
+      - "Document workflow and business rule specifications"
+      - "Create UI/UX specifications and mockups"
+      - "Define data validation and business rules"
+      - "Specify reporting requirements"
+      - "Document integration specifications"
+      - "Create test scenarios and acceptance criteria"
+
+  develop_custom_doctypes:
+    title: "Develop Custom DocTypes and Data Model"
+    description: "Implementation of custom DocTypes and data structures"
+    agents: ["doctype-designer", "erpnext-architect"]
+    duration: "2-4 weeks"
+    dependencies: ["create_functional_specifications"]
+    inputs:
+      - "DocType specifications"
+      - "Data model design"
+      - "Business rule requirements"
+    outputs:
+      - "Custom DocType implementations"
+      - "Database schema and relationships"
+      - "Field validations and constraints"
+      - "Permission configurations"
+    tasks:
+      - "Create custom DocTypes with proper field definitions"
+      - "Implement data relationships and links"
+      - "Set up field validations and constraints"
+      - "Configure permissions and role-based access"
+      - "Create naming series and auto-naming rules"
+      - "Set up print formats and email templates"
+      - "Implement DocType-specific business logic"
+      - "Create necessary custom fields in standard DocTypes"
+
+  implement_business_logic:
+    title: "Implement Business Logic and Controllers"
+    description: "Development of business logic and validation rules"
+    agents: ["api-developer", "workflow-specialist"]
+    duration: "3-5 weeks"
+    dependencies: ["develop_custom_doctypes"]
+    inputs:
+      - "Business rule specifications"
+      - "DocType implementations"
+      - "Validation requirements"
+    outputs:
+      - "Controller implementations"
+      - "Business rule validations"
+      - "Custom methods and APIs"
+      - "Event handlers and hooks"
+    tasks:
+      - "Implement DocType controllers with validation logic"
+      - "Create custom API endpoints for business operations"
+      - "Implement business rule validations"
+      - "Set up document lifecycle event handlers"
+      - "Create custom methods for complex calculations"
+      - "Implement data transformation and processing logic"
+      - "Set up background job processing"
+      - "Create utility functions and helper methods"
+
+  setup_workflows_and_automation:
+    title: "Setup Workflows and Process Automation"
+    description: "Implementation of workflow automation and approval processes"
+    agents: ["workflow-specialist", "api-developer"]
+    duration: "2-3 weeks"
+    dependencies: ["implement_business_logic"]
+    inputs:
+      - "Workflow specifications"
+      - "Approval process requirements"
+      - "Automation requirements"
+    outputs:
+      - "Workflow configurations"
+      - "Approval hierarchies"
+      - "Automated process implementations"
+      - "Notification systems"
+    tasks:
+      - "Configure ERPNext workflows for approval processes"
+      - "Set up approval hierarchies and routing rules"
+      - "Implement automated triggers and actions"
+      - "Configure email notifications and alerts"
+      - "Set up scheduled jobs for recurring processes"
+      - "Implement escalation and exception handling"
+      - "Create workflow monitoring and reporting"
+      - "Set up integration with external automation tools"
+
+  create_reports_and_dashboards:
+    title: "Create Reports and Analytics Dashboards"
+    description: "Development of reporting and analytics capabilities"
+    agents: ["api-developer", "frappe-ui-developer"]
+    duration: "2-3 weeks"
+    dependencies: ["setup_workflows_and_automation"]
+    inputs:
+      - "Reporting requirements"
+      - "Dashboard specifications"
+      - "Data visualization needs"
+    outputs:
+      - "Custom report implementations"
+      - "Dashboard configurations"
+      - "Data visualization components"
+      - "Analytics and KPI tracking"
+    tasks:
+      - "Create custom query reports for business insights"
+      - "Implement script reports for complex calculations"
+      - "Set up dashboard cards and key metrics"
+      - "Create data visualization charts and graphs"
+      - "Implement drill-down capabilities"
+      - "Set up scheduled report generation"
+      - "Create executive summary dashboards"
+      - "Implement real-time analytics where needed"
+
+  implement_integrations:
+    title: "Implement External System Integrations"
+    description: "Integration with external systems and third-party services"
+    agents: ["api-developer", "data-integration-expert"]
+    duration: "2-4 weeks"
+    dependencies: ["create_reports_and_dashboards"]
+    inputs:
+      - "Integration specifications"
+      - "External system documentation"
+      - "Data mapping requirements"
+    outputs:
+      - "Integration implementations"
+      - "Data synchronization processes"
+      - "API client implementations"
+      - "Error handling and monitoring"
+    tasks:
+      - "Implement API integrations with external systems"
+      - "Set up data synchronization processes"
+      - "Create webhook handlers for real-time updates"
+      - "Implement authentication and security for integrations"
+      - "Set up error handling and retry mechanisms"
+      - "Create integration monitoring and logging"
+      - "Implement data transformation and mapping"
+      - "Set up integration testing and validation"
+
+  conduct_testing:
+    title: "Comprehensive Testing and Quality Assurance"
+    description: "Complete testing of the custom application"
+    agents: ["testing-specialist", "business-analyst"]
+    duration: "2-4 weeks"
+    dependencies: ["implement_integrations"]
+    inputs:
+      - "Complete application implementation"
+      - "Test scenarios and acceptance criteria"
+      - "Business process requirements"
+    outputs:
+      - "Test execution reports"
+      - "Bug reports and resolutions"
+      - "Performance test results"
+      - "User acceptance test results"
+    tasks:
+      - "Execute unit tests for all custom components"
+      - "Perform integration testing with ERPNext core"
+      - "Conduct system testing of complete workflows"
+      - "Execute performance and load testing"
+      - "Conduct security testing and vulnerability assessment"
+      - "Perform user acceptance testing with business stakeholders"
+      - "Test data migration and rollback procedures"
+      - "Validate reporting and analytics accuracy"
+
+  train_users_and_deploy:
+    title: "User Training and Production Deployment"
+    description: "Final deployment and user enablement"
+    agents: ["bench-operator", "business-analyst", "testing-specialist"]
+    duration: "2-3 weeks"
+    dependencies: ["conduct_testing"]
+    inputs:
+      - "Tested and validated application"
+      - "Training materials and documentation"
+      - "Deployment procedures"
+    outputs:
+      - "Production deployment"
+      - "Trained user base"
+      - "Support documentation"
+      - "Go-live validation"
+    tasks:
+      - "Prepare production environment"
+      - "Execute data migration to production"
+      - "Deploy application to production"
+      - "Conduct user training sessions"
+      - "Create user documentation and guides"
+      - "Set up support procedures and contacts"
+      - "Validate production deployment"
+      - "Monitor initial system usage and performance"
+
+validation_gates:
+  business_analysis_complete:
+    description: "Business analysis phase completed with stakeholder approval"
+    criteria:
+      - "All stakeholder interviews completed"
+      - "Business processes documented and validated"
+      - "Requirements specification approved"
+      - "Project scope and constraints agreed"
+
+  requirements_finalized:
+    description: "Requirements identified and prioritized"
+    criteria:
+      - "Functional requirements documented and approved"
+      - "Non-functional requirements defined"
+      - "User stories created with acceptance criteria"
+      - "Requirements traceability established"
+
+  architecture_approved:
+    description: "Solution architecture designed and approved"
+    criteria:
+      - "Technical architecture reviewed and approved"
+      - "Integration points identified and planned"
+      - "Security architecture validated"
+      - "Performance requirements addressed"
+
+  specifications_complete:
+    description: "Detailed functional specifications completed"
+    criteria:
+      - "Technical specifications documented"
+      - "UI/UX designs approved"
+      - "API specifications defined"
+      - "Test scenarios created"
+
+  development_complete:
+    description: "All development work completed"
+    criteria:
+      - "All custom DocTypes implemented"
+      - "Business logic and validations complete"
+      - "Workflows and automation configured"
+      - "Reports and dashboards implemented"
+      - "Integrations developed and tested"
+
+  testing_passed:
+    description: "Comprehensive testing completed successfully"
+    criteria:
+      - "All test cases executed successfully"
+      - "User acceptance criteria met"
+      - "Performance benchmarks achieved"
+      - "Security requirements validated"
+
+  deployment_ready:
+    description: "Ready for production deployment"
+    criteria:
+      - "Production environment prepared"
+      - "Training materials completed"
+      - "Support procedures established"
+      - "Go-live plan approved"
+
+success_criteria:
+  business:
+    - "All business requirements satisfied"
+    - "Process efficiency improvements achieved"
+    - "User adoption targets met"
+    - "ROI objectives on track"
+    - "Stakeholder satisfaction >90%"
+
+  technical:
+    - "System performance meets specifications"
+    - "Integration points functioning correctly"
+    - "Data integrity maintained"
+    - "Security standards met"
+    - "Scalability requirements addressed"
+
+  operational:
+    - "Users trained and productive"
+    - "Support processes established"
+    - "Documentation complete and accessible"
+    - "System monitoring active"
+    - "Continuous improvement process established"
+
+deliverables:
+  documentation:
+    - "Business requirements document"
+    - "Technical architecture document"
+    - "Functional specifications"
+    - "User training materials"
+    - "System administration guide"
+    - "API documentation"
+
+  implementation:
+    - "Custom ERPNext application"
+    - "DocType implementations"
+    - "Workflow configurations"
+    - "Report and dashboard implementations"
+    - "Integration implementations"
+
+  testing:
+    - "Test plan and scenarios"
+    - "Test execution reports"
+    - "Performance test results"
+    - "User acceptance test results"
+
+change_management:
+  stakeholder_engagement:
+    - "Regular stakeholder communication"
+    - "Change impact assessments"
+    - "Training and adoption planning"
+    - "Feedback collection and incorporation"
+
+  risk_management:
+    - "Risk identification and assessment"
+    - "Mitigation strategies"
+    - "Contingency planning"
+    - "Regular risk reviews"
+
+project_governance:
+  milestone_reviews:
+    - "Business analysis review"
+    - "Architecture review"
+    - "Development progress reviews"
+    - "Testing completion review"
+    - "Go-live readiness review"
+
+  quality_assurance:
+    - "Code review processes"
+    - "Documentation reviews"
+    - "Testing validation"
+    - "Security assessments"

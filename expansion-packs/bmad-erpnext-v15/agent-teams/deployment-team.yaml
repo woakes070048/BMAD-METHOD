@@ -1,0 +1,409 @@
+name: "deployment-team"
+title: "ERPNext Production Deployment Team"
+description: "Specialized team for production deployment, infrastructure management, and operational excellence"
+version: "1.0.0"
+
+team_composition:
+  lead_agent: "bench-operator"
+  core_agents:
+    - "bench-operator"
+    - "testing-specialist"
+    - "frappe-compliance-validator"
+  
+  supporting_agents:
+    - "erpnext-architect"
+    - "api-architect"
+    - "pwa-specialist"
+
+expertise_areas:
+  infrastructure_management:
+    primary_focus: "Production-ready ERPNext infrastructure"
+    technologies:
+      - "Frappe Bench for application management"
+      - "Nginx/Apache web server configuration"
+      - "MariaDB/MySQL database optimization"
+      - "Redis for caching and background jobs"
+      - "SSL/TLS certificate management"
+      - "Docker containers and orchestration"
+    
+    capabilities:
+      - "High-availability infrastructure setup"
+      - "Load balancing and scaling configurations"
+      - "Database replication and clustering"
+      - "Backup and disaster recovery planning"
+      - "Performance monitoring and optimization"
+
+  deployment_automation:
+    primary_focus: "Automated and reliable deployment processes"
+    technologies:
+      - "CI/CD pipelines (GitHub Actions, GitLab CI)"
+      - "Infrastructure as Code (Terraform, Ansible)"
+      - "Container orchestration (Docker, Kubernetes)"
+      - "Configuration management tools"
+      - "Blue-green deployment strategies"
+    
+    capabilities:
+      - "Zero-downtime deployment implementations"
+      - "Automated testing and validation pipelines"
+      - "Rollback mechanisms and procedures"
+      - "Environment consistency management"
+      - "Deployment security and compliance"
+
+  monitoring_and_operations:
+    primary_focus: "Operational excellence and system reliability"
+    technologies:
+      - "Application Performance Monitoring (APM)"
+      - "Log aggregation and analysis tools"
+      - "Metrics collection and visualization"
+      - "Alerting and notification systems"
+      - "Security monitoring and compliance tools"
+    
+    capabilities:
+      - "Proactive system monitoring"
+      - "Performance bottleneck identification"
+      - "Security vulnerability assessment"
+      - "Incident response and resolution"
+      - "Capacity planning and scaling"
+
+deployment_workflows:
+  pre_deployment_validation:
+    description: "Comprehensive validation before production deployment"
+    duration: "2-3 days"
+    activities:
+      - "Code quality and security review"
+      - "Performance testing and optimization"
+      - "Database migration validation"
+      - "Backup and recovery procedure testing"
+    
+    validation_gates:
+      - "All automated tests passing"
+      - "Security scan results acceptable"
+      - "Performance benchmarks met"
+      - "Rollback procedures validated"
+    
+    deliverables:
+      - "Deployment readiness report"
+      - "Risk assessment and mitigation plan"
+      - "Performance benchmark results"
+      - "Backup and recovery validation"
+
+  production_deployment:
+    description: "Controlled production deployment process"
+    duration: "4-8 hours"
+    activities:
+      - "Production system backup"
+      - "Maintenance mode activation"
+      - "Application deployment execution"
+      - "Database migration execution"
+      - "System validation and testing"
+      - "User acceptance validation"
+    
+    safety_measures:
+      - "Comprehensive backup before deployment"
+      - "Staged deployment with validation points"
+      - "Real-time monitoring during deployment"
+      - "Immediate rollback capability"
+    
+    deliverables:
+      - "Deployment execution log"
+      - "System validation results"
+      - "Performance impact assessment"
+      - "User access validation"
+
+  post_deployment_monitoring:
+    description: "Intensive monitoring after deployment"
+    duration: "48-72 hours"
+    activities:
+      - "System performance monitoring"
+      - "Error rate and exception tracking"
+      - "User experience monitoring"
+      - "Business metrics validation"
+    
+    monitoring_focus:
+      - "Application response times"
+      - "Database performance metrics"
+      - "User authentication and authorization"
+      - "Business process functionality"
+    
+    deliverables:
+      - "Post-deployment monitoring report"
+      - "Performance comparison analysis"
+      - "Issue identification and resolution log"
+      - "Optimization recommendations"
+
+quality_assurance:
+  deployment_standards:
+    environment_consistency:
+      - "Infrastructure as Code for reproducibility"
+      - "Consistent configuration across environments"
+      - "Automated environment provisioning"
+      - "Environment-specific configuration management"
+
+    security_compliance:
+      - "Security hardening according to best practices"
+      - "Regular security updates and patches"
+      - "Access control and authentication validation"
+      - "Data encryption and protection measures"
+
+    performance_optimization:
+      - "Database query optimization and indexing"
+      - "Web server configuration optimization"
+      - "Caching strategy implementation"
+      - "CDN configuration for static assets"
+
+  testing_protocols:
+    deployment_testing:
+      - "Smoke tests for critical functionality"
+      - "Integration tests for external systems"
+      - "Performance regression testing"
+      - "Security vulnerability testing"
+
+    user_acceptance:
+      - "Business process validation testing"
+      - "User interface and experience testing"
+      - "Mobile and browser compatibility testing"
+      - "Accessibility compliance testing"
+
+infrastructure_management:
+  server_configuration:
+    web_server_optimization:
+      nginx_config: |
+        # Production-optimized Nginx configuration
+        worker_processes auto;
+        worker_connections 1024;
+        
+        gzip on;
+        gzip_vary on;
+        gzip_min_length 1000;
+        gzip_types text/css application/javascript application/json;
+        
+        # SSL configuration
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384;
+        ssl_prefer_server_ciphers off;
+        
+        # Security headers
+        add_header X-Content-Type-Options nosniff;
+        add_header X-Frame-Options DENY;
+        add_header X-XSS-Protection "1; mode=block";
+
+    database_optimization:
+      mariadb_config: |
+        # Production MariaDB configuration
+        innodb_buffer_pool_size = 70% of RAM
+        innodb_log_file_size = 256M
+        innodb_flush_log_at_trx_commit = 1
+        innodb_file_per_table = 1
+        
+        query_cache_size = 128M
+        query_cache_type = 1
+        
+        max_connections = 200
+        thread_cache_size = 50
+        
+        # Backup and replication settings
+        log_bin = mysql-bin
+        server_id = 1
+        gtid_mode = ON
+
+  monitoring_setup:
+    application_monitoring:
+      - "ERPNext application performance metrics"
+      - "Database query performance tracking"
+      - "Background job queue monitoring"
+      - "User session and authentication tracking"
+
+    infrastructure_monitoring:
+      - "Server resource utilization (CPU, Memory, Disk)"
+      - "Network performance and connectivity"
+      - "Storage capacity and I/O performance"
+      - "Security events and access logs"
+
+    alerting_configuration:
+      - "Critical system failure alerts"
+      - "Performance degradation warnings"
+      - "Security incident notifications"
+      - "Capacity threshold alerts"
+
+deployment_strategies:
+  blue_green_deployment:
+    description: "Zero-downtime deployment with parallel environments"
+    process:
+      - "Deploy to blue environment while green serves traffic"
+      - "Validate blue environment functionality"
+      - "Switch traffic from green to blue environment"
+      - "Keep green environment for rollback if needed"
+    
+    benefits:
+      - "Zero-downtime deployments"
+      - "Quick rollback capability"
+      - "Full environment validation before switch"
+      - "Reduced deployment risk"
+
+  rolling_deployment:
+    description: "Gradual deployment across multiple servers"
+    process:
+      - "Deploy to subset of servers in load balancer pool"
+      - "Validate deployment on initial servers"
+      - "Gradually deploy to remaining servers"
+      - "Monitor performance throughout process"
+    
+    benefits:
+      - "Reduced blast radius of deployment issues"
+      - "Continuous service availability"
+      - "Progressive validation and monitoring"
+      - "Easy rollback of individual servers"
+
+  canary_deployment:
+    description: "Gradual traffic shift to new version"
+    process:
+      - "Deploy new version to small percentage of users"
+      - "Monitor performance and error rates"
+      - "Gradually increase traffic to new version"
+      - "Complete rollout or rollback based on metrics"
+    
+    benefits:
+      - "Early detection of issues with limited impact"
+      - "Real user validation before full rollout"
+      - "Data-driven deployment decisions"
+      - "Minimized user impact from issues"
+
+backup_and_recovery:
+  backup_strategy:
+    database_backup:
+      - "Automated daily full database backups"
+      - "Incremental backups every 4 hours"
+      - "Point-in-time recovery capability"
+      - "Encrypted backup storage"
+      - "Regular backup restoration testing"
+
+    application_backup:
+      - "Code repository with version control"
+      - "Configuration file backup"
+      - "File attachment and media backup"
+      - "Certificate and security credential backup"
+
+    backup_validation:
+      - "Automated backup integrity checks"
+      - "Periodic restoration testing"
+      - "Disaster recovery simulation exercises"
+      - "Recovery time objective validation"
+
+  disaster_recovery:
+    recovery_procedures:
+      - "Documented step-by-step recovery processes"
+      - "Automated recovery scripts where possible"
+      - "Communication plan for stakeholders"
+      - "Business continuity coordination"
+
+    recovery_objectives:
+      - "Recovery Time Objective (RTO): 4 hours maximum"
+      - "Recovery Point Objective (RPO): 15 minutes maximum"
+      - "Service availability target: 99.9%"
+      - "Data loss tolerance: minimal"
+
+security_hardening:
+  server_security:
+    access_control:
+      - "SSH key-based authentication only"
+      - "Multi-factor authentication for admin access"
+      - "Regular access review and cleanup"
+      - "Principle of least privilege enforcement"
+
+    system_hardening:
+      - "Regular security updates and patches"
+      - "Firewall configuration and management"
+      - "Intrusion detection and prevention"
+      - "Log monitoring and analysis"
+
+  application_security:
+    erpnext_security:
+      - "Regular ERPNext security updates"
+      - "Custom code security review"
+      - "API endpoint security validation"
+      - "User permission audit and cleanup"
+
+    data_protection:
+      - "Database encryption at rest"
+      - "SSL/TLS for data in transit"
+      - "Backup encryption and secure storage"
+      - "Personal data protection compliance"
+
+performance_optimization:
+  database_optimization:
+    query_optimization:
+      - "Regular slow query analysis and optimization"
+      - "Index optimization based on usage patterns"
+      - "Database statistics updates and maintenance"
+      - "Connection pooling optimization"
+
+    caching_strategy:
+      - "Redis caching for frequently accessed data"
+      - "Browser caching headers for static assets"
+      - "CDN configuration for global asset delivery"
+      - "Application-level caching implementation"
+
+  application_optimization:
+    frontend_optimization:
+      - "Asset minification and compression"
+      - "Image optimization and responsive delivery"
+      - "Code splitting and lazy loading"
+      - "Service worker caching strategies"
+
+    backend_optimization:
+      - "Background job optimization and queuing"
+      - "API response optimization"
+      - "Memory usage optimization"
+      - "Database connection optimization"
+
+team_communication:
+  deployment_coordination:
+    pre_deployment:
+      - "Deployment planning meetings with stakeholders"
+      - "Technical review sessions with development team"
+      - "Risk assessment and mitigation planning"
+      - "Communication plan for users and support team"
+
+    during_deployment:
+      - "Real-time status updates via team channels"
+      - "Issue escalation procedures and contacts"
+      - "Go/no-go decision points and criteria"
+      - "Stakeholder notification at key milestones"
+
+    post_deployment:
+      - "Deployment success/failure notification"
+      - "Post-deployment review and lessons learned"
+      - "Performance impact analysis and reporting"
+      - "User feedback collection and analysis"
+
+continuous_improvement:
+  process_optimization:
+    - "Deployment process automation and improvement"
+    - "Monitoring and alerting system enhancement"
+    - "Security procedure updates and validation"
+    - "Performance optimization technique adoption"
+
+  skill_development:
+    - "Cloud platform certification and training"
+    - "DevOps tools and practice workshops"
+    - "Security best practice training"
+    - "Incident response simulation exercises"
+
+success_metrics:
+  deployment_success:
+    - "Deployment success rate >99%"
+    - "Average deployment time <2 hours"
+    - "Zero-data-loss deployments"
+    - "Rollback time <30 minutes when needed"
+
+  operational_excellence:
+    - "System uptime >99.9%"
+    - "Mean time to recovery <2 hours"
+    - "Security incident response <1 hour"
+    - "Performance SLA compliance >95%"
+
+  user_satisfaction:
+    - "User-reported deployment issues <1%"
+    - "Post-deployment performance satisfaction >90%"
+    - "System availability satisfaction >95%"
+    - "Support ticket volume reduction post-deployment"

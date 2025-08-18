@@ -1,0 +1,504 @@
+name: "app-structure-template"
+title: "Modern ERPNext App Structure Template"
+description: "Template for creating modern ERPNext apps with Vue SPA frontend"
+version: "1.0.0"
+
+parameters:
+  app_name:
+    type: "string"
+    required: true
+    description: "Name of the app (snake_case)"
+  app_title:
+    type: "string"
+    required: true
+    description: "Display title of the app"
+  app_publisher:
+    type: "string"
+    required: true
+    description: "Publisher name"
+  app_description:
+    type: "string"
+    required: true
+    description: "Brief description of the app"
+  app_email:
+    type: "string"
+    required: true
+    description: "Contact email"
+  app_icon:
+    type: "string"
+    required: false
+    default: "octicon octicon-file-directory"
+  app_color:
+    type: "string"
+    required: false
+    default: "blue"
+  doctype_prefix:
+    type: "string"
+    required: false
+    description: "Prefix for DocTypes (e.g., HD for Helpdesk)"
+
+structure:
+  root_files:
+    - name: "LICENSE"
+      content: "MIT License or your preferred license"
+    - name: "README.md"
+      template: |
+        # {{app_title}}
+        
+        {{app_description}}
+        
+        ## Installation
+        
+        ```bash
+        bench get-app {{app_name}}
+        bench --site [site-name] install-app {{app_name}}
+        ```
+        
+        ## Development
+        
+        ### Backend
+        ```bash
+        bench start
+        ```
+        
+        ### Frontend
+        ```bash
+        cd {{app_name}}/frontend
+        yarn install
+        yarn dev
+        ```
+        
+        ## Building for Production
+        
+        ```bash
+        cd {{app_name}}/frontend
+        yarn build
+        ```
+        
+        ## License
+        
+        MIT
+    - name: "pyproject.toml"
+      template: |
+        [project]
+        name = "{{app_name}}"
+        authors = [
+            { name = "{{app_publisher}}", email = "{{app_email}}"}
+        ]
+        description = "{{app_description}}"
+        requires-python = ">=3.10"
+        readme = "README.md"
+        dynamic = ["version"]
+        dependencies = [
+            # "frappe~=15.0.0" # Installed and managed by bench.
+        ]
+        
+        [build-system]
+        requires = ["flit_core >=3.4,<4"]
+        build-backend = "flit_core.buildapi"
+        
+        [tool.ruff]
+        line-length = 110
+        target-version = "py310"
+        
+        [tool.ruff.lint]
+        select = ["F", "E", "W", "I", "UP", "B", "RUF"]
+        ignore = ["E501", "F401", "F403", "F405", "UP030", "UP031", "UP032"]
+        
+        [tool.ruff.format]
+        quote-style = "double"
+        indent-style = "tab"
+        docstring-code-format = true
+    - name: "package.json"
+      template: |
+        {
+          "name": "{{app_name}}",
+          "version": "1.0.0",
+          "description": "{{app_description}}",
+          "scripts": {
+            "dev": "cd frontend && yarn dev",
+            "build": "cd frontend && yarn build",
+            "test": "cd frontend && yarn test"
+          },
+          "workspaces": ["frontend"],
+          "author": "{{app_publisher}}",
+          "license": "MIT"
+        }
+
+  backend_structure:
+    "{{app_name}}/":
+      - "__init__.py"
+      - "hooks.py":
+          template: |
+            app_name = "{{app_name}}"
+            app_title = "{{app_title}}"
+            app_publisher = "{{app_publisher}}"
+            app_description = "{{app_description}}"
+            app_email = "{{app_email}}"
+            app_license = "MIT"
+            app_icon = "{{app_icon}}"
+            app_color = "{{app_color}}"
+            
+            # Apps Screen
+            add_to_apps_screen = [
+                {
+                    "name": "{{app_name}}",
+                    "logo": "/assets/{{app_name}}/logo.svg",
+                    "title": "{{app_title}}",
+                    "route": "/{{app_name}}",
+                    "has_permission": "{{app_name}}.api.permission.has_app_permission",
+                }
+            ]
+            
+            # Website Route Rules
+            website_route_rules = [
+                {"from_route": "/{{app_name}}/<path:app_path>", "to_route": "{{app_name}}"},
+            ]
+            
+            # Includes in <head>
+            # ------------------
+            
+            # include js, css files in header of desk.html
+            # app_include_css = "/assets/{{app_name}}/css/{{app_name}}.css"
+            # app_include_js = "/assets/{{app_name}}/js/{{app_name}}.js"
+            
+            # Installation
+            # ------------
+            
+            # before_install = "{{app_name}}.install.before_install"
+            after_install = "{{app_name}}.install.after_install"
+            
+            # Uninstallation
+            # ------------
+            
+            # before_uninstall = "{{app_name}}.uninstall.before_uninstall"
+            # after_uninstall = "{{app_name}}.uninstall.after_uninstall"
+            
+            # Document Events
+            # ---------------
+            doc_events = {
+                # "Contact": {
+                #     "validate": ["{{app_name}}.api.contact.validate"],
+                # }
+            }
+            
+            # Scheduled Tasks
+            # ---------------
+            scheduler_events = {
+                # "daily": [
+                #     "{{app_name}}.tasks.daily"
+                # ],
+            }
+            
+            # Testing
+            # -------
+            # before_tests = "{{app_name}}.install.before_tests"
+      - "modules.txt":
+          content: "{{app_title}}"
+      - "patches.txt"
+      - "install.py":
+          template: |
+            import frappe
+            
+            def after_install():
+                """Setup after app installation"""
+                # Create default settings
+                # Setup default data
+                pass
+      - "api/":
+          - "__init__.py"
+          - "auth.py":
+              template: |
+                import frappe
+                from frappe import _
+                
+                @frappe.whitelist(allow_guest=True)
+                def login(email, password):
+                    """Login endpoint"""
+                    try:
+                        frappe.auth.login(email, password)
+                        return {
+                            "success": True,
+                            "user": frappe.session.user
+                        }
+                    except Exception as e:
+                        frappe.throw(_("Invalid credentials"), frappe.AuthenticationError)
+                
+                @frappe.whitelist()
+                def logout():
+                    """Logout endpoint"""
+                    frappe.auth.logout()
+                    return {"success": True}
+          - "session.py":
+              template: |
+                import frappe
+                
+                @frappe.whitelist()
+                def get_session_info():
+                    """Get current session information"""
+                    return {
+                        "user": frappe.session.user,
+                        "user_type": frappe.session.data.user_type,
+                        "roles": frappe.get_roles(),
+                    }
+          - "doc.py":
+              template: |
+                import frappe
+                from frappe import _
+                
+                @frappe.whitelist()
+                def get_list(doctype, fields=None, filters=None, order_by=None, limit=20, offset=0):
+                    """Generic list endpoint"""
+                    if not frappe.has_permission(doctype, "read"):
+                        frappe.throw(_("No permission to read {0}").format(doctype))
+                    
+                    return frappe.get_all(
+                        doctype,
+                        fields=frappe.parse_json(fields) if fields else ["*"],
+                        filters=frappe.parse_json(filters) if filters else {},
+                        order_by=order_by or "modified desc",
+                        limit=int(limit),
+                        start=int(offset)
+                    )
+      - "{{app_name}}/":
+          - "__init__.py"
+          - "doctype/":
+              - "__init__.py"
+      - "www/":
+          - "__init__.py"
+          - "{{app_name}}.py":
+              template: |
+                no_cache = 1
+                
+                def get_context(context):
+                    context.app_name = "{{app_name}}"
+                    return context
+          - "{{app_name}}.html":
+              template: |
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>{{app_title}}</title>
+                    <script>window.csrf_token = "{{ csrf_token }}";</script>
+                </head>
+                <body>
+                    <div id="app"></div>
+                    <script type="module" src="/assets/{{app_name}}/frontend/index.js"></script>
+                </body>
+                </html>
+
+  frontend_structure:
+    "frontend/":
+      - "package.json":
+          template: |
+            {
+              "name": "{{app_name}}-ui",
+              "private": true,
+              "version": "0.0.0",
+              "type": "module",
+              "scripts": {
+                "dev": "vite",
+                "build": "vite build --base=/assets/{{app_name}}/frontend/ && yarn copy-html-entry",
+                "copy-html-entry": "cp ../{{app_name}}/public/frontend/index.html ../{{app_name}}/www/{{app_name}}.html",
+                "serve": "vite preview"
+              },
+              "dependencies": {
+                "frappe-ui": "^0.1.171",
+                "pinia": "^2.0.33",
+                "socket.io-client": "^4.7.2",
+                "vue": "^3.5.13",
+                "vue-router": "^4.2.2"
+              },
+              "devDependencies": {
+                "@vitejs/plugin-vue": "^4.2.3",
+                "@vitejs/plugin-vue-jsx": "^3.0.1",
+                "autoprefixer": "^10.4.14",
+                "postcss": "^8.4.5",
+                "tailwindcss": "^3.4.15",
+                "vite": "^4.4.9",
+                "vite-plugin-pwa": "^0.15.0"
+              }
+            }
+      - "vite.config.js":
+          template: |
+            import { defineConfig } from 'vite'
+            import vue from '@vitejs/plugin-vue'
+            import vueJsx from '@vitejs/plugin-vue-jsx'
+            import path from 'path'
+            import { VitePWA } from 'vite-plugin-pwa'
+            
+            export default defineConfig({
+              plugins: [
+                vue(),
+                vueJsx(),
+                VitePWA({
+                  registerType: 'autoUpdate',
+                  manifest: {
+                    name: '{{app_title}}',
+                    short_name: '{{app_name}}',
+                    description: '{{app_description}}',
+                    theme_color: '#ffffff',
+                    icons: [
+                      {
+                        src: '/assets/{{app_name}}/icon-192.png',
+                        sizes: '192x192',
+                        type: 'image/png'
+                      },
+                      {
+                        src: '/assets/{{app_name}}/icon-512.png',
+                        sizes: '512x512',
+                        type: 'image/png'
+                      }
+                    ]
+                  }
+                })
+              ],
+              resolve: {
+                alias: {
+                  '@': path.resolve(__dirname, 'src')
+                }
+              },
+              build: {
+                outDir: '../{{app_name}}/public/frontend',
+                emptyOutDir: true,
+                target: 'es2015'
+              }
+            })
+      - "tailwind.config.js":
+          template: |
+            /** @type {import('tailwindcss').Config} */
+            export default {
+              content: [
+                "./index.html",
+                "./src/**/*.{vue,js,ts,jsx,tsx}",
+              ],
+              theme: {
+                extend: {},
+              },
+              plugins: [],
+            }
+      - "postcss.config.js":
+          template: |
+            export default {
+              plugins: {
+                tailwindcss: {},
+                autoprefixer: {},
+              }
+            }
+      - "index.html":
+          template: |
+            <!DOCTYPE html>
+            <html lang="en">
+              <head>
+                <meta charset="UTF-8" />
+                <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>{{app_title}}</title>
+              </head>
+              <body>
+                <div id="app"></div>
+                <script type="module" src="/src/main.js"></script>
+              </body>
+            </html>
+      - "src/":
+          - "main.js":
+              template: |
+                import { createApp } from 'vue'
+                import { createPinia } from 'pinia'
+                import { FrappeUI } from 'frappe-ui'
+                import App from './App.vue'
+                import router from './router'
+                import './index.css'
+                
+                const app = createApp(App)
+                const pinia = createPinia()
+                
+                app.use(pinia)
+                app.use(router)
+                app.use(FrappeUI)
+                
+                app.mount('#app')
+          - "App.vue":
+              template: |
+                <template>
+                  <router-view />
+                </template>
+                
+                <script setup>
+                import { onMounted } from 'vue'
+                import { useAuthStore } from '@/stores/auth'
+                
+                const authStore = useAuthStore()
+                
+                onMounted(() => {
+                  authStore.init()
+                })
+                </script>
+          - "index.css":
+              template: |
+                @tailwind base;
+                @tailwind components;
+                @tailwind utilities;
+          - "router/index.js":
+              template: |
+                import { createRouter, createWebHistory } from 'vue-router'
+                
+                const routes = [
+                  {
+                    path: '/{{app_name}}',
+                    name: 'Home',
+                    component: () => import('@/pages/Home.vue')
+                  }
+                ]
+                
+                const router = createRouter({
+                  history: createWebHistory(),
+                  routes
+                })
+                
+                export default router
+          - "stores/":
+              - "auth.js":
+                  template: |
+                    import { defineStore } from 'pinia'
+                    import { ref, computed } from 'vue'
+                    import { createResource } from 'frappe-ui'
+                    
+                    export const useAuthStore = defineStore('auth', () => {
+                      const user = ref(null)
+                      const isLoggedIn = computed(() => !!user.value)
+                      
+                      const sessionResource = createResource({
+                        url: '{{app_name}}.api.session.get_session_info',
+                        onSuccess(data) {
+                          user.value = data
+                        }
+                      })
+                      
+                      function init() {
+                        sessionResource.fetch()
+                      }
+                      
+                      return {
+                        user,
+                        isLoggedIn,
+                        init
+                      }
+                    })
+          - "pages/":
+              - "Home.vue":
+                  template: |
+                    <template>
+                      <div class="container mx-auto p-4">
+                        <h1 class="text-3xl font-bold">Welcome to {{app_title}}</h1>
+                        <p class="mt-4">{{app_description}}</p>
+                      </div>
+                    </template>
+                    
+                    <script setup>
+                    import { Button } from 'frappe-ui'
+                    </script>
+          - "components/":
+              - ".gitkeep"
