@@ -1,0 +1,669 @@
+name: "native-pwa-template"
+title: "Native PWA Implementation for ERPNext Apps"
+description: "Progressive Web App features using Frappe's native asset pipeline - NO Vite PWA plugin"
+version: "1.0.0"
+
+parameters:
+  app_name:
+    type: "string"
+    required: true
+    description: "Name of the ERPNext app (snake_case)"
+  app_title:
+    type: "string"
+    required: true
+    description: "Display title of the app"
+  start_url:
+    type: "string"
+    required: false
+    default: "/app/dashboard"
+    description: "PWA start URL"
+
+templates:
+  web_app_manifest: |
+    {
+      "name": "{{app_title}}",
+      "short_name": "{{app_name}}",
+      "description": "Modern ERPNext application with offline capabilities",
+      "start_url": "{{start_url}}",
+      "display": "standalone",
+      "background_color": "#ffffff",
+      "theme_color": "#171717",
+      "orientation": "portrait-primary",
+      "scope": "/",
+      "categories": ["business", "productivity"],
+      "lang": "en-US",
+      "icons": [
+        {
+          "src": "/assets/{{app_name}}/icons/icon-72x72.png",
+          "sizes": "72x72",
+          "type": "image/png",
+          "purpose": "maskable any"
+        },
+        {
+          "src": "/assets/{{app_name}}/icons/icon-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png",
+          "purpose": "maskable any"
+        },
+        {
+          "src": "/assets/{{app_name}}/icons/icon-128x128.png",
+          "sizes": "128x128",
+          "type": "image/png",
+          "purpose": "maskable any"
+        },
+        {
+          "src": "/assets/{{app_name}}/icons/icon-144x144.png",
+          "sizes": "144x144",
+          "type": "image/png",
+          "purpose": "maskable any"
+        },
+        {
+          "src": "/assets/{{app_name}}/icons/icon-152x152.png",
+          "sizes": "152x152",
+          "type": "image/png",
+          "purpose": "maskable any"
+        },
+        {
+          "src": "/assets/{{app_name}}/icons/icon-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "maskable any"
+        },
+        {
+          "src": "/assets/{{app_name}}/icons/icon-384x384.png",
+          "sizes": "384x384",
+          "type": "image/png",
+          "purpose": "maskable any"
+        },
+        {
+          "src": "/assets/{{app_name}}/icons/icon-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png",
+          "purpose": "maskable any"
+        }
+      ],
+      "screenshots": [
+        {
+          "src": "/assets/{{app_name}}/screenshots/desktop.png",
+          "sizes": "1280x720",
+          "type": "image/png",
+          "form_factor": "wide",
+          "label": "Desktop view of {{app_title}}"
+        },
+        {
+          "src": "/assets/{{app_name}}/screenshots/mobile.png",
+          "sizes": "640x1136",
+          "type": "image/png",
+          "form_factor": "narrow",
+          "label": "Mobile view of {{app_title}}"
+        }
+      ]
+    }
+
+  service_worker: |
+    // {{app_name}}/public/js/sw.js
+    const CACHE_NAME = '{{app_name}}-v1.0.0';
+    const urlsToCache = [
+      '{{start_url}}',
+      '/assets/{{app_name}}/css/{{app_name}}.css',
+      '/assets/frappe/js/libs.min.js',
+      '/assets/frappe/js/desk.min.js'
+    ];
+
+    // Install event - cache resources
+    self.addEventListener('install', (event) => {
+      event.waitUntil(
+        caches.open(CACHE_NAME)
+          .then((cache) => {
+            console.log('Opened cache');
+            return cache.addAll(urlsToCache);
+          })
+      );
+    });
+
+    // Fetch event - serve from cache, fallback to network
+    self.addEventListener('fetch', (event) => {
+      event.respondWith(
+        caches.match(event.request)
+          .then((response) => {
+            // Cache hit - return response
+            if (response) {
+              return response;
+            }
+
+            return fetch(event.request).then(
+              (response) => {
+                // Check if we received a valid response
+                if (!response || response.status !== 200 || response.type !== 'basic') {
+                  return response;
+                }
+
+                // Clone the response
+                const responseToCache = response.clone();
+
+                caches.open(CACHE_NAME)
+                  .then((cache) => {
+                    cache.put(event.request, responseToCache);
+                  });
+
+                return response;
+              }
+            );
+          })
+      );
+    });
+
+    // Activate event - clean up old caches
+    self.addEventListener('activate', (event) => {
+      event.waitUntil(
+        caches.keys().then((cacheNames) => {
+          return Promise.all(
+            cacheNames.map((cacheName) => {
+              if (cacheName !== CACHE_NAME) {
+                return caches.delete(cacheName);
+              }
+            })
+          );
+        })
+      );
+    });
+
+  pwa_registration: |
+    // {{app_name}}/public/js/pwa.bundle.js
+    class PWAManager {
+      constructor() {
+        this.deferredPrompt = null;
+        this.init();
+      }
+
+      init() {
+        this.registerServiceWorker();
+        this.setupInstallPrompt();
+        this.addToHomeScreen();
+      }
+
+      async registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+          try {
+            const registration = await navigator.serviceWorker.register('/assets/{{app_name}}/js/sw.js');
+            console.log('SW registered: ', registration);
+          } catch (registrationError) {
+            console.log('SW registration failed: ', registrationError);
+          }
+        }
+      }
+
+      setupInstallPrompt() {
+        window.addEventListener('beforeinstallprompt', (e) => {
+          // Prevent Chrome 67 and earlier from automatically showing the prompt
+          e.preventDefault();
+          // Stash the event so it can be triggered later
+          this.deferredPrompt = e;
+          // Show install button
+          this.showInstallButton();
+        });
+      }
+
+      showInstallButton() {
+        const installButton = document.createElement('button');
+        installButton.textContent = 'Install {{app_title}}';
+        installButton.className = 'btn btn-primary btn-sm install-app-btn';
+        installButton.style.cssText = `
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          z-index: 1000;
+          display: none;
+        `;
+
+        installButton.addEventListener('click', () => {
+          this.promptInstall();
+        });
+
+        document.body.appendChild(installButton);
+
+        // Show button if PWA can be installed
+        if (this.deferredPrompt) {
+          installButton.style.display = 'block';
+        }
+      }
+
+      async promptInstall() {
+        if (this.deferredPrompt) {
+          // Show the install prompt
+          this.deferredPrompt.prompt();
+          // Wait for the user to respond to the prompt
+          const { outcome } = await this.deferredPrompt.userChoice;
+          console.log(`User response to the install prompt: ${outcome}`);
+          // We've used the prompt, and can't use it again, throw it away
+          this.deferredPrompt = null;
+          // Hide install button
+          const installBtn = document.querySelector('.install-app-btn');
+          if (installBtn) {
+            installBtn.style.display = 'none';
+          }
+        }
+      }
+
+      addToHomeScreen() {
+        window.addEventListener('appinstalled', (evt) => {
+          console.log('{{app_title}} was installed.');
+          frappe.show_alert({
+            message: '{{app_title}} installed successfully!',
+            indicator: 'green'
+          });
+        });
+      }
+    }
+
+    // Initialize PWA when document is ready
+    $(document).ready(() => {
+      new PWAManager();
+    });
+
+    frappe.provide('frappe.ui');
+    frappe.ui.PWAManager = PWAManager;
+
+  offline_handler: |
+    // {{app_name}}/public/js/offline.bundle.js
+    class OfflineManager {
+      constructor() {
+        this.isOnline = navigator.onLine;
+        this.offlineQueue = [];
+        this.init();
+      }
+
+      init() {
+        this.setupNetworkListeners();
+        this.setupOfflineIndicator();
+        this.interceptAPIcalls();
+      }
+
+      setupNetworkListeners() {
+        window.addEventListener('online', () => {
+          this.isOnline = true;
+          this.hideOfflineIndicator();
+          this.processOfflineQueue();
+        });
+
+        window.addEventListener('offline', () => {
+          this.isOnline = false;
+          this.showOfflineIndicator();
+        });
+      }
+
+      showOfflineIndicator() {
+        let indicator = document.querySelector('.offline-indicator');
+        if (!indicator) {
+          indicator = document.createElement('div');
+          indicator.className = 'offline-indicator';
+          indicator.innerHTML = `
+            <div class="alert alert-warning" style="margin: 0; border-radius: 0;">
+              <i class="fa fa-wifi" style="margin-right: 8px;"></i>
+              You're offline. Changes will be saved when connection returns.
+            </div>
+          `;
+          document.body.insertBefore(indicator, document.body.firstChild);
+        }
+        indicator.style.display = 'block';
+      }
+
+      hideOfflineIndicator() {
+        const indicator = document.querySelector('.offline-indicator');
+        if (indicator) {
+          indicator.style.display = 'none';
+        }
+        frappe.show_alert({
+          message: 'Back online! Syncing changes...',
+          indicator: 'green'
+        });
+      }
+
+      interceptAPIcalls() {
+        // Override frappe.call to handle offline scenarios
+        const originalCall = frappe.call;
+        
+        frappe.call = (options) => {
+          if (!this.isOnline && this.isWriteOperation(options)) {
+            // Queue write operations when offline
+            this.queueOfflineOperation(options);
+            return Promise.resolve({
+              message: 'Queued for when online'
+            });
+          }
+          return originalCall.call(frappe, options);
+        };
+      }
+
+      isWriteOperation(options) {
+        const writeMethods = ['insert', 'save', 'submit', 'cancel', 'delete'];
+        return writeMethods.some(method => 
+          options.method && options.method.includes(method)
+        );
+      }
+
+      queueOfflineOperation(options) {
+        this.offlineQueue.push({
+          ...options,
+          timestamp: Date.now()
+        });
+        
+        // Store in localStorage for persistence
+        localStorage.setItem('{{app_name}}_offline_queue', 
+          JSON.stringify(this.offlineQueue));
+        
+        frappe.show_alert({
+          message: 'Operation queued for when online',
+          indicator: 'orange'
+        });
+      }
+
+      async processOfflineQueue() {
+        // Load queue from localStorage
+        const stored = localStorage.getItem('{{app_name}}_offline_queue');
+        if (stored) {
+          this.offlineQueue = JSON.parse(stored);
+        }
+
+        if (this.offlineQueue.length === 0) return;
+
+        frappe.show_alert({
+          message: `Processing ${this.offlineQueue.length} queued operations...`,
+          indicator: 'blue'
+        });
+
+        for (const operation of this.offlineQueue) {
+          try {
+            await frappe.call(operation);
+          } catch (error) {
+            console.error('Failed to process queued operation:', error);
+          }
+        }
+
+        // Clear the queue
+        this.offlineQueue = [];
+        localStorage.removeItem('{{app_name}}_offline_queue');
+        
+        frappe.show_alert({
+          message: 'All queued operations processed!',
+          indicator: 'green'
+        });
+      }
+    }
+
+    // Initialize offline manager
+    $(document).ready(() => {
+      new OfflineManager();
+    });
+
+    frappe.provide('frappe.ui');
+    frappe.ui.OfflineManager = OfflineManager;
+
+  push_notifications: |
+    // {{app_name}}/public/js/notifications.bundle.js
+    class NotificationManager {
+      constructor() {
+        this.vapidPublicKey = 'YOUR_VAPID_PUBLIC_KEY_HERE';
+        this.init();
+      }
+
+      async init() {
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+          console.warn('Push notifications not supported');
+          return;
+        }
+
+        await this.requestPermission();
+        await this.subscribeUser();
+      }
+
+      async requestPermission() {
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+          console.warn('Notification permission denied');
+          return;
+        }
+      }
+
+      async subscribeUser() {
+        try {
+          const registration = await navigator.serviceWorker.ready;
+          const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: this.urlBase64ToUint8Array(this.vapidPublicKey)
+          });
+
+          // Send subscription to server
+          await frappe.call({
+            method: '{{app_name}}.api.notifications.save_subscription',
+            args: {
+              subscription: JSON.stringify(subscription)
+            }
+          });
+
+        } catch (error) {
+          console.error('Failed to subscribe user: ', error);
+        }
+      }
+
+      urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+          .replace(/-/g, '+')
+          .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+          outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+      }
+
+      async sendNotification(title, body, data = {}) {
+        if (!('serviceWorker' in navigator)) return;
+
+        const registration = await navigator.serviceWorker.ready;
+        registration.showNotification(title, {
+          body,
+          icon: '/assets/{{app_name}}/icons/icon-192x192.png',
+          badge: '/assets/{{app_name}}/icons/icon-72x72.png',
+          data,
+          actions: [
+            {
+              action: 'open',
+              title: 'Open App'
+            },
+            {
+              action: 'close',
+              title: 'Close'
+            }
+          ]
+        });
+      }
+    }
+
+    // Initialize notification manager
+    $(document).ready(() => {
+      window.notificationManager = new NotificationManager();
+    });
+
+    frappe.provide('frappe.ui');
+    frappe.ui.NotificationManager = NotificationManager;
+
+  hooks_integration: |
+    # Add to {{app_name}}/hooks.py
+    
+    # Web App Manifest
+    website_route_rules = [
+        {"from_route": "/manifest.json", "to_route": "{{app_name}}_manifest"},
+    ]
+
+    # PWA Meta Tags
+    app_include_css = [
+        "/assets/{{app_name}}/css/{{app_name}}.css"
+    ]
+
+    app_include_js = [
+        "/assets/{{app_name}}/js/pwa.bundle.js",
+        "/assets/{{app_name}}/js/offline.bundle.js",
+        "/assets/{{app_name}}/js/notifications.bundle.js"
+    ]
+
+    # Service Worker
+    website_context = {
+        "favicon": "/assets/{{app_name}}/icons/icon-72x72.png",
+        "splash_image": "/assets/{{app_name}}/icons/icon-512x512.png"
+    }
+
+  base_template_updates: |
+    <!-- Add to base template or www/{{app_name}}.html -->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{app_title}}</title>
+        
+        <!-- PWA Meta Tags -->
+        <meta name="theme-color" content="#171717">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="{{app_title}}">
+        
+        <!-- Web App Manifest -->
+        <link rel="manifest" href="/manifest.json">
+        
+        <!-- Favicons -->
+        <link rel="icon" type="image/png" sizes="32x32" href="/assets/{{app_name}}/icons/icon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/assets/{{app_name}}/icons/icon-16x16.png">
+        <link rel="apple-touch-icon" href="/assets/{{app_name}}/icons/icon-192x192.png">
+        
+        <script>window.csrf_token = "{{ csrf_token }}";</script>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type="module" src="/assets/{{app_name}}/js/app.bundle.js"></script>
+    </body>
+    </html>
+
+  backend_api: |
+    # {{app_name}}/api/notifications.py
+    import frappe
+    import json
+    from frappe import _
+
+    @frappe.whitelist()
+    def save_subscription(subscription):
+        """Save push notification subscription"""
+        if not frappe.has_permission("User", "write"):
+            frappe.throw(_("Insufficient permissions"))
+        
+        user = frappe.session.user
+        subscription_data = json.loads(subscription)
+        
+        # Save or update subscription
+        existing = frappe.db.get_value("Push Subscription", 
+                                      {"user": user}, "name")
+        
+        if existing:
+            doc = frappe.get_doc("Push Subscription", existing)
+            doc.subscription_data = subscription
+            doc.save()
+        else:
+            doc = frappe.get_doc({
+                "doctype": "Push Subscription",
+                "user": user,
+                "subscription_data": subscription
+            })
+            doc.insert()
+        
+        return {"success": True}
+
+    @frappe.whitelist()
+    def send_push_notification(user, title, body, data=None):
+        """Send push notification to user"""
+        if not frappe.has_permission("User", "write"):
+            frappe.throw(_("Insufficient permissions"))
+        
+        subscription = frappe.db.get_value("Push Subscription", 
+                                          {"user": user}, "subscription_data")
+        
+        if not subscription:
+            return {"success": False, "message": "No subscription found"}
+        
+        # Implement actual push notification sending
+        # This would typically use a service like Firebase or Web Push Protocol
+        
+        return {"success": True}
+
+implementation_steps:
+  1_create_manifest:
+    description: "Create web app manifest file"
+    file_location: "{{app_name}}/www/manifest.json"
+    content_template: "web_app_manifest"
+    
+  2_create_service_worker:
+    description: "Implement service worker for caching"
+    file_location: "{{app_name}}/public/js/sw.js"
+    content_template: "service_worker"
+    
+  3_create_pwa_manager:
+    description: "Create PWA installation manager"
+    file_location: "{{app_name}}/public/js/pwa.bundle.js"
+    content_template: "pwa_registration"
+    
+  4_create_offline_manager:
+    description: "Implement offline functionality"
+    file_location: "{{app_name}}/public/js/offline.bundle.js"
+    content_template: "offline_handler"
+    
+  5_create_notification_manager:
+    description: "Setup push notifications"
+    file_location: "{{app_name}}/public/js/notifications.bundle.js"
+    content_template: "push_notifications"
+    
+  6_update_hooks:
+    description: "Update hooks.py for PWA features"
+    file_location: "{{app_name}}/hooks.py"
+    content_template: "hooks_integration"
+    
+  7_create_icons:
+    description: "Generate PWA icons (use tools like PWA Builder)"
+    required_sizes: [72, 96, 128, 144, 152, 192, 384, 512]
+    location: "{{app_name}}/public/icons/"
+    
+  8_update_template:
+    description: "Update base template with PWA meta tags"
+    file_location: "{{app_name}}/www/{{app_name}}.html"
+    content_template: "base_template_updates"
+
+testing_checklist:
+  - [ ] Web App Manifest loads correctly (/manifest.json)
+  - [ ] Service Worker registers without errors
+  - [ ] Install prompt appears on supported browsers
+  - [ ] App can be installed from browser
+  - [ ] Offline functionality works (cache, queue operations)
+  - [ ] Push notifications permission requested
+  - [ ] Push notifications received and displayed
+  - [ ] App icons display correctly in various contexts
+  - [ ] Splash screen appears on app launch
+  - [ ] App behaves like native app when installed
+
+deployment_notes:
+  - Ensure HTTPS is enabled (required for PWA features)
+  - Test on multiple devices and browsers
+  - Validate manifest with Chrome DevTools
+  - Test offline scenarios thoroughly
+  - Configure push notification server (VAPID keys)
+  - Generate all required icon sizes
+  - Test app installation flow
+  - Verify service worker updates correctly
+
+browser_support:
+  chrome: "Full support"
+  firefox: "Partial support (no install prompt)"
+  safari: "iOS 16.4+ (limited features)"
+  edge: "Full support"
+  opera: "Full support"

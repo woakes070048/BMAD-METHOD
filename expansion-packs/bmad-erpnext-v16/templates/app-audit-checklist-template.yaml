@@ -1,0 +1,532 @@
+name: "app-audit-checklist-template"
+title: "ERPNext App Audit Checklist Template"
+description: "Comprehensive checklist for auditing ERPNext apps to ensure all components are present and properly configured"
+version: "1.0.0"
+
+parameters:
+  app_name:
+    type: "string"
+    required: true
+    description: "Name of the app to audit"
+  module_name:
+    type: "string"
+    required: true
+    description: "Primary module being audited"
+  audit_date:
+    type: "string"
+    required: true
+    description: "Date of audit (YYYY-MM-DD)"
+
+templates:
+  audit_checklist: |
+    # {{app_name}} App Audit Checklist
+    **Date:** {{audit_date}}
+    **Module:** {{module_name}}
+    
+    ## 1. Core Structure Audit
+    
+    ### 1.1 App Foundation
+    - [ ] **setup.py** exists and properly configured
+    - [ ] **pyproject.toml** exists with dependencies
+    - [ ] **requirements.txt** lists Python dependencies
+    - [ ] **package.json** exists (if using frontend)
+    - [ ] **hooks.py** properly configured with:
+      - [ ] app_name defined
+      - [ ] app_title defined
+      - [ ] app_publisher defined
+      - [ ] app_version defined
+      - [ ] app_icon defined
+      - [ ] app_color defined
+      - [ ] Fixtures defined (if needed)
+      - [ ] Scheduled tasks defined (if needed)
+      - [ ] Document events hooked
+      - [ ] Permissions hooked
+    - [ ] **modules.txt** lists all modules
+    - [ ] **patches.txt** for database migrations
+    - [ ] **README.md** with setup instructions
+    - [ ] **license.txt** with appropriate license
+    
+    ### 1.2 Directory Structure
+    ```
+    {{app_name}}/
+    ├── {{app_name}}/
+    │   ├── __init__.py ✓
+    │   ├── hooks.py ✓
+    │   ├── modules.txt ✓
+    │   ├── patches.txt ✓
+    │   ├── {{module_name}}/
+    │   │   ├── __init__.py ✓
+    │   │   ├── doctype/
+    │   │   ├── page/
+    │   │   ├── report/
+    │   │   ├── workspace/
+    │   │   ├── print_format/
+    │   │   ├── dashboard/
+    │   │   └── notification/
+    │   ├── public/
+    │   │   ├── js/
+    │   │   ├── css/
+    │   │   └── images/
+    │   ├── templates/
+    │   ├── www/
+    │   └── api/
+    ```
+    
+    ## 2. DocType Audit
+    
+    ### 2.1 Parent DocTypes Required
+    List all parent DocTypes that should exist:
+    
+    | DocType Name | Status | Has JSON | Has Python | Has JS | Tests | Permissions |
+    |-------------|--------|----------|------------|--------|-------|-------------|
+    | {{module_name}} Settings | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+    | {{module_name}} Item | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+    | {{module_name}} Category | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+    | {{module_name}} Transaction | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+    
+    ### 2.2 Child DocTypes Required
+    List all child tables:
+    
+    | Child DocType | Parent DocType | Status | Has JSON | Has Python |
+    |--------------|----------------|--------|----------|------------|
+    | {{module_name}} Item Detail | {{module_name}} Transaction | ☐ | ☐ | ☐ |
+    
+    ### 2.3 DocType Features Check
+    For each DocType, verify:
+    
+    #### Naming & Structure
+    - [ ] Naming series configured
+    - [ ] Title field set
+    - [ ] Search fields defined
+    - [ ] Sort field and order set
+    - [ ] Track changes enabled (if needed)
+    - [ ] Is submittable (if transaction)
+    - [ ] Is single (if settings)
+    
+    #### Fields
+    - [ ] All required fields present
+    - [ ] Field types appropriate
+    - [ ] Mandatory fields marked
+    - [ ] Default values set
+    - [ ] Fetch from configured
+    - [ ] Depends on conditions
+    - [ ] Field permissions set
+    
+    #### Features
+    - [ ] Custom buttons added
+    - [ ] Workflows attached
+    - [ ] Print formats created
+    - [ ] Email templates configured
+    - [ ] Dashboard configured
+    - [ ] Timeline enabled
+    - [ ] Quick entry configured
+    
+    ## 3. Reports Audit
+    
+    ### 3.1 Required Reports
+    
+    | Report Name | Type | Status | Has JSON | Has Python/JS | Has Permissions |
+    |------------|------|--------|----------|---------------|-----------------|
+    | {{module_name}} Summary | Query | ☐ | ☐ | ☐ | ☐ |
+    | {{module_name}} Analytics | Script | ☐ | ☐ | ☐ | ☐ |
+    | {{module_name}} Register | Query | ☐ | ☐ | ☐ | ☐ |
+    | {{module_name}} Trends | Script | ☐ | ☐ | ☐ | ☐ |
+    
+    ### 3.2 Report Features
+    For each report:
+    - [ ] Filters properly configured
+    - [ ] Columns defined with proper types
+    - [ ] Formatters applied
+    - [ ] Chart options (if applicable)
+    - [ ] Export options enabled
+    - [ ] Performance optimized
+    - [ ] Role permissions set
+    
+    ## 4. Pages Audit
+    
+    ### 4.1 Required Pages
+    
+    | Page Name | Status | Has JSON | Has JS | Has Vue | Has Route |
+    |-----------|--------|----------|--------|---------|-----------|
+    | {{module_name}} Dashboard | ☐ | ☐ | ☐ | ☐ | ☐ |
+    | {{module_name}} Analytics | ☐ | ☐ | ☐ | ☐ | ☐ |
+    | {{module_name}} Settings | ☐ | ☐ | ☐ | ☐ | ☐ |
+    
+    ### 4.2 Page Components
+    For each page:
+    - [ ] Page route accessible
+    - [ ] Bundle.js created (if Vue)
+    - [ ] SetVueGlobals configured
+    - [ ] API endpoints connected
+    - [ ] Role permissions set
+    - [ ] Mobile responsive
+    - [ ] Loading states handled
+    - [ ] Error handling implemented
+    
+    ## 5. API Endpoints Audit
+    
+    ### 5.1 Required APIs
+    
+    | Endpoint | Method | Status | Whitelisted | Validated | Tested |
+    |----------|--------|--------|-------------|-----------|---------|
+    | get_{{module_name}}_data | GET | ☐ | ☐ | ☐ | ☐ |
+    | create_{{module_name}} | POST | ☐ | ☐ | ☐ | ☐ |
+    | update_{{module_name}} | PUT | ☐ | ☐ | ☐ | ☐ |
+    | delete_{{module_name}} | DELETE | ☐ | ☐ | ☐ | ☐ |
+    | {{module_name}}_analytics | GET | ☐ | ☐ | ☐ | ☐ |
+    
+    ### 5.2 API Security
+    - [ ] All endpoints use @frappe.whitelist()
+    - [ ] Input validation implemented
+    - [ ] Permission checks with frappe.has_permission()
+    - [ ] SQL injection prevention
+    - [ ] Rate limiting configured
+    - [ ] Error handling with frappe.throw()
+    
+    ## 6. Workspace Audit
+    
+    ### 6.1 Workspace Configuration
+    - [ ] Workspace JSON exists at correct path
+    - [ ] Valid Frappe icon used (not FontAwesome)
+    - [ ] Public flag set appropriately
+    - [ ] Roles configured
+    
+    ### 6.2 Workspace Content
+    - [ ] Quick access shortcuts (4-6 items)
+    - [ ] Cards logically organized:
+      - [ ] Transactions card
+      - [ ] Masters card
+      - [ ] Reports card
+      - [ ] Settings card
+    - [ ] All links validated:
+      - [ ] DocType links are parent types only
+      - [ ] Reports exist and accessible
+      - [ ] Pages created and routed
+    
+    ## 7. Permissions Audit
+    
+    ### 7.1 Role Permissions
+    
+    | Role | DocTypes | Reports | Pages | APIs |
+    |------|----------|---------|-------|------|
+    | {{module_name}} User | ☐ | ☐ | ☐ | ☐ |
+    | {{module_name}} Manager | ☐ | ☐ | ☐ | ☐ |
+    | System Manager | ☐ | ☐ | ☐ | ☐ |
+    
+    ### 7.2 Permission Rules
+    - [ ] Create permissions set
+    - [ ] Read permissions set
+    - [ ] Write permissions set
+    - [ ] Delete permissions set
+    - [ ] Submit permissions (if applicable)
+    - [ ] Cancel permissions (if applicable)
+    - [ ] Print permissions set
+    - [ ] Email permissions set
+    - [ ] Export permissions set
+    - [ ] Import permissions set
+    
+    ## 8. Frontend Assets Audit
+    
+    ### 8.1 JavaScript Assets
+    - [ ] Bundle files created
+    - [ ] Vue components (if used) in public/js/
+    - [ ] NO /frontend/ directory (native Vue only)
+    - [ ] Custom scripts for DocTypes
+    - [ ] List view customizations
+    - [ ] Form view customizations
+    
+    ### 8.2 CSS/Styling
+    - [ ] Custom CSS files
+    - [ ] Bootstrap 4 classes used
+    - [ ] Mobile responsive styles
+    - [ ] Print styles (if needed)
+    - [ ] Dark mode support (optional)
+    
+    ## 9. Business Logic Audit
+    
+    ### 9.1 Controllers
+    - [ ] Validation logic implemented
+    - [ ] Before save hooks
+    - [ ] After save hooks
+    - [ ] On submit logic
+    - [ ] On cancel logic
+    - [ ] On trash logic
+    - [ ] Custom methods defined
+    
+    ### 9.2 Workflows
+    - [ ] Workflow states defined
+    - [ ] Transitions configured
+    - [ ] Approval hierarchy set
+    - [ ] Email alerts configured
+    - [ ] Role-based routing
+    
+    ## 10. Testing Audit
+    
+    ### 10.1 Test Coverage
+    - [ ] Unit tests for controllers
+    - [ ] Integration tests for workflows
+    - [ ] API endpoint tests
+    - [ ] Permission tests
+    - [ ] Report accuracy tests
+    - [ ] UI/UX tests (if applicable)
+    
+    ### 10.2 Test Execution
+    ```bash
+    bench --site [site] run-tests --app {{app_name}}
+    ```
+    - [ ] All tests passing
+    - [ ] No deprecation warnings
+    - [ ] Performance benchmarks met
+    
+    ## 11. Documentation Audit
+    
+    ### 11.1 Code Documentation
+    - [ ] Docstrings for all methods
+    - [ ] Complex logic commented
+    - [ ] API documentation
+    - [ ] Configuration examples
+    
+    ### 11.2 User Documentation
+    - [ ] User manual created
+    - [ ] Admin guide written
+    - [ ] API documentation
+    - [ ] Troubleshooting guide
+    - [ ] FAQ section
+    
+    ## 12. Deployment Readiness
+    
+    ### 12.1 Production Checklist
+    - [ ] Error handling comprehensive
+    - [ ] Logging implemented
+    - [ ] Performance optimized
+    - [ ] Security reviewed
+    - [ ] Backup strategy defined
+    - [ ] Migration scripts ready
+    - [ ] Rollback plan prepared
+    
+    ### 12.2 Monitoring
+    - [ ] Health checks configured
+    - [ ] Performance metrics tracked
+    - [ ] Error tracking setup
+    - [ ] Usage analytics configured
+    
+    ## Missing Components Report
+    
+    ### Critical Missing Items
+    List any critical components that are missing:
+    1. ___________________________
+    2. ___________________________
+    3. ___________________________
+    
+    ### Nice-to-Have Missing Items
+    List optional components not implemented:
+    1. ___________________________
+    2. ___________________________
+    3. ___________________________
+    
+    ## Action Items
+    
+    ### Immediate Actions Required
+    - [ ] _________________________
+    - [ ] _________________________
+    - [ ] _________________________
+    
+    ### Future Enhancements
+    - [ ] _________________________
+    - [ ] _________________________
+    - [ ] _________________________
+    
+    ## Audit Summary
+    
+    **Total Components Audited:** ___
+    **Components Passing:** ___
+    **Components Failing:** ___
+    **Completion Percentage:** ___%
+    
+    **Audit Result:** ☐ PASS | ☐ FAIL | ☐ CONDITIONAL PASS
+    
+    **Auditor:** _______________
+    **Reviewed By:** _______________
+    **Next Audit Date:** _______________
+
+  validation_script: |
+    #!/usr/bin/env python3
+    """
+    App Component Validator Script
+    Run this to automatically check for missing components
+    """
+    
+    import os
+    import json
+    import frappe
+    from pathlib import Path
+    
+    def validate_app_structure(app_name):
+        """Validate app has all required components"""
+        
+        app_path = frappe.get_app_path(app_name)
+        results = {
+            "app_name": app_name,
+            "missing_components": [],
+            "found_components": [],
+            "warnings": []
+        }
+        
+        # Check core files
+        core_files = [
+            "setup.py",
+            "pyproject.toml",
+            "requirements.txt",
+            "hooks.py",
+            "modules.txt",
+            "README.md"
+        ]
+        
+        for file in core_files:
+            file_path = os.path.join(app_path, "..", file)
+            if os.path.exists(file_path):
+                results["found_components"].append(file)
+            else:
+                results["missing_components"].append(file)
+        
+        # Check hooks.py configuration
+        hooks_path = os.path.join(app_path, "hooks.py")
+        if os.path.exists(hooks_path):
+            with open(hooks_path, 'r') as f:
+                content = f.read()
+                required_hooks = [
+                    "app_name",
+                    "app_title",
+                    "app_publisher",
+                    "app_version"
+                ]
+                for hook in required_hooks:
+                    if hook not in content:
+                        results["warnings"].append(f"Missing {hook} in hooks.py")
+        
+        # Check for modules
+        modules = frappe.get_module_list(app_name)
+        for module in modules:
+            module_path = os.path.join(app_path, frappe.scrub(module))
+            
+            # Check for DocTypes
+            doctype_path = os.path.join(module_path, "doctype")
+            if os.path.exists(doctype_path):
+                doctypes = os.listdir(doctype_path)
+                for dt in doctypes:
+                    dt_path = os.path.join(doctype_path, dt)
+                    required_files = [
+                        f"{dt}.json",
+                        f"{dt}.py"
+                    ]
+                    for rf in required_files:
+                        if not os.path.exists(os.path.join(dt_path, rf)):
+                            results["warnings"].append(f"Missing {rf} for DocType {dt}")
+            
+            # Check for Reports
+            report_path = os.path.join(module_path, "report")
+            if os.path.exists(report_path):
+                reports = os.listdir(report_path)
+                for report in reports:
+                    r_path = os.path.join(report_path, report)
+                    if not os.path.exists(os.path.join(r_path, f"{report}.json")):
+                        results["warnings"].append(f"Missing JSON for Report {report}")
+            
+            # Check for Pages
+            page_path = os.path.join(module_path, "page")
+            if os.path.exists(page_path):
+                pages = os.listdir(page_path)
+                for page in pages:
+                    p_path = os.path.join(page_path, page)
+                    required = [
+                        f"{page}.json",
+                        f"{page}.js"
+                    ]
+                    for rf in required:
+                        if not os.path.exists(os.path.join(p_path, rf)):
+                            results["warnings"].append(f"Missing {rf} for Page {page}")
+            
+            # Check for Workspace
+            workspace_path = os.path.join(module_path, "workspace")
+            if not os.path.exists(workspace_path):
+                results["warnings"].append(f"No workspace defined for module {module}")
+        
+        # Check for API directory
+        api_path = os.path.join(app_path, "api")
+        if not os.path.exists(api_path):
+            results["warnings"].append("No API directory found")
+        
+        # Check for public assets
+        public_path = os.path.join(app_path, "public")
+        if not os.path.exists(public_path):
+            results["missing_components"].append("public directory")
+        
+        # Generate report
+        print(f"\n{'='*50}")
+        print(f"App Validation Report: {app_name}")
+        print(f"{'='*50}")
+        
+        if results["missing_components"]:
+            print("\n❌ Missing Critical Components:")
+            for item in results["missing_components"]:
+                print(f"  - {item}")
+        
+        if results["warnings"]:
+            print("\n⚠️  Warnings:")
+            for warning in results["warnings"]:
+                print(f"  - {warning}")
+        
+        if results["found_components"]:
+            print("\n✅ Found Components:")
+            for item in results["found_components"]:
+                print(f"  - {item}")
+        
+        # Calculate score
+        total_checks = len(results["found_components"]) + len(results["missing_components"])
+        if total_checks > 0:
+            score = (len(results["found_components"]) / total_checks) * 100
+            print(f"\n📊 Completeness Score: {score:.1f}%")
+        
+        return results
+    
+    if __name__ == "__main__":
+        import sys
+        if len(sys.argv) > 1:
+            validate_app_structure(sys.argv[1])
+        else:
+            print("Usage: python validate_app.py <app_name>")
+
+instructions:
+  usage: |
+    1. **For New App Planning:**
+       - Use this checklist BEFORE development
+       - Check off items as you implement them
+       - Ensures nothing is forgotten
+    
+    2. **For Existing App Audit:**
+       - Run through entire checklist
+       - Mark items as complete/incomplete
+       - Generate missing components list
+       - Create action plan for fixes
+    
+    3. **For App Validation:**
+       - Save validation script as validate_app.py
+       - Run: `bench --site [site] console`
+       - Execute: `exec(open('validate_app.py').read())`
+       - Or run directly: `python validate_app.py <app_name>`
+    
+    4. **For Continuous Monitoring:**
+       - Run audit monthly/quarterly
+       - Track completion percentage over time
+       - Identify regression issues
+       - Plan feature additions
+
+  best_practices: |
+    - Always validate parent/child DocType relationships
+    - Ensure all reports have proper permissions
+    - Check that pages have routes defined
+    - Verify workspace links are valid
+    - Test API endpoints for security
+    - Document all custom business logic
+    - Include tests for critical features
+    - Keep audit history for compliance

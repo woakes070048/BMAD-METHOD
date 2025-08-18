@@ -1,0 +1,453 @@
+name: "n8n to ERPNext Conversion Team"
+description: "Specialized team for converting n8n workflows to native ERPNext automation"
+version: "1.0.0"
+
+# Team Composition
+agents:
+  - name: "n8n Workflow Analyst"
+    role: "n8n Systems Expert"
+    expertise:
+      - n8n workflow architecture
+      - Node.js and JavaScript
+      - API integrations
+      - Webhook management
+      - Trigger mechanisms
+      - Data transformation
+      - Error handling patterns
+    tools:
+      - n8n workflow editor
+      - Node.js debugging tools
+      - API testing tools
+      - JSON transformation utilities
+      - Workflow documentation tools
+
+  - name: "ERPNext Automation Specialist"
+    role: "ERPNext Workflow Developer"
+    expertise:
+      - ERPNext server scripts
+      - Client scripts
+      - Workflow states and transitions
+      - Document events and hooks
+      - Custom automation
+      - Scheduled jobs
+      - Email automation
+      - Notification systems
+    tools:
+      - ERPNext development environment
+      - Python debugging tools
+      - Frappe framework tools
+      - Custom script editors
+      - Workflow designer
+
+  - name: "Integration Architect"
+    role: "Systems Integration Specialist"
+    expertise:
+      - API design and development
+      - Webhook architecture
+      - Data synchronization
+      - Message queuing
+      - Event-driven architecture
+      - Microservices integration
+      - Authentication and security
+    tools:
+      - API gateway tools
+      - Integration testing frameworks
+      - Message queue systems
+      - Authentication systems
+      - Monitoring and logging tools
+
+  - name: "Data Transformation Engineer"
+    role: "Data Pipeline Specialist"
+    expertise:
+      - Data mapping and transformation
+      - JSON/XML processing
+      - ETL processes
+      - Data validation
+      - Schema migration
+      - Performance optimization
+      - Error handling and recovery
+    tools:
+      - Data transformation tools
+      - Schema validation tools
+      - Performance profilers
+      - Data quality tools
+      - Migration utilities
+
+# Conversion Methodologies
+conversion_methodologies:
+  workflow_analysis:
+    steps:
+      - "Export n8n workflow definitions"
+      - "Map workflow triggers and events"
+      - "Identify data transformation nodes"
+      - "Document external integrations"
+      - "Analyze error handling logic"
+      - "Assess performance requirements"
+
+  erpnext_mapping:
+    approaches:
+      - "Document-based triggers"
+      - "Server script automation"
+      - "Scheduled job conversion"
+      - "Webhook replacement strategies"
+      - "Email automation migration"
+      - "Custom API endpoint creation"
+
+  testing_strategy:
+    phases:
+      - "Unit testing of individual components"
+      - "Integration testing with external systems"
+      - "End-to-end workflow validation"
+      - "Performance and load testing"
+      - "Error scenario testing"
+      - "User acceptance testing"
+
+# Node Conversion Patterns
+node_conversion_patterns:
+  trigger_nodes:
+    webhook:
+      erpnext_equivalent: "Custom API endpoints with @frappe.whitelist()"
+      implementation: "Python function with request handling"
+      considerations:
+        - "Authentication migration"
+        - "Rate limiting"
+        - "Error response handling"
+
+    schedule:
+      erpnext_equivalent: "Scheduled jobs in hooks.py"
+      implementation: "Cron job configuration with Python function"
+      considerations:
+        - "Timezone handling"
+        - "Error notifications"
+        - "Job monitoring"
+
+    manual:
+      erpnext_equivalent: "Custom buttons or workflow actions"
+      implementation: "Client script or server script triggers"
+      considerations:
+        - "User permissions"
+        - "UI/UX considerations"
+        - "Confirmation dialogs"
+
+    file_watch:
+      erpnext_equivalent: "File attachment events"
+      implementation: "Document event hooks"
+      considerations:
+        - "File type validation"
+        - "Size limitations"
+        - "Processing queues"
+
+  data_nodes:
+    http_request:
+      erpnext_equivalent: "Python requests library in server scripts"
+      implementation: "API calls within ERPNext functions"
+      considerations:
+        - "Connection pooling"
+        - "Timeout handling"
+        - "Response caching"
+
+    database:
+      erpnext_equivalent: "frappe.db queries"
+      implementation: "Native ERPNext database operations"
+      considerations:
+        - "Query optimization"
+        - "Transaction handling"
+        - "Data validation"
+
+    file_operations:
+      erpnext_equivalent: "File and attachment handling"
+      implementation: "ERPNext file system operations"
+      considerations:
+        - "Storage backends"
+        - "Access permissions"
+        - "Backup strategies"
+
+  transformation_nodes:
+    function:
+      erpnext_equivalent: "Python functions in server scripts"
+      implementation: "Custom Python logic"
+      considerations:
+        - "Code organization"
+        - "Reusability"
+        - "Testing strategies"
+
+    set:
+      erpnext_equivalent: "Variable assignment in scripts"
+      implementation: "Python variable management"
+      considerations:
+        - "Scope management"
+        - "Memory usage"
+        - "State persistence"
+
+    if:
+      erpnext_equivalent: "Conditional logic in scripts"
+      implementation: "Python if/else statements"
+      considerations:
+        - "Complex conditions"
+        - "Performance optimization"
+        - "Maintainability"
+
+  output_nodes:
+    email:
+      erpnext_equivalent: "ERPNext email system"
+      implementation: "frappe.sendmail() or email templates"
+      considerations:
+        - "Template management"
+        - "Attachment handling"
+        - "Delivery tracking"
+
+    notification:
+      erpnext_equivalent: "ERPNext notifications"
+      implementation: "System notifications or alerts"
+      considerations:
+        - "User preferences"
+        - "Delivery channels"
+        - "Message formatting"
+
+    write_file:
+      erpnext_equivalent: "File creation and storage"
+      implementation: "ERPNext file system operations"
+      considerations:
+        - "File naming conventions"
+        - "Directory structure"
+        - "Access controls"
+
+# Conversion Workflows
+conversion_workflows:
+  assessment_phase:
+    name: "n8n Workflow Assessment"
+    duration: "1-2 weeks"
+    steps:
+      - workflow_inventory:
+          description: "Catalog all n8n workflows"
+          deliverables:
+            - "Workflow inventory spreadsheet"
+            - "Complexity assessment"
+            - "Priority matrix"
+          
+      - dependency_mapping:
+          description: "Map workflow dependencies"
+          deliverables:
+            - "Dependency diagrams"
+            - "Integration points list"
+            - "External system inventory"
+
+      - feasibility_analysis:
+          description: "Assess conversion feasibility"
+          deliverables:
+            - "Technical feasibility report"
+            - "Effort estimation"
+            - "Risk assessment"
+
+  design_phase:
+    name: "ERPNext Solution Design"
+    duration: "2-3 weeks"
+    steps:
+      - architecture_design:
+          description: "Design ERPNext automation architecture"
+          deliverables:
+            - "Technical architecture diagrams"
+            - "Component specifications"
+            - "Integration patterns"
+
+      - conversion_planning:
+          description: "Plan detailed conversion approach"
+          deliverables:
+            - "Conversion roadmap"
+            - "Migration strategy"
+            - "Testing plan"
+
+      - prototype_development:
+          description: "Create conversion prototypes"
+          deliverables:
+            - "Prototype implementations"
+            - "Proof of concept results"
+            - "Performance benchmarks"
+
+  implementation_phase:
+    name: "Workflow Conversion Implementation"
+    duration: "4-8 weeks"
+    steps:
+      - core_conversion:
+          description: "Convert n8n workflows to ERPNext"
+          deliverables:
+            - "Converted workflow implementations"
+            - "Custom scripts and functions"
+            - "Integration endpoints"
+
+      - testing_validation:
+          description: "Test converted workflows"
+          deliverables:
+            - "Test results and reports"
+            - "Performance analysis"
+            - "Error handling validation"
+
+      - deployment_preparation:
+          description: "Prepare for production deployment"
+          deliverables:
+            - "Deployment packages"
+            - "Configuration guides"
+            - "Rollback procedures"
+
+# Technical Specifications
+technical_specs:
+  erpnext_automation_types:
+    server_scripts:
+      description: "Python scripts executed on server events"
+      use_cases:
+        - "Complex business logic"
+        - "External API integrations"
+        - "Data transformations"
+        - "Background processing"
+      
+    client_scripts:
+      description: "JavaScript executed in browser"
+      use_cases:
+        - "Form validations"
+        - "UI enhancements"
+        - "Real-time calculations"
+        - "User interactions"
+
+    scheduled_jobs:
+      description: "Cron-based automation"
+      use_cases:
+        - "Periodic data synchronization"
+        - "Maintenance tasks"
+        - "Report generation"
+        - "Cleanup operations"
+
+    webhooks:
+      description: "HTTP endpoints for external triggers"
+      use_cases:
+        - "External system notifications"
+        - "Real-time integrations"
+        - "Event-driven processes"
+        - "Third-party callbacks"
+
+  data_handling:
+    input_processing:
+      - "JSON payload parsing"
+      - "Data validation and sanitization"
+      - "Schema transformation"
+      - "Error handling and logging"
+
+    output_formatting:
+      - "Response serialization"
+      - "Error message formatting"
+      - "Success confirmations"
+      - "Progress notifications"
+
+    persistence:
+      - "Database transactions"
+      - "File system operations"
+      - "Cache management"
+      - "State tracking"
+
+# Quality Assurance
+quality_assurance:
+  code_standards:
+    - "Python PEP 8 compliance"
+    - "JavaScript ES6+ standards"
+    - "ERPNext framework conventions"
+    - "Comprehensive error handling"
+    - "Logging and monitoring"
+
+  testing_requirements:
+    - "Unit test coverage > 80%"
+    - "Integration test validation"
+    - "Performance benchmarking"
+    - "Security vulnerability scanning"
+    - "User acceptance testing"
+
+  documentation_standards:
+    - "API documentation"
+    - "Workflow diagrams"
+    - "Configuration guides"
+    - "Troubleshooting guides"
+    - "Migration procedures"
+
+# Performance Optimization
+performance_optimization:
+  strategies:
+    - "Asynchronous processing"
+    - "Caching mechanisms"
+    - "Database query optimization"
+    - "Resource pooling"
+    - "Load balancing"
+
+  monitoring:
+    - "Execution time tracking"
+    - "Memory usage analysis"
+    - "Error rate monitoring"
+    - "Throughput measurement"
+    - "Resource utilization"
+
+  scaling_considerations:
+    - "Horizontal scaling patterns"
+    - "Queue-based processing"
+    - "Microservice architecture"
+    - "Database sharding"
+    - "CDN integration"
+
+# Migration Tools
+migration_tools:
+  workflow_parsers:
+    - "n8n JSON parser"
+    - "Node dependency analyzer"
+    - "Data flow tracer"
+    - "Integration mapper"
+
+  code_generators:
+    - "ERPNext script generator"
+    - "API endpoint creator"
+    - "Webhook handler generator"
+    - "Test case generator"
+
+  validation_tools:
+    - "Workflow validator"
+    - "Performance profiler"
+    - "Security scanner"
+    - "Compatibility checker"
+
+# Success Metrics
+success_metrics:
+  conversion_metrics:
+    - "Workflow conversion rate"
+    - "Feature parity percentage"
+    - "Performance improvement ratio"
+    - "Error reduction percentage"
+
+  operational_metrics:
+    - "System uptime"
+    - "Processing throughput"
+    - "Response time improvement"
+    - "Resource utilization efficiency"
+
+  business_metrics:
+    - "Cost reduction achieved"
+    - "Maintenance time savings"
+    - "User satisfaction scores"
+    - "ROI achievement"
+
+# Best Practices
+best_practices:
+  conversion_approach:
+    - "Incremental migration strategy"
+    - "Parallel system operation"
+    - "Comprehensive testing"
+    - "Rollback preparedness"
+    - "User training and support"
+
+  code_organization:
+    - "Modular architecture"
+    - "Reusable components"
+    - "Clear separation of concerns"
+    - "Configuration externalization"
+    - "Version control practices"
+
+  maintenance_considerations:
+    - "Regular system updates"
+    - "Performance monitoring"
+    - "Security patch management"
+    - "Backup and recovery procedures"
+    - "Disaster recovery planning"

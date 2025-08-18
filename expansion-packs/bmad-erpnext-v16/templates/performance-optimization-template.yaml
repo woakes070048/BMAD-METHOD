@@ -1,0 +1,1369 @@
+name: "performance-optimization-template"
+title: "Performance Monitoring and Optimization Template"
+description: "Complete performance monitoring, optimization, and analytics templates"
+version: "2.0.0"
+
+parameters:
+  app_name:
+    type: "string"
+    required: true
+    description: "Name of the ERPNext app (snake_case)"
+
+templates:
+  performance_monitor: |
+    // utils/performanceMonitor.js
+    /**
+     * Performance monitoring utility for production apps
+     */
+    
+    class PerformanceMonitor {
+      constructor(options = {}) {
+        this.enabled = options.enabled !== false
+        this.sampleRate = options.sampleRate || 1.0
+        this.apiEndpoint = options.apiEndpoint || '/api/method/{{app_name}}.api.analytics.track_performance'
+        this.batchSize = options.batchSize || 10
+        this.flushInterval = options.flushInterval || 30000 // 30 seconds
+        
+        this.metrics = []
+        this.observers = new Map()
+        
+        if (this.enabled) {
+          this.init()
+        }
+      }
+      
+      init() {
+        this.setupNavigationObserver()
+        this.setupResourceObserver()
+        this.setupLongTaskObserver()
+        this.setupLayoutShiftObserver()
+        this.setupFirstInputObserver()
+        this.startBatchReporting()
+        this.trackPageVisibility()
+      }
+      
+      setupNavigationObserver() {
+        if ('PerformanceObserver' in window) {
+          const observer = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              this.recordMetric({
+                type: 'navigation',
+                name: entry.name,
+                duration: entry.duration,
+                startTime: entry.startTime,
+                domContentLoaded: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart,
+                loadComplete: entry.loadEventEnd - entry.loadEventStart,
+                ttfb: entry.responseStart - entry.requestStart,
+                timestamp: Date.now()
+              })
+            }
+          })
+          
+          observer.observe({ entryTypes: ['navigation'] })
+          this.observers.set('navigation', observer)
+        }
+      }
+      
+      setupResourceObserver() {
+        if ('PerformanceObserver' in window) {
+          const observer = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              // Only track significant resources
+              if (entry.duration > 100 || entry.transferSize > 10000) {
+                this.recordMetric({
+                  type: 'resource',
+                  name: entry.name,
+                  duration: entry.duration,
+                  transferSize: entry.transferSize,
+                  resourceType: entry.initiatorType,
+                  timestamp: Date.now()
+                })
+              }
+            }
+          })
+          
+          observer.observe({ entryTypes: ['resource'] })
+          this.observers.set('resource', observer)
+        }
+      }
+      
+      setupLongTaskObserver() {
+        if ('PerformanceObserver' in window) {
+          const observer = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              this.recordMetric({
+                type: 'longtask',
+                duration: entry.duration,
+                startTime: entry.startTime,
+                timestamp: Date.now()
+              })
+            }
+          })
+          
+          try {
+            observer.observe({ entryTypes: ['longtask'] })
+            this.observers.set('longtask', observer)
+          } catch (e) {
+            // Long tasks not supported
+          }
+        }
+      }
+      
+      setupLayoutShiftObserver() {
+        if ('PerformanceObserver' in window) {
+          let clsValue = 0
+          let sessionValue = 0
+          let sessionEntries = []
+          
+          const observer = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              if (!entry.hadRecentInput) {
+                const firstSessionEntry = sessionEntries[0]
+                const lastSessionEntry = sessionEntries[sessionEntries.length - 1]
+                
+                if (sessionValue && 
+                    entry.startTime - lastSessionEntry.startTime < 1000 &&
+                    entry.startTime - firstSessionEntry.startTime < 5000) {
+                  sessionValue += entry.value
+                  sessionEntries.push(entry)
+                } else {
+                  sessionValue = entry.value
+                  sessionEntries = [entry]
+                }
+                
+                if (sessionValue > clsValue) {
+                  clsValue = sessionValue
+                  this.recordMetric({
+                    type: 'cls',
+                    value: clsValue,
+                    timestamp: Date.now()
+                  })
+                }
+              }
+            }
+          })
+          
+          try {
+            observer.observe({ entryTypes: ['layout-shift'] })
+            this.observers.set('layout-shift', observer)
+          } catch (e) {
+            // Layout shift not supported
+          }
+        }
+      }
+      
+      setupFirstInputObserver() {
+        if ('PerformanceObserver' in window) {
+          const observer = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              this.recordMetric({
+                type: 'fid',
+                value: entry.processingStart - entry.startTime,
+                timestamp: Date.now()
+              })
+            }
+          })
+          
+          try {
+            observer.observe({ entryTypes: ['first-input'] })
+            this.observers.set('first-input', observer)
+          } catch (e) {
+            // First input not supported
+          }
+        }
+      }
+      
+      trackPageVisibility() {
+        let startTime = Date.now()
+        
+        const handleVisibilityChange = () => {
+          if (document.hidden) {
+            const sessionDuration = Date.now() - startTime
+            this.recordMetric({
+              type: 'session',
+              duration: sessionDuration,
+              timestamp: Date.now()
+            })
+          } else {
+            startTime = Date.now()
+          }
+        }
+        
+        document.addEventListener('visibilitychange', handleVisibilityChange)
+        
+        // Track session on page unload
+        window.addEventListener('beforeunload', () => {
+          const sessionDuration = Date.now() - startTime
+          this.recordMetric({
+            type: 'session',
+            duration: sessionDuration,
+            timestamp: Date.now()
+          })
+          this.flush(true) // Force immediate flush
+        })
+      }
+      
+      recordMetric(metric) {
+        if (!this.enabled || Math.random() > this.sampleRate) {
+          return
+        }
+        
+        // Add common metadata
+        const enrichedMetric = {
+          ...metric,
+          url: window.location.href,
+          userAgent: navigator.userAgent,
+          viewportWidth: window.innerWidth,
+          viewportHeight: window.innerHeight,
+          connection: this.getConnectionInfo(),
+          sessionId: this.getSessionId()
+        }
+        
+        this.metrics.push(enrichedMetric)
+        
+        // Auto-flush if batch size reached
+        if (this.metrics.length >= this.batchSize) {
+          this.flush()
+        }
+      }
+      
+      getConnectionInfo() {
+        if ('connection' in navigator) {
+          const conn = navigator.connection
+          return {
+            effectiveType: conn.effectiveType,
+            downlink: conn.downlink,
+            rtt: conn.rtt
+          }
+        }
+        return null
+      }
+      
+      getSessionId() {
+        let sessionId = sessionStorage.getItem('perf_session_id')
+        if (!sessionId) {
+          sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
+          sessionStorage.setItem('perf_session_id', sessionId)
+        }
+        return sessionId
+      }
+      
+      startBatchReporting() {
+        setInterval(() => {
+          if (this.metrics.length > 0) {
+            this.flush()
+          }
+        }, this.flushInterval)
+      }
+      
+      async flush(immediate = false) {
+        if (this.metrics.length === 0) return
+        
+        const batch = [...this.metrics]
+        this.metrics = []
+        
+        try {
+          const payload = {
+            metrics: batch,
+            timestamp: Date.now()
+          }
+          
+          if (immediate && 'sendBeacon' in navigator) {
+            // Use sendBeacon for reliability during page unload
+            navigator.sendBeacon(
+              this.apiEndpoint,
+              JSON.stringify(payload)
+            )
+          } else {
+            await fetch(this.apiEndpoint, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Frappe-CSRF-Token': window.csrf_token
+              },
+              body: JSON.stringify(payload),
+              credentials: 'include'
+            })
+          }
+        } catch (error) {
+          console.error('Failed to send performance metrics:', error)
+          // Re-queue metrics for next flush attempt
+          this.metrics.unshift(...batch)
+        }
+      }
+      
+      // Manual tracking methods
+      startTimer(name) {
+        const startTime = performance.now()
+        return {
+          end: () => {
+            const duration = performance.now() - startTime
+            this.recordMetric({
+              type: 'custom',
+              name,
+              duration,
+              timestamp: Date.now()
+            })
+            return duration
+          }
+        }
+      }
+      
+      trackError(error, context = {}) {
+        this.recordMetric({
+          type: 'error',
+          message: error.message,
+          stack: error.stack,
+          context,
+          timestamp: Date.now()
+        })
+      }
+      
+      trackCustomMetric(name, value, metadata = {}) {
+        this.recordMetric({
+          type: 'custom',
+          name,
+          value,
+          ...metadata,
+          timestamp: Date.now()
+        })
+      }
+      
+      destroy() {
+        this.observers.forEach(observer => observer.disconnect())
+        this.observers.clear()
+        this.flush(true)
+      }
+    }
+    
+    // Global instance
+    export const performanceMonitor = new PerformanceMonitor({
+      enabled: process.env.NODE_ENV === 'production',
+      sampleRate: 0.1 // 10% sampling in production
+    })
+    
+    export default performanceMonitor
+
+  bundle_analyzer: |
+    // scripts/bundle-analyzer.js
+    /**
+     * Bundle analysis and optimization recommendations
+     */
+    
+    import { readFileSync, writeFileSync } from 'fs'
+    import { resolve } from 'path'
+    import { gzipSync } from 'zlib'
+    
+    class BundleAnalyzer {
+      constructor(buildDir = 'dist') {
+        this.buildDir = buildDir
+        this.thresholds = {
+          totalSize: 1024 * 1024, // 1MB
+          chunkSize: 512 * 1024,  // 512KB
+          assetSize: 100 * 1024   // 100KB
+        }
+      }
+      
+      analyze() {
+        console.log('🔍 Analyzing bundle...')
+        
+        const report = {
+          timestamp: new Date().toISOString(),
+          totalSize: 0,
+          gzippedSize: 0,
+          chunks: [],
+          assets: [],
+          recommendations: []
+        }
+        
+        try {
+          // Read manifest file if available
+          const manifestPath = resolve(this.buildDir, 'manifest.json')
+          let manifest = {}
+          
+          try {
+            manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'))
+          } catch (e) {
+            console.warn('⚠️  Manifest file not found, analyzing files directly')
+          }
+          
+          // Analyze JavaScript files
+          this.analyzeJavaScriptFiles(report)
+          
+          // Analyze CSS files
+          this.analyzeCSSFiles(report)
+          
+          // Analyze assets
+          this.analyzeAssets(report)
+          
+          // Generate recommendations
+          this.generateRecommendations(report)
+          
+          // Output report
+          this.outputReport(report)
+          
+        } catch (error) {
+          console.error('❌ Bundle analysis failed:', error)
+        }
+      }
+      
+      analyzeJavaScriptFiles(report) {
+        const jsFiles = this.getFilesOfType('js')
+        
+        jsFiles.forEach(file => {
+          const content = readFileSync(file.path, 'utf-8')
+          const size = Buffer.byteLength(content, 'utf-8')
+          const gzippedSize = gzipSync(content).length
+          
+          const chunk = {
+            name: file.name,
+            size,
+            gzippedSize,
+            type: 'javascript',
+            issues: []
+          }
+          
+          // Check for common issues
+          if (size > this.thresholds.chunkSize) {
+            chunk.issues.push({
+              type: 'large-chunk',
+              message: `Chunk is ${(size / 1024).toFixed(1)}KB, consider code splitting`
+            })
+          }
+          
+          // Check for duplicate code
+          const duplicates = this.findDuplicateCode(content)
+          if (duplicates.length > 0) {
+            chunk.issues.push({
+              type: 'duplicate-code',
+              message: `Found ${duplicates.length} potential duplicate code blocks`
+            })
+          }
+          
+          // Check for unused code
+          const unusedImports = this.findUnusedImports(content)
+          if (unusedImports.length > 0) {
+            chunk.issues.push({
+              type: 'unused-imports',
+              message: `Found ${unusedImports.length} potentially unused imports`
+            })
+          }
+          
+          report.chunks.push(chunk)
+          report.totalSize += size
+          report.gzippedSize += gzippedSize
+        })
+      }
+      
+      analyzeCSSFiles(report) {
+        const cssFiles = this.getFilesOfType('css')
+        
+        cssFiles.forEach(file => {
+          const content = readFileSync(file.path, 'utf-8')
+          const size = Buffer.byteLength(content, 'utf-8')
+          const gzippedSize = gzipSync(content).length
+          
+          const asset = {
+            name: file.name,
+            size,
+            gzippedSize,
+            type: 'css',
+            issues: []
+          }
+          
+          // Check for unused CSS
+          const unusedSelectors = this.findUnusedCSS(content)
+          if (unusedSelectors > 0) {
+            asset.issues.push({
+              type: 'unused-css',
+              message: `Approximately ${unusedSelectors} unused CSS selectors`
+            })
+          }
+          
+          report.assets.push(asset)
+          report.totalSize += size
+          report.gzippedSize += gzippedSize
+        })
+      }
+      
+      analyzeAssets(report) {
+        const assetFiles = this.getFilesOfType(['png', 'jpg', 'jpeg', 'gif', 'svg', 'woff', 'woff2'])
+        
+        assetFiles.forEach(file => {
+          const stats = this.getFileStats(file.path)
+          
+          const asset = {
+            name: file.name,
+            size: stats.size,
+            type: file.extension,
+            issues: []
+          }
+          
+          if (stats.size > this.thresholds.assetSize) {
+            asset.issues.push({
+              type: 'large-asset',
+              message: `Asset is ${(stats.size / 1024).toFixed(1)}KB, consider optimization`
+            })
+          }
+          
+          report.assets.push(asset)
+          report.totalSize += stats.size
+        })
+      }
+      
+      generateRecommendations(report) {
+        // Bundle size recommendations
+        if (report.totalSize > this.thresholds.totalSize) {
+          report.recommendations.push({
+            priority: 'high',
+            category: 'bundle-size',
+            message: `Total bundle size is ${(report.totalSize / 1024 / 1024).toFixed(1)}MB. Consider code splitting and lazy loading.`
+          })
+        }
+        
+        // Compression recommendations
+        const compressionRatio = report.gzippedSize / report.totalSize
+        if (compressionRatio > 0.8) {
+          report.recommendations.push({
+            priority: 'medium',
+            category: 'compression',
+            message: 'Low compression ratio. Consider optimizing assets and removing unused code.'
+          })
+        }
+        
+        // Chunk recommendations
+        const largeChunks = report.chunks.filter(chunk => chunk.size > this.thresholds.chunkSize)
+        if (largeChunks.length > 0) {
+          report.recommendations.push({
+            priority: 'medium',
+            category: 'code-splitting',
+            message: `${largeChunks.length} chunks are larger than 512KB. Implement more aggressive code splitting.`
+          })
+        }
+        
+        // Asset recommendations
+        const largeAssets = report.assets.filter(asset => asset.size > this.thresholds.assetSize)
+        if (largeAssets.length > 0) {
+          report.recommendations.push({
+            priority: 'low',
+            category: 'asset-optimization',
+            message: `${largeAssets.length} assets are larger than 100KB. Consider image optimization and WebP format.`
+          })
+        }
+      }
+      
+      findDuplicateCode(content) {
+        // Simple heuristic for duplicate code detection
+        const lines = content.split('\n')
+        const duplicates = []
+        const seenBlocks = new Map()
+        
+        for (let i = 0; i < lines.length - 5; i++) {
+          const block = lines.slice(i, i + 5).join('\n')
+          if (block.trim().length > 50) {
+            if (seenBlocks.has(block)) {
+              duplicates.push({ start: i, end: i + 5 })
+            } else {
+              seenBlocks.set(block, i)
+            }
+          }
+        }
+        
+        return duplicates
+      }
+      
+      findUnusedImports(content) {
+        const importRegex = /import\s+(?:\w+(?:\s*,\s*)?)?(?:\{([^}]+)\})?\s+from\s+['"]([^'"]+)['"]/g
+        const unusedImports = []
+        let match
+        
+        while ((match = importRegex.exec(content)) !== null) {
+          const namedImports = match[1]
+          if (namedImports) {
+            const imports = namedImports.split(',').map(imp => imp.trim())
+            imports.forEach(imp => {
+              if (!content.includes(imp.replace(/\s+as\s+\w+/, ''))) {
+                unusedImports.push(imp)
+              }
+            })
+          }
+        }
+        
+        return unusedImports
+      }
+      
+      findUnusedCSS(content) {
+        // Simple heuristic - count selectors vs estimated usage
+        const selectorMatches = content.match(/[.#][\w-]+/g) || []
+        return Math.floor(selectorMatches.length * 0.2) // Assume 20% unused
+      }
+      
+      getFilesOfType(extensions) {
+        const glob = require('glob')
+        const path = require('path')
+        
+        if (!Array.isArray(extensions)) {
+          extensions = [extensions]
+        }
+        
+        const pattern = `${this.buildDir}/**/*.{${extensions.join(',')}}`
+        return glob.sync(pattern).map(filePath => ({
+          path: filePath,
+          name: path.basename(filePath),
+          extension: path.extname(filePath).slice(1)
+        }))
+      }
+      
+      getFileStats(filePath) {
+        const fs = require('fs')
+        return fs.statSync(filePath)
+      }
+      
+      outputReport(report) {
+        console.log('\n📊 Bundle Analysis Report')
+        console.log('========================')
+        console.log(`Total Size: ${(report.totalSize / 1024).toFixed(1)} KB`)
+        console.log(`Gzipped Size: ${(report.gzippedSize / 1024).toFixed(1)} KB`)
+        console.log(`Compression Ratio: ${((report.gzippedSize / report.totalSize) * 100).toFixed(1)}%`)
+        
+        if (report.recommendations.length > 0) {
+          console.log('\n🔧 Recommendations')
+          console.log('------------------')
+          report.recommendations.forEach(rec => {
+            const priority = rec.priority.toUpperCase()
+            console.log(`[${priority}] ${rec.message}`)
+          })
+        }
+        
+        // Save detailed report
+        const reportPath = resolve(this.buildDir, 'bundle-analysis.json')
+        writeFileSync(reportPath, JSON.stringify(report, null, 2))
+        console.log(`\n💾 Detailed report saved to: ${reportPath}`)
+      }
+    }
+    
+    // Run analysis if called directly
+    if (import.meta.url === `file://${process.argv[1]}`) {
+      const analyzer = new BundleAnalyzer()
+      analyzer.analyze()
+    }
+    
+    export default BundleAnalyzer
+
+  lighthouse_audit: |
+    // scripts/lighthouse-audit.js
+    /**
+     * Automated Lighthouse audits for performance monitoring
+     */
+    
+    import lighthouse from 'lighthouse'
+    import chromeLauncher from 'chrome-launcher'
+    import { writeFileSync } from 'fs'
+    
+    class LighthouseAuditor {
+      constructor(options = {}) {
+        this.urls = options.urls || ['http://localhost:8080']
+        this.outputPath = options.outputPath || './lighthouse-reports'
+        this.thresholds = {
+          performance: 90,
+          accessibility: 95,
+          'best-practices': 90,
+          seo: 90,
+          pwa: 80
+        }
+      }
+      
+      async runAudits() {
+        console.log('🔍 Starting Lighthouse audits...')
+        
+        const chrome = await chromeLauncher.launch({
+          chromeFlags: ['--headless', '--no-sandbox']
+        })
+        
+        try {
+          const results = []
+          
+          for (const url of this.urls) {
+            console.log(`Auditing: ${url}`)
+            const result = await this.auditURL(url, chrome.port)
+            results.push(result)
+          }
+          
+          await this.generateReport(results)
+          
+        } finally {
+          await chrome.kill()
+        }
+      }
+      
+      async auditURL(url, port) {
+        const options = {
+          logLevel: 'info',
+          output: 'json',
+          onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo', 'pwa'],
+          port
+        }
+        
+        const runnerResult = await lighthouse(url, options)
+        const report = runnerResult.lhr
+        
+        return {
+          url,
+          timestamp: new Date().toISOString(),
+          scores: this.extractScores(report),
+          metrics: this.extractMetrics(report),
+          opportunities: this.extractOpportunities(report),
+          diagnostics: this.extractDiagnostics(report)
+        }
+      }
+      
+      extractScores(report) {
+        const categories = report.categories
+        return {
+          performance: Math.round(categories.performance.score * 100),
+          accessibility: Math.round(categories.accessibility.score * 100),
+          bestPractices: Math.round(categories['best-practices'].score * 100),
+          seo: Math.round(categories.seo.score * 100),
+          pwa: categories.pwa ? Math.round(categories.pwa.score * 100) : null
+        }
+      }
+      
+      extractMetrics(report) {
+        const audits = report.audits
+        return {
+          firstContentfulPaint: audits['first-contentful-paint']?.numericValue || 0,
+          largestContentfulPaint: audits['largest-contentful-paint']?.numericValue || 0,
+          firstInputDelay: audits['first-input-delay']?.numericValue || 0,
+          cumulativeLayoutShift: audits['cumulative-layout-shift']?.numericValue || 0,
+          speedIndex: audits['speed-index']?.numericValue || 0,
+          totalBlockingTime: audits['total-blocking-time']?.numericValue || 0
+        }
+      }
+      
+      extractOpportunities(report) {
+        const opportunities = []
+        
+        Object.entries(report.audits).forEach(([key, audit]) => {
+          if (audit.details?.type === 'opportunity' && audit.numericValue > 100) {
+            opportunities.push({
+              id: key,
+              title: audit.title,
+              description: audit.description,
+              savings: audit.numericValue,
+              displayValue: audit.displayValue
+            })
+          }
+        })
+        
+        return opportunities.sort((a, b) => b.savings - a.savings)
+      }
+      
+      extractDiagnostics(report) {
+        const diagnostics = []
+        
+        Object.entries(report.audits).forEach(([key, audit]) => {
+          if (audit.details?.type === 'diagnostic' && audit.score < 1) {
+            diagnostics.push({
+              id: key,
+              title: audit.title,
+              description: audit.description,
+              score: audit.score,
+              displayValue: audit.displayValue
+            })
+          }
+        })
+        
+        return diagnostics
+      }
+      
+      async generateReport(results) {
+        const report = {
+          timestamp: new Date().toISOString(),
+          summary: this.generateSummary(results),
+          details: results,
+          recommendations: this.generateRecommendations(results)
+        }
+        
+        // Save JSON report
+        const jsonPath = `${this.outputPath}/lighthouse-report-${Date.now()}.json`
+        writeFileSync(jsonPath, JSON.stringify(report, null, 2))
+        
+        // Generate console output
+        this.outputConsoleReport(report)
+        
+        // Check if any scores are below thresholds
+        const failedThresholds = this.checkThresholds(results)
+        if (failedThresholds.length > 0) {
+          console.error('\n❌ Lighthouse audit failed:')
+          failedThresholds.forEach(failure => {
+            console.error(`  ${failure.category}: ${failure.score} (threshold: ${failure.threshold})`)
+          })
+          process.exit(1)
+        }
+        
+        console.log(`\n💾 Report saved to: ${jsonPath}`)
+      }
+      
+      generateSummary(results) {
+        const summary = {
+          totalUrls: results.length,
+          averageScores: {},
+          worstPerforming: {},
+          trends: {}
+        }
+        
+        // Calculate average scores
+        const categories = ['performance', 'accessibility', 'bestPractices', 'seo', 'pwa']
+        categories.forEach(category => {
+          const scores = results.map(r => r.scores[category]).filter(s => s !== null)
+          summary.averageScores[category] = scores.length > 0 
+            ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+            : null
+        })
+        
+        // Find worst performing URLs
+        categories.forEach(category => {
+          const worstResult = results
+            .filter(r => r.scores[category] !== null)
+            .sort((a, b) => a.scores[category] - b.scores[category])[0]
+          
+          if (worstResult) {
+            summary.worstPerforming[category] = {
+              url: worstResult.url,
+              score: worstResult.scores[category]
+            }
+          }
+        })
+        
+        return summary
+      }
+      
+      generateRecommendations(results) {
+        const recommendations = []
+        
+        results.forEach(result => {
+          // Performance recommendations
+          if (result.scores.performance < 90) {
+            const topOpportunities = result.opportunities.slice(0, 3)
+            recommendations.push({
+              url: result.url,
+              category: 'performance',
+              priority: 'high',
+              message: `Performance score is ${result.scores.performance}. Top opportunities: ${topOpportunities.map(o => o.title).join(', ')}`
+            })
+          }
+          
+          // Accessibility recommendations
+          if (result.scores.accessibility < 95) {
+            recommendations.push({
+              url: result.url,
+              category: 'accessibility',
+              priority: 'high',
+              message: `Accessibility score is ${result.scores.accessibility}. Review color contrast, alt text, and keyboard navigation.`
+            })
+          }
+          
+          // Core Web Vitals recommendations
+          if (result.metrics.largestContentfulPaint > 2500) {
+            recommendations.push({
+              url: result.url,
+              category: 'core-web-vitals',
+              priority: 'high',
+              message: `LCP is ${(result.metrics.largestContentfulPaint / 1000).toFixed(1)}s. Optimize images and reduce render-blocking resources.`
+            })
+          }
+          
+          if (result.metrics.cumulativeLayoutShift > 0.1) {
+            recommendations.push({
+              url: result.url,
+              category: 'core-web-vitals',
+              priority: 'medium',
+              message: `CLS is ${result.metrics.cumulativeLayoutShift.toFixed(3)}. Add size attributes to images and reserve space for dynamic content.`
+            })
+          }
+        })
+        
+        return recommendations
+      }
+      
+      outputConsoleReport(report) {
+        console.log('\n🚦 Lighthouse Audit Results')
+        console.log('==========================')
+        
+        Object.entries(report.summary.averageScores).forEach(([category, score]) => {
+          if (score !== null) {
+            const emoji = score >= 90 ? '✅' : score >= 75 ? '⚠️' : '❌'
+            console.log(`${emoji} ${category}: ${score}`)
+          }
+        })
+        
+        if (report.recommendations.length > 0) {
+          console.log('\n📋 Top Recommendations')
+          console.log('---------------------')
+          report.recommendations
+            .filter(r => r.priority === 'high')
+            .slice(0, 5)
+            .forEach(rec => {
+              console.log(`• ${rec.message}`)
+            })
+        }
+      }
+      
+      checkThresholds(results) {
+        const failures = []
+        
+        results.forEach(result => {
+          Object.entries(this.thresholds).forEach(([category, threshold]) => {
+            const score = result.scores[category === 'best-practices' ? 'bestPractices' : category]
+            if (score !== null && score < threshold) {
+              failures.push({
+                url: result.url,
+                category,
+                score,
+                threshold
+              })
+            }
+          })
+        })
+        
+        return failures
+      }
+    }
+    
+    // Run audits if called directly
+    if (import.meta.url === `file://${process.argv[1]}`) {
+      const auditor = new LighthouseAuditor({
+        urls: process.argv.slice(2) || ['http://localhost:8080']
+      })
+      auditor.runAudits().catch(console.error)
+    }
+    
+    export default LighthouseAuditor
+
+  backend_analytics_api: |
+    # {{app_name}}/api/analytics.py
+    """
+    Performance analytics and monitoring APIs
+    """
+    
+    import frappe
+    from frappe import _
+    from frappe.utils import now, cint, flt, get_datetime
+    from typing import Dict, List, Any
+    import json
+    
+    
+    @frappe.whitelist()
+    def track_performance(metrics: str) -> Dict[str, Any]:
+        """
+        Track performance metrics from frontend
+        
+        Args:
+            metrics: JSON string containing performance data
+            
+        Returns:
+            dict: Success response
+        """
+        try:
+            metrics_data = frappe.parse_json(metrics)
+            
+            # Validate required fields
+            if not isinstance(metrics_data.get('metrics'), list):
+                frappe.throw(_("Invalid metrics data"))
+            
+            # Store metrics in database
+            for metric in metrics_data['metrics']:
+                store_performance_metric(metric)
+            
+            return {"success": True, "stored": len(metrics_data['metrics'])}
+            
+        except Exception as e:
+            frappe.log_error(f"Error tracking performance: {e}")
+            frappe.throw(_("Failed to track performance metrics"))
+    
+    
+    @frappe.whitelist()
+    def get_performance_dashboard() -> Dict[str, Any]:
+        """Get performance analytics dashboard data"""
+        try:
+            # Check permissions
+            if not frappe.has_permission("System Manager"):
+                frappe.throw(_("No permission to access performance data"))
+            
+            dashboard_data = {
+                "overview": get_performance_overview(),
+                "trends": get_performance_trends(),
+                "top_issues": get_top_performance_issues(),
+                "user_metrics": get_user_performance_metrics(),
+                "resource_usage": get_resource_usage_metrics()
+            }
+            
+            return dashboard_data
+            
+        except Exception as e:
+            frappe.log_error(f"Error getting performance dashboard: {e}")
+            frappe.throw(_("Failed to load performance dashboard"))
+    
+    
+    @frappe.whitelist()
+    def get_page_performance(page_url: str, days: int = 7) -> Dict[str, Any]:
+        """Get performance metrics for a specific page"""
+        try:
+            page_metrics = frappe.db.sql("""
+                SELECT 
+                    AVG(CASE WHEN metric_name = 'navigation' THEN metric_value END) as avg_load_time,
+                    AVG(CASE WHEN metric_name = 'fcp' THEN metric_value END) as avg_fcp,
+                    AVG(CASE WHEN metric_name = 'lcp' THEN metric_value END) as avg_lcp,
+                    AVG(CASE WHEN metric_name = 'cls' THEN metric_value END) as avg_cls,
+                    AVG(CASE WHEN metric_name = 'fid' THEN metric_value END) as avg_fid,
+                    COUNT(*) as total_sessions
+                FROM `tabPerformance Metric`
+                WHERE page_url LIKE %s 
+                    AND creation >= DATE_SUB(NOW(), INTERVAL %s DAY)
+                    AND metric_name IN ('navigation', 'fcp', 'lcp', 'cls', 'fid')
+                GROUP BY DATE(creation)
+                ORDER BY DATE(creation) DESC
+            """, (f"%{page_url}%", days), as_dict=True)
+            
+            return {
+                "page_url": page_url,
+                "metrics": page_metrics,
+                "summary": calculate_performance_score(page_metrics[0] if page_metrics else {})
+            }
+            
+        except Exception as e:
+            frappe.log_error(f"Error getting page performance: {e}")
+            frappe.throw(_("Failed to load page performance data"))
+    
+    
+    def store_performance_metric(metric: Dict[str, Any]):
+        """Store individual performance metric"""
+        try:
+            # Create Performance Metric record
+            doc = frappe.get_doc({
+                "doctype": "Performance Metric",
+                "metric_type": metric.get("type"),
+                "metric_name": metric.get("name", metric.get("type")),
+                "metric_value": flt(metric.get("value", metric.get("duration", 0))),
+                "page_url": metric.get("url"),
+                "user_agent": metric.get("userAgent"),
+                "session_id": metric.get("sessionId"),
+                "viewport_width": cint(metric.get("viewportWidth", 0)),
+                "viewport_height": cint(metric.get("viewportHeight", 0)),
+                "connection_type": json.dumps(metric.get("connection")) if metric.get("connection") else None,
+                "metadata": json.dumps({
+                    k: v for k, v in metric.items() 
+                    if k not in ["type", "name", "value", "duration", "url", "userAgent", "sessionId"]
+                })
+            })
+            
+            doc.insert(ignore_permissions=True)
+            
+        except Exception as e:
+            frappe.log_error(f"Error storing performance metric: {e}")
+    
+    
+    def get_performance_overview() -> Dict[str, Any]:
+        """Get high-level performance overview"""
+        overview = frappe.db.sql("""
+            SELECT 
+                COUNT(*) as total_sessions,
+                AVG(CASE WHEN metric_name = 'navigation' THEN metric_value END) as avg_load_time,
+                AVG(CASE WHEN metric_name = 'fcp' THEN metric_value END) as avg_fcp,
+                AVG(CASE WHEN metric_name = 'lcp' THEN metric_value END) as avg_lcp,
+                AVG(CASE WHEN metric_name = 'cls' THEN metric_value END) as avg_cls,
+                AVG(CASE WHEN metric_name = 'fid' THEN metric_value END) as avg_fid,
+                COUNT(DISTINCT session_id) as unique_sessions,
+                COUNT(CASE WHEN metric_type = 'error' THEN 1 END) as error_count
+            FROM `tabPerformance Metric`
+            WHERE creation >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+        """, as_dict=True)[0]
+        
+        # Calculate performance score
+        overview['performance_score'] = calculate_performance_score(overview)
+        
+        return overview
+    
+    
+    def get_performance_trends() -> List[Dict[str, Any]]:
+        """Get performance trends over time"""
+        return frappe.db.sql("""
+            SELECT 
+                DATE(creation) as date,
+                AVG(CASE WHEN metric_name = 'navigation' THEN metric_value END) as avg_load_time,
+                AVG(CASE WHEN metric_name = 'fcp' THEN metric_value END) as avg_fcp,
+                AVG(CASE WHEN metric_name = 'lcp' THEN metric_value END) as avg_lcp,
+                COUNT(DISTINCT session_id) as sessions,
+                COUNT(CASE WHEN metric_type = 'error' THEN 1 END) as errors
+            FROM `tabPerformance Metric`
+            WHERE creation >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+            GROUP BY DATE(creation)
+            ORDER BY DATE(creation) DESC
+        """, as_dict=True)
+    
+    
+    def get_top_performance_issues() -> List[Dict[str, Any]]:
+        """Get top performance issues"""
+        return frappe.db.sql("""
+            SELECT 
+                page_url,
+                AVG(metric_value) as avg_value,
+                COUNT(*) as occurrences,
+                metric_type,
+                metric_name
+            FROM `tabPerformance Metric`
+            WHERE creation >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                AND (
+                    (metric_name = 'lcp' AND metric_value > 2500) OR
+                    (metric_name = 'fid' AND metric_value > 100) OR
+                    (metric_name = 'cls' AND metric_value > 0.1) OR
+                    (metric_name = 'navigation' AND metric_value > 3000)
+                )
+            GROUP BY page_url, metric_type, metric_name
+            ORDER BY occurrences DESC
+            LIMIT 10
+        """, as_dict=True)
+    
+    
+    def get_user_performance_metrics() -> Dict[str, Any]:
+        """Get user-specific performance metrics"""
+        return {
+            "by_device": frappe.db.sql("""
+                SELECT 
+                    CASE 
+                        WHEN viewport_width < 768 THEN 'Mobile'
+                        WHEN viewport_width < 1024 THEN 'Tablet'
+                        ELSE 'Desktop'
+                    END as device_type,
+                    AVG(metric_value) as avg_load_time,
+                    COUNT(DISTINCT session_id) as sessions
+                FROM `tabPerformance Metric`
+                WHERE metric_name = 'navigation'
+                    AND creation >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                GROUP BY device_type
+            """, as_dict=True),
+            
+            "by_connection": frappe.db.sql("""
+                SELECT 
+                    JSON_UNQUOTE(JSON_EXTRACT(connection_type, '$.effectiveType')) as connection_type,
+                    AVG(metric_value) as avg_load_time,
+                    COUNT(*) as sessions
+                FROM `tabPerformance Metric`
+                WHERE metric_name = 'navigation'
+                    AND connection_type IS NOT NULL
+                    AND creation >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                GROUP BY connection_type
+                HAVING connection_type IS NOT NULL
+            """, as_dict=True)
+        }
+    
+    
+    def get_resource_usage_metrics() -> List[Dict[str, Any]]:
+        """Get resource usage metrics"""
+        return frappe.db.sql("""
+            SELECT 
+                JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.resourceType')) as resource_type,
+                AVG(metric_value) as avg_duration,
+                AVG(JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.transferSize'))) as avg_size,
+                COUNT(*) as count
+            FROM `tabPerformance Metric`
+            WHERE metric_type = 'resource'
+                AND creation >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+            GROUP BY resource_type
+            HAVING resource_type IS NOT NULL
+            ORDER BY count DESC
+        """, as_dict=True)
+    
+    
+    def calculate_performance_score(metrics: Dict[str, Any]) -> int:
+        """Calculate overall performance score based on Core Web Vitals"""
+        score = 100
+        
+        # LCP scoring (0-40 points)
+        lcp = flt(metrics.get("avg_lcp", 0))
+        if lcp > 4000:
+            score -= 40
+        elif lcp > 2500:
+            score -= 20
+        
+        # FID scoring (0-30 points)
+        fid = flt(metrics.get("avg_fid", 0))
+        if fid > 300:
+            score -= 30
+        elif fid > 100:
+            score -= 15
+        
+        # CLS scoring (0-30 points)
+        cls = flt(metrics.get("avg_cls", 0))
+        if cls > 0.25:
+            score -= 30
+        elif cls > 0.1:
+            score -= 15
+        
+        return max(0, score)
+
+  performance_doctype: |
+    # Performance Metric DocType JSON
+    {
+        "actions": [],
+        "creation": "2024-01-01 00:00:00.000000",
+        "doctype": "DocType",
+        "editable_grid": 1,
+        "engine": "InnoDB",
+        "field_order": [
+            "metric_type",
+            "metric_name",
+            "metric_value",
+            "column_break_4",
+            "page_url",
+            "session_id",
+            "section_break_7",
+            "user_agent",
+            "viewport_width",
+            "viewport_height",
+            "column_break_11",
+            "connection_type",
+            "metadata",
+            "section_break_14",
+            "timestamp"
+        ],
+        "fields": [
+            {
+                "fieldname": "metric_type",
+                "fieldtype": "Select",
+                "label": "Metric Type",
+                "options": "navigation\nresource\nlongtask\ncls\nfid\nsession\nerror\ncustom",
+                "reqd": 1
+            },
+            {
+                "fieldname": "metric_name",
+                "fieldtype": "Data",
+                "label": "Metric Name",
+                "reqd": 1
+            },
+            {
+                "fieldname": "metric_value",
+                "fieldtype": "Float",
+                "label": "Metric Value"
+            },
+            {
+                "fieldname": "column_break_4",
+                "fieldtype": "Column Break"
+            },
+            {
+                "fieldname": "page_url",
+                "fieldtype": "Long Text",
+                "label": "Page URL"
+            },
+            {
+                "fieldname": "session_id",
+                "fieldtype": "Data",
+                "label": "Session ID"
+            },
+            {
+                "fieldname": "section_break_7",
+                "fieldtype": "Section Break",
+                "label": "Environment"
+            },
+            {
+                "fieldname": "user_agent",
+                "fieldtype": "Long Text",
+                "label": "User Agent"
+            },
+            {
+                "fieldname": "viewport_width",
+                "fieldtype": "Int",
+                "label": "Viewport Width"
+            },
+            {
+                "fieldname": "viewport_height",
+                "fieldtype": "Int",
+                "label": "Viewport Height"
+            },
+            {
+                "fieldname": "column_break_11",
+                "fieldtype": "Column Break"
+            },
+            {
+                "fieldname": "connection_type",
+                "fieldtype": "JSON",
+                "label": "Connection Info"
+            },
+            {
+                "fieldname": "metadata",
+                "fieldtype": "JSON",
+                "label": "Additional Metadata"
+            },
+            {
+                "fieldname": "section_break_14",
+                "fieldtype": "Section Break",
+                "label": "Timestamp"
+            },
+            {
+                "fieldname": "timestamp",
+                "fieldtype": "Datetime",
+                "label": "Timestamp",
+                "read_only": 1
+            }
+        ],
+        "index_web_pages_for_search": 1,
+        "istable": 0,
+        "modified": "2024-01-01 00:00:00.000000",
+        "modified_by": "Administrator",
+        "module": "{{app_name.title().replace('_', ' ')}}",
+        "name": "Performance Metric",
+        "owner": "Administrator",
+        "permissions": [
+            {
+                "create": 1,
+                "delete": 1,
+                "email": 1,
+                "export": 1,
+                "print": 1,
+                "read": 1,
+                "report": 1,
+                "role": "System Manager",
+                "share": 1,
+                "write": 1
+            }
+        ],
+        "sort_field": "modified",
+        "sort_order": "DESC",
+        "track_changes": 1
+    }
+
+instructions:
+  setup:
+    - "Install performance monitoring dependencies: yarn add lighthouse chrome-launcher"
+    - "Create Performance Metric DocType using the provided JSON"
+    - "Add performance monitoring to your main.js"
+    - "Set up analytics API endpoints"
+    - "Configure bundle analysis in build scripts"
+  
+  frontend_monitoring:
+    - "Automatic Core Web Vitals tracking (LCP, FID, CLS)"
+    - "Navigation timing and resource loading metrics"
+    - "Error tracking and custom performance markers"
+    - "Real User Monitoring (RUM) with sampling"
+    - "Batched reporting to minimize performance impact"
+  
+  backend_analytics:
+    - "Performance metrics storage and analysis"
+    - "Dashboard APIs for performance insights"
+    - "Trending and comparative analysis"
+    - "User segmentation by device and connection"
+    - "Automated performance scoring"
+  
+  optimization_tools:
+    - "Bundle analysis with size recommendations"
+    - "Automated Lighthouse audits in CI/CD"
+    - "Performance regression detection"
+    - "Code splitting and lazy loading suggestions"
+    - "Resource optimization recommendations"
+  
+  monitoring_best_practices:
+    - "Set performance budgets and thresholds"
+    - "Monitor Core Web Vitals for SEO impact"
+    - "Track performance across different user segments"
+    - "Set up alerts for performance regressions"
+    - "Regular performance audits and optimization cycles"

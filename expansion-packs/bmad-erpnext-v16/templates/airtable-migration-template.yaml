@@ -1,0 +1,292 @@
+name: "Airtable to ERPNext Migration Template"
+description: "Comprehensive template for migrating Airtable bases to ERPNext DocTypes with data transformation and relationship mapping"
+version: "1.0.0"
+
+migration_config:
+  source:
+    type: "airtable"
+    base_id: "{{ base_id }}"
+    api_key: "{{ api_key }}"
+    tables: []
+    
+  target:
+    type: "erpnext"
+    site: "{{ site_name }}"
+    module: "{{ module_name }}"
+    
+  options:
+    batch_size: 1000
+    validate_data: true
+    preserve_ids: false
+    dry_run: false
+    create_backup: true
+
+table_mappings:
+  - source_table: "{{ airtable_table_name }}"
+    target_doctype: "{{ erpnext_doctype }}"
+    
+    field_mappings:
+      - source: "{{ airtable_field }}"
+        target: "{{ erpnext_field }}"
+        transform: "{{ transformation_function }}"
+        
+    field_transformations:
+      single_line_text:
+        target_type: "Data"
+        max_length: 140
+        
+      long_text:
+        target_type: "Text Editor"
+        html_allowed: true
+        
+      number:
+        target_type: "Float"
+        precision: 2
+        
+      currency:
+        target_type: "Currency"
+        currency_field: "currency"
+        
+      percent:
+        target_type: "Percent"
+        
+      single_select:
+        target_type: "Select"
+        options_mapping:
+          - source: "{{ airtable_option }}"
+            target: "{{ erpnext_option }}"
+            
+      multiple_select:
+        target_type: "Table MultiSelect"
+        child_doctype: "{{ child_table_name }}"
+        
+      date:
+        target_type: "Date"
+        format: "YYYY-MM-DD"
+        
+      datetime:
+        target_type: "Datetime"
+        format: "YYYY-MM-DD HH:mm:ss"
+        
+      checkbox:
+        target_type: "Check"
+        true_value: 1
+        false_value: 0
+        
+      attachment:
+        target_type: "Attach"
+        upload_to: "public/files"
+        
+      linked_record:
+        target_type: "Link"
+        target_doctype: "{{ linked_doctype }}"
+        create_if_missing: false
+        
+      lookup:
+        target_type: "Read Only"
+        fetch_from: "{{ link_field }}.{{ source_field }}"
+        
+      rollup:
+        target_type: "Read Only"
+        calculation: "server_script"
+        
+      formula:
+        target_type: "Read Only"
+        server_script: |
+          # Python code to calculate formula
+          result = {{ formula_logic }}
+
+relationship_mappings:
+  one_to_many:
+    - parent_table: "{{ parent_table }}"
+      parent_doctype: "{{ parent_doctype }}"
+      child_table: "{{ child_table }}"
+      child_doctype: "{{ child_doctype }}"
+      link_field: "{{ link_fieldname }}"
+      
+  many_to_many:
+    - table_a: "{{ table_a }}"
+      doctype_a: "{{ doctype_a }}"
+      table_b: "{{ table_b }}"
+      doctype_b: "{{ doctype_b }}"
+      junction_doctype: "{{ junction_doctype }}"
+      
+automation_conversion:
+  airtable_automations:
+    - trigger: "record_created"
+      erpnext_implementation:
+        type: "DocType Hook"
+        event: "after_insert"
+        handler: |
+          def after_insert(self):
+              # Converted automation logic
+              pass
+              
+    - trigger: "record_updated"
+      erpnext_implementation:
+        type: "DocType Hook"
+        event: "on_update"
+        handler: |
+          def on_update(self):
+              # Converted automation logic
+              pass
+              
+    - trigger: "record_matches_condition"
+      erpnext_implementation:
+        type: "Server Script"
+        doctype: "{{ doctype }}"
+        event: "Before Save"
+        script: |
+          if doc.{{ field }} == "{{ value }}":
+              # Trigger action
+              pass
+
+view_conversion:
+  grid_view:
+    target: "List View"
+    configurations:
+      filters: []
+      sort_by: "{{ sort_field }}"
+      sort_order: "{{ asc_or_desc }}"
+      
+  kanban_view:
+    target: "Kanban Board"
+    configurations:
+      column_field: "{{ status_field }}"
+      title_field: "{{ title_field }}"
+      
+  calendar_view:
+    target: "Calendar View"
+    configurations:
+      start_date_field: "{{ start_date }}"
+      end_date_field: "{{ end_date }}"
+      title_field: "{{ title }}"
+      
+  gallery_view:
+    target: "Image View"
+    configurations:
+      image_field: "{{ image_field }}"
+      title_field: "{{ title_field }}"
+
+migration_scripts:
+  pre_migration: |
+    import frappe
+    
+    def prepare_migration():
+        # Create custom fields if needed
+        # Set up temporary tables
+        # Validate permissions
+        pass
+        
+  data_extraction: |
+    import requests
+    from pyairtable import Table
+    
+    def extract_airtable_data(base_id, table_name, api_key):
+        table = Table(api_key, base_id, table_name)
+        records = table.all()
+        return records
+        
+  data_transformation: |
+    def transform_record(airtable_record, field_mappings):
+        erpnext_doc = {}
+        
+        for mapping in field_mappings:
+            source_value = airtable_record.get(mapping['source'])
+            
+            if mapping.get('transform'):
+                source_value = apply_transformation(
+                    source_value, 
+                    mapping['transform']
+                )
+                
+            erpnext_doc[mapping['target']] = source_value
+            
+        return erpnext_doc
+        
+  data_loading: |
+    def load_to_erpnext(records, doctype):
+        success_count = 0
+        error_records = []
+        
+        for record in records:
+            try:
+                doc = frappe.get_doc({
+                    "doctype": doctype,
+                    **record
+                })
+                doc.insert(ignore_permissions=True)
+                success_count += 1
+                
+            except Exception as e:
+                error_records.append({
+                    "record": record,
+                    "error": str(e)
+                })
+                
+        return success_count, error_records
+        
+  post_migration: |
+    def finalize_migration():
+        # Update relationships
+        # Rebuild search index
+        # Clear cache
+        # Generate reports
+        frappe.db.commit()
+        frappe.clear_cache()
+
+validation:
+  pre_checks:
+    - check: "api_connectivity"
+      script: |
+        # Verify Airtable API access
+        response = requests.get(f"{api_url}/bases/{base_id}")
+        return response.status_code == 200
+        
+    - check: "data_volume"
+      script: |
+        # Check if data volume is manageable
+        record_count = get_record_count()
+        return record_count < 1000000
+        
+  post_checks:
+    - check: "record_count"
+      script: |
+        # Verify record counts match
+        source_count = get_airtable_count()
+        target_count = frappe.db.count(doctype)
+        return source_count == target_count
+        
+    - check: "relationship_integrity"
+      script: |
+        # Verify all relationships preserved
+        return validate_all_links()
+
+error_handling:
+  on_field_error:
+    action: "log_and_continue"
+    fallback: "use_default_value"
+    
+  on_record_error:
+    action: "log_and_skip"
+    max_errors: 100
+    
+  on_critical_error:
+    action: "rollback"
+    notify: "admin@example.com"
+
+reporting:
+  migration_summary:
+    - total_records_processed
+    - successful_migrations
+    - failed_migrations
+    - transformation_warnings
+    - relationship_mappings
+    - time_elapsed
+    
+  detailed_log:
+    location: "migration_logs/{{ timestamp }}.log"
+    include:
+      - all_errors
+      - transformation_details
+      - performance_metrics

@@ -1,0 +1,239 @@
+name: "troubleshooting-team"
+title: "Troubleshooting & Diagnostics Team"
+description: "Specialized team for diagnosing errors, debugging issues, and recovering from failures"
+version: "1.0.0"
+
+bundle:
+  name: "troubleshooting-team"
+  agents:
+    - "diagnostic-specialist"
+    - "refactoring-expert"
+    - "bench-operator"
+    - "testing-specialist"
+  workflows:
+    - "error-resolution-workflow"
+    - "performance-optimization-workflow"
+
+team_composition:
+  primary_agents:
+    diagnostic_specialist:
+      role: "Lead Diagnostician"
+      responsibility: "Root cause analysis and error identification"
+      triggers:
+        - "Runtime errors and exceptions"
+        - "API failures and permission issues"
+        - "Performance degradation"
+        - "Unexpected application behavior"
+    
+    refactoring_expert:
+      role: "Code Quality Specialist"
+      responsibility: "Code improvement and optimization after issues are identified"
+      triggers:
+        - "Code smells identified during debugging"
+        - "Performance bottlenecks found"
+        - "Repeated error patterns"
+        - "Legacy code causing issues"
+  
+  supporting_agents:
+    bench_operator:
+      role: "Environment Specialist"
+      responsibility: "Infrastructure and environment troubleshooting"
+      triggers:
+        - "Environment configuration issues"
+        - "Database connectivity problems"
+        - "Service startup failures"
+        - "Deployment issues"
+    
+    testing_specialist:
+      role: "Validation Engineer"
+      responsibility: "Verify fixes and prevent regressions"
+      triggers:
+        - "After error fixes are implemented"
+        - "Before code refactoring"
+        - "Performance optimization validation"
+        - "Regression testing needs"
+
+workflow_coordination:
+  error_triage:
+    1:
+      agent: "diagnostic-specialist"
+      action: "Initial error analysis and categorization"
+      output: "Error classification and preliminary root cause"
+    
+    2:
+      decision_point: "Error category determines next steps"
+      routes:
+        environment_issue:
+          agent: "bench-operator"
+          action: "Environment troubleshooting and fixing"
+        code_issue:
+          agent: "diagnostic-specialist"
+          action: "Deep code analysis and fix identification"
+        performance_issue:
+          agents: ["diagnostic-specialist", "refactoring-expert"]
+          action: "Performance analysis and optimization"
+    
+    3:
+      agent: "testing-specialist"
+      action: "Validate fix and prevent regression"
+      output: "Verified solution"
+
+  performance_optimization:
+    1:
+      agent: "diagnostic-specialist"
+      action: "Identify performance bottlenecks"
+      output: "Performance analysis report"
+    
+    2:
+      agent: "refactoring-expert"
+      action: "Optimize code and queries"
+      output: "Optimized code implementation"
+    
+    3:
+      agent: "testing-specialist"
+      action: "Validate performance improvements"
+      output: "Performance benchmarks and validation"
+
+communication_protocols:
+  escalation_path:
+    level_1: "diagnostic-specialist handles initial triage"
+    level_2: "specific specialist based on error category"
+    level_3: "full team coordination for complex issues"
+    level_4: "external expert consultation if needed"
+  
+  status_reporting:
+    frequency: "Real-time updates during active debugging"
+    format: "Structured error reports with next steps"
+    distribution: "All team members and requesting agents"
+  
+  handoff_procedures:
+    diagnostic_to_refactoring:
+      trigger: "Code quality issues identified"
+      handoff_data: "Error analysis, problematic code sections, improvement recommendations"
+    
+    diagnostic_to_bench:
+      trigger: "Environment or infrastructure issues identified"
+      handoff_data: "Error details, environment state, configuration requirements"
+    
+    any_to_testing:
+      trigger: "Fix implemented and ready for validation"
+      handoff_data: "Changes made, test scenarios, expected outcomes"
+
+team_capabilities:
+  error_handling:
+    - "Runtime error diagnosis and resolution"
+    - "API endpoint debugging and fixing"
+    - "Frontend JavaScript error resolution"
+    - "Database connectivity and query issues"
+    - "Permission and authentication problems"
+    - "Environment and configuration troubleshooting"
+  
+  performance_optimization:
+    - "Database query optimization"
+    - "Frontend performance improvements"
+    - "API response time optimization"
+    - "Memory usage optimization"
+    - "Bundle size reduction"
+    - "Caching strategy implementation"
+  
+  code_quality:
+    - "Code smell detection and elimination"
+    - "DRY principle application"
+    - "Architecture improvement"
+    - "Legacy code modernization"
+    - "Error handling enhancement"
+    - "Logging and monitoring improvement"
+
+success_metrics:
+  resolution_speed:
+    target: "80% of issues resolved within 2 hours"
+    measurement: "Time from error report to verified fix"
+  
+  issue_recurrence:
+    target: "Less than 5% of resolved issues recur"
+    measurement: "Tracking of previously resolved error patterns"
+  
+  performance_improvement:
+    target: "Measurable performance gains in 90% of optimization work"
+    measurement: "Before/after metrics for response times, query performance"
+  
+  code_quality_improvement:
+    target: "Reduced complexity and improved maintainability"
+    measurement: "Code metrics before/after refactoring"
+
+standard_procedures:
+  error_response_checklist:
+    immediate_actions:
+      - "Capture complete error message and stack trace"
+      - "Identify affected users and impact scope"
+      - "Check if error is recurring or isolated incident"
+      - "Verify system health and resource availability"
+    
+    diagnostic_actions:
+      - "Analyze logs for related errors and patterns"
+      - "Check recent changes that might have caused issue"
+      - "Verify environment configuration and dependencies"
+      - "Test error reproduction in controlled environment"
+    
+    resolution_actions:
+      - "Implement targeted fix based on root cause"
+      - "Test fix in development/staging environment"
+      - "Deploy fix with monitoring for side effects"
+      - "Validate fix resolves original issue"
+      - "Document solution for future reference"
+  
+  performance_optimization_checklist:
+    analysis_phase:
+      - "Measure current performance baselines"
+      - "Identify specific bottlenecks and slow operations"
+      - "Profile database queries and API calls"
+      - "Analyze frontend bundle sizes and load times"
+    
+    optimization_phase:
+      - "Apply targeted optimizations to identified bottlenecks"
+      - "Test optimizations in isolation"
+      - "Measure performance improvements"
+      - "Validate no functionality is broken"
+    
+    validation_phase:
+      - "Run comprehensive performance tests"
+      - "Compare before/after metrics"
+      - "Monitor production performance after deployment"
+      - "Document optimization techniques used"
+
+emergency_protocols:
+  critical_system_down:
+    immediate_response:
+      - "All team members alerted within 5 minutes"
+      - "diagnostic-specialist leads immediate triage"
+      - "bench-operator checks infrastructure status"
+      - "Estimated time to recovery communicated"
+    
+    escalation_triggers:
+      - "Issue not resolved within 30 minutes"
+      - "Multiple systems affected"
+      - "Data integrity concerns identified"
+      - "Security implications discovered"
+  
+  data_corruption_detected:
+    immediate_actions:
+      - "Stop all write operations to affected systems"
+      - "Assess scope and impact of corruption"
+      - "Initiate backup recovery procedures"
+      - "Document all findings for post-incident analysis"
+
+knowledge_management:
+  error_pattern_database:
+    purpose: "Maintain searchable database of resolved issues"
+    contents: "Error messages, root causes, solutions, prevention strategies"
+    maintenance: "Updated after each resolved issue"
+  
+  troubleshooting_runbooks:
+    purpose: "Step-by-step guides for common issues"
+    coverage: "Database, API, frontend, environment, performance issues"
+    updates: "Quarterly review and enhancement"
+  
+  performance_optimization_playbook:
+    purpose: "Proven techniques for different types of performance issues"
+    sections: "Database, API, frontend, infrastructure optimizations"
+    validation: "All techniques tested and benchmarked"

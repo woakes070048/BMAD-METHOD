@@ -1,0 +1,371 @@
+name: "frappe-field-types"
+title: "Frappe Framework Field Types Reference"
+description: "Complete reference of Frappe field types and their use cases"
+version: "1.0.0"
+
+field_types:
+  data:
+    description: "Single line text input"
+    use_cases:
+      - "Names, titles, short descriptions"
+      - "IDs, codes, reference numbers"
+    validations:
+      - "max_length"
+      - "regex patterns"
+    example: "Customer Name, Product Code"
+  
+  text:
+    description: "Multi-line text input"
+    use_cases:
+      - "Descriptions, comments"
+      - "Addresses, notes"
+    validations:
+      - "max_length"
+    example: "Product Description, Customer Notes"
+  
+  text_editor:
+    description: "Rich text editor with formatting"
+    use_cases:
+      - "HTML content"
+      - "Formatted descriptions"
+    example: "Email templates, formatted documents"
+  
+  int:
+    description: "Integer number input"
+    use_cases:
+      - "Quantities, counts"
+      - "Serial numbers"
+    validations:
+      - "min_value, max_value"
+    example: "Quantity, Age, Year"
+  
+  float:
+    description: "Decimal number input"
+    use_cases:
+      - "Prices, measurements"
+      - "Rates, percentages"
+    validations:
+      - "precision"
+      - "min_value, max_value"
+    example: "Price, Weight, Rate"
+  
+  currency:
+    description: "Money value with currency symbol"
+    use_cases:
+      - "Amounts, prices"
+      - "Financial calculations"
+    validations:
+      - "precision"
+      - "currency field"
+    example: "Total Amount, Unit Price"
+  
+  date:
+    description: "Date picker"
+    use_cases:
+      - "Birth dates, deadlines"
+      - "Transaction dates"
+    validations:
+      - "date range"
+    example: "Birth Date, Due Date"
+  
+  datetime:
+    description: "Date and time picker"
+    use_cases:
+      - "Timestamps, appointments"
+      - "Created/modified times"
+    example: "Meeting Time, Last Updated"
+  
+  time:
+    description: "Time picker (hours:minutes)"
+    use_cases:
+      - "Duration, schedules"
+      - "Working hours"
+    example: "Start Time, Duration"
+  
+  link:
+    description: "Reference to another DocType"
+    use_cases:
+      - "Foreign key relationships"
+      - "Master data references"
+    options: "DocType name"
+    example: "Customer, Item, Employee"
+  
+  dynamic_link:
+    description: "Link field where target DocType is determined by another field"
+    use_cases:
+      - "Flexible references"
+      - "Polymorphic relationships"
+    options: "Field containing DocType name"
+    example: "Reference Type + Reference Name"
+  
+  select:
+    description: "Dropdown selection from predefined options"
+    use_cases:
+      - "Status fields"
+      - "Categories, types"
+    options: "Newline-separated list"
+    example: "Status: Draft\\nSubmitted\\nCancelled"
+  
+  check:
+    description: "Boolean checkbox"
+    use_cases:
+      - "Yes/No fields"
+      - "Feature toggles"
+    example: "Is Active, Is Default"
+  
+  table:
+    description: "Child table with multiple rows"
+    use_cases:
+      - "Line items"
+      - "Multiple related records"
+    options: "Child DocType name"
+    example: "Sales Invoice Item, Task Dependencies"
+  
+  table_multiselect:
+    description: "Multiple selection from a table"
+    use_cases:
+      - "Tags, categories"
+      - "Multiple references"
+    options: "DocType name"
+    example: "Skills, Product Categories"
+  
+  small_text:
+    description: "Multi-line text with smaller height"
+    use_cases:
+      - "Short descriptions"
+      - "Brief comments"
+    example: "Item Description, Remarks"
+  
+  long_text:
+    description: "Large multi-line text area"
+    use_cases:
+      - "Long descriptions"
+      - "Terms and conditions"
+    example: "Product Specifications, Terms"
+  
+  code:
+    description: "Code editor with syntax highlighting"
+    use_cases:
+      - "Scripts, code snippets"
+      - "JSON, XML data"
+    options: "Language (JSON, HTML, etc.)"
+    example: "Custom Script, API Response"
+  
+  html_editor:
+    description: "WYSIWYG HTML editor"
+    use_cases:
+      - "Rich content"
+      - "Email templates"
+    example: "Email Body, Web Content"
+  
+  attach:
+    description: "File attachment"
+    use_cases:
+      - "Documents, images"
+      - "Supporting files"
+    example: "Invoice PDF, Product Image"
+  
+  attach_image:
+    description: "Image attachment with preview"
+    use_cases:
+      - "Photos, logos"
+      - "Visual content"
+    example: "Profile Picture, Product Photo"
+  
+  signature:
+    description: "Digital signature capture"
+    use_cases:
+      - "Approvals, sign-offs"
+      - "Digital signatures"
+    example: "Manager Approval, Customer Signature"
+  
+  color:
+    description: "Color picker"
+    use_cases:
+      - "Theme colors"
+      - "Visual indicators"
+    example: "Brand Color, Status Color"
+  
+  rating:
+    description: "Star rating input"
+    use_cases:
+      - "Feedback, reviews"
+      - "Quality ratings"
+    options: "Max rating (1-5)"
+    example: "Customer Rating, Quality Score"
+  
+  password:
+    description: "Masked password input"
+    use_cases:
+      - "Passwords, secrets"
+      - "Sensitive data"
+    example: "API Key, Password"
+  
+  read_only:
+    description: "Display-only field"
+    use_cases:
+      - "Calculated values"
+      - "System fields"
+    example: "Total Amount, Created By"
+  
+  geolocation:
+    description: "Geographic coordinates"
+    use_cases:
+      - "Addresses, locations"
+      - "GPS coordinates"
+    example: "Store Location, Delivery Address"
+
+layout_field_types:
+  section_break:
+    description: "Creates a visual section divider with optional label"
+    use_cases:
+      - "Group related fields"
+      - "Organize form layout"
+      - "Visual hierarchy"
+    properties:
+      - "label: Section heading text"
+      - "collapsible: Make section collapsible"
+      - "collapsible_depends_on: Conditional collapsing"
+    example: "Basic Information, Contact Details, Advanced Settings"
+  
+  column_break:
+    description: "Splits fields into columns within a section"
+    use_cases:
+      - "2-column layouts"
+      - "Side-by-side fields"
+      - "Compact forms"
+    properties:
+      - "No label needed"
+      - "Creates new column in current section"
+    example: "Place after 2-3 fields to create second column"
+  
+  tab_break:
+    description: "Creates tabbed interface for grouping sections"
+    use_cases:
+      - "Organize complex forms"
+      - "Separate concerns"
+      - "Reduce visual clutter"
+    properties:
+      - "label: Tab title (required)"
+      - "depends_on: Conditional display"
+    example: "Details | Accounting | Settings | History"
+  
+  fold:
+    description: "Collapsible section that starts collapsed"
+    use_cases:
+      - "Advanced options"
+      - "Rarely used fields"
+      - "Optional information"
+    properties:
+      - "label: Fold heading"
+      - "fieldname: For referencing"
+    example: "Advanced Configuration, Debug Information"
+  
+  html:
+    description: "Custom HTML content in form"
+    use_cases:
+      - "Instructions"
+      - "Warnings"
+      - "Custom displays"
+    properties:
+      - "options: HTML content"
+    example: "<div class='alert'>Important notice</div>"
+  
+  heading:
+    description: "Styled heading text"
+    use_cases:
+      - "Sub-sections"
+      - "Visual breaks"
+      - "Instructions"
+    properties:
+      - "label: Heading text"
+    example: "Billing Information, System Configuration"
+  
+  page_break:
+    description: "Forces new page in print format"
+    use_cases:
+      - "Print layouts"
+      - "PDF generation"
+      - "Report formatting"
+    example: "Between invoice header and items"
+
+visual_layout_patterns:
+  two_column_layout:
+    structure: |
+      Section Break
+      Field 1
+      Field 2
+      Field 3
+      Column Break
+      Field 4
+      Field 5
+      Field 6
+    description: "Split fields into two equal columns"
+  
+  three_column_layout:
+    structure: |
+      Section Break
+      Field 1
+      Field 2
+      Column Break
+      Field 3
+      Field 4
+      Column Break
+      Field 5
+      Field 6
+    description: "Three column layout for compact forms"
+  
+  tabbed_interface:
+    structure: |
+      Tab Break (General)
+      Fields...
+      Tab Break (Details)
+      Fields...
+      Tab Break (Settings)
+      Fields...
+    description: "Organize complex forms with tabs"
+  
+  accordion_pattern:
+    structure: |
+      Section Break (collapsible=1)
+      Fields...
+      Section Break (collapsible=1)
+      Fields...
+    description: "Collapsible sections for long forms"
+  
+  master_detail_pattern:
+    structure: |
+      Section Break (Header)
+      Key fields...
+      Section Break (Details)
+      Table field
+      Section Break (Summary)
+      Calculated fields...
+    description: "Header-detail-footer pattern"
+
+integration_considerations:
+  docflow_compatibility:
+    - "Use Link fields for workflow references"
+    - "Select fields for workflow states"
+    - "Text fields for workflow comments"
+  
+  n8n_integration:
+    - "JSON fields for webhook payloads"
+    - "Text fields for external IDs"
+    - "Check fields for sync status"
+
+best_practices:
+  naming:
+    - "Use snake_case for field names"
+    - "Be descriptive but concise"
+    - "Avoid reserved words"
+  
+  validation:
+    - "Set appropriate field types for data integrity"
+    - "Use required fields judiciously"
+    - "Consider user experience in field ordering"
+  
+  performance:
+    - "Index frequently queried fields"
+    - "Avoid too many Link fields in lists"
+    - "Use appropriate field types for storage efficiency"

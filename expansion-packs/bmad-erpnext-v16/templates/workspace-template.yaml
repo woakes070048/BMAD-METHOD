@@ -1,0 +1,457 @@
+name: "workspace-template"
+title: "ERPNext Workspace Template"
+description: "Template for creating comprehensive workspaces with proper navigation, cards, shortcuts, and reports"
+version: "1.0.0"
+
+parameters:
+  app_name:
+    type: "string"
+    required: true
+    description: "Name of the app (e.g., 'erpnext', 'custom_app')"
+  workspace_name:
+    type: "string"
+    required: true
+    description: "Internal name of workspace (snake_case, e.g., 'sales_management')"
+  workspace_label:
+    type: "string"
+    required: true
+    description: "Display label for workspace (e.g., 'Sales Management')"
+  workspace_icon:
+    type: "string"
+    required: true
+    description: "Icon name from Frappe icons (e.g., 'sell', 'dashboard', 'crm')"
+  module_name:
+    type: "string"
+    required: true
+    description: "Module this workspace belongs to"
+  is_public:
+    type: "boolean"
+    required: false
+    default: true
+    description: "Whether workspace is public (true) or private (false)"
+  restrict_to_domain:
+    type: "string"
+    required: false
+    description: "Domain restriction (e.g., 'Manufacturing', 'Retail')"
+  roles:
+    type: "array"
+    required: false
+    default: ["System Manager"]
+    description: "List of roles that can access this workspace"
+
+templates:
+  workspace_json: |
+    {
+      "app": "{{app_name}}",
+      "category": "Modules",
+      "charts": [
+        {
+          "chart_name": "{{workspace_label}} Overview",
+          "label": "{{workspace_label}} Overview"
+        }
+      ],
+      "content": "[{\"id\":\"header_quick_access\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"shortcut_new_{{workspace_name}}_item\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"New {{workspace_label}} Item\",\"col\":3}},{\"id\":\"shortcut_{{workspace_name}}_list\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"{{workspace_label}} List\",\"col\":3}},{\"id\":\"shortcut_{{workspace_name}}_report\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"{{workspace_label}} Analytics\",\"col\":3}},{\"id\":\"shortcut_dashboard\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"id\":\"spacer_1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"header_reports_masters\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports & Masters</b></span>\",\"col\":12}},{\"id\":\"card_transactions\",\"type\":\"card\",\"data\":{\"card_name\":\"Transactions\",\"col\":4}},{\"id\":\"card_masters\",\"type\":\"card\",\"data\":{\"card_name\":\"Masters\",\"col\":4}},{\"id\":\"card_reports\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"card_settings\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}}]",
+      "creation": "{% now 'utc', '%Y-%m-%d %H:%M:%S.%f' %}",
+      "custom_blocks": [],
+      "docstatus": 0,
+      "doctype": "Workspace",
+      "for_user": "",
+      "hide_custom": 0,
+      "icon": "{{workspace_icon}}",
+      "idx": 0,
+      "is_hidden": 0,
+      "label": "{{workspace_label}}",
+      "links": [
+        {
+          "description": "Primary transactions for {{workspace_label}}",
+          "hidden": 0,
+          "is_query_report": 0,
+          "label": "Transactions",
+          "link_count": 0,
+          "link_type": "DocType",
+          "onboard": 1,
+          "type": "Card Break"
+        },
+        {
+          "dependencies": "",
+          "hidden": 0,
+          "is_query_report": 0,
+          "label": "{{workspace_label}} Order",
+          "link_count": 0,
+          "link_to": "{{workspace_label}} Order",
+          "link_type": "DocType",
+          "onboard": 1,
+          "type": "Link"
+        },
+        {
+          "dependencies": "",
+          "hidden": 0,
+          "is_query_report": 0,
+          "label": "{{workspace_label}} Invoice",
+          "link_count": 0,
+          "link_to": "{{workspace_label}} Invoice",
+          "link_type": "DocType",
+          "onboard": 1,
+          "type": "Link"
+        },
+        {
+          "dependencies": "",
+          "hidden": 0,
+          "is_query_report": 0,
+          "label": "{{workspace_label}} Payment",
+          "link_count": 0,
+          "link_to": "{{workspace_label}} Payment",
+          "link_type": "DocType",
+          "onboard": 0,
+          "type": "Link"
+        },
+        {
+          "description": "Master data for {{workspace_label}}",
+          "hidden": 0,
+          "is_query_report": 0,
+          "label": "Masters",
+          "link_count": 0,
+          "link_type": "DocType",
+          "onboard": 0,
+          "type": "Card Break"
+        },
+        {
+          "dependencies": "",
+          "hidden": 0,
+          "is_query_report": 0,
+          "label": "{{workspace_label}} Item",
+          "link_count": 0,
+          "link_to": "{{workspace_label}} Item",
+          "link_type": "DocType",
+          "onboard": 1,
+          "type": "Link"
+        },
+        {
+          "dependencies": "",
+          "hidden": 0,
+          "is_query_report": 0,
+          "label": "{{workspace_label}} Category",
+          "link_count": 0,
+          "link_to": "{{workspace_label}} Category",
+          "link_type": "DocType",
+          "onboard": 0,
+          "type": "Link"
+        },
+        {
+          "dependencies": "",
+          "hidden": 0,
+          "is_query_report": 0,
+          "label": "{{workspace_label}} Group",
+          "link_count": 0,
+          "link_to": "{{workspace_label}} Group",
+          "link_type": "DocType",
+          "onboard": 0,
+          "type": "Link"
+        },
+        {
+          "description": "Analytics and insights for {{workspace_label}}",
+          "hidden": 0,
+          "is_query_report": 0,
+          "label": "Reports",
+          "link_count": 0,
+          "link_type": "Report",
+          "onboard": 0,
+          "type": "Card Break"
+        },
+        {
+          "dependencies": "",
+          "hidden": 0,
+          "is_query_report": 1,
+          "label": "{{workspace_label}} Analytics",
+          "link_count": 0,
+          "link_to": "{{workspace_label}} Analytics",
+          "link_type": "Report",
+          "onboard": 0,
+          "type": "Link"
+        },
+        {
+          "dependencies": "",
+          "hidden": 0,
+          "is_query_report": 1,
+          "label": "{{workspace_label}} Summary",
+          "link_count": 0,
+          "link_to": "{{workspace_label}} Summary",
+          "link_type": "Report",
+          "onboard": 0,
+          "type": "Link"
+        },
+        {
+          "dependencies": "",
+          "hidden": 0,
+          "is_query_report": 0,
+          "label": "{{workspace_label}} Dashboard",
+          "link_count": 0,
+          "link_to": "{{workspace_label}} Dashboard",
+          "link_type": "Page",
+          "onboard": 0,
+          "type": "Link"
+        },
+        {
+          "description": "Configuration and settings",
+          "hidden": 0,
+          "is_query_report": 0,
+          "label": "Settings",
+          "link_count": 0,
+          "link_type": "DocType",
+          "onboard": 0,
+          "type": "Card Break"
+        },
+        {
+          "dependencies": "",
+          "hidden": 0,
+          "is_query_report": 0,
+          "label": "{{workspace_label}} Settings",
+          "link_count": 0,
+          "link_to": "{{workspace_label}} Settings",
+          "link_type": "DocType",
+          "onboard": 0,
+          "type": "Link"
+        }
+      ],
+      "modified": "{% now 'utc', '%Y-%m-%d %H:%M:%S.%f' %}",
+      "modified_by": "Administrator",
+      "module": "{{module_name}}",
+      "name": "{{workspace_label}}",
+      "number_cards": [],
+      "onboarding": "",
+      "owner": "Administrator",
+      "parent_page": "",
+      "public": {{is_public|lower}},
+      "quick_lists": [],
+      {% if restrict_to_domain %}
+      "restrict_to_domain": "{{restrict_to_domain}}",
+      {% endif %}
+      "roles": [
+        {% for role in roles %}
+        {
+          "role": "{{role}}"
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ],
+      "sequence_id": 1.0,
+      "shortcuts": [
+        {
+          "color": "Blue",
+          "doc_view": "New",
+          "label": "New {{workspace_label}} Item",
+          "link_to": "{{workspace_label}} Item",
+          "type": "DocType"
+        },
+        {
+          "color": "Grey",
+          "doc_view": "List",
+          "label": "{{workspace_label}} List",
+          "link_to": "{{workspace_label}} Order",
+          "type": "DocType"
+        },
+        {
+          "color": "Green",
+          "doc_view": "",
+          "label": "{{workspace_label}} Analytics",
+          "link_to": "{{workspace_label}} Analytics",
+          "type": "Report"
+        },
+        {
+          "color": "Orange",
+          "doc_view": "",
+          "label": "Dashboard",
+          "link_to": "{{workspace_label}} Dashboard",
+          "type": "Page"
+        }
+      ],
+      "title": "{{workspace_label}}"
+    }
+
+  workspace_structure: |
+    # Workspace Structure for {{workspace_label}}
+    
+    ## Directory Structure
+    ```
+    {{app_name}}/
+    └── {{module_name}}/
+        └── workspace/
+            └── {{workspace_name}}/
+                └── {{workspace_name}}.json
+    ```
+    
+    ## Components
+    
+    ### 1. Quick Access (Shortcuts)
+    - New {{workspace_label}} Item - Create new records
+    - {{workspace_label}} List - View all records
+    - {{workspace_label}} Analytics - Key reports
+    - Dashboard - Visual overview
+    
+    ### 2. Cards
+    
+    #### Transactions Card
+    - {{workspace_label}} Order
+    - {{workspace_label}} Invoice
+    - {{workspace_label}} Payment
+    
+    #### Masters Card
+    - {{workspace_label}} Item
+    - {{workspace_label}} Category
+    - {{workspace_label}} Group
+    
+    #### Reports Card
+    - {{workspace_label}} Analytics
+    - {{workspace_label}} Summary
+    - {{workspace_label}} Dashboard
+    
+    #### Settings Card
+    - {{workspace_label}} Settings
+    
+    ## Valid Link Types
+    - **DocType**: Links to document types (not child tables)
+    - **Report**: Links to Query Reports or Script Reports
+    - **Page**: Links to custom pages
+    - **List**: Links to list views with filters
+    
+    ## Icon Reference
+    Common workspace icons:
+    - sell: Sales
+    - buy: Purchase
+    - stock: Inventory
+    - accounting: Accounts
+    - project: Projects
+    - hr: Human Resources
+    - crm: CRM
+    - support: Support
+    - dashboard: Dashboard
+    - settings: Settings
+    - tool: Tools
+    - education: Education
+    - healthcare: Healthcare
+    - agriculture: Agriculture
+    - non-profit: Non Profit
+
+instructions:
+  setup: |
+    1. Create workspace directory:
+       ```bash
+       cd apps/{{app_name}}
+       mkdir -p {{app_name}}/{{module_name}}/workspace/{{workspace_name}}
+       ```
+    
+    2. Create workspace JSON file:
+       - Save the workspace_json template as {{workspace_name}}.json
+       - Place in {{app_name}}/{{module_name}}/workspace/{{workspace_name}}/
+    
+    3. Validate workspace structure:
+       - Ensure all linked DocTypes exist and are not child tables
+       - Verify reports are created and accessible
+       - Check that pages exist and load correctly
+       - Confirm icons are valid Frappe icons
+    
+    4. Install workspace:
+       ```bash
+       bench --site [site-name] migrate
+       bench --site [site-name] clear-cache
+       ```
+    
+    5. Set permissions:
+       - Workspace inherits permissions from linked DocTypes
+       - Configure role-based access in the workspace JSON
+       - Public workspaces are visible to all users with appropriate roles
+    
+    6. Customize workspace (optional):
+       - Users can drag and drop cards
+       - Add custom shortcuts
+       - Modify card content
+       - These changes are user-specific unless saved as default
+
+validation_checklist: |
+  ## Workspace Validation Checklist
+  
+  ### Structure
+  - [ ] Workspace JSON is valid and properly formatted
+  - [ ] File is in correct directory: {{module_name}}/workspace/{{workspace_name}}/
+  - [ ] Workspace name follows snake_case convention
+  - [ ] Label uses proper title case
+  
+  ### Content
+  - [ ] All DocType links point to valid parent DocTypes (not child tables)
+  - [ ] Reports exist and have proper permissions
+  - [ ] Pages are created and accessible
+  - [ ] Shortcuts have appropriate colors and icons
+  - [ ] Cards are logically organized
+  
+  ### Icons & Styling
+  - [ ] Icon is a valid Frappe icon
+  - [ ] Card breaks have descriptive labels
+  - [ ] Shortcuts use appropriate colors (Blue, Green, Orange, Grey, Red)
+  
+  ### Permissions
+  - [ ] Public flag is set correctly
+  - [ ] Roles array includes appropriate roles
+  - [ ] Domain restriction applied if needed
+  - [ ] Onboarding flag set for key items
+  
+  ### Dependencies
+  - [ ] Dependencies specified for linked items
+  - [ ] Module exists in the app
+  - [ ] App is installed on the site
+
+common_issues: |
+  ## Common Issues and Solutions
+  
+  ### Issue: Workspace not appearing
+  **Solution**: 
+  - Run `bench --site [site] migrate`
+  - Clear cache: `bench --site [site] clear-cache`
+  - Check if module is hidden in Module Def
+  
+  ### Issue: Links showing as invalid
+  **Solution**:
+  - Ensure DocType is not a child table
+  - Verify DocType/Report/Page exists
+  - Check permissions for the linked item
+  
+  ### Issue: Icons not displaying
+  **Solution**:
+  - Use valid Frappe icon names
+  - Check icon list at: /app/build (Icon component)
+  
+  ### Issue: Shortcuts not working
+  **Solution**:
+  - Verify link_to field points to valid DocType/Report/Page
+  - Check doc_view is set correctly (New, List, Report, etc.)
+  
+  ### Issue: Cards empty
+  **Solution**:
+  - Ensure links array has items under each card break
+  - Check that link_type matches the item type
+
+best_practices: |
+  ## Best Practices
+  
+  1. **Logical Organization**
+     - Group related items in cards
+     - Use clear, descriptive labels
+     - Order items by frequency of use
+  
+  2. **Performance**
+     - Limit shortcuts to 4-6 items
+     - Keep cards to 3-4 per row
+     - Avoid too many chart widgets
+  
+  3. **User Experience**
+     - Provide quick access to common tasks
+     - Include both transactional and reporting links
+     - Add helpful descriptions to card breaks
+  
+  4. **Consistency**
+     - Follow naming conventions across workspaces
+     - Use standard icon patterns
+     - Maintain similar structure across modules
+  
+  5. **Maintenance**
+     - Document custom workspaces
+     - Version control workspace JSON files
+     - Test after ERPNext updates

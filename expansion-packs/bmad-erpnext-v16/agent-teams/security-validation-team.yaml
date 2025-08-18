@@ -1,0 +1,343 @@
+name: "ERPNext Security Validation Team"
+version: "1.0.0"
+description: "Specialized security validation team focused on comprehensive security assessment, penetration testing, and compliance verification for ERPNext applications"
+
+metadata:
+  purpose: "Ensure comprehensive security throughout ERPNext development and deployment"
+  scope: "Security validation from design to production monitoring"
+  compliance_focus: "Industry standards, data protection, and Frappe security patterns"
+
+team_composition:
+  security_specialists:
+    - agent: frappe-compliance-validator
+      role: "Security Compliance Lead"
+      responsibilities:
+        - "Frappe security pattern enforcement"
+        - "Security anti-pattern detection"
+        - "Compliance with security standards"
+        - "Security code review coordination"
+      
+    - agent: testing-specialist
+      role: "Security Testing Lead"
+      responsibilities:
+        - "Penetration testing orchestration"
+        - "Security vulnerability assessment"
+        - "Security test automation"
+        - "Security regression testing"
+        
+    - agent: api-architect
+      role: "API Security Specialist"
+      responsibilities:
+        - "API security design validation"
+        - "Authentication and authorization testing"
+        - "API rate limiting and throttling"
+        - "RESTful security compliance"
+
+  supporting_specialists:
+    - agent: erpnext-architect
+      role: "Security Architecture Validator"
+      responsibilities:
+        - "Security architecture assessment"
+        - "Threat modeling and analysis"
+        - "Security design pattern validation"
+        - "Infrastructure security review"
+        
+    - agent: data-integration-expert
+      role: "Data Security Specialist"
+      responsibilities:
+        - "Data protection validation"
+        - "Privacy compliance assessment"
+        - "Data encryption verification"
+        - "Secure data integration patterns"
+
+security_validation_framework:
+  security_assessment_phases:
+    phase_1_design_security:
+      lead: erpnext-architect
+      participants: [frappe-compliance-validator, api-architect]
+      activities:
+        - "Threat modeling and risk assessment"
+        - "Security architecture review"
+        - "Security requirement validation"
+        - "Compliance gap analysis"
+      
+    phase_2_implementation_security:
+      lead: frappe-compliance-validator
+      participants: [testing-specialist, api-architect]
+      activities:
+        - "Security code review"
+        - "Static security analysis"
+        - "Security pattern compliance"
+        - "Vulnerability scanning"
+      
+    phase_3_testing_security:
+      lead: testing-specialist
+      participants: [frappe-compliance-validator, data-integration-expert]
+      activities:
+        - "Penetration testing"
+        - "Security integration testing"
+        - "Authentication and authorization testing"
+        - "Data protection validation"
+      
+    phase_4_deployment_security:
+      lead: frappe-compliance-validator
+      participants: [testing-specialist, erpnext-architect]
+      activities:
+        - "Production security validation"
+        - "Security configuration verification"
+        - "Security monitoring setup"
+        - "Incident response preparation"
+
+security_validation_areas:
+  authentication_and_authorization:
+    primary_validator: api-architect
+    validation_scope:
+      - "Frappe authentication pattern compliance"
+      - "Role-based access control validation"
+      - "Permission boundary testing"
+      - "Session management security"
+      - "Multi-factor authentication validation"
+      - "OAuth integration security"
+    
+    validation_tests:
+      - "Authentication bypass attempts"
+      - "Privilege escalation testing"
+      - "Session hijacking prevention"
+      - "Password policy enforcement"
+      - "Account lockout mechanisms"
+      - "Token security validation"
+  
+  input_validation_and_sanitization:
+    primary_validator: frappe-compliance-validator
+    validation_scope:
+      - "SQL injection prevention"
+      - "Cross-site scripting (XSS) protection"
+      - "Command injection prevention"
+      - "File upload security"
+      - "Input sanitization effectiveness"
+      - "Output encoding validation"
+    
+    validation_tests:
+      - "Malicious input injection tests"
+      - "File upload vulnerability tests"
+      - "Parameter tampering tests"
+      - "Buffer overflow tests"
+      - "XML/JSON injection tests"
+      - "LDAP injection tests"
+  
+  data_protection_and_privacy:
+    primary_validator: data-integration-expert
+    validation_scope:
+      - "Data encryption at rest and in transit"
+      - "Personal data protection"
+      - "GDPR compliance validation"
+      - "Data masking and anonymization"
+      - "Audit trail security"
+      - "Data retention compliance"
+    
+    validation_tests:
+      - "Data encryption effectiveness"
+      - "Personal data access controls"
+      - "Data breach simulation"
+      - "Backup security validation"
+      - "Data export security"
+      - "Right to be forgotten testing"
+  
+  api_and_communication_security:
+    primary_validator: api-architect
+    validation_scope:
+      - "API endpoint security"
+      - "HTTPS enforcement"
+      - "Rate limiting effectiveness"
+      - "CORS policy validation"
+      - "API versioning security"
+      - "Webhook security"
+    
+    validation_tests:
+      - "API rate limiting bypass tests"
+      - "CORS misconfiguration tests"
+      - "API authentication tests"
+      - "Man-in-the-middle tests"
+      - "API injection tests"
+      - "Webhook spoofing tests"
+
+security_testing_methodology:
+  automated_security_testing:
+    static_analysis:
+      tools:
+        - "Bandit for Python security analysis"
+        - "ESLint security plugins for JavaScript"
+        - "SonarQube security rules"
+        - "Custom Frappe security scanners"
+      
+      validation_criteria:
+        - "Zero critical security issues"
+        - "Zero high-severity vulnerabilities"
+        - "Acceptable number of medium-severity issues with mitigation"
+    
+    dynamic_analysis:
+      tools:
+        - "OWASP ZAP for web application scanning"
+        - "Burp Suite for advanced testing"
+        - "Custom penetration testing scripts"
+        - "API security testing tools"
+      
+      validation_criteria:
+        - "No exploitable vulnerabilities"
+        - "Proper error handling validation"
+        - "Security control effectiveness"
+  
+  manual_security_testing:
+    penetration_testing:
+      methodology:
+        - "OWASP Testing Guide compliance"
+        - "Custom ERPNext attack scenarios"
+        - "Multi-app integration security"
+        - "Business logic security testing"
+      
+      test_scenarios:
+        - "User privilege escalation"
+        - "Data access boundary violations"
+        - "Workflow security bypasses"
+        - "Integration point vulnerabilities"
+        - "Administrative function abuse"
+    
+    security_code_review:
+      focus_areas:
+        - "Authentication implementation"
+        - "Authorization enforcement"
+        - "Input validation patterns"
+        - "Error handling security"
+        - "Cryptographic implementations"
+
+security_compliance_validation:
+  industry_standards:
+    owasp_compliance:
+      - "OWASP Top 10 vulnerability prevention"
+      - "OWASP ASVS compliance levels"
+      - "Secure coding practices"
+      - "Security testing methodology"
+    
+    data_protection:
+      - "GDPR compliance validation"
+      - "Data protection regulation adherence"
+      - "Privacy by design principles"
+      - "Data minimization practices"
+    
+    frappe_security_standards:
+      - "Frappe authentication patterns"
+      - "ERPNext security best practices"
+      - "Framework security features utilization"
+      - "Security configuration compliance"
+
+security_monitoring_and_alerting:
+  real_time_monitoring:
+    security_events:
+      - "Authentication failures"
+      - "Authorization violations"
+      - "Suspicious user activities"
+      - "Data access anomalies"
+      - "API abuse patterns"
+    
+    alert_thresholds:
+      - "Multiple failed login attempts"
+      - "Privilege escalation attempts"
+      - "Unusual data access patterns"
+      - "API rate limit violations"
+      - "Security policy violations"
+  
+  incident_response:
+    response_procedures:
+      - "Immediate threat assessment"
+      - "Impact analysis and containment"
+      - "Stakeholder notification"
+      - "Remediation planning and execution"
+      - "Post-incident review and improvement"
+
+security_validation_deliverables:
+  security_assessment_reports:
+    threat_assessment:
+      - "Identified security threats and risks"
+      - "Threat likelihood and impact analysis"
+      - "Risk mitigation recommendations"
+      - "Compliance gap analysis"
+    
+    vulnerability_assessment:
+      - "Discovered vulnerabilities catalog"
+      - "Vulnerability severity classification"
+      - "Exploitation scenarios"
+      - "Remediation priorities and timelines"
+    
+    penetration_testing_report:
+      - "Testing methodology and scope"
+      - "Discovered security issues"
+      - "Proof of concept demonstrations"
+      - "Remediation recommendations"
+  
+  compliance_certification:
+    security_scorecard:
+      - "Overall security posture rating"
+      - "Compliance level achievement"
+      - "Security control effectiveness"
+      - "Continuous monitoring status"
+    
+    certification_criteria:
+      - "Zero critical vulnerabilities"
+      - "Compliance with security standards"
+      - "Effective security controls"
+      - "Continuous monitoring capability"
+
+team_coordination_and_communication:
+  security_review_meetings:
+    frequency: "Weekly during active development"
+    participants: "Full security team + development leads"
+    agenda: "Security findings, remediation progress, risk updates"
+  
+  threat_assessment_sessions:
+    frequency: "At major development milestones"
+    participants: "Security team + architects + stakeholders"
+    deliverables: "Updated threat models and risk assessments"
+  
+  incident_response_drills:
+    frequency: "Quarterly"
+    participants: "Full security team + operations"
+    purpose: "Security incident response preparedness"
+
+continuous_security_improvement:
+  security_process_enhancement:
+    - "Regular security methodology review"
+    - "New threat landscape adaptation"
+    - "Security tool evaluation and integration"
+    - "Team skill development and training"
+  
+  threat_intelligence_integration:
+    - "Industry threat monitoring"
+    - "ERPNext-specific security research"
+    - "Vulnerability database monitoring"
+    - "Security best practice evolution"
+
+integration_with_development_lifecycle:
+  security_by_design:
+    - "Security requirement integration"
+    - "Secure architecture guidance"
+    - "Security pattern promotion"
+    - "Developer security training"
+  
+  shift_left_security:
+    - "Early security validation"
+    - "Developer security tools"
+    - "Security feedback loops"
+    - "Preventive security measures"
+
+success_metrics:
+  security_effectiveness:
+    - "Zero critical security incidents in production"
+    - "Compliance score maintenance ≥95%"
+    - "Security vulnerability reduction ≥90%"
+    - "Security test coverage ≥90%"
+  
+  process_efficiency:
+    - "Security validation cycle time optimization"
+    - "Automated security testing coverage ≥80%"
+    - "False positive rate ≤5%"
+    - "Developer security awareness improvement"

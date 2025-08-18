@@ -1,0 +1,399 @@
+name: "modern-app-development"
+title: "Modern ERPNext App Development Workflow"
+description: "Complete workflow for developing modern ERPNext applications with Vue SPA frontend"
+version: "1.0.0"
+
+workflow_stages:
+  1_requirements_analysis:
+    name: "Requirements Analysis"
+    description: "Analyze business requirements and technical specifications"
+    agent: "erpnext-architect"
+    inputs:
+      - "Business requirements"
+      - "User stories"
+      - "Technical constraints"
+      - "Integration requirements"
+    outputs:
+      - "Requirements document"
+      - "Technical specifications"
+      - "Architecture overview"
+    tasks:
+      - "analyze_business_needs"
+      - "identify_integrations"
+      - "define_data_models"
+      - "plan_user_experience"
+    validation:
+      - "Requirements clearly documented"
+      - "Technical feasibility confirmed"
+      - "Stakeholder approval obtained"
+  
+  2_app_scaffolding:
+    name: "App Scaffolding"
+    description: "Create basic app structure with modern architecture"
+    agent: "bench-operator"
+    dependencies: ["1_requirements_analysis"]
+    inputs:
+      - "App specifications"
+      - "Naming conventions"
+    outputs:
+      - "Basic app structure"
+      - "Git repository initialized"
+      - "Development environment ready"
+    tasks:
+      - "create_new_app"
+      - "setup_git_repository"
+      - "configure_development_environment"
+    validation:
+      - "App created successfully"
+      - "Bench recognizes app"
+      - "Git repository initialized"
+    commands:
+      - "bench new-app {{app_name}}"
+      - "cd apps/{{app_name}} && git init"
+      - "bench --site {{site}} install-app {{app_name}}"
+  
+  3_native_vue_setup:
+    name: "Native Vue Component Setup"
+    description: "Initialize Vue components using Frappe's native asset pipeline"
+    agent: "vue-frontend-architect"
+    dependencies: ["2_app_scaffolding"]
+    inputs:
+      - "Frontend requirements"
+      - "UI/UX designs"
+    outputs:
+      - "Native Vue components initialized"
+      - "Bundle entry points configured"
+      - "Frappe pages setup"
+    tasks:
+      - "create_component_structure"
+      - "setup_bundle_entry_points"
+      - "configure_frappe_pages"
+      - "integrate_frappe_ui"
+    validation:
+      - "Vue components render successfully"
+      - "Bundle builds with bench build"
+      - "Components load via frappe.require"
+      - "SetVueGlobals working correctly"
+  
+  4_api_architecture:
+    name: "API Architecture"
+    description: "Design and implement secure API structure"
+    agent: "api-architect"
+    dependencies: ["2_app_scaffolding"]
+    inputs:
+      - "API requirements"
+      - "Data flow diagrams"
+    outputs:
+      - "API module structure"
+      - "Whitelisted endpoints"
+      - "Authentication setup"
+    tasks:
+      - "design_api_structure"
+      - "create_api_modules"
+      - "implement_authentication"
+      - "setup_rate_limiting"
+    validation:
+      - "All endpoints whitelisted"
+      - "Authentication working"
+      - "Permissions validated"
+      - "Rate limiting active"
+  
+  5_doctype_design:
+    name: "DocType Design"
+    description: "Design and create DocTypes with proper relationships"
+    agent: "doctype-designer"
+    dependencies: ["4_api_architecture"]
+    inputs:
+      - "Data model specifications"
+      - "Field requirements"
+      - "Permission matrix"
+    outputs:
+      - "DocType definitions"
+      - "Relationships configured"
+      - "Permissions set"
+    tasks:
+      - "create_doctypes"
+      - "define_relationships"
+      - "setup_permissions"
+      - "add_validations"
+    validation:
+      - "DocTypes created successfully"
+      - "Relationships working"
+      - "Permissions enforced"
+      - "Validations functional"
+  
+  6_component_development:
+    name: "Component Development"
+    description: "Build Vue components with frappe-ui"
+    agent: "frappe-ui-developer"
+    dependencies: ["3_frontend_setup", "5_doctype_design"]
+    inputs:
+      - "Component specifications"
+      - "UI designs"
+    outputs:
+      - "Vue components"
+      - "frappe-ui integrations"
+      - "Reusable composables"
+    tasks:
+      - "create_base_components"
+      - "implement_frappe_ui_components"
+      - "build_forms"
+      - "create_data_tables"
+      - "add_modals_and_dialogs"
+    validation:
+      - "Components render correctly"
+      - "frappe-ui components integrated"
+      - "Forms validate properly"
+      - "Data binding works"
+  
+  7_state_management:
+    name: "State Management"
+    description: "Implement Pinia stores and data flow"
+    agent: "vue-spa-architect"
+    dependencies: ["6_component_development"]
+    inputs:
+      - "State requirements"
+      - "Data flow patterns"
+    outputs:
+      - "Pinia stores"
+      - "Data synchronization"
+      - "Cache management"
+    tasks:
+      - "create_pinia_stores"
+      - "implement_data_fetching"
+      - "setup_real_time_updates"
+      - "configure_caching"
+    validation:
+      - "State management working"
+      - "Data updates properly"
+      - "Real-time sync functional"
+      - "Cache invalidation works"
+  
+  8_api_integration:
+    name: "API Integration"
+    description: "Connect frontend with backend APIs"
+    agent: "api-developer"
+    dependencies: ["6_component_development", "7_state_management"]
+    inputs:
+      - "API endpoints"
+      - "Data contracts"
+    outputs:
+      - "API integrations"
+      - "Error handling"
+      - "Loading states"
+    tasks:
+      - "integrate_api_calls"
+      - "implement_error_handling"
+      - "add_loading_states"
+      - "setup_interceptors"
+    validation:
+      - "API calls working"
+      - "Error handling functional"
+      - "Loading states display"
+      - "Authentication flows work"
+  
+  9_pwa_implementation:
+    name: "PWA Implementation"
+    description: "Add Progressive Web App capabilities"
+    agent: "pwa-specialist"
+    dependencies: ["8_api_integration"]
+    inputs:
+      - "PWA requirements"
+      - "Offline scenarios"
+    outputs:
+      - "Service worker"
+      - "Offline support"
+      - "Install capability"
+    tasks:
+      - "configure_service_worker"
+      - "implement_caching_strategies"
+      - "add_offline_support"
+      - "setup_install_prompts"
+    validation:
+      - "Service worker registered"
+      - "Offline mode works"
+      - "App installable"
+      - "Push notifications work"
+  
+  10_workflow_integration:
+    name: "Workflow Integration"
+    description: "Integrate with docflow and business processes"
+    agent: "workflow-specialist"
+    dependencies: ["5_doctype_design"]
+    inputs:
+      - "Workflow requirements"
+      - "Approval processes"
+    outputs:
+      - "Workflow configurations"
+      - "Approval chains"
+      - "Notifications"
+    tasks:
+      - "design_workflows"
+      - "integrate_with_docflow"
+      - "setup_notifications"
+      - "configure_escalations"
+    validation:
+      - "Workflows functional"
+      - "Approvals working"
+      - "Notifications sending"
+      - "Escalations active"
+  
+  11_testing:
+    name: "Testing"
+    description: "Comprehensive testing of application"
+    agent: "testing-specialist"
+    dependencies: ["9_pwa_implementation", "10_workflow_integration"]
+    inputs:
+      - "Test requirements"
+      - "Test scenarios"
+    outputs:
+      - "Unit tests"
+      - "Integration tests"
+      - "E2E tests"
+      - "Performance metrics"
+    tasks:
+      - "write_unit_tests"
+      - "create_integration_tests"
+      - "setup_e2e_tests"
+      - "run_performance_tests"
+      - "test_security"
+    validation:
+      - "All tests passing"
+      - "Code coverage > 80%"
+      - "Performance acceptable"
+      - "Security validated"
+  
+  12_optimization:
+    name: "Optimization"
+    description: "Optimize for production deployment"
+    agent: "vue-spa-architect"
+    dependencies: ["11_testing"]
+    inputs:
+      - "Performance metrics"
+      - "Bundle analysis"
+    outputs:
+      - "Optimized bundles"
+      - "Lazy loading"
+      - "CDN configuration"
+    tasks:
+      - "optimize_bundle_size"
+      - "implement_lazy_loading"
+      - "configure_cdn"
+      - "optimize_images"
+      - "minify_assets"
+    validation:
+      - "Bundle size reduced"
+      - "Lighthouse score > 90"
+      - "Load time < 3s"
+      - "Assets optimized"
+  
+  13_deployment_preparation:
+    name: "Deployment Preparation"
+    description: "Prepare for production deployment"
+    agent: "bench-operator"
+    dependencies: ["12_optimization"]
+    inputs:
+      - "Deployment checklist"
+      - "Environment configs"
+    outputs:
+      - "Production build"
+      - "Deployment scripts"
+      - "Documentation"
+    tasks:
+      - "create_production_build"
+      - "prepare_deployment_scripts"
+      - "update_documentation"
+      - "create_backup_procedures"
+    validation:
+      - "Production build successful"
+      - "Scripts tested"
+      - "Documentation complete"
+      - "Rollback plan ready"
+  
+  14_deployment:
+    name: "Deployment"
+    description: "Deploy to production environment"
+    agent: "bench-operator"
+    dependencies: ["13_deployment_preparation"]
+    inputs:
+      - "Production environment"
+      - "Deployment plan"
+    outputs:
+      - "Live application"
+      - "Monitoring setup"
+      - "Backup configured"
+    tasks:
+      - "deploy_to_production"
+      - "run_migrations"
+      - "setup_monitoring"
+      - "configure_backups"
+      - "verify_deployment"
+    validation:
+      - "App accessible"
+      - "All features working"
+      - "Monitoring active"
+      - "Backups running"
+
+environment:
+  bench_path: "/home/frappe/frappe-bench"
+  site: "prima-erpnext.pegashosting.com"
+  node_version: "18+"
+  python_version: "3.10+"
+
+tools_required:
+  - "bench"
+  - "git"
+  - "node"
+  - "yarn"
+  - "vite"
+  - "vue-devtools"
+
+checkpoints:
+  - stage: "3_frontend_setup"
+    checkpoint: "Frontend Review"
+    description: "Review Vue SPA setup with stakeholders"
+    
+  - stage: "5_doctype_design"
+    checkpoint: "Data Model Review"
+    description: "Validate data model with business team"
+    
+  - stage: "8_api_integration"
+    checkpoint: "Integration Review"
+    description: "Test all API integrations"
+    
+  - stage: "11_testing"
+    checkpoint: "Quality Gate"
+    description: "All tests must pass before deployment"
+    
+  - stage: "14_deployment"
+    checkpoint: "Go-Live Approval"
+    description: "Final approval before production"
+
+rollback_points:
+  - "Before DocType creation"
+  - "Before frontend deployment"
+  - "Before API changes"
+  - "Before workflow activation"
+  - "Before production deployment"
+
+success_criteria:
+  - "All requirements implemented"
+  - "Tests passing with >80% coverage"
+  - "Performance metrics met"
+  - "Security audit passed"
+  - "User acceptance completed"
+  - "Documentation complete"
+
+monitoring_metrics:
+  - "API response times"
+  - "Frontend load times"
+  - "Error rates"
+  - "User engagement"
+  - "System resource usage"
+
+post_deployment:
+  - "Monitor application performance"
+  - "Gather user feedback"
+  - "Plan iterative improvements"
+  - "Schedule maintenance windows"
+  - "Update documentation"

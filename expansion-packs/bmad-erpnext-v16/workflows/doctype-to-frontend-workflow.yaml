@@ -1,0 +1,346 @@
+name: "doctype-to-native-vue-workflow"
+title: "DocType to Native Vue Development Workflow"
+description: "Complete workflow from DocType design through native Vue implementation - NO separate frontend"
+version: "1.0.0"
+
+workflow_overview:
+  purpose: "Systematic approach to building native Vue interfaces from DocType schemas using Frappe's asset pipeline"
+  phases:
+    1: "DocType Design & Validation"
+    2: "UI Layout Design" 
+    3: "Component Implementation"
+    4: "API Integration"
+    5: "Testing & Optimization"
+
+phases:
+  doctype_design:
+    title: "DocType Schema Design"
+    duration: "1-2 days"
+    agents:
+      primary: "doctype-designer"
+      supporting: ["business-analyst", "erpnext-architect"]
+    
+    deliverables:
+      - "DocType JSON schemas"
+      - "Python controller classes"
+      - "Relationship mappings"
+      - "Permission matrices"
+    
+    success_criteria:
+      - "All DocTypes migrate successfully"
+      - "CRUD operations work in backend"
+      - "Relationships function correctly"
+      - "Permissions enforce properly"
+    
+    validation_steps:
+      - "bench migrate runs without errors"
+      - "DocType creation/reading works in console"
+      - "All relationships resolve correctly"
+      - "Permission checks function as expected"
+
+  ui_layout_design:
+    title: "UI Layout and Information Architecture"
+    duration: "1-2 days"
+    agents:
+      primary: "ui-layout-designer"
+      supporting: ["business-analyst", "frappe-ui-developer"]
+    
+    inputs:
+      - "Completed DocType schemas"
+      - "Business requirements"
+      - "User workflow specifications"
+    
+    deliverables:
+      - "UI wireframes and layouts"
+      - "Navigation structure"
+      - "Component hierarchy specifications"
+      - "Responsive design requirements"
+      - "Multi-DocType view designs"
+    
+    design_patterns:
+      master_detail:
+        description: "Primary DocType with related records"
+        use_case: "Customer with Orders, Invoices, Addresses"
+        components: ["DetailView", "RelatedList", "TabNavigation"]
+      
+      dashboard:
+        description: "Summary views of multiple DocTypes"
+        use_case: "Sales dashboard with multiple metrics"
+        components: ["StatCards", "Charts", "RecentActivity"]
+      
+      wizard:
+        description: "Sequential flow across DocTypes"
+        use_case: "Order creation spanning Customer, Items, Pricing"
+        components: ["StepIndicator", "FormSections", "Navigation"]
+    
+    success_criteria:
+      - "Clear information hierarchy"
+      - "Intuitive navigation flow"
+      - "Responsive design specifications"
+      - "Component reusability identified"
+
+  component_implementation:
+    title: "Native Vue Component Development"
+    duration: "3-5 days"
+    agents:
+      primary: "frappe-ui-developer"
+      supporting: ["vue-frontend-architect", "ui-layout-designer"]
+    
+    inputs:
+      - "UI design specifications"
+      - "DocType schemas"
+      - "Component requirements"
+    
+    deliverables:
+      - "Native Vue components in public/js/"
+      - "Bundle.js entry points with SetVueGlobals"
+      - "HTML field Vue integrations"
+      - "Page-based Vue components"
+      - "Report Vue enhancements"
+    
+    implementation_standards:
+      component_structure:
+        - "Use frappe-ui base components"
+        - "Follow composition API patterns"
+        - "Implement proper prop validation"
+        - "Include loading and error states"
+      
+      responsiveness:
+        - "Mobile-first design approach"
+        - "Breakpoint consistency"
+        - "Touch-friendly interactions"
+        - "Responsive grid layouts"
+      
+      accessibility:
+        - "Proper ARIA labels"
+        - "Keyboard navigation support"
+        - "Focus indicator visibility"
+        - "Semantic HTML structure"
+    
+    success_criteria:
+      - "Components render without errors"
+      - "Responsive behavior works across devices"
+      - "Accessibility requirements met"
+      - "Performance benchmarks achieved"
+
+  api_integration:
+    title: "Backend API Integration"
+    duration: "2-3 days"
+    agents:
+      primary: "api-developer"
+      supporting: ["frappe-ui-developer", "diagnostic-specialist"]
+    
+    inputs:
+      - "DocType schemas"
+      - "Frontend component requirements"
+      - "Data flow specifications"
+    
+    deliverables:
+      - "REST API endpoints for DocType operations"
+      - "Search and filter APIs"
+      - "Bulk operation endpoints"
+      - "File upload/download APIs"
+      - "Frontend API integration"
+    
+    api_patterns:
+      crud_operations:
+        - "GET /api/resource/DocType - List with filtering"
+        - "GET /api/resource/DocType/[name] - Single document"
+        - "POST /api/resource/DocType - Create new"
+        - "PUT /api/resource/DocType/[name] - Update"
+        - "DELETE /api/resource/DocType/[name] - Delete"
+      
+      search_and_filter:
+        - "Search by text query"
+        - "Filter by field values"
+        - "Sort by multiple fields"
+        - "Pagination support"
+      
+      batch_operations:
+        - "Bulk create/update/delete"
+        - "Export data in various formats"
+        - "Import data with validation"
+    
+    integration_standards:
+      error_handling:
+        - "Consistent error response format"
+        - "Proper HTTP status codes"
+        - "User-friendly error messages"
+        - "Error logging and monitoring"
+      
+      performance:
+        - "Response times < 200ms"
+        - "Proper caching headers"
+        - "Pagination for large datasets"
+        - "Query optimization"
+    
+    success_criteria:
+      - "All CRUD operations work correctly"
+      - "Frontend successfully calls all APIs"
+      - "Error handling works as expected"
+      - "Performance requirements met"
+
+  testing_optimization:
+    title: "Testing and Performance Optimization"
+    duration: "1-2 days"
+    agents:
+      primary: "testing-specialist"
+      supporting: ["refactoring-expert", "diagnostic-specialist"]
+    
+    inputs:
+      - "Complete frontend implementation"
+      - "API integration"
+      - "Test scenarios"
+    
+    deliverables:
+      - "Unit tests for components"
+      - "Integration tests for API calls"
+      - "End-to-end user journey tests"
+      - "Performance optimization report"
+      - "Security vulnerability assessment"
+    
+    testing_coverage:
+      unit_tests:
+        - "Component rendering"
+        - "User interactions"
+        - "Data transformations"
+        - "Utility functions"
+      
+      integration_tests:
+        - "API call success/failure scenarios"
+        - "Data flow between components"
+        - "Authentication and permissions"
+        - "Error boundary behavior"
+      
+      e2e_tests:
+        - "Complete user workflows"
+        - "Cross-browser compatibility"
+        - "Mobile device testing"
+        - "Performance under load"
+    
+    optimization_areas:
+      performance:
+        - "Bundle size optimization"
+        - "Lazy loading implementation"
+        - "Query optimization"
+        - "Caching strategies"
+      
+      user_experience:
+        - "Loading state improvements"
+        - "Error message clarity"
+        - "Navigation intuitiveness"
+        - "Accessibility enhancements"
+    
+    success_criteria:
+      - "All tests pass consistently"
+      - "Performance benchmarks met"
+      - "Security vulnerabilities addressed"
+      - "User acceptance criteria satisfied"
+
+coordination_protocols:
+  phase_transitions:
+    doctype_to_ui:
+      trigger: "All DocTypes validate successfully"
+      handoff_data: "DocType schemas, relationships, business rules"
+      validation: "UI design covers all DocType requirements"
+    
+    ui_to_implementation:
+      trigger: "UI designs approved and finalized"
+      handoff_data: "Wireframes, component specs, responsive requirements"
+      validation: "Components match design specifications"
+    
+    implementation_to_api:
+      trigger: "Frontend components ready for data integration"
+      handoff_data: "Component data requirements, API specifications"
+      validation: "APIs meet frontend data needs"
+    
+    api_to_testing:
+      trigger: "Full integration complete"
+      handoff_data: "Complete application, test scenarios"
+      validation: "All functionality works end-to-end"
+
+quality_gates:
+  phase_1_gate:
+    criteria:
+      - "DocTypes migrate without errors"
+      - "Basic CRUD operations work"
+      - "Relationships function correctly"
+    approval_required: true
+  
+  phase_2_gate:
+    criteria:
+      - "UI designs approved by stakeholders"
+      - "Technical feasibility confirmed"
+      - "Component library identified"
+    approval_required: true
+  
+  phase_3_gate:
+    criteria:
+      - "Components render correctly"
+      - "Responsive design works"
+      - "Code review passed"
+    approval_required: false
+  
+  phase_4_gate:
+    criteria:
+      - "APIs return expected data"
+      - "Frontend-backend integration works"
+      - "Error handling functions"
+    approval_required: false
+  
+  final_gate:
+    criteria:
+      - "All tests pass"
+      - "Performance requirements met"
+      - "User acceptance criteria satisfied"
+    approval_required: true
+
+success_metrics:
+  development_velocity:
+    target: "Complete workflow in 7-12 days"
+    measurement: "Time from DocType design to production-ready frontend"
+  
+  quality_indicators:
+    - "Zero critical bugs in production first week"
+    - "User satisfaction score > 4.0/5.0"
+    - "Performance requirements met (load times, response times)"
+    - "Accessibility compliance achieved"
+  
+  technical_metrics:
+    - "Code coverage > 80%"
+    - "Bundle size < 1MB"
+    - "API response times < 200ms"
+    - "Mobile performance score > 90"
+
+risk_mitigation:
+  common_risks:
+    scope_creep:
+      probability: "Medium"
+      impact: "High"
+      mitigation: "Fixed scope approval at each phase gate"
+    
+    technical_complexity:
+      probability: "Medium"
+      impact: "Medium" 
+      mitigation: "Technical feasibility review in phase 2"
+    
+    performance_issues:
+      probability: "Low"
+      impact: "High"
+      mitigation: "Performance testing throughout development"
+    
+    integration_problems:
+      probability: "Low"
+      impact: "Medium"
+      mitigation: "API contracts defined early, tested incrementally"
+
+troubleshooting_integration:
+  when_errors_occur:
+    immediate_response: "diagnostic-specialist takes over"
+    escalation_path: "troubleshooting-team coordinates resolution"
+    continuation: "workflow resumes after issue resolution"
+  
+  error_prevention:
+    validation_points: "Each phase has specific validation criteria"
+    rollback_procedures: "Can return to previous phase if needed"
+    quality_checks: "Automated checks prevent common issues"

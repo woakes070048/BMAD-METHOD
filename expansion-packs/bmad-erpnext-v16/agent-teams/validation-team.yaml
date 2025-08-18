@@ -1,0 +1,254 @@
+name: "ERPNext Validation Team"
+version: "1.0.0"
+description: "Comprehensive validation team specializing in quality assurance, compliance verification, and deployment validation for ERPNext applications"
+
+metadata:
+  purpose: "Ensure quality, security, and compliance throughout ERPNext development lifecycle"
+  scope: "End-to-end validation from story verification to production deployment"
+  integration_focus: "Multi-app compatibility and Frappe Framework compliance"
+
+team_composition:
+  validation_specialists:
+    - agent: frappe-compliance-validator
+      role: "Lead Compliance Validator"
+      responsibilities:
+        - "Frappe Framework compliance verification"
+        - "Anti-pattern detection and prevention"
+        - "Code quality and standards enforcement"
+        - "Security compliance validation"
+      
+    - agent: testing-specialist
+      role: "Lead Testing and Verification Specialist"
+      responsibilities:
+        - "Comprehensive testing orchestration"
+        - "Performance validation and benchmarking"
+        - "Integration testing coordination"
+        - "Security penetration testing"
+        
+    - agent: erpnext-qa-lead
+      role: "Quality Assurance Lead"
+      responsibilities:
+        - "Overall quality coordination"
+        - "Validation process oversight"
+        - "Team coordination and communication"
+        - "Quality metrics and reporting"
+
+  supporting_specialists:
+    - agent: erpnext-architect
+      role: "Architecture Validation Specialist"
+      responsibilities:
+        - "Architecture compliance validation"
+        - "Design pattern verification"
+        - "Scalability assessment"
+        - "Technical feasibility validation"
+        
+    - agent: api-architect
+      role: "API Validation Specialist"
+      responsibilities:
+        - "API contract validation"
+        - "RESTful design compliance"
+        - "Security endpoint validation"
+        - "Performance optimization"
+
+collaboration_patterns:
+  validation_workflow:
+    stage_1_pre_development:
+      lead: erpnext-qa-lead
+      participants: [frappe-compliance-validator, erpnext-architect]
+      tasks:
+        - validate-erpnext-story
+        - architecture-compliance-review
+        - technical-feasibility-assessment
+      
+    stage_2_development_time:
+      lead: frappe-compliance-validator
+      participants: [testing-specialist, api-architect]
+      tasks:
+        - continuous-compliance-monitoring
+        - code-quality-validation
+        - api-endpoint-validation
+      
+    stage_3_pre_deployment:
+      lead: testing-specialist
+      participants: [frappe-compliance-validator, erpnext-qa-lead]
+      tasks:
+        - comprehensive-validation-orchestration
+        - pre-deployment-verification
+        - production-readiness-assessment
+      
+    stage_4_post_deployment:
+      lead: erpnext-qa-lead
+      participants: [testing-specialist, frappe-compliance-validator]
+      tasks:
+        - production-validation-monitoring
+        - continuous-compliance-assessment
+        - performance-monitoring-validation
+
+validation_specializations:
+  frappe_framework_compliance:
+    primary_agent: frappe-compliance-validator
+    validation_areas:
+      - "Frappe-first principle enforcement"
+      - "External dependency validation"
+      - "API endpoint compliance"
+      - "Database operation patterns"
+      - "Authentication and authorization"
+    
+  comprehensive_testing:
+    primary_agent: testing-specialist
+    validation_areas:
+      - "Unit and integration testing"
+      - "Performance benchmarking"
+      - "Security penetration testing"
+      - "Multi-app compatibility"
+      - "Business logic verification"
+    
+  quality_assurance:
+    primary_agent: erpnext-qa-lead
+    validation_areas:
+      - "Overall quality coordination"
+      - "Process compliance"
+      - "Documentation validation"
+      - "User acceptance criteria"
+      - "Production readiness"
+
+team_capabilities:
+  validation_automation:
+    - "Automated compliance scanning"
+    - "Continuous integration validation"
+    - "Performance regression detection"
+    - "Security vulnerability monitoring"
+    - "Multi-app compatibility testing"
+    
+  manual_validation:
+    - "Architecture review and validation"
+    - "Business logic verification"
+    - "User experience validation"
+    - "Documentation accuracy review"
+    - "Production deployment validation"
+    
+  reporting_and_communication:
+    - "Comprehensive validation reports"
+    - "Real-time validation dashboards"
+    - "Stakeholder communication"
+    - "Issue escalation and resolution"
+    - "Continuous improvement recommendations"
+
+validation_standards:
+  quality_gates:
+    pre_development:
+      - story_validation_score: "≥90%"
+      - architecture_compliance: "100%"
+      - technical_feasibility: "Confirmed"
+      
+    development_phase:
+      - compliance_score: "≥95%"
+      - test_coverage: "≥85%"
+      - security_score: "≥90%"
+      
+    pre_deployment:
+      - integration_tests: "100% pass"
+      - performance_benchmarks: "Met"
+      - security_validation: "No critical issues"
+      
+    production:
+      - deployment_success: "100%"
+      - monitoring_active: "Operational"
+      - user_acceptance: "Achieved"
+
+  failure_thresholds:
+    critical_violations:
+      - frappe_compliance_violations: "0"
+      - security_vulnerabilities: "0 critical"
+      - integration_failures: "0"
+      - performance_regressions: "0 major"
+    
+    escalation_triggers:
+      - repeated_validation_failures: "3+ consecutive"
+      - critical_security_issues: "Any critical"
+      - production_incidents: "Any related to validation gaps"
+
+communication_protocols:
+  daily_standups:
+    frequency: "Daily during active validation phases"
+    participants: "All validation team members"
+    focus: "Progress, blockers, coordination"
+    
+  validation_reviews:
+    frequency: "At each validation gate"
+    participants: "Full team + stakeholders"
+    deliverables: "Validation reports and recommendations"
+    
+  retrospectives:
+    frequency: "End of each major validation cycle"
+    participants: "Full team"
+    focus: "Process improvement and lessons learned"
+
+tools_and_technologies:
+  validation_frameworks:
+    - "Frappe compliance scanner"
+    - "Security vulnerability scanners"
+    - "Performance testing tools"
+    - "Integration testing frameworks"
+    
+  monitoring_and_reporting:
+    - "Real-time validation dashboards"
+    - "Automated report generation"
+    - "Alert and notification systems"
+    - "Metrics tracking and analysis"
+    
+  collaboration_tools:
+    - "Shared validation workspaces"
+    - "Issue tracking systems"
+    - "Documentation platforms"
+    - "Communication channels"
+
+success_metrics:
+  validation_effectiveness:
+    - "Defect prevention rate: ≥95%"
+    - "Production incident reduction: ≥80%"
+    - "Time to market improvement: ≥20%"
+    - "Compliance score maintenance: ≥95%"
+    
+  team_performance:
+    - "Validation cycle time: Optimized"
+    - "Cross-team collaboration: High"
+    - "Knowledge sharing: Active"
+    - "Continuous improvement: Ongoing"
+
+escalation_procedures:
+  validation_failures:
+    level_1: "Team lead resolution"
+    level_2: "Stakeholder notification"
+    level_3: "Executive escalation"
+    
+  critical_issues:
+    immediate: "All team mobilization"
+    communication: "Real-time stakeholder updates"
+    resolution: "Emergency validation procedures"
+
+continuous_improvement:
+  validation_process_enhancement:
+    - "Regular process review and optimization"
+    - "New validation technique integration"
+    - "Automation expansion and improvement"
+    - "Team skill development and training"
+    
+  knowledge_management:
+    - "Best practice documentation"
+    - "Lesson learned knowledge base"
+    - "Validation pattern library"
+    - "Team expertise sharing"
+
+integration_with_development_teams:
+  development_support:
+    - "Real-time validation guidance"
+    - "Best practice consultation"
+    - "Issue resolution assistance"
+    - "Quality coaching and mentoring"
+    
+  feedback_loops:
+    - "Continuous validation feedback"
+    - "Development process improvement"
+    - "Quality culture promotion"
+    - "Collaborative problem solving"

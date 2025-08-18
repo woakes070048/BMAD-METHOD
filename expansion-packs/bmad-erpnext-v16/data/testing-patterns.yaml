@@ -1,0 +1,687 @@
+name: "testing-patterns"
+title: "ERPNext Testing Patterns"
+description: "Comprehensive testing patterns and best practices for ERPNext v16 applications"
+version: "1.0.0"
+
+# Core Testing Patterns
+testing_fundamentals:
+  test_structure:
+    directory_structure: |
+      your_app/
+      ├── your_app/
+      │   ├── tests/
+      │   │   ├── __init__.py
+      │   │   ├── test_customer.py
+      │   │   ├── test_sales_order.py
+      │   │   └── test_api.py
+      │   └── [module_name]/
+      │       └── doctype/
+      │           └── [doctype_name]/
+      │               └── test_[doctype_name].py
+    
+    base_test_class: |
+      import frappe
+      from frappe.tests.utils import FrappeTestCase
+      
+      class TestCustomer(FrappeTestCase):
+          def setUp(self):
+              """Set up test data before each test method"""
+              self.test_customer_name = "Test Customer"
+              self.test_email = "test@example.com"
+              
+              # Clean up any existing test data
+              self.cleanup_test_data()
+          
+          def tearDown(self):
+              """Clean up test data after each test method"""
+              self.cleanup_test_data()
+          
+          def cleanup_test_data(self):
+              """Remove test data"""
+              if frappe.db.exists("Customer", self.test_customer_name):
+                  frappe.delete_doc("Customer", self.test_customer_name, force=True)
+  
+  test_data_management:
+    test_data_creation: |
+      def create_test_customer(customer_name="Test Customer", save=True):
+          """Create a test customer with default values"""
+          customer = frappe.get_doc({
+              "doctype": "Customer",
+              "customer_name": customer_name,
+              "customer_type": "Individual",
+              "customer_group": "Individual",
+              "territory": "All Territories",
+              "email_id": f"{customer_name.lower().replace(' ', '')}@test.com"
+          })
+          
+          if save:
+              customer.insert(ignore_permissions=True)
+          
+          return customer
+    
+    test_data_factory: |
+      class TestDataFactory:
+          @staticmethod
+          def create_customer(**kwargs):
+              defaults = {
+                  "customer_name": frappe.generate_hash()[:10],
+                  "customer_type": "Individual",
+                  "customer_group": "Individual",
+                  "territory": "All Territories"
+              }
+              defaults.update(kwargs)
+              
+              customer = frappe.get_doc({
+                  "doctype": "Customer",
+                  **defaults
+              })
+              customer.insert(ignore_permissions=True)
+              return customer
+          
+          @staticmethod
+          def create_item(**kwargs):
+              defaults = {
+                  "item_code": frappe.generate_hash()[:10],
+                  "item_name": f"Test Item {frappe.generate_hash()[:5]}",
+                  "item_group": "All Item Groups",
+                  "stock_uom": "Nos"
+              }
+              defaults.update(kwargs)
+              
+              item = frappe.get_doc({
+                  "doctype": "Item",
+                  **defaults
+              })
+              item.insert(ignore_permissions=True)
+              return item
+
+# Unit Testing Patterns
+unit_testing_patterns:
+  doctype_testing:
+    validation_tests: |
+      def test_customer_email_validation(self):
+          """Test customer email validation"""
+          customer = frappe.get_doc({
+              "doctype": "Customer",
+              "customer_name": "Invalid Email Customer",
+              "email_id": "invalid-email"
+          })
+          
+          with self.assertRaises(frappe.ValidationError):
+              customer.insert()
+      
+      def test_duplicate_customer_prevention(self):
+          """Test prevention of duplicate customers"""
+          # Create first customer
+          customer1 = create_test_customer("Duplicate Test")
+          
+          # Try to create duplicate
+          customer2 = frappe.get_doc({
+              "doctype": "Customer",
+              "customer_name": "Duplicate Test",
+              "email_id": "duplicate@test.com"
+          })
+          
+          with self.assertRaises(frappe.DuplicateEntryError):
+              customer2.insert()
+    
+    business_logic_tests: |
+      def test_sales_order_calculation(self):
+          """Test sales order amount calculations"""
+          customer = create_test_customer()
+          item = TestDataFactory.create_item()
+          
+          so = frappe.get_doc({
+              "doctype": "Sales Order",
+              "customer": customer.name,
+              "transaction_date": frappe.utils.today(),
+              "delivery_date": frappe.utils.add_days(frappe.utils.today(), 7),
+              "items": [{
+                  "item_code": item.item_code,
+                  "qty": 2,
+                  "rate": 100
+              }]
+          })
+          so.insert()
+          
+          # Test calculations
+          self.assertEqual(so.total, 200)
+          self.assertEqual(len(so.items), 1)
+          self.assertEqual(so.items[0].amount, 200)
+    
+    permission_tests: |
+      def test_customer_read_permission(self):
+          """Test customer read permissions"""
+          customer = create_test_customer()
+          
+          # Test with user having permission
+          frappe.set_user("test_user@example.com")
+          self.assertTrue(frappe.has_permission("Customer", "read", customer.name))
+          
+          # Test with user without permission
+          frappe.set_user("restricted_user@example.com")
+          self.assertFalse(frappe.has_permission("Customer", "read", customer.name))
+
+  api_testing:
+    api_method_testing: |
+      def test_customer_api_creation(self):
+          """Test customer creation via API"""
+          from your_app.api import create_customer
+          
+          result = create_customer(
+              customer_name="API Test Customer",
+              email_id="apitest@example.com"
+          )
+          
+          self.assertTrue(result.get("success"))
+          self.assertIn("customer_id", result.get("data", {}))
+          
+          # Verify customer was created
+          customer_id = result["data"]["customer_id"]
+          self.assertTrue(frappe.db.exists("Customer", customer_id))
+    
+    api_error_handling: |
+      def test_api_validation_errors(self):
+          """Test API validation error handling"""
+          from your_app.api import create_customer
+          
+          # Test missing required field
+          with self.assertRaises(frappe.ValidationError):
+              create_customer(customer_name="Test", email_id="")
+          
+          # Test invalid email format
+          with self.assertRaises(frappe.ValidationError):
+              create_customer(customer_name="Test", email_id="invalid-email")
+    
+    api_permission_testing: |
+      def test_api_permission_enforcement(self):
+          """Test API permission enforcement"""
+          from your_app.api import restricted_api_method
+          
+          # Test with authorized user
+          frappe.set_user("authorized@example.com")
+          result = restricted_api_method()
+          self.assertTrue(result.get("success"))
+          
+          # Test with unauthorized user
+          frappe.set_user("unauthorized@example.com")
+          with self.assertRaises(frappe.PermissionError):
+              restricted_api_method()
+
+# Integration Testing Patterns
+integration_testing_patterns:
+  workflow_testing:
+    complete_workflow_test: |
+      def test_lead_to_order_workflow(self):
+          """Test complete lead to sales order workflow"""
+          # Step 1: Create lead
+          lead = frappe.get_doc({
+              "doctype": "Lead",
+              "lead_name": "Workflow Test Lead",
+              "email_id": "workflowtest@example.com",
+              "status": "Open"
+          })
+          lead.insert()
+          
+          # Step 2: Convert to customer
+          customer = convert_lead_to_customer(lead.name)
+          self.assertIsNotNone(customer)
+          self.assertEqual(lead.reload().status, "Converted")
+          
+          # Step 3: Create quotation
+          quotation = frappe.get_doc({
+              "doctype": "Quotation",
+              "customer": customer.name,
+              "transaction_date": frappe.utils.today(),
+              "items": [{
+                  "item_code": TestDataFactory.create_item().item_code,
+                  "qty": 1,
+                  "rate": 100
+              }]
+          })
+          quotation.insert()
+          quotation.submit()
+          
+          # Step 4: Create sales order
+          so = create_sales_order_from_quotation(quotation.name)
+          self.assertEqual(so.customer, customer.name)
+          self.assertEqual(so.quotation_no, quotation.name)
+  
+  multi_doctype_testing:
+    transaction_flow_test: |
+      def test_sales_to_delivery_flow(self):
+          """Test flow from sales order to delivery"""
+          customer = create_test_customer()
+          item = TestDataFactory.create_item()
+          
+          # Create sales order
+          so = frappe.get_doc({
+              "doctype": "Sales Order",
+              "customer": customer.name,
+              "transaction_date": frappe.utils.today(),
+              "delivery_date": frappe.utils.add_days(frappe.utils.today(), 7),
+              "items": [{
+                  "item_code": item.item_code,
+                  "qty": 5,
+                  "rate": 100
+              }]
+          })
+          so.insert()
+          so.submit()
+          
+          # Create delivery note from sales order
+          dn = frappe.get_doc({
+              "doctype": "Delivery Note",
+              "customer": customer.name,
+              "posting_date": frappe.utils.today(),
+              "items": [{
+                  "item_code": item.item_code,
+                  "qty": 5,
+                  "rate": 100,
+                  "against_sales_order": so.name,
+                  "so_detail": so.items[0].name
+              }]
+          })
+          dn.insert()
+          dn.submit()
+          
+          # Verify linking
+          self.assertEqual(dn.items[0].against_sales_order, so.name)
+          
+          # Create sales invoice
+          si = frappe.get_doc({
+              "doctype": "Sales Invoice",
+              "customer": customer.name,
+              "posting_date": frappe.utils.today(),
+              "items": [{
+                  "item_code": item.item_code,
+                  "qty": 5,
+                  "rate": 100,
+                  "delivery_note": dn.name,
+                  "dn_detail": dn.items[0].name
+              }]
+          })
+          si.insert()
+          si.submit()
+          
+          # Verify complete flow
+          self.assertEqual(si.items[0].delivery_note, dn.name)
+
+# Performance Testing Patterns
+performance_testing_patterns:
+  load_testing:
+    bulk_operation_test: |
+      def test_bulk_customer_creation_performance(self):
+          """Test performance of bulk customer creation"""
+          import time
+          
+          start_time = time.time()
+          customers = []
+          
+          # Create 100 customers
+          for i in range(100):
+              customer = frappe.get_doc({
+                  "doctype": "Customer",
+                  "customer_name": f"Bulk Test Customer {i}",
+                  "email_id": f"bulk{i}@test.com"
+              })
+              customer.insert(ignore_permissions=True)
+              customers.append(customer.name)
+          
+          end_time = time.time()
+          duration = end_time - start_time
+          
+          # Should complete within reasonable time (e.g., 30 seconds)
+          self.assertLess(duration, 30, f"Bulk creation took too long: {duration} seconds")
+          
+          # Cleanup
+          for customer_name in customers:
+              frappe.delete_doc("Customer", customer_name, force=True)
+    
+    query_performance_test: |
+      def test_customer_search_performance(self):
+          """Test customer search query performance"""
+          import time
+          
+          # Create test data
+          customers = []
+          for i in range(1000):
+              customer = TestDataFactory.create_customer(
+                  customer_name=f"Search Test {i}"
+              )
+              customers.append(customer.name)
+          
+          try:
+              # Test search performance
+              start_time = time.time()
+              
+              results = frappe.get_all("Customer",
+                  filters={"customer_name": ["like", "%Search Test%"]},
+                  fields=["name", "customer_name"],
+                  limit=100
+              )
+              
+              end_time = time.time()
+              duration = end_time - start_time
+              
+              # Should complete quickly (e.g., under 2 seconds)
+              self.assertLess(duration, 2, f"Search took too long: {duration} seconds")
+              self.assertGreater(len(results), 0)
+              
+          finally:
+              # Cleanup
+              for customer_name in customers:
+                  frappe.delete_doc("Customer", customer_name, force=True)
+
+# Frontend Testing Patterns
+frontend_testing_patterns:
+  client_script_testing:
+    form_validation_test: |
+      # Test client-side validation
+      def test_form_validation_scripts(self):
+          """Test client-side form validation"""
+          # This would typically be done with Selenium or similar
+          # For demonstration purposes, we test the logic directly
+          
+          from your_app.public.js.customer import validate_customer_data
+          
+          # Test valid data
+          valid_data = {
+              "customer_name": "Test Customer",
+              "email_id": "test@example.com"
+          }
+          self.assertTrue(validate_customer_data(valid_data))
+          
+          # Test invalid data
+          invalid_data = {
+              "customer_name": "",
+              "email_id": "invalid-email"
+          }
+          self.assertFalse(validate_customer_data(invalid_data))
+  
+  ui_component_testing:
+    dashboard_test: |
+      def test_dashboard_data_loading(self):
+          """Test dashboard data loading"""
+          from your_app.dashboard import get_dashboard_data
+          
+          # Create test data
+          customer = create_test_customer()
+          item = TestDataFactory.create_item()
+          
+          # Get dashboard data
+          data = get_dashboard_data()
+          
+          # Verify data structure
+          self.assertIn("customers", data)
+          self.assertIn("total_sales", data)
+          self.assertIsInstance(data["customers"], int)
+          self.assertIsInstance(data["total_sales"], (int, float))
+
+# Test Database Patterns
+test_database_patterns:
+  database_isolation:
+    transaction_rollback: |
+      def test_with_transaction_rollback(self):
+          """Test using transaction rollback for isolation"""
+          # This pattern ensures tests don't affect the database
+          
+          frappe.db.begin()
+          try:
+              # Create test data
+              customer = create_test_customer("Rollback Test")
+              
+              # Perform test operations
+              customer.customer_name = "Modified Name"
+              customer.save()
+              
+              # Test assertions
+              self.assertEqual(customer.customer_name, "Modified Name")
+              
+          finally:
+              # Always rollback to maintain test isolation
+              frappe.db.rollback()
+  
+  test_data_fixtures:
+    fixture_management: |
+      class CustomerTestFixtures:
+          @classmethod
+          def setUpClass(cls):
+              """Set up fixtures once for all tests in class"""
+              cls.test_territory = frappe.get_doc({
+                  "doctype": "Territory",
+                  "territory_name": "Test Territory"
+              })
+              cls.test_territory.insert(ignore_permissions=True)
+              
+              cls.test_customer_group = frappe.get_doc({
+                  "doctype": "Customer Group",
+                  "customer_group_name": "Test Group"
+              })
+              cls.test_customer_group.insert(ignore_permissions=True)
+          
+          @classmethod
+          def tearDownClass(cls):
+              """Clean up fixtures after all tests"""
+              frappe.delete_doc("Territory", cls.test_territory.name, force=True)
+              frappe.delete_doc("Customer Group", cls.test_customer_group.name, force=True)
+
+# Mock and Stub Patterns
+mocking_patterns:
+  external_service_mocking:
+    api_call_mocking: |
+      import unittest.mock as mock
+      
+      def test_external_api_integration(self):
+          """Test integration with external API using mocks"""
+          
+          with mock.patch('your_app.utils.make_external_api_call') as mock_api:
+              # Configure mock response
+              mock_api.return_value = {
+                  "success": True,
+                  "external_id": "EXT123"
+              }
+              
+              # Test the function that uses external API
+              customer = create_test_customer()
+              result = sync_customer_to_external_system(customer.name)
+              
+              # Verify mock was called correctly
+              mock_api.assert_called_once()
+              self.assertTrue(result["success"])
+              self.assertEqual(result["external_id"], "EXT123")
+  
+  email_mocking:
+    notification_testing: |
+      def test_email_notifications(self):
+          """Test email notification sending"""
+          
+          with mock.patch('frappe.sendmail') as mock_sendmail:
+              customer = create_test_customer()
+              
+              # Trigger notification
+              send_welcome_email(customer.name)
+              
+              # Verify email was sent
+              mock_sendmail.assert_called_once()
+              call_args = mock_sendmail.call_args
+              self.assertIn(customer.email_id, call_args[1]['recipients'])
+              self.assertIn("Welcome", call_args[1]['subject'])
+
+# Test Utilities and Helpers
+test_utilities:
+  assertion_helpers:
+    custom_assertions: |
+      class ERPNextTestCase(FrappeTestCase):
+          def assertDocExists(self, doctype, name, msg=None):
+              """Assert that a document exists"""
+              if not frappe.db.exists(doctype, name):
+                  raise AssertionError(msg or f"{doctype} {name} does not exist")
+          
+          def assertDocNotExists(self, doctype, name, msg=None):
+              """Assert that a document does not exist"""
+              if frappe.db.exists(doctype, name):
+                  raise AssertionError(msg or f"{doctype} {name} exists when it shouldn't")
+          
+          def assertValidationError(self, doc, msg=None):
+              """Assert that document validation raises an error"""
+              with self.assertRaises(frappe.ValidationError, msg=msg):
+                  doc.insert()
+  
+  test_data_helpers:
+    data_cleanup: |
+      def cleanup_test_documents(doctype, filters=None):
+          """Clean up test documents"""
+          filters = filters or {"name": ["like", "%test%"]}
+          
+          docs = frappe.get_all(doctype, filters=filters, pluck="name")
+          for doc_name in docs:
+              frappe.delete_doc(doctype, doc_name, force=True)
+      
+      def create_test_hierarchy():
+          """Create a hierarchy of test documents"""
+          territory = frappe.get_doc({
+              "doctype": "Territory",
+              "territory_name": "Test Territory"
+          })
+          territory.insert(ignore_permissions=True)
+          
+          customer_group = frappe.get_doc({
+              "doctype": "Customer Group", 
+              "customer_group_name": "Test Group"
+          })
+          customer_group.insert(ignore_permissions=True)
+          
+          customer = frappe.get_doc({
+              "doctype": "Customer",
+              "customer_name": "Test Customer",
+              "territory": territory.name,
+              "customer_group": customer_group.name
+          })
+          customer.insert(ignore_permissions=True)
+          
+          return {
+              "territory": territory,
+              "customer_group": customer_group,
+              "customer": customer
+          }
+
+# Test Configuration and Setup
+test_configuration:
+  test_runner_setup:
+    custom_test_runner: |
+      # In your app's __init__.py or test configuration
+      def get_test_config():
+          return {
+              "test_modules": [
+                  "your_app.tests.test_customer",
+                  "your_app.tests.test_sales_order",
+                  "your_app.tests.test_api"
+              ],
+              "test_data_path": "your_app/fixtures/test_data.json",
+              "setup_fixtures": True,
+              "cleanup_after_tests": True
+          }
+  
+  environment_setup:
+    test_site_config: |
+      # test_site_config.json
+      {
+          "db_name": "test_erpnext",
+          "db_password": "test_password",
+          "developer_mode": 1,
+          "disable_website_cache": 1,
+          "log_level": "DEBUG",
+          "test_runner_port": 8001
+      }
+  
+  continuous_integration:
+    github_actions_test: |
+      # .github/workflows/test.yml
+      name: Test Suite
+      
+      on: [push, pull_request]
+      
+      jobs:
+        test:
+          runs-on: ubuntu-latest
+          
+          services:
+            mysql:
+              image: mysql:8.0
+              env:
+                MYSQL_ROOT_PASSWORD: root
+              options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          
+          steps:
+          - uses: actions/checkout@v2
+          
+          - name: Setup Python
+            uses: actions/setup-python@v2
+            with:
+              python-version: 3.8
+          
+          - name: Install dependencies
+            run: |
+              pip install frappe-bench
+              bench init frappe-bench --skip-redis-config-generation
+              cd frappe-bench
+              bench get-app your_app $GITHUB_WORKSPACE
+          
+          - name: Run tests
+            run: |
+              cd frappe-bench
+              bench --site test_site run-tests --app your_app
+
+# Testing Best Practices
+testing_best_practices:
+  test_organization:
+    - "One test class per DocType or major functionality"
+    - "Use descriptive test method names that explain what is being tested"
+    - "Group related tests using test classes and modules"
+    - "Use setUp and tearDown for test data management"
+    - "Keep tests independent - each test should be able to run in isolation"
+  
+  test_data_management:
+    - "Create minimal test data needed for each test"
+    - "Use factories or builders for complex test data creation"
+    - "Clean up test data after each test to avoid side effects"
+    - "Use transactions and rollbacks for database isolation when possible"
+    - "Mock external dependencies to make tests faster and more reliable"
+  
+  assertion_guidelines:
+    - "Use specific assertions that clearly indicate what failed"
+    - "Test both positive and negative cases"
+    - "Verify not just that something works, but that it works correctly"
+    - "Include edge cases and boundary conditions in your tests"
+    - "Test error conditions and exception handling"
+  
+  performance_considerations:
+    - "Keep test execution time reasonable"
+    - "Use mocks to avoid slow external calls"
+    - "Run performance-sensitive tests separately from unit tests"
+    - "Monitor test suite execution time and optimize slow tests"
+    - "Use database transactions to speed up test data operations"
+
+# Common Testing Anti-Patterns
+testing_anti_patterns:
+  avoid_patterns:
+    - pattern: "Tests that depend on specific database state"
+      issue: "Tests become brittle and fail unexpectedly"
+      solution: "Create test data within each test or use proper fixtures"
+    
+    - pattern: "Tests that modify global state without cleanup"
+      issue: "Tests interfere with each other"
+      solution: "Always clean up in tearDown or use transaction rollbacks"
+    
+    - pattern: "Testing implementation details instead of behavior"
+      issue: "Tests break when refactoring without changing behavior"
+      solution: "Focus on testing the expected outcomes and behaviors"
+    
+    - pattern: "Overly complex test setups"
+      issue: "Tests become hard to understand and maintain"
+      solution: "Use helper methods and factories to simplify test data creation"
+    
+    - pattern: "Not testing error conditions"
+      issue: "Bugs in error handling go undetected"
+      solution: "Include tests for validation errors, permission errors, and edge cases"

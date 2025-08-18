@@ -1,0 +1,578 @@
+name: "vue-native-template"
+title: "Native Vue 3 Template for ERPNext v16"
+description: "Native Vue 3 integration using Frappe's built-in esbuild pipeline - NO separate frontend directory"
+version: "3.0.0"
+
+parameters:
+  app_name:
+    type: "string"
+    required: true
+    description: "Name of the ERPNext app (snake_case)"
+  feature_name:
+    type: "string"
+    required: true
+    description: "Name of the feature/page (snake_case)"
+  page_title:
+    type: "string"
+    required: true
+    description: "Display title of the page"
+  doctype:
+    type: "string"
+    required: false
+    description: "DocType to work with (if applicable)"
+  module_name:
+    type: "string"
+    required: true
+    description: "Module name for the page"
+
+templates:
+  bundle_js: |
+    // {{app_name}}/public/js/{{feature_name}}.bundle.js
+    import { createApp } from "vue";
+    import {{feature_name|pascalcase}}Component from "./{{feature_name}}/{{feature_name|pascalcase}}.vue";
+    import { createPinia } from "pinia";
+    import { useStore } from "./{{feature_name}}/store";
+
+    class {{feature_name|pascalcase}} {
+      constructor(wrapper) {
+        this.$wrapper = $(wrapper);
+        this.page = wrapper.page;
+        
+        // Setup page
+        this.setup_page();
+        this.mount_component();
+      }
+      
+      setup_page() {
+        this.page.set_title(__("{{page_title}}"));
+        
+        // Primary action
+        this.page.set_primary_action(__("Save"), () => {
+          this.$store.save();
+        });
+        
+        // Secondary actions
+        this.page.set_secondary_action(__("Refresh"), () => {
+          this.$store.refresh();
+        });
+        
+        // Menu items
+        this.page.add_menu_item(__("Export"), () => {
+          this.$store.export();
+        });
+      }
+      
+      mount_component() {
+        // Create Vue app
+        const app = createApp({{feature_name|pascalcase}}Component);
+        
+        // CRITICAL: Set up Frappe globals
+        SetVueGlobals(app);
+        
+        // Add Pinia for state management
+        const pinia = createPinia();
+        app.use(pinia);
+        
+        // Mount the app
+        this.$component = app.mount(this.$wrapper.get(0));
+        
+        // Get store reference
+        this.$store = useStore();
+        
+        // Initialize data
+        this.$store.init();
+      }
+    }
+
+    // Export for page use
+    frappe.provide("frappe.ui");
+    frappe.ui.{{feature_name|pascalcase}} = {{feature_name|pascalcase}};
+
+  main_component_vue: |
+    <!-- {{app_name}}/public/js/{{feature_name}}/{{feature_name|pascalcase}}.vue -->
+    <template>
+      <div class="{{feature_name}}-container">
+        <div class="frappe-card">
+          <!-- Header -->
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-semibold">
+              {{ __('{{page_title}}') }}
+            </h3>
+            <div class="flex gap-2">
+              <button 
+                v-if="store.selectedItems.length"
+                class="btn btn-default btn-sm"
+                @click="store.bulkAction"
+              >
+                {{ __('Bulk Action') }}
+              </button>
+              <button 
+                class="btn btn-primary btn-sm"
+                @click="showCreateDialog = true"
+              >
+                <svg class="icon icon-sm">
+                  <use href="#icon-add"></use>
+                </svg>
+                {{ __('New') }}
+              </button>
+            </div>
+          </div>
+          
+          <!-- Filters -->
+          <div class="flex gap-2 mb-4">
+            <input 
+              v-model="searchQuery"
+              type="text"
+              class="form-control"
+              :placeholder="__('Search...')"
+              @input="debounceSearch"
+            />
+            <select 
+              v-model="selectedFilter"
+              class="form-control"
+              @change="applyFilter"
+            >
+              <option value="">{{ __('All') }}</option>
+              <option value="active">{{ __('Active') }}</option>
+              <option value="inactive">{{ __('Inactive') }}</option>
+            </select>
+          </div>
+          
+          <!-- List View -->
+          <ListView 
+            v-if="viewType === 'list'"
+            :items="store.items"
+            :loading="store.loading"
+            @select="handleSelect"
+            @edit="handleEdit"
+            @delete="handleDelete"
+          />
+          
+          <!-- Grid View -->
+          <GridView 
+            v-else-if="viewType === 'grid'"
+            :items="store.items"
+            :loading="store.loading"
+            @select="handleSelect"
+          />
+        </div>
+        
+        <!-- Create Dialog -->
+        <CreateDialog 
+          v-if="showCreateDialog"
+          @close="showCreateDialog = false"
+          @created="handleCreated"
+        />
+      </div>
+    </template>
+
+    <script setup>
+    import { ref, computed, onMounted } from 'vue';
+    import { useStore } from './store';
+    import ListView from './components/ListView.vue';
+    import GridView from './components/GridView.vue';
+    import CreateDialog from './components/CreateDialog.vue';
+
+    // Access Frappe globals
+    const { __ } = window;
+
+    // Store
+    const store = useStore();
+
+    // Local state
+    const searchQuery = ref('');
+    const selectedFilter = ref('');
+    const viewType = ref('list');
+    const showCreateDialog = ref(false);
+
+    // Methods
+    let searchTimeout = null;
+    function debounceSearch() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        store.search(searchQuery.value);
+      }, 300);
+    }
+
+    function applyFilter() {
+      store.filter(selectedFilter.value);
+    }
+
+    function handleSelect(item) {
+      store.selectItem(item);
+    }
+
+    function handleEdit(item) {
+      frappe.set_route('Form', '{{doctype}}', item.name);
+    }
+
+    function handleDelete(item) {
+      frappe.confirm(
+        __('Are you sure you want to delete {0}?', [item.name]),
+        () => {
+          store.deleteItem(item);
+        }
+      );
+    }
+
+    function handleCreated(item) {
+      showCreateDialog.value = false;
+      store.refresh();
+      frappe.show_alert({
+        message: __('Created successfully'),
+        indicator: 'green'
+      });
+    }
+
+    // Lifecycle
+    onMounted(() => {
+      store.loadInitialData();
+    });
+    </script>
+
+    <style scoped>
+    .{{feature_name}}-container {
+      padding: var(--padding-lg);
+    }
+    </style>
+
+  store_js: |
+    // {{app_name}}/public/js/{{feature_name}}/store.js
+    import { defineStore } from 'pinia';
+    import { ref, computed } from 'vue';
+
+    export const useStore = defineStore('{{feature_name}}', () => {
+      // State
+      const items = ref([]);
+      const loading = ref(false);
+      const selectedItems = ref([]);
+      const currentFilter = ref(null);
+      
+      // Computed
+      const hasSelection = computed(() => selectedItems.value.length > 0);
+      const itemCount = computed(() => items.value.length);
+      
+      // Actions
+      async function init() {
+        await loadInitialData();
+      }
+      
+      async function loadInitialData() {
+        loading.value = true;
+        try {
+          const response = await frappe.call({
+            method: 'frappe.client.get_list',
+            args: {
+              doctype: '{{doctype}}',
+              fields: ['*'],
+              filters: currentFilter.value || {},
+              order_by: 'modified desc',
+              limit: 100
+            }
+          });
+          items.value = response.message || [];
+        } catch (error) {
+          frappe.throw(__('Failed to load data'));
+        } finally {
+          loading.value = false;
+        }
+      }
+      
+      async function refresh() {
+        await loadInitialData();
+      }
+      
+      async function search(query) {
+        if (!query) {
+          await loadInitialData();
+          return;
+        }
+        
+        loading.value = true;
+        try {
+          const response = await frappe.call({
+            method: '{{app_name}}.api.search_{{feature_name}}',
+            args: { query }
+          });
+          items.value = response.message || [];
+        } catch (error) {
+          frappe.throw(__('Search failed'));
+        } finally {
+          loading.value = false;
+        }
+      }
+      
+      function filter(filterType) {
+        currentFilter.value = filterType ? { status: filterType } : null;
+        loadInitialData();
+      }
+      
+      function selectItem(item) {
+        const index = selectedItems.value.findIndex(i => i.name === item.name);
+        if (index > -1) {
+          selectedItems.value.splice(index, 1);
+        } else {
+          selectedItems.value.push(item);
+        }
+      }
+      
+      async function deleteItem(item) {
+        try {
+          await frappe.call({
+            method: 'frappe.client.delete',
+            args: {
+              doctype: '{{doctype}}',
+              name: item.name
+            }
+          });
+          await refresh();
+          frappe.show_alert({
+            message: __('Deleted successfully'),
+            indicator: 'green'
+          });
+        } catch (error) {
+          frappe.throw(__('Failed to delete'));
+        }
+      }
+      
+      async function save() {
+        // Implement save logic
+        frappe.show_alert({
+          message: __('Saved successfully'),
+          indicator: 'green'
+        });
+      }
+      
+      async function export() {
+        // Implement export logic
+        frappe.show_alert(__('Exporting...'));
+      }
+      
+      async function bulkAction() {
+        // Implement bulk action logic
+        frappe.confirm(
+          __('Perform bulk action on {0} items?', [selectedItems.value.length]),
+          async () => {
+            // Process bulk action
+            selectedItems.value = [];
+            await refresh();
+          }
+        );
+      }
+      
+      return {
+        // State
+        items,
+        loading,
+        selectedItems,
+        currentFilter,
+        
+        // Computed
+        hasSelection,
+        itemCount,
+        
+        // Actions
+        init,
+        loadInitialData,
+        refresh,
+        search,
+        filter,
+        selectItem,
+        deleteItem,
+        save,
+        export,
+        bulkAction
+      };
+    });
+
+  list_view_component: |
+    <!-- {{app_name}}/public/js/{{feature_name}}/components/ListView.vue -->
+    <template>
+      <div class="list-view">
+        <div v-if="loading" class="text-center py-4">
+          <span class="text-muted">{{ __('Loading...') }}</span>
+        </div>
+        
+        <div v-else-if="!items.length" class="text-center py-8">
+          <p class="text-muted">{{ __('No items found') }}</p>
+        </div>
+        
+        <div v-else class="list-items">
+          <div class="list-header row font-weight-bold text-muted">
+            <div class="col-1">
+              <input type="checkbox" @change="toggleSelectAll" />
+            </div>
+            <div class="col-3">{{ __('Name') }}</div>
+            <div class="col-4">{{ __('Description') }}</div>
+            <div class="col-2">{{ __('Status') }}</div>
+            <div class="col-2 text-right">{{ __('Actions') }}</div>
+          </div>
+          
+          <div 
+            v-for="item in items" 
+            :key="item.name"
+            class="list-item row py-2 border-bottom"
+            @click="$emit('select', item)"
+          >
+            <div class="col-1">
+              <input 
+                type="checkbox" 
+                :checked="isSelected(item)"
+                @click.stop="toggleSelect(item)"
+              />
+            </div>
+            <div class="col-3 font-weight-bold">
+              {{ item.name }}
+            </div>
+            <div class="col-4 text-muted">
+              {{ item.description || '-' }}
+            </div>
+            <div class="col-2">
+              <span 
+                class="badge"
+                :class="getStatusClass(item.status)"
+              >
+                {{ item.status }}
+              </span>
+            </div>
+            <div class="col-2 text-right">
+              <button 
+                class="btn btn-xs btn-default"
+                @click.stop="$emit('edit', item)"
+              >
+                {{ __('Edit') }}
+              </button>
+              <button 
+                class="btn btn-xs btn-danger ml-2"
+                @click.stop="$emit('delete', item)"
+              >
+                {{ __('Delete') }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <script setup>
+    import { ref } from 'vue';
+
+    const props = defineProps({
+      items: Array,
+      loading: Boolean
+    });
+
+    const emit = defineEmits(['select', 'edit', 'delete']);
+
+    const { __ } = window;
+    const selectedItems = ref(new Set());
+
+    function isSelected(item) {
+      return selectedItems.value.has(item.name);
+    }
+
+    function toggleSelect(item) {
+      if (selectedItems.value.has(item.name)) {
+        selectedItems.value.delete(item.name);
+      } else {
+        selectedItems.value.add(item.name);
+      }
+      emit('select', item);
+    }
+
+    function toggleSelectAll(event) {
+      if (event.target.checked) {
+        props.items.forEach(item => {
+          selectedItems.value.add(item.name);
+          emit('select', item);
+        });
+      } else {
+        selectedItems.value.clear();
+      }
+    }
+
+    function getStatusClass(status) {
+      const statusClasses = {
+        'Active': 'badge-success',
+        'Inactive': 'badge-secondary',
+        'Pending': 'badge-warning',
+        'Error': 'badge-danger'
+      };
+      return statusClasses[status] || 'badge-secondary';
+    }
+    </script>
+
+  page_js: |
+    // {{app_name}}/{{module_name}}/page/{{feature_name}}/{{feature_name}}.js
+    frappe.pages['{{feature_name}}'].on_page_load = function(wrapper) {
+      frappe.require('{{feature_name}}.bundle.js').then(() => {
+        new frappe.ui.{{feature_name|pascalcase}}(wrapper);
+      });
+    }
+
+  page_json: |
+    {
+      "content": null,
+      "creation": "{% now 'utc', '%Y-%m-%d %H:%M:%S.%f' %}",
+      "docstatus": 0,
+      "doctype": "Page",
+      "idx": 0,
+      "modified": "{% now 'utc', '%Y-%m-%d %H:%M:%S.%f' %}",
+      "modified_by": "Administrator",
+      "module": "{{module_name}}",
+      "name": "{{feature_name}}",
+      "owner": "Administrator",
+      "page_name": "{{feature_name}}",
+      "roles": [
+        {
+          "role": "System Manager"
+        },
+        {
+          "role": "All"
+        }
+      ],
+      "script": null,
+      "standard": "Yes",
+      "style": null,
+      "system_page": 0,
+      "title": "{{page_title}}"
+    }
+
+instructions:
+  setup: |
+    1. Create the page structure:
+       ```bash
+       cd frappe-bench/apps/{{app_name}}
+       mkdir -p {{app_name}}/{{module_name}}/page/{{feature_name}}
+       mkdir -p {{app_name}}/public/js/{{feature_name}}/components
+       ```
+    
+    2. Create the files using the templates above:
+       - {{app_name}}/public/js/{{feature_name}}.bundle.js
+       - {{app_name}}/public/js/{{feature_name}}/{{feature_name|pascalcase}}.vue
+       - {{app_name}}/public/js/{{feature_name}}/store.js
+       - {{app_name}}/public/js/{{feature_name}}/components/ListView.vue
+       - {{app_name}}/{{module_name}}/page/{{feature_name}}/{{feature_name}}.js
+       - {{app_name}}/{{module_name}}/page/{{feature_name}}/{{feature_name}}.json
+    
+    3. Build the assets:
+       ```bash
+       bench build --app {{app_name}}
+       ```
+    
+    4. Clear cache and restart:
+       ```bash
+       bench --site [site-name] clear-cache
+       bench restart
+       ```
+    
+    5. Access the page at:
+       http://[site-name]:8000/app/{{feature_name}}
+
+notes:
+  - NO separate frontend directory needed
+  - Vue components are compiled by Frappe's esbuild
+  - Use frappe.call() for API calls, not axios
+  - SetVueGlobals(app) is CRITICAL for __ translation
+  - All assets served through Frappe's pipeline
+  - Hot reload works with bench start in dev mode

@@ -1,0 +1,605 @@
+---
+template_name: "Vue Component Template"
+template_type: "vue_component"
+version: "1.0.0"
+description: "Template for creating reusable Vue 3 components with native Frappe integration"
+
+# Component structure
+component_structure:
+  single_file_component:
+    template: |
+      <template>
+        <div class="{component_name_kebab}">
+          <!-- Component content -->
+          <div v-if="loading" class="text-center py-4">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          
+          <div v-else-if="error" class="alert alert-danger">
+            {{ error }}
+          </div>
+          
+          <div v-else>
+            <!-- Main component content -->
+            <slot />
+          </div>
+        </div>
+      </template>
+
+      <script setup>
+      import { ref, computed, onMounted, watch } from 'vue'
+      // Use native Frappe API calls
+
+      // Props definition
+      const props = defineProps({
+        // Add prop definitions here
+        modelValue: {
+          type: [String, Number, Object, Array],
+          default: null
+        }
+      })
+
+      // Emits definition
+      const emit = defineEmits(['update:modelValue', 'change', 'error'])
+
+      // State
+      const loading = ref(false)
+      const error = ref(null)
+      const internalValue = ref(props.modelValue)
+
+      // Computed properties
+      const computedValue = computed(() => {
+        // Add computed logic
+        return internalValue.value
+      })
+
+      // Methods
+      const handleChange = (value) => {
+        internalValue.value = value
+        emit('update:modelValue', value)
+        emit('change', value)
+      }
+
+      // Lifecycle hooks
+      onMounted(() => {
+        // Initialization logic
+      })
+
+      // Watchers
+      watch(() => props.modelValue, (newValue) => {
+        internalValue.value = newValue
+      })
+
+      // Expose for template refs
+      defineExpose({
+        // Exposed methods/properties
+      })
+      </script>
+
+      <style scoped>
+      .{component_name_kebab} {
+        /* Component styles */
+      }
+      </style>
+
+  composition_api_pattern: |
+    // Composable function pattern
+    import { ref, computed, reactive, toRefs } from 'vue'
+    
+    export function use{ComponentName}(options = {}) {
+      // State
+      const state = reactive({
+        data: null,
+        loading: false,
+        error: null
+      })
+      
+      // Methods
+      const fetchData = async () => {
+        state.loading = true
+        state.error = null
+        
+        try {
+          const result = await frappe.call({
+            method: options.method || 'frappe.client.get_list',
+            args: options.args || {}
+          })
+          state.data = result.message
+        } catch (error) {
+          state.error = error.message
+          frappe.show_alert({
+            message: error.message,
+            indicator: 'red'
+          })
+        } finally {
+          state.loading = false
+        }
+      }
+      
+      // Computed
+      const hasData = computed(() => !!state.data)
+      
+      return {
+        ...toRefs(state),
+        fetchData,
+        hasData
+      }
+    }
+
+# Component patterns
+component_patterns:
+  form_input_component: |
+    <template>
+      <div class="form-group">
+        <label v-if="label" :for="inputId">
+          {{ label }}
+          <span v-if="required" class="text-danger">*</span>
+        </label>
+        <input
+          :id="inputId"
+          v-model="internalValue"
+          :type="type"
+          class="form-control"
+          :class="{ 'is-invalid': errorMessage }"
+          :placeholder="placeholder"
+          :required="required"
+          :disabled="disabled"
+          @input="handleChange($event.target.value)"
+        />
+        <div v-if="errorMessage" class="invalid-feedback">{{ errorMessage }}</div>
+      </div>
+    </template>
+    
+    <script setup>
+    import { ref, watch } from 'vue'
+    // Use native HTML form controls with Bootstrap
+    
+    const props = defineProps({
+      modelValue: [String, Number],
+      label: String,
+      type: {
+        type: String,
+        default: 'text'
+      },
+      placeholder: String,
+      required: Boolean,
+      disabled: Boolean,
+      validation: Function
+    })
+    
+    const emit = defineEmits(['update:modelValue', 'change'])
+    
+    const internalValue = ref(props.modelValue)
+    const errorMessage = ref('')
+    
+    const handleChange = (value) => {
+      if (props.validation) {
+        const error = props.validation(value)
+        if (error) {
+          errorMessage.value = error
+          return
+        }
+      }
+      
+      errorMessage.value = ''
+      internalValue.value = value
+      emit('update:modelValue', value)
+      emit('change', value)
+    }
+    
+    watch(() => props.modelValue, (newValue) => {
+      internalValue.value = newValue
+    })
+    </script>
+
+  list_component: |
+    <template>
+      <div class="list-component">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th v-if="selectable">
+                  <input
+                    type="checkbox"
+                    @change="toggleAllSelection"
+                    :checked="allSelected"
+                  />
+                </th>
+                <th v-for="column in columns" :key="column.key">
+                  {{ column.label }}
+                </th>
+                <th v-if="showActions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="row in rows"
+                :key="row.name"
+                @click="handleRowClick(row)"
+                style="cursor: pointer;"
+              >
+                <td v-if="selectable">
+                  <input
+                    type="checkbox"
+                    :checked="isSelected(row)"
+                    @click.stop="toggleSelection(row)"
+                  />
+                </td>
+                <td v-for="column in columns" :key="column.key">
+                  {{ getCellValue(row, column.key) }}
+                </td>
+                <td v-if="showActions">
+                  <button
+                    class="btn btn-sm btn-secondary"
+                    @click.stop="showRowActions(row)"
+                  >
+                    <i class="fa fa-ellipsis-h"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </template>
+    
+    <script setup>
+    import { ref, computed } from 'vue'
+    
+    const props = defineProps({
+      doctype: String,
+      filters: Object,
+      fields: Array
+    })
+    
+    const emit = defineEmits(['row-click', 'selection-change'])
+    
+    const listResource = // REMOVED: createResource - use frappe.call()({
+      url: 'frappe.client.get_list',
+      params: {
+        doctype: props.doctype,
+        filters: props.filters,
+        fields: props.fields
+      },
+      auto: true
+    })
+    
+    const columns = computed(() => {
+      return props.fields.map(field => ({
+        label: field.label || field,
+        key: field.fieldname || field,
+        width: field.width || 'auto'
+      }))
+    })
+    
+    const rows = computed(() => listResource.data || [])
+    const totalCount = computed(() => listResource.data?.length || 0)
+    
+    const handleRowClick = (row) => {
+      emit('row-click', row)
+    }
+    
+    const handleSelectionChange = (selection) => {
+      emit('selection-change', selection)
+    }
+    </script>
+
+  modal_component: |
+    <template>
+      <Dialog
+        v-model="showDialog"
+        :options="{
+          title: title,
+          size: size,
+          position: 'top'
+        }"
+      >
+        <template #body-content>
+          <slot name="body">
+            <!-- Modal body content -->
+          </slot>
+        </template>
+        
+        <template #actions>
+          <slot name="actions">
+            <Button variant="ghost" @click="handleCancel">
+              {{ cancelText }}
+            </Button>
+            <Button variant="solid" @click="handleConfirm">
+              {{ confirmText }}
+            </Button>
+          </slot>
+        </template>
+      </Dialog>
+    </template>
+    
+    <script setup>
+    import { ref, watch } from 'vue'
+    // REMOVED: frappe-ui import - use native components
+    
+    const props = defineProps({
+      modelValue: Boolean,
+      title: String,
+      size: {
+        type: String,
+        default: 'md'
+      },
+      confirmText: {
+        type: String,
+        default: 'Confirm'
+      },
+      cancelText: {
+        type: String,
+        default: 'Cancel'
+      }
+    })
+    
+    const emit = defineEmits(['update:modelValue', 'confirm', 'cancel'])
+    
+    const showDialog = ref(props.modelValue)
+    
+    const handleConfirm = () => {
+      emit('confirm')
+      showDialog.value = false
+    }
+    
+    const handleCancel = () => {
+      emit('cancel')
+      showDialog.value = false
+    }
+    
+    watch(showDialog, (value) => {
+      emit('update:modelValue', value)
+    })
+    
+    watch(() => props.modelValue, (value) => {
+      showDialog.value = value
+    })
+    </script>
+
+# State management patterns
+state_management:
+  local_state: |
+    // Local component state
+    const state = reactive({
+      data: [],
+      loading: false,
+      error: null,
+      filters: {},
+      pagination: {
+        page: 1,
+        pageSize: 20,
+        total: 0
+      }
+    })
+
+  pinia_store_integration: |
+    // Using Pinia store in component
+    import { storeToRefs } from 'pinia'
+    import { useAppStore } from '@/stores/app'
+    
+    const appStore = useAppStore()
+    const { currentUser, isAuthenticated } = storeToRefs(appStore)
+    const { login, logout } = appStore
+
+  shared_composable: |
+    // Shared state composable
+    import { ref, computed } from 'vue'
+    
+    const sharedState = ref({})
+    
+    export function useSharedState() {
+      const updateState = (newState) => {
+        sharedState.value = { ...sharedState.value, ...newState }
+      }
+      
+      const clearState = () => {
+        sharedState.value = {}
+      }
+      
+      return {
+        state: readonly(sharedState),
+        updateState,
+        clearState
+      }
+    }
+
+# Testing patterns
+testing_patterns:
+  unit_test: |
+    // Use Frappe's test framework instead of Vitest
+    // Run tests with: bench --site [site] run-tests --app [app-name]
+    import { mount } from '@vue/test-utils'
+    import {ComponentName} from './{ComponentName}.vue'
+    
+    describe('{ComponentName}', () => {
+      it('renders correctly', () => {
+        const wrapper = mount({ComponentName}, {
+          props: {
+            // Test props
+          }
+        })
+        
+        expect(wrapper.exists()).toBe(true)
+      })
+      
+      it('emits events correctly', async () => {
+        const wrapper = mount({ComponentName})
+        
+        await wrapper.trigger('click')
+        
+        expect(wrapper.emitted()).toHaveProperty('click')
+      })
+      
+      it('updates on prop change', async () => {
+        const wrapper = mount({ComponentName}, {
+          props: { value: 'initial' }
+        })
+        
+        await wrapper.setProps({ value: 'updated' })
+        
+        expect(wrapper.vm.internalValue).toBe('updated')
+      })
+    })
+
+  integration_test: |
+    // Use Frappe's test framework instead of Vitest
+    // Run tests with: bench --site [site] run-tests --app [app-name]
+    import { mount } from '@vue/test-utils'
+    import { createTestingPinia } from '@pinia/testing'
+    import {ComponentName} from './{ComponentName}.vue'
+    
+    describe('{ComponentName} Integration', () => {
+      let wrapper
+      
+      beforeEach(() => {
+        wrapper = mount({ComponentName}, {
+          global: {
+            plugins: [createTestingPinia()]
+          }
+        })
+      })
+      
+      it('integrates with store', async () => {
+        // Test store integration
+      })
+      
+      it('handles API responses', async () => {
+        // Mock API response
+        const mockData = { /* mock data */ }
+        
+        // Test component behavior with API data
+      })
+    })
+
+# Responsive design patterns
+responsive_patterns:
+  mobile_first: |
+    <template>
+      <div class="component">
+        <!-- Mobile layout (default) -->
+        <div class="block sm:hidden">
+          <!-- Mobile content -->
+        </div>
+        
+        <!-- Tablet layout -->
+        <div class="hidden sm:block lg:hidden">
+          <!-- Tablet content -->
+        </div>
+        
+        <!-- Desktop layout -->
+        <div class="hidden lg:block">
+          <!-- Desktop content -->
+        </div>
+      </div>
+    </template>
+
+  adaptive_grid: |
+    <template>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div v-for="item in items" :key="item.id" class="card">
+          <!-- Card content -->
+        </div>
+      </div>
+    </template>
+
+# Performance optimization
+performance_patterns:
+  lazy_loading: |
+    // Lazy load component
+    import { defineAsyncComponent } from 'vue'
+    
+    const LazyComponent = defineAsyncComponent(() =>
+      import('./HeavyComponent.vue')
+    )
+
+  virtual_scrolling: |
+    <template>
+      <VirtualList
+        :items="items"
+        :item-height="50"
+        :buffer="5"
+      >
+        <template #default="{ item }">
+          <div class="list-item">
+            {{ item.name }}
+          </div>
+        </template>
+      </VirtualList>
+    </template>
+
+  memoization: |
+    import { computed, ref } from 'vue'
+    
+    const expensiveComputed = computed(() => {
+      // Cache expensive computation
+      return useMemo(() => {
+        return performExpensiveOperation(data.value)
+      }, [data.value])
+    })
+
+# Accessibility patterns
+accessibility_patterns:
+  aria_labels: |
+    <template>
+      <button
+        :aria-label="ariaLabel"
+        :aria-pressed="isPressed"
+        :aria-disabled="disabled"
+        @click="handleClick"
+      >
+        <slot />
+      </button>
+    </template>
+
+  keyboard_navigation: |
+    <script setup>
+    const handleKeydown = (event) => {
+      switch (event.key) {
+        case 'Enter':
+        case ' ':
+          handleSelect()
+          break
+        case 'ArrowUp':
+          navigateUp()
+          break
+        case 'ArrowDown':
+          navigateDown()
+          break
+        case 'Escape':
+          handleEscape()
+          break
+      }
+    }
+    </script>
+
+  focus_management: |
+    import { ref, nextTick, onMounted } from 'vue'
+    
+    const inputRef = ref(null)
+    
+    onMounted(async () => {
+      await nextTick()
+      inputRef.value?.focus()
+    })
+
+# Best practices
+best_practices:
+  - "Use composition API for better logic reuse"
+  - "Implement proper TypeScript types"
+  - "Follow single responsibility principle"
+  - "Use semantic HTML elements"
+  - "Implement proper error boundaries"
+  - "Optimize bundle size with tree shaking"
+  - "Use CSS modules or scoped styles"
+  - "Implement proper loading states"
+  - "Handle edge cases and errors gracefully"
+  - "Write comprehensive tests"
+  - "Document component API with comments"
+  - "Use slots for flexible content projection"
+  - "Implement proper accessibility features"
+  - "Optimize for performance with lazy loading"
+  - "Follow Vue style guide recommendations"

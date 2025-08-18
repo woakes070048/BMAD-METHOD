@@ -1,0 +1,120 @@
+name: "development-team"
+title: "ERPNext Development Team"
+description: "Complete team for ERPNext application development"
+version: "1.0.0"
+
+team_composition:
+  lead: "erpnext-architect"
+  members:
+    - "erpnext-architect"
+    - "doctype-designer"
+    - "api-developer"
+    - "workflow-specialist"
+    - "testing-specialist"
+    - "bench-operator"
+    - "vue-frontend-architect"
+    - "mobile-ui-specialist"
+    - "data-integration-expert"
+    - "frappe-compliance-validator"
+
+team_capabilities:
+  - "Full-cycle ERPNext application development"
+  - "Architecture design and implementation"
+  - "Multi-app integration"
+  - "Vue.js frontend development with Frappe UI"
+  - "Mobile-first responsive design and PWA development"
+  - "Data integration and real-time synchronization"
+  - "Frappe-first compliance validation and anti-pattern detection"
+  - "Testing and quality assurance"
+  - "Deployment and operations"
+
+workflow_coordination:
+  phases:
+    planning:
+      lead: "erpnext-architect"
+      participants: ["erpnext-architect"]
+      outputs: ["Requirements analysis", "Architecture design"]
+    
+    development:
+      lead: "doctype-designer"
+      participants: ["doctype-designer", "api-developer", "vue-frontend-architect"]
+      outputs: ["DocTypes", "APIs", "Controllers", "Frontend Architecture"]
+    
+    integration:
+      lead: "workflow-specialist"
+      participants: ["workflow-specialist", "api-developer", "data-integration-expert"]
+      outputs: ["Workflows", "Integrations", "Automation", "Data Synchronization"]
+    
+    frontend:
+      lead: "vue-frontend-architect"
+      participants: ["vue-frontend-architect", "mobile-ui-specialist", "data-integration-expert"]
+      outputs: ["Vue Components", "Mobile UI", "Data Integration", "PWA Features"]
+    
+    compliance:
+      lead: "frappe-compliance-validator"
+      participants: ["frappe-compliance-validator"]
+      outputs: ["Compliance report", "Anti-pattern detection", "Required fixes"]
+    
+    testing:
+      lead: "testing-specialist"
+      participants: ["testing-specialist", "bench-operator", "frappe-compliance-validator"]
+      outputs: ["Test suites", "Validation reports", "Compliance verification"]
+    
+    deployment:
+      lead: "bench-operator"
+      participants: ["bench-operator", "testing-specialist"]
+      outputs: ["Production deployment", "Monitoring setup"]
+
+communication_patterns:
+  handoffs:
+    - from: "erpnext-architect"
+      to: "doctype-designer"
+      deliverables: ["Architecture specification", "Data models"]
+    
+    - from: "doctype-designer"
+      to: "api-developer"
+      deliverables: ["DocType schemas", "Business logic"]
+    
+    - from: "api-developer"
+      to: "workflow-specialist"
+      deliverables: ["API endpoints", "Integration points"]
+    
+    - from: "workflow-specialist"
+      to: "frappe-compliance-validator"
+      deliverables: ["Complete workflows", "Integration configs"]
+    
+    - from: "frappe-compliance-validator"
+      to: "testing-specialist"
+      deliverables: ["Compliance report", "Approved code", "Fix requirements"]
+    
+    - from: "testing-specialist"
+      to: "bench-operator"
+      deliverables: ["Validated application", "Test reports", "Compliance certification"]
+
+environment:
+  bench_path: "/home/frappe/frappe-bench"
+  site: "prima-erpnext.pegashosting.com"
+  integration_apps:
+    - "docflow"
+    - "n8n_integration"
+
+escalation_procedures:
+  technical_issues:
+    description: "When technical problems arise during development"
+    escalation_team: "troubleshooting-team"
+    trigger_conditions:
+      - "Runtime errors that block development"
+      - "Performance issues affecting productivity"
+      - "Integration failures with existing systems"
+      - "Code quality issues requiring refactoring"
+    handoff_data: "Error details, reproduction steps, current environment state"
+
+success_metrics:
+  - "All team members contribute effectively"
+  - "Handoffs are smooth and complete"
+  - "Zero anti-patterns in production code"
+  - "100% compliance with Frappe-first principles"
+  - "No external libraries when Frappe has built-in solutions"
+  - "Integration with existing apps successful"
+  - "Application meets quality standards"
+  - "Deployment is successful and stable"

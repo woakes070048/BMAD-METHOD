@@ -1,0 +1,318 @@
+---
+template_name: "Field Validation Template"
+template_type: "doctype_field_validation"
+version: "1.0.0"
+description: "Template for creating comprehensive field validation rules in DocType design"
+
+# Field validation configuration template
+field_validation:
+  basic_validations:
+    required_field:
+      type: "mandatory"
+      message: "This field is required"
+      applies_to: ["Data", "Link", "Select", "Text"]
+      
+    length_validation:
+      type: "length"
+      min_length: 1
+      max_length: 140
+      applies_to: ["Data", "Small Text"]
+      message: "Field length must be between {min_length} and {max_length} characters"
+      
+    numeric_range:
+      type: "range"
+      min_value: 0
+      max_value: 999999999
+      applies_to: ["Int", "Float", "Currency"]
+      message: "Value must be between {min_value} and {max_value}"
+      
+    email_validation:
+      type: "email"
+      regex: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+      applies_to: ["Data"]
+      message: "Please enter a valid email address"
+      
+    phone_validation:
+      type: "phone"
+      regex: "^[+]?[1-9]?[0-9]{7,15}$"
+      applies_to: ["Data"]
+      message: "Please enter a valid phone number"
+      
+    url_validation:
+      type: "url"
+      regex: "^https?://[\\w\\-]+(\\.[\\w\\-]+)+[/#?]?.*$"
+      applies_to: ["Data"]
+      message: "Please enter a valid URL"
+
+  business_validations:
+    date_range:
+      type: "date_range"
+      start_date_field: "from_date"
+      end_date_field: "to_date"
+      message: "End date must be after start date"
+      
+    fiscal_year:
+      type: "fiscal_year"
+      message: "Date must be within current fiscal year"
+      
+    currency_precision:
+      type: "precision"
+      decimal_places: 2
+      applies_to: ["Currency"]
+      message: "Currency values must have maximum {decimal_places} decimal places"
+      
+    percentage_validation:
+      type: "percentage"
+      min_value: 0
+      max_value: 100
+      applies_to: ["Percent"]
+      message: "Percentage must be between 0 and 100"
+
+  relationship_validations:
+    link_exists:
+      type: "link_validation"
+      check_exists: true
+      message: "Referenced document does not exist"
+      
+    link_permissions:
+      type: "permission_validation"
+      check_read_permission: true
+      message: "You don't have permission to access this document"
+      
+    circular_reference:
+      type: "circular_reference"
+      message: "Circular reference detected"
+      
+    parent_child_validation:
+      type: "hierarchy_validation"
+      message: "Invalid parent-child relationship"
+
+  custom_validations:
+    regex_pattern:
+      type: "regex"
+      pattern: ""
+      message: "Field format is invalid"
+      
+    custom_function:
+      type: "function"
+      function_name: "validate_custom_field"
+      message: "Custom validation failed"
+      
+    conditional_mandatory:
+      type: "conditional"
+      condition: "doc.field_name == 'value'"
+      validation: "mandatory"
+      message: "This field is required when condition is met"
+
+# Validation implementation patterns
+validation_implementations:
+  client_side: |
+    frappe.ui.form.on("{doctype}", {
+        {field_name}: function(frm) {
+            if (frm.doc.{field_name}) {
+                // Validation logic here
+                if (!validate_{field_name}(frm.doc.{field_name})) {
+                    frappe.msgprint(__("{validation_message}"));
+                    frm.set_value("{field_name}", "");
+                }
+            }
+        }
+    });
+    
+    function validate_{field_name}(value) {
+        // Custom validation logic
+        return true; // or false
+    }
+
+  server_side: |
+    def validate(self):
+        self.validate_{field_name}()
+    
+    def validate_{field_name}(self):
+        if self.{field_name}:
+            # Validation logic here
+            if not self.is_valid_{field_name}():
+                frappe.throw(_("{validation_message}"))
+    
+    def is_valid_{field_name}(self):
+        # Custom validation logic
+        return True  # or False
+
+# Common validation patterns by field type
+field_type_patterns:
+  Data:
+    common_validations:
+      - "length_validation"
+      - "regex_pattern"
+      - "email_validation" 
+      - "phone_validation"
+      - "url_validation"
+    examples:
+      email_field:
+        validation: "email_validation"
+        options: null
+        
+      phone_field:
+        validation: "phone_validation"
+        options: null
+        
+      custom_id_field:
+        validation: "regex_pattern"
+        pattern: "^[A-Z]{3}-[0-9]{4}$"
+
+  Link:
+    common_validations:
+      - "link_exists"
+      - "link_permissions" 
+      - "circular_reference"
+    examples:
+      customer_link:
+        options: "Customer"
+        validation: "link_exists"
+        
+      parent_link:
+        options: "Item Group"
+        validation: "circular_reference"
+
+  Select:
+    common_validations:
+      - "required_field"
+      - "conditional_mandatory"
+    examples:
+      status_field:
+        options: ["Draft", "Submitted", "Cancelled"]
+        validation: "required_field"
+
+  Int:
+    common_validations:
+      - "numeric_range"
+      - "required_field"
+    examples:
+      quantity_field:
+        validation: "numeric_range"
+        min_value: 1
+        max_value: 9999
+
+  Float:
+    common_validations:
+      - "numeric_range" 
+      - "currency_precision"
+    examples:
+      rate_field:
+        validation: "numeric_range"
+        min_value: 0.01
+        precision: 2
+
+  Currency:
+    common_validations:
+      - "numeric_range"
+      - "currency_precision"
+    examples:
+      amount_field:
+        validation: "currency_precision"
+        decimal_places: 2
+
+  Date:
+    common_validations:
+      - "date_range"
+      - "fiscal_year"
+    examples:
+      transaction_date:
+        validation: "fiscal_year"
+        
+      period_dates:
+        validation: "date_range"
+        start_field: "from_date"
+        end_field: "to_date"
+
+  Datetime:
+    common_validations:
+      - "date_range"
+    examples:
+      event_datetime:
+        validation: "date_range"
+
+  Check:
+    common_validations:
+      - "conditional_mandatory"
+    examples:
+      agreement_checkbox:
+        validation: "required_field"
+
+  Text:
+    common_validations:
+      - "length_validation"
+    examples:
+      description_field:
+        validation: "length_validation"
+        max_length: 1000
+
+# Validation error handling
+error_handling:
+  client_side_patterns:
+    show_message: |
+      frappe.msgprint({
+          title: __('Validation Error'),
+          indicator: 'red',
+          message: __("{error_message}")
+      });
+    
+    highlight_field: |
+      frm.get_field("{field_name}").set_description(
+          '<span class="text-danger">{error_message}</span>'
+      );
+    
+    prevent_save: |
+      frappe.validated = false;
+
+  server_side_patterns:
+    throw_error: |
+      frappe.throw(_("{error_message}"), frappe.ValidationError)
+    
+    add_message: |
+      frappe.msgprint(_("{error_message}"), alert=True)
+    
+    log_error: |
+      frappe.log_error(
+          message="{error_details}",
+          title="Validation Error - {field_name}"
+      )
+
+# Best practices
+best_practices:
+  - "Always validate on both client and server side"
+  - "Provide clear, user-friendly error messages"
+  - "Use appropriate field types to minimize validation needs"
+  - "Implement progressive validation (basic -> business -> complex)"
+  - "Cache validation results when possible"
+  - "Log validation errors for debugging"
+  - "Consider performance impact of complex validations"
+  - "Test validation with edge cases"
+  - "Use conditional validation to reduce user friction"
+  - "Provide helpful hints in field descriptions"
+
+# Usage examples
+usage_examples:
+  basic_doctype_validation:
+    doctype: "Sample DocType"
+    fields:
+      - fieldname: "email"
+        fieldtype: "Data"
+        validation: "email_validation"
+      - fieldname: "customer"
+        fieldtype: "Link"
+        options: "Customer"
+        validation: "link_exists"
+      - fieldname: "amount" 
+        fieldtype: "Currency"
+        validation: "currency_precision"
+
+  complex_validation_scenario:
+    doctype: "Sales Order"
+    conditional_validations:
+      - field: "delivery_date"
+        condition: "doc.docstatus == 1"
+        validation: "mandatory"
+      - field: "customer_po"
+        condition: "doc.customer_type == 'Company'"
+        validation: "mandatory"

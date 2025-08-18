@@ -1,0 +1,673 @@
+name: "erpnext-patterns"
+title: "ERPNext Development Patterns"
+description: "Comprehensive patterns and best practices for ERPNext v16 development following Frappe team standards"
+version: "1.0.0"
+
+# Core Development Patterns
+development_patterns:
+  doctype_patterns:
+    naming_conventions:
+      doctype_names: "PascalCase (e.g., Sales Order, Customer Group)"
+      field_names: "snake_case (e.g., customer_name, email_id)"
+      file_names: "snake_case (e.g., sales_order.py, customer_group.js)"
+      folder_structure: "snake_case modules and doctypes"
+    
+    controller_patterns:
+      validation_pattern: |
+        def validate(self):
+            self.validate_mandatory_fields()
+            self.validate_business_rules()
+            self.set_calculated_fields()
+      
+      hooks_pattern: |
+        def before_save(self):
+            self.set_title()
+            self.validate_duplicates()
+        
+        def after_insert(self):
+            self.create_linked_documents()
+            self.send_notifications()
+      
+      permission_pattern: |
+        def has_permission(doc, user, permission_type):
+            if permission_type == "read":
+                return check_read_permission(doc, user)
+            elif permission_type == "write":
+                return check_write_permission(doc, user)
+            return False
+    
+    client_script_patterns:
+      form_events: |
+        frappe.ui.form.on('DocType Name', {
+            refresh: function(frm) {
+                // Set field properties
+                // Add custom buttons
+                // Apply business logic
+            },
+            
+            field_name: function(frm) {
+                // Handle field changes
+                // Validate inputs
+                // Update dependent fields
+            }
+        });
+      
+      field_validation: |
+        frappe.ui.form.on('DocType Name', {
+            validate: function(frm) {
+                // Client-side validation
+                if (!frm.doc.required_field) {
+                    frappe.msgprint(__('Required field is missing'));
+                    validated = false;
+                }
+            }
+        });
+
+  api_patterns:
+    whitelist_pattern: |
+      @frappe.whitelist()
+      def api_method(parameter1, parameter2=None):
+          """
+          API method with proper documentation
+          
+          Args:
+              parameter1 (str): Description of parameter1
+              parameter2 (str, optional): Description of parameter2
+          
+          Returns:
+              dict: Response with success status and data
+          """
+          try:
+              # Validate permissions
+              frappe.has_permission("DocType", "read", raise_exception=True)
+              
+              # Process request
+              result = process_data(parameter1, parameter2)
+              
+              return {
+                  "success": True,
+                  "data": result
+              }
+          except Exception as e:
+              frappe.log_error(frappe.get_traceback())
+              frappe.throw(str(e))
+    
+    permission_checking: |
+      # Check document-level permission
+      if not frappe.has_permission("Customer", "write", customer_name):
+          frappe.throw(_("Not permitted"), frappe.PermissionError)
+      
+      # Check role-based permission
+      if not frappe.has_permission("Sales Order", "create"):
+          frappe.throw(_("Not permitted to create Sales Orders"))
+    
+    response_formatting: |
+      def format_api_response(success=True, data=None, message=None, error=None):
+          response = {
+              "success": success,
+              "timestamp": frappe.utils.now()
+          }
+          
+          if data is not None:
+              response["data"] = data
+          if message:
+              response["message"] = message
+          if error:
+              response["error"] = error
+              
+          return response
+
+  database_patterns:
+    query_patterns:
+      safe_queries: |
+        # Use frappe.db methods for safety
+        customers = frappe.db.get_all("Customer", 
+            filters={"disabled": 0},
+            fields=["name", "customer_name", "territory"],
+            order_by="creation desc"
+        )
+        
+        # Parameterized queries for complex cases
+        result = frappe.db.sql("""
+            SELECT c.name, c.customer_name, COUNT(so.name) as order_count
+            FROM `tabCustomer` c
+            LEFT JOIN `tabSales Order` so ON c.name = so.customer
+            WHERE c.territory = %(territory)s
+            GROUP BY c.name
+            ORDER BY order_count DESC
+        """, {"territory": territory}, as_dict=True)
+      
+      transaction_handling: |
+        try:
+            # Start transaction
+            frappe.db.begin()
+            
+            # Multiple operations
+            doc1.save()
+            doc2.insert()
+            
+            # Commit if all successful
+            frappe.db.commit()
+            
+        except Exception:
+            # Rollback on error
+            frappe.db.rollback()
+            raise
+    
+    optimization_patterns:
+      bulk_operations: |
+        # Bulk insert
+        docs_to_insert = []
+        for data in bulk_data:
+            doc = frappe.get_doc(data)
+            docs_to_insert.append(doc)
+        
+        # Insert in batches
+        batch_size = 100
+        for i in range(0, len(docs_to_insert), batch_size):
+            batch = docs_to_insert[i:i+batch_size]
+            for doc in batch:
+                doc.insert()
+            frappe.db.commit()
+      
+      efficient_queries: |
+        # Use exists() for existence checks
+        if frappe.db.exists("Customer", {"email_id": email}):
+            frappe.throw("Customer already exists")
+        
+        # Use get_value for single values
+        territory = frappe.db.get_value("Customer", customer_name, "territory")
+        
+        # Use get_list with specific fields
+        customers = frappe.get_list("Customer", 
+            fields=["name", "customer_name"],  # Only needed fields
+            limit=20  # Limit results
+        )
+
+  workflow_patterns:
+    state_management: |
+      # Workflow state handling
+      def handle_workflow_state_change(doc, method):
+          if doc.workflow_state == "Approved":
+              doc.approved_by = frappe.session.user
+              doc.approval_date = frappe.utils.now()
+              create_linked_documents(doc)
+          
+          elif doc.workflow_state == "Rejected":
+              send_rejection_notification(doc)
+              cancel_related_processes(doc)
+    
+    approval_patterns: |
+      # Multi-level approval
+      def check_approval_authority(doc, amount):
+          user_roles = frappe.get_roles(frappe.session.user)
+          
+          approval_limits = {
+              "Sales User": 10000,
+              "Sales Manager": 100000,
+              "General Manager": 500000
+          }
+          
+          for role in user_roles:
+              if role in approval_limits:
+                  if amount <= approval_limits[role]:
+                      return True
+          
+          return False
+    
+    notification_patterns: |
+      def send_workflow_notification(doc, recipients, template):
+          frappe.sendmail(
+              recipients=recipients,
+              subject=f"Workflow Update: {doc.doctype} {doc.name}",
+              template=template,
+              args={
+                  "doc": doc,
+                  "user": frappe.session.user
+              },
+              reference_doctype=doc.doctype,
+              reference_name=doc.name
+          )
+
+# ERPNext-Specific Patterns
+erpnext_specific:
+  sales_patterns:
+    lead_to_customer: |
+      # Lead conversion pattern
+      def convert_lead_to_customer(lead_name):
+          lead = frappe.get_doc("Lead", lead_name)
+          
+          customer = frappe.get_doc({
+              "doctype": "Customer",
+              "customer_name": lead.lead_name,
+              "email_id": lead.email_id,
+              "mobile_no": lead.mobile_no,
+              "territory": lead.territory,
+              "customer_group": lead.customer_group or "Individual"
+          })
+          customer.insert()
+          
+          # Update lead status
+          lead.status = "Converted"
+          lead.customer = customer.name
+          lead.save()
+          
+          return customer
+    
+    quotation_to_order: |
+      # Quotation to Sales Order conversion
+      def create_sales_order_from_quotation(quotation_name):
+          quotation = frappe.get_doc("Quotation", quotation_name)
+          
+          sales_order = frappe.get_doc({
+              "doctype": "Sales Order",
+              "customer": quotation.customer or quotation.lead,
+              "quotation_no": quotation.name,
+              "transaction_date": frappe.utils.today(),
+              "delivery_date": quotation.valid_till,
+              "items": quotation.items,
+              "taxes_and_charges": quotation.taxes_and_charges,
+              "tax_category": quotation.tax_category
+          })
+          
+          sales_order.insert()
+          return sales_order
+
+  purchase_patterns:
+    material_request_to_po: |
+      # Material Request to Purchase Order
+      def create_po_from_material_request(material_request_name):
+          mr = frappe.get_doc("Material Request", material_request_name)
+          
+          # Group items by supplier
+          supplier_items = {}
+          for item in mr.items:
+              supplier = get_default_supplier(item.item_code)
+              if supplier not in supplier_items:
+                  supplier_items[supplier] = []
+              supplier_items[supplier].append(item)
+          
+          purchase_orders = []
+          for supplier, items in supplier_items.items():
+              po = frappe.get_doc({
+                  "doctype": "Purchase Order",
+                  "supplier": supplier,
+                  "schedule_date": mr.schedule_date,
+                  "items": [{
+                      "item_code": item.item_code,
+                      "qty": item.qty,
+                      "schedule_date": item.schedule_date,
+                      "material_request": mr.name,
+                      "material_request_item": item.name
+                  } for item in items]
+              })
+              po.insert()
+              purchase_orders.append(po)
+          
+          return purchase_orders
+
+  stock_patterns:
+    stock_entry_patterns: |
+      # Stock Entry for material transfer
+      def create_material_transfer(from_warehouse, to_warehouse, items):
+          stock_entry = frappe.get_doc({
+              "doctype": "Stock Entry",
+              "stock_entry_type": "Material Transfer",
+              "from_warehouse": from_warehouse,
+              "to_warehouse": to_warehouse
+          })
+          
+          for item in items:
+              stock_entry.append("items", {
+                  "item_code": item["item_code"],
+                  "qty": item["qty"],
+                  "s_warehouse": from_warehouse,
+                  "t_warehouse": to_warehouse
+              })
+          
+          stock_entry.insert()
+          stock_entry.submit()
+          return stock_entry
+    
+    inventory_valuation: |
+      # Get current stock value
+      def get_stock_value(item_code, warehouse=None):
+          filters = {"item_code": item_code}
+          if warehouse:
+              filters["warehouse"] = warehouse
+          
+          bins = frappe.get_all("Bin", 
+              filters=filters,
+              fields=["actual_qty", "valuation_rate"]
+          )
+          
+          total_value = sum(bin.actual_qty * bin.valuation_rate for bin in bins)
+          return total_value
+
+  accounting_patterns:
+    journal_entry_pattern: |
+      # Create Journal Entry
+      def create_journal_entry(accounts, voucher_type="Journal Entry"):
+          je = frappe.get_doc({
+              "doctype": "Journal Entry",
+              "voucher_type": voucher_type,
+              "posting_date": frappe.utils.today()
+          })
+          
+          for account_entry in accounts:
+              je.append("accounts", {
+                  "account": account_entry["account"],
+                  "debit_in_account_currency": account_entry.get("debit", 0),
+                  "credit_in_account_currency": account_entry.get("credit", 0),
+                  "party_type": account_entry.get("party_type"),
+                  "party": account_entry.get("party")
+              })
+          
+          je.insert()
+          return je
+    
+    payment_entry_pattern: |
+      # Create Payment Entry
+      def create_payment_entry(party_type, party, amount, mode_of_payment="Cash"):
+          pe = frappe.get_doc({
+              "doctype": "Payment Entry",
+              "payment_type": "Receive" if party_type == "Customer" else "Pay",
+              "party_type": party_type,
+              "party": party,
+              "paid_amount": amount,
+              "received_amount": amount,
+              "mode_of_payment": mode_of_payment,
+              "posting_date": frappe.utils.today()
+          })
+          
+          pe.insert()
+          pe.submit()
+          return pe
+
+# Performance Optimization Patterns
+performance_patterns:
+  caching_strategies:
+    method_caching: |
+      @frappe.cache()
+      def get_territory_list():
+          """Cache territory list for 1 hour"""
+          return frappe.get_all("Territory", 
+              fields=["name", "territory_name"],
+              order_by="name"
+          )
+    
+    redis_caching: |
+      # Use Redis for temporary data
+      cache_key = f"customer_data:{customer_id}"
+      cached_data = frappe.cache().get(cache_key)
+      
+      if not cached_data:
+          cached_data = get_customer_data(customer_id)
+          frappe.cache().set(cache_key, cached_data, expires_in_sec=3600)
+      
+      return cached_data
+  
+  background_jobs:
+    enqueue_pattern: |
+      # Enqueue background job
+      frappe.enqueue(
+          'your_app.tasks.send_bulk_emails',
+          recipients=recipient_list,
+          template='welcome_email',
+          queue='long',
+          timeout=300
+      )
+    
+    scheduled_jobs: |
+      # In hooks.py
+      scheduler_events = {
+          "daily": [
+              "your_app.tasks.daily_report_generation"
+          ],
+          "weekly": [
+              "your_app.tasks.weekly_cleanup"
+          ]
+      }
+
+  database_optimization:
+    index_recommendations: |
+      # Add indexes for frequently queried fields
+      # In patches or setup
+      frappe.db.add_index("Customer", ["territory", "customer_group"])
+      frappe.db.add_index("Sales Order", ["customer", "transaction_date"])
+      frappe.db.add_index("Stock Ledger Entry", ["item_code", "warehouse", "posting_date"])
+    
+    query_optimization: |
+      # Use EXISTS instead of JOIN when possible
+      customers_with_orders = frappe.db.sql("""
+          SELECT c.name, c.customer_name
+          FROM `tabCustomer` c
+          WHERE EXISTS (
+              SELECT 1 FROM `tabSales Order` so
+              WHERE so.customer = c.name AND so.docstatus = 1
+          )
+      """)
+
+# Testing Patterns
+testing_patterns:
+  unit_test_structure: |
+    class TestCustomer(FrappeTestCase):
+        def setUp(self):
+            # Create test data
+            self.test_customer = create_test_customer()
+        
+        def test_customer_validation(self):
+            # Test validation logic
+            customer = frappe.get_doc({
+                "doctype": "Customer",
+                "customer_name": "Test Customer"
+                # Missing email - should fail
+            })
+            with self.assertRaises(frappe.ValidationError):
+                customer.insert()
+        
+        def tearDown(self):
+            # Clean up test data
+            if frappe.db.exists("Customer", self.test_customer.name):
+                frappe.delete_doc("Customer", self.test_customer.name)
+  
+  integration_test_pattern: |
+    def test_sales_flow(self):
+        # Create lead
+        lead = create_test_lead()
+        
+        # Convert to customer
+        customer = convert_lead_to_customer(lead.name)
+        self.assertIsNotNone(customer)
+        
+        # Create quotation
+        quotation = create_test_quotation(customer.name)
+        quotation.submit()
+        
+        # Create sales order
+        sales_order = create_sales_order_from_quotation(quotation.name)
+        self.assertEqual(sales_order.customer, customer.name)
+
+# Security Patterns
+security_patterns:
+  permission_validation: |
+    def validate_user_permission(doc, user=None):
+        user = user or frappe.session.user
+        
+        # Check document-level permission
+        if not frappe.has_permission(doc.doctype, "read", doc.name, user=user):
+            frappe.throw(_("No permission"), frappe.PermissionError)
+        
+        # Check custom business logic
+        if doc.doctype == "Customer" and doc.territory != get_user_territory(user):
+            frappe.throw(_("Access denied for this territory"))
+  
+  input_sanitization: |
+    def sanitize_input(value):
+        if isinstance(value, str):
+            # Remove HTML tags
+            import re
+            clean_value = re.sub('<.*?>', '', value)
+            
+            # Escape special characters
+            clean_value = frappe.db.escape(clean_value)
+            
+            return clean_value.strip()
+        return value
+  
+  audit_logging: |
+    def log_user_action(action, document_type, document_name, details=None):
+        audit_log = frappe.get_doc({
+            "doctype": "Audit Log",
+            "user": frappe.session.user,
+            "action": action,
+            "document_type": document_type,
+            "document_name": document_name,
+            "timestamp": frappe.utils.now(),
+            "ip_address": frappe.local.request_ip,
+            "details": frappe.as_json(details) if details else None
+        })
+        audit_log.insert(ignore_permissions=True)
+
+# Error Handling Patterns
+error_handling:
+  exception_handling: |
+    def safe_operation(operation_func, *args, **kwargs):
+        try:
+            result = operation_func(*args, **kwargs)
+            return {"success": True, "data": result}
+        
+        except frappe.ValidationError as e:
+            return {"success": False, "error": str(e), "type": "validation"}
+        
+        except frappe.PermissionError as e:
+            return {"success": False, "error": str(e), "type": "permission"}
+        
+        except Exception as e:
+            frappe.log_error(frappe.get_traceback())
+            return {"success": False, "error": "An unexpected error occurred", "type": "system"}
+  
+  user_friendly_messages: |
+    def handle_duplicate_entry(e):
+        if "Duplicate entry" in str(e):
+            field_name = extract_duplicate_field(str(e))
+            frappe.throw(_("A record with this {0} already exists").format(field_name))
+        else:
+            frappe.throw(_("Unable to save due to duplicate values"))
+  
+  logging_patterns: |
+    # Structured logging
+    frappe.logger().info({
+        "event": "customer_created",
+        "customer_id": customer.name,
+        "user": frappe.session.user,
+        "timestamp": frappe.utils.now()
+    })
+    
+    # Error logging with context
+    frappe.log_error(
+        title=f"Customer Creation Failed: {customer_name}",
+        message=frappe.get_traceback(),
+        reference_doctype="Customer",
+        reference_name=customer_name
+    )
+
+# Common Anti-Patterns to Avoid
+anti_patterns:
+  avoid_patterns:
+    - pattern: "Direct SQL without parameterization"
+      example: "frappe.db.sql(f'SELECT * FROM tabCustomer WHERE name = {customer_name}')"
+      correct: "frappe.db.sql('SELECT * FROM tabCustomer WHERE name = %s', [customer_name])"
+    
+    - pattern: "Ignoring permissions in API methods"
+      example: "@frappe.whitelist(allow_guest=True) without proper validation"
+      correct: "Always check permissions before processing sensitive data"
+    
+    - pattern: "Not using transactions for related operations"
+      example: "Multiple save operations without transaction handling"
+      correct: "Wrap related operations in try/except with db.commit/rollback"
+    
+    - pattern: "Hardcoded values instead of settings"
+      example: "if amount > 10000:"
+      correct: "threshold = frappe.db.get_single_value('Settings', 'approval_threshold')"
+    
+    - pattern: "Not handling exceptions in hooks"
+      example: "Letting exceptions bubble up from document events"
+      correct: "Catch and log exceptions, decide whether to raise or continue"
+
+# Integration Patterns with External Systems
+integration_patterns:
+  webhook_patterns: |
+    @frappe.whitelist(allow_guest=True)
+    def webhook_handler():
+        try:
+            data = json.loads(frappe.request.get_data())
+            
+            # Validate webhook signature
+            if not validate_webhook_signature(data):
+                frappe.response["http_status_code"] = 403
+                return {"error": "Invalid signature"}
+            
+            # Process webhook data
+            result = process_webhook_data(data)
+            return {"success": True, "data": result}
+            
+        except Exception as e:
+            frappe.log_error(frappe.get_traceback())
+            frappe.response["http_status_code"] = 500
+            return {"error": "Processing failed"}
+  
+  api_client_pattern: |
+    def make_external_api_call(url, method="GET", data=None, headers=None):
+        import requests
+        
+        default_headers = {
+            "User-Agent": f"ERPNext/{frappe.__version__}",
+            "Content-Type": "application/json"
+        }
+        
+        if headers:
+            default_headers.update(headers)
+        
+        try:
+            response = requests.request(
+                method=method,
+                url=url,
+                json=data,
+                headers=default_headers,
+                timeout=30
+            )
+            response.raise_for_status()
+            return response.json()
+            
+        except requests.RequestException as e:
+            frappe.log_error(f"External API call failed: {str(e)}")
+            raise
+  
+  data_sync_pattern: |
+    def sync_data_with_external_system():
+        # Get records to sync
+        records = frappe.get_all("Customer", 
+            filters={"sync_status": ["!=", "Synced"]},
+            limit=100
+        )
+        
+        for record in records:
+            try:
+                customer = frappe.get_doc("Customer", record.name)
+                
+                # Prepare sync data
+                sync_data = prepare_sync_data(customer)
+                
+                # Sync with external system
+                external_id = sync_to_external_system(sync_data)
+                
+                # Update sync status
+                customer.external_id = external_id
+                customer.sync_status = "Synced"
+                customer.last_sync = frappe.utils.now()
+                customer.save()
+                
+            except Exception as e:
+                frappe.log_error(f"Sync failed for {record.name}: {str(e)}")
+                continue
