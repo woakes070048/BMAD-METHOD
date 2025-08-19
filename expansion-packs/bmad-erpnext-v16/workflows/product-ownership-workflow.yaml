@@ -1,0 +1,267 @@
+# Product Ownership Workflow
+# For erpnext-product-owner agent - CRITICAL SAFETY for product decisions and cross-verification
+# Based on SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+
+name: product-ownership-workflow
+description: Comprehensive product ownership workflow with stakeholder validation and strategic oversight
+version: 1.0.0
+agent_assignments:
+  primary: erpnext-product-owner
+  support: [business-analyst, erpnext-scrum-master]
+  verification: business-analyst
+
+# MANDATORY SAFETY INTEGRATION
+safety_integration:
+  template_base: SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+  context_detection: automatic
+  panic_monitoring: active
+  rollback_capability: required
+
+stages:
+  # STAGE 1: MANDATORY PRODUCT CONTEXT ANALYSIS (Cannot Skip)
+  - name: product_context_analysis
+    description: "Comprehensive analysis of product context and stakeholder needs"
+    mandatory: true
+    can_skip: false
+    context_adaptive: true
+    
+    substages:
+      - name: stakeholder_impact_assessment
+        description: "Analyze impact on all ERPNext stakeholders"
+        actions:
+          - identify_all_stakeholders: "map all affected users, developers, and business stakeholders"
+          - assess_stakeholder_needs: "understand needs and expectations of each stakeholder group"
+          - evaluate_impact_scope: "assess breadth and depth of impact on stakeholders"
+          - prioritize_stakeholder_concerns: "rank stakeholder concerns by importance and urgency"
+      
+      - name: product_strategic_alignment
+        description: "Ensure alignment with product strategy and ERPNext principles"
+        context_branches:
+          TROUBLESHOOTING:
+            - analyze_issue_strategic_impact: "understand how issues affect product strategy"
+            - assess_resolution_alignment: "ensure fixes align with product direction"
+            - evaluate_technical_debt_impact: "assess impact on technical debt and maintainability"
+          
+          NEW_DEVELOPMENT:
+            - validate_strategic_fit: "ensure new development aligns with product roadmap"
+            - assess_resource_allocation: "evaluate resource requirements and priorities"
+            - validate_business_value: "confirm business value and ROI of new development"
+          
+          ENHANCEMENT:
+            - evaluate_enhancement_value: "assess value proposition of enhancements"
+            - validate_improvement_priorities: "ensure enhancements address priority needs"
+            - assess_competitive_advantage: "evaluate competitive impact of enhancements"
+          
+          MIGRATION:
+            - validate_migration_strategy: "ensure migration supports product strategy"
+            - assess_migration_risks: "evaluate risks to product stability and user experience"
+            - validate_migration_timeline: "ensure migration timeline aligns with product needs"
+      
+      - name: quality_and_completeness_standards
+        description: "Establish ERPNext quality and completeness standards"
+        actions:
+          - define_quality_requirements: "establish specific quality standards for deliverables"
+          - establish_completeness_criteria: "define what constitutes complete deliverables"
+          - validate_technical_standards: "ensure adherence to ERPNext technical standards"
+          - document_acceptance_criteria: "create clear, measurable acceptance criteria"
+
+    decision_gate:
+      condition: "stakeholders_analyzed AND strategy_aligned AND standards_established"
+      fail_action: "CLARIFY_PRODUCT_REQUIREMENTS"
+      success_action: "PROCEED_TO_REQUIREMENTS_VALIDATION"
+
+  # STAGE 2: MANDATORY REQUIREMENTS VALIDATION (Cannot Skip)
+  - name: requirements_validation
+    description: "Comprehensive validation of requirements and technical feasibility"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: business_requirements_validation
+        description: "Validate business requirements and user needs"
+        actions:
+          - validate_business_logic: "ensure business requirements are sound and complete"
+          - verify_user_workflow_support: "confirm requirements support user workflows"
+          - assess_business_process_impact: "evaluate impact on existing business processes"
+          - validate_compliance_requirements: "ensure regulatory and compliance needs met"
+      
+      - name: technical_feasibility_assessment
+        description: "Assess technical feasibility and ERPNext compatibility"
+        actions:
+          - evaluate_technical_complexity: "assess implementation complexity and risks"
+          - validate_erpnext_compatibility: "ensure compatibility with ERPNext architecture"
+          - assess_performance_impact: "evaluate performance implications"
+          - verify_integration_requirements: "confirm integration with existing systems"
+      
+      - name: resource_and_timeline_validation
+        description: "Validate resource requirements and delivery timelines"
+        actions:
+          - assess_development_effort: "estimate development time and resources"
+          - validate_team_capacity: "ensure team has capacity and skills"
+          - verify_timeline_feasibility: "confirm delivery timeline is realistic"
+          - assess_dependency_risks: "identify and evaluate dependency risks"
+
+    decision_gate:
+      condition: "requirements_validated AND feasibility_confirmed AND resources_assessed"
+      fail_action: "REVISE_REQUIREMENTS"
+      success_action: "PROCEED_TO_DECISION_MAKING"
+
+  # STAGE 3: CONTROLLED PRODUCT DECISION MAKING (With Panic Detection)
+  - name: controlled_decision_making
+    description: "Execute product decisions with comprehensive stakeholder consideration"
+    panic_detection: true
+    attempt_limit: 3
+    
+    substages:
+      - name: stakeholder_consultation
+        description: "Consult with key stakeholders before major decisions"
+        safety_checks:
+          - consult_business_analyst: true
+          - validate_with_technical_leads: true
+          - consider_user_impact: true
+          - document_decision_rationale: true
+        
+        actions:
+          - conduct_stakeholder_review: "gather input from all relevant stakeholders"
+          - validate_business_alignment: "confirm decisions align with business goals"
+          - assess_technical_implications: "understand technical impact of decisions"
+          - evaluate_user_experience_impact: "assess impact on user experience"
+      
+      - name: product_decision_execution
+        description: "Execute product decisions with accountability"
+        actions:
+          - make_informed_decisions: "make decisions based on comprehensive analysis"
+          - document_decision_rationale: "record reasoning behind all product decisions"
+          - establish_success_metrics: "define how success will be measured"
+          - create_accountability_trail: "maintain clear accountability for decisions"
+      
+      - name: cross_verification_coordination
+        description: "Coordinate cross-verification of agent work"
+        context_branches:
+          TROUBLESHOOTING:
+            - verify_issue_resolution: "validate that issues are properly resolved"
+            - confirm_stability_improvement: "ensure solutions improve system stability"
+          
+          NEW_DEVELOPMENT:
+            - validate_requirement_fulfillment: "confirm new development meets requirements"
+            - verify_quality_standards: "ensure development meets quality standards"
+          
+          ENHANCEMENT:
+            - validate_improvement_delivery: "confirm enhancements deliver expected value"
+            - verify_backward_compatibility: "ensure enhancements don't break existing features"
+          
+          MIGRATION:
+            - validate_migration_success: "confirm migration achieves intended goals"
+            - verify_functionality_preservation: "ensure all functionality properly migrated"
+
+    panic_detection:
+      triggers:
+        - rapid_decision_changes: "frequent changes to product decisions"
+        - stakeholder_conflict_escalation: "unresolved conflicts between stakeholders"
+        - quality_standard_compromise: "pressure to lower quality standards"
+      
+      response:
+        immediate_action: "PAUSE_PRODUCT_DECISIONS"
+        stakeholder_consultation: "CONVENE_STAKEHOLDER_ALIGNMENT_SESSION"
+        escalation: "ALERT_BUSINESS_ANALYST"
+
+    decision_gate:
+      condition: "decisions_made AND stakeholders_aligned AND verification_coordinated"
+      fail_action: "INCREMENT_ATTEMPT_COUNTER"
+      success_action: "PROCEED_TO_VALIDATION_OVERSIGHT"
+
+  # STAGE 4: MANDATORY VALIDATION AND OVERSIGHT (Cannot Skip)
+  - name: validation_and_oversight
+    description: "Final validation and ongoing product oversight"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: comprehensive_product_validation
+        description: "Comprehensive validation of product decisions and outcomes"
+        actions:
+          - validate_deliverable_completeness: "ensure all deliverables meet completeness standards"
+          - verify_quality_standards_adherence: "confirm quality standards maintained"
+          - assess_stakeholder_satisfaction: "evaluate stakeholder satisfaction with outcomes"
+          - validate_strategic_alignment: "confirm outcomes align with product strategy"
+      
+      - name: business_analyst_verification
+        description: "Independent verification by business analyst"
+        actions:
+          - request_business_verification: "business-analyst independent review"
+          - verify_business_requirements_satisfaction: "confirm business needs met"
+          - validate_process_improvement: "assess business process improvements"
+          - confirm_value_delivery: "verify expected business value delivered"
+      
+      - name: product_oversight_establishment
+        description: "Establish ongoing product oversight and monitoring"
+        actions:
+          - create_product_oversight_plan: "establish ongoing monitoring and governance"
+          - document_product_decisions: "comprehensive documentation of all decisions"
+          - establish_success_tracking: "setup metrics and monitoring for success"
+          - create_feedback_mechanisms: "establish channels for ongoing stakeholder feedback"
+
+    decision_gate:
+      condition: "product_validated AND business_verified AND oversight_established"
+      fail_action: "RETURN_TO_DECISION_MAKING"
+      success_action: "WORKFLOW_COMPLETE"
+
+# FAILURE HANDLING
+failure_handling:
+  third_attempt_failure:
+    action: "STOP_AND_ESCALATE"
+    escalation_target: "business-analyst"
+    stakeholder_alignment_required: true
+  
+  panic_mode_triggered:
+    immediate_action: "EMERGENCY_STAKEHOLDER_SESSION"
+    decision_reset_required: true
+    human_intervention: true
+  
+  stakeholder_alignment_failure:
+    action: "COMPREHENSIVE_STAKEHOLDER_REVIEW"
+    escalation_target: "erpnext-scrum-master"
+    process_review_required: true
+
+# SUCCESS CRITERIA
+success_criteria:
+  - stakeholder_needs_satisfied: true
+  - product_strategy_alignment_maintained: true
+  - quality_standards_upheld: true
+  - business_value_delivered: true
+  - cross_verification_completed: true
+
+# PRODUCT OWNERSHIP ACCOUNTABILITY
+product_accountability:
+  decision_documentation:
+    - all_product_decisions_recorded
+    - stakeholder_consultation_documented
+    - rationale_maintained_for_decisions
+    - success_metrics_established
+  
+  cross_verification_responsibilities:
+    - coordinate_agent_verification
+    - validate_deliverable_completeness
+    - ensure_quality_standards_maintained
+    - confirm_strategic_alignment
+
+# INTEGRATION POINTS
+integration:
+  prerequisite_workflows: ["universal-context-detection-workflow"]
+  dependent_workflows: []
+  notification_targets: ["business-analyst", "erpnext-scrum-master"]
+  
+# METRICS AND MONITORING
+metrics:
+  track:
+    - stakeholder_satisfaction_score
+    - product_decision_accuracy
+    - quality_standards_compliance_rate
+    - strategic_alignment_score
+    - cross_verification_success_rate
+  
+  alerts:
+    - stakeholder_satisfaction_below_threshold
+    - quality_standards_compromise
+    - panic_mode_activation
+    - verification_failure

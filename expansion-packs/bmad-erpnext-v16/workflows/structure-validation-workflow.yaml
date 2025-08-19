@@ -1,0 +1,284 @@
+# Structure Validation Workflow
+# For app-structure-validator agent (Eva Thorne)
+# Based on SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+
+name: structure-validation-workflow
+description: Comprehensive app structure validation and compliance checking workflow
+version: 1.0.0
+agent_assignments:
+  primary: app-structure-validator
+  support: [frappe-compliance-validator, erpnext-architect]
+  verification: frappe-compliance-validator
+
+# MANDATORY SAFETY INTEGRATION
+safety_integration:
+  template_base: SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+  context_detection: automatic
+  panic_monitoring: active
+  rollback_capability: required
+
+stages:
+  # STAGE 1: MANDATORY CONTEXT GATHERING (Cannot Skip)
+  - name: context_gathering
+    description: "Determine validation context and gather appropriate information"
+    mandatory: true
+    can_skip: false
+    context_adaptive: true
+    
+    substages:
+      - name: detect_context_type
+        description: "Identify if this is troubleshooting, new development, enhancement, or migration"
+        actions:
+          - determine_context: ["TROUBLESHOOTING", "NEW_DEVELOPMENT", "ENHANCEMENT", "MIGRATION"]
+          - log_context: "echo '## Context: [CONTEXT_TYPE] Structure validation' >> SESSION-CHANGELOG.md"
+      
+      - name: gather_context_specific_info
+        description: "Collect information appropriate to context type"
+        context_branches:
+          TROUBLESHOOTING:
+            - execute: "pwd && git status && tail -20 ../logs/frappe.log"
+            - analyze: "app structure failures, compliance violations, validation errors"
+            - document: "current error state and failed validation points"
+          
+          NEW_DEVELOPMENT:
+            - execute: "pwd && git status && ls -la"
+            - analyze: "planned app structure, design requirements, compliance targets"
+            - document: "architectural goals and validation criteria"
+          
+          ENHANCEMENT:
+            - execute: "pwd && git status && git diff"
+            - analyze: "current structure state, proposed improvements, compliance gaps"
+            - document: "enhancement goals and validation improvements"
+          
+          MIGRATION:
+            - execute: "pwd && git status"
+            - analyze: "source structure analysis, target compliance requirements"
+            - document: "migration validation strategy and compliance mapping"
+
+    decision_gate:
+      condition: "context_gathered AND appropriate_info_collected"
+      fail_action: "RETURN_TO_CONTEXT_GATHERING"
+      success_action: "PROCEED_TO_ANALYSIS"
+
+  # STAGE 2: MANDATORY ROOT CAUSE/ANALYSIS (Cannot Skip)
+  - name: root_cause_analysis
+    description: "Analyze structure state and identify validation requirements"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: structure_inventory
+        description: "Catalog current app structure state"
+        actions:
+          - execute_task: "validate-app-structure.md"
+          - generate_inventory: "complete structure analysis"
+          - identify_components: "DocTypes, modules, files, relationships"
+      
+      - name: compliance_assessment
+        description: "Evaluate against Frappe standards"
+        actions:
+          - load_reference: "frappe-crm-structure-reference.md"
+          - compare_patterns: "identify deviations from standards"
+          - flag_violations: "anti-patterns and compliance issues"
+      
+      - name: root_cause_identification
+        description: "Determine underlying causes of validation issues"
+        context_branches:
+          TROUBLESHOOTING:
+            - analyze: "why validation failed, root structural problems"
+            - document: "specific compliance violations and their causes"
+          
+          NEW_DEVELOPMENT:
+            - analyze: "structural requirements, design constraints"
+            - document: "architecture decisions and validation approach"
+          
+          ENHANCEMENT:
+            - analyze: "current limitations, improvement opportunities"
+            - document: "enhancement strategy and validation updates"
+          
+          MIGRATION:
+            - analyze: "structural compatibility, conversion requirements"
+            - document: "migration validation plan and compliance mapping"
+
+    decision_gate:
+      condition: "root_cause_identified OR analysis_complete"
+      fail_action: "ESCALATE_TO_FRAPPE_COMPLIANCE_VALIDATOR"
+      success_action: "PROCEED_TO_PLANNING"
+
+  # STAGE 3: MANDATORY SOLUTION PLANNING (Cannot Skip)
+  - name: solution_planning
+    description: "Plan validation approach and remediation strategy"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: validation_strategy
+        description: "Design comprehensive validation approach"
+        actions:
+          - plan_validation: "step-by-step validation process"
+          - identify_tools: "required validation tools and frameworks"
+          - design_checks: "automated and manual validation procedures"
+      
+      - name: remediation_planning
+        description: "Plan fixes for identified issues"
+        context_branches:
+          TROUBLESHOOTING:
+            - plan_fixes: "specific remediation steps for violations"
+            - design_rollback: "recovery plan if fixes fail"
+          
+          NEW_DEVELOPMENT:
+            - plan_implementation: "structure creation with compliance"
+            - design_validation: "ongoing compliance monitoring"
+          
+          ENHANCEMENT:
+            - plan_improvements: "structure enhancement strategy"
+            - design_migration: "safe transition to improved structure"
+          
+          MIGRATION:
+            - plan_conversion: "structure transformation strategy"
+            - design_validation: "post-migration compliance verification"
+
+    decision_gate:
+      condition: "solution_planned AND resources_identified"
+      fail_action: "REVISE_PLAN"
+      success_action: "PROCEED_TO_IMPLEMENTATION"
+
+  # STAGE 4: CONTROLLED IMPLEMENTATION (With Panic Detection)
+  - name: controlled_implementation
+    description: "Execute validation with safety monitoring"
+    panic_detection: true
+    attempt_limit: 3
+    
+    substages:
+      - name: pre_implementation_setup
+        description: "Prepare for validation execution"
+        actions:
+          - initialize_changelog: "create detailed change log"
+          - backup_current_state: "preserve current structure state"
+          - verify_tools: "ensure validation tools are ready"
+      
+      - name: validation_execution
+        description: "Execute planned validation"
+        safety_checks:
+          - one_step_at_time: true
+          - validate_each_step: true
+          - document_changes: true
+        
+        actions:
+          - execute_validation: "run planned validation procedures"
+          - monitor_progress: "track validation completion"
+          - handle_failures: "manage validation failures gracefully"
+      
+      - name: remediation_execution
+        description: "Apply fixes for identified issues"
+        context_branches:
+          TROUBLESHOOTING:
+            - apply_fixes: "implement planned remediation steps"
+            - validate_fixes: "verify issues are resolved"
+          
+          NEW_DEVELOPMENT:
+            - implement_structure: "create compliant app structure"
+            - validate_compliance: "verify standards adherence"
+          
+          ENHANCEMENT:
+            - apply_improvements: "implement structure enhancements"
+            - validate_improvements: "verify enhancement success"
+          
+          MIGRATION:
+            - execute_conversion: "perform structure transformation"
+            - validate_migration: "verify conversion success"
+
+    panic_detection:
+      triggers:
+        - rapid_changes: "more than 3 validation attempts in 5 minutes"
+        - error_spiral: "same validation failing repeatedly"
+        - resource_exhaustion: "validation tools becoming unresponsive"
+      
+      response:
+        immediate_action: "STOP_ALL_VALIDATION"
+        rollback_action: "RESTORE_BACKUP_STATE"
+        escalation: "ALERT_FRAPPE_COMPLIANCE_VALIDATOR"
+
+    decision_gate:
+      condition: "validation_complete AND issues_resolved"
+      fail_action: "INCREMENT_ATTEMPT_COUNTER"
+      success_action: "PROCEED_TO_VALIDATION"
+
+  # STAGE 5: MANDATORY VALIDATION (Cannot Skip)
+  - name: validation_and_verification
+    description: "Verify validation results and compliance achievement"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: compliance_verification
+        description: "Verify full compliance with Frappe standards"
+        actions:
+          - run_compliance_check: "comprehensive standards verification"
+          - generate_compliance_report: "detailed compliance status"
+          - identify_remaining_issues: "any outstanding violations"
+      
+      - name: cross_verification
+        description: "Independent verification by compliance validator"
+        actions:
+          - request_verification: "frappe-compliance-validator review"
+          - await_confirmation: "independent compliance confirmation"
+          - address_feedback: "resolve any identified issues"
+      
+      - name: documentation_completion
+        description: "Complete validation documentation"
+        actions:
+          - finalize_changelog: "complete change documentation"
+          - generate_validation_report: "comprehensive validation results"
+          - update_compliance_records: "maintain compliance tracking"
+
+    decision_gate:
+      condition: "compliance_verified AND documentation_complete"
+      fail_action: "RETURN_TO_REMEDIATION"
+      success_action: "WORKFLOW_COMPLETE"
+
+# FAILURE HANDLING
+failure_handling:
+  third_attempt_failure:
+    action: "STOP_AND_ESCALATE"
+    escalation_target: "frappe-compliance-validator"
+    documentation_required: true
+  
+  panic_mode_triggered:
+    immediate_action: "EMERGENCY_STOP"
+    rollback_required: true
+    human_intervention: true
+  
+  validation_timeout:
+    action: "GRACEFUL_STOP"
+    documentation_required: true
+    retry_strategy: "manual_review_required"
+
+# SUCCESS CRITERIA
+success_criteria:
+  - compliance_score_above_85_percent: true
+  - zero_critical_violations: true
+  - all_standards_verified: true
+  - documentation_complete: true
+  - cross_verification_passed: true
+
+# INTEGRATION POINTS
+integration:
+  prerequisite_workflows: []
+  dependent_workflows: ["compliance-validation-workflow"]
+  notification_targets: ["frappe-compliance-validator", "erpnext-architect"]
+  
+# METRICS AND MONITORING
+metrics:
+  track:
+    - validation_completion_time
+    - compliance_score_improvement
+    - violation_resolution_rate
+    - panic_mode_incidents
+    - cross_verification_success_rate
+  
+  alerts:
+    - compliance_score_below_threshold
+    - repeated_validation_failures
+    - panic_mode_activation
+    - verification_rejection

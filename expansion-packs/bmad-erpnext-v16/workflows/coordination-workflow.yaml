@@ -1,0 +1,292 @@
+# Coordination Workflow
+# For main-dev-coordinator agent (Claudia Donovan)
+# Based on SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+
+name: coordination-workflow
+description: Multi-agent coordination and task routing workflow with adaptive context support
+version: 1.0.0
+agent_assignments:
+  primary: main-dev-coordinator
+  support: [erpnext-product-owner, erpnext-architect, business-analyst]
+  verification: erpnext-product-owner
+
+# MANDATORY SAFETY INTEGRATION
+safety_integration:
+  template_base: SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+  context_detection: automatic
+  panic_monitoring: active
+  rollback_capability: required
+
+stages:
+  # STAGE 1: MANDATORY CONTEXT GATHERING (Cannot Skip)
+  - name: context_gathering
+    description: "Determine coordination context and gather appropriate information"
+    mandatory: true
+    can_skip: false
+    context_adaptive: true
+    
+    substages:
+      - name: detect_context_type
+        description: "Identify if this is troubleshooting, new development, enhancement, or migration"
+        actions:
+          - determine_context: ["TROUBLESHOOTING", "NEW_DEVELOPMENT", "ENHANCEMENT", "MIGRATION"]
+          - log_context: "echo '## Context: [CONTEXT_TYPE] Coordination work' >> SESSION-CHANGELOG.md"
+      
+      - name: gather_context_specific_info
+        description: "Collect information appropriate to context type"
+        context_branches:
+          TROUBLESHOOTING:
+            - execute: "pwd && git status && tail -20 ../logs/frappe.log"
+            - analyze: "coordination failures, agent conflicts, workflow breakdowns"
+            - document: "current coordination problems and failed handoffs"
+          
+          NEW_DEVELOPMENT:
+            - execute: "pwd && git status && ls -la"
+            - analyze: "project requirements, agent capabilities, coordination needs"
+            - document: "coordination goals and agent assignment strategy"
+          
+          ENHANCEMENT:
+            - execute: "pwd && git status && git diff"
+            - analyze: "current coordination state, improvement opportunities, workflow gaps"
+            - document: "coordination enhancement goals and workflow improvements"
+          
+          MIGRATION:
+            - execute: "pwd && git status"
+            - analyze: "source coordination patterns, target workflow requirements"
+            - document: "coordination migration strategy and workflow preservation"
+
+    decision_gate:
+      condition: "context_gathered AND appropriate_info_collected"
+      fail_action: "RETURN_TO_CONTEXT_GATHERING"
+      success_action: "PROCEED_TO_ANALYSIS"
+
+  # STAGE 2: MANDATORY AGENT ANALYSIS (Cannot Skip)
+  - name: agent_analysis
+    description: "Analyze available agents and coordination requirements"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: agent_capability_mapping
+        description: "Map available agents and their capabilities"
+        actions:
+          - inventory_agents: "list all available agents and their specialties"
+          - assess_capabilities: "evaluate agent strengths and limitations"
+          - identify_gaps: "determine missing capabilities or skills"
+      
+      - name: task_analysis
+        description: "Analyze tasks and coordination requirements"
+        actions:
+          - decompose_tasks: "break down complex tasks into agent-specific work"
+          - identify_dependencies: "map task dependencies and prerequisites"
+          - estimate_effort: "assess time and resource requirements"
+      
+      - name: coordination_requirement_analysis
+        description: "Identify coordination and handoff needs"
+        context_branches:
+          TROUBLESHOOTING:
+            - analyze: "coordination failures, agent conflicts, handoff issues"
+            - document: "specific coordination problems and their causes"
+          
+          NEW_DEVELOPMENT:
+            - analyze: "coordination strategy, agent workflow design, handoff planning"
+            - document: "coordination architecture and workflow design"
+          
+          ENHANCEMENT:
+            - analyze: "current coordination limitations, improvement opportunities"
+            - document: "coordination enhancement strategy"
+          
+          MIGRATION:
+            - analyze: "source coordination patterns, target workflow requirements"
+            - document: "coordination migration plan and workflow adaptation"
+
+    decision_gate:
+      condition: "agents_mapped AND requirements_analyzed"
+      fail_action: "ESCALATE_TO_ERPNEXT_ARCHITECT"
+      success_action: "PROCEED_TO_PLANNING"
+
+  # STAGE 3: MANDATORY COORDINATION PLANNING (Cannot Skip)
+  - name: coordination_planning
+    description: "Plan agent assignments and coordination strategy"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: agent_assignment_planning
+        description: "Plan optimal agent assignments for tasks"
+        actions:
+          - match_agents_to_tasks: "assign agents based on capabilities and availability"
+          - design_workflows: "create agent coordination workflows"
+          - plan_handoffs: "design information transfer between agents"
+      
+      - name: coordination_strategy_design
+        description: "Design overall coordination approach"
+        context_branches:
+          TROUBLESHOOTING:
+            - plan_fixes: "coordination repair strategy and conflict resolution"
+            - design_rollback: "recovery plan if coordination fails"
+          
+          NEW_DEVELOPMENT:
+            - plan_implementation: "agent coordination implementation strategy"
+            - design_monitoring: "ongoing coordination monitoring"
+          
+          ENHANCEMENT:
+            - plan_improvements: "coordination enhancement roadmap"
+            - design_migration: "safe transition to improved coordination"
+          
+          MIGRATION:
+            - plan_conversion: "coordination pattern transformation"
+            - design_validation: "post-migration coordination verification"
+      
+      - name: communication_planning
+        description: "Plan agent communication and information sharing"
+        actions:
+          - design_communication_protocols: "standardize agent interaction patterns"
+          - plan_status_reporting: "regular coordination status updates"
+          - establish_escalation_paths: "clear escalation procedures"
+
+    decision_gate:
+      condition: "coordination_planned AND assignments_complete"
+      fail_action: "REVISE_PLAN"
+      success_action: "PROCEED_TO_IMPLEMENTATION"
+
+  # STAGE 4: CONTROLLED IMPLEMENTATION (With Panic Detection)
+  - name: controlled_implementation
+    description: "Execute coordination plan with safety monitoring"
+    panic_detection: true
+    attempt_limit: 3
+    
+    substages:
+      - name: pre_implementation_setup
+        description: "Prepare for coordination execution"
+        actions:
+          - initialize_changelog: "create detailed coordination log"
+          - backup_current_state: "preserve current coordination state"
+          - verify_agent_availability: "ensure all assigned agents are ready"
+      
+      - name: coordination_execution
+        description: "Execute planned agent coordination"
+        safety_checks:
+          - one_handoff_at_time: true
+          - validate_each_handoff: true
+          - document_coordination: true
+        
+        actions:
+          - initiate_agent_assignments: "start assigned agents on their tasks"
+          - monitor_coordination: "track agent progress and coordination"
+          - manage_handoffs: "facilitate information transfer between agents"
+          - handle_conflicts: "resolve agent conflicts and coordination issues"
+      
+      - name: coordination_monitoring
+        description: "Monitor ongoing coordination effectiveness"
+        context_branches:
+          TROUBLESHOOTING:
+            - monitor_fixes: "track coordination repair progress"
+            - validate_repairs: "verify coordination issues are resolved"
+          
+          NEW_DEVELOPMENT:
+            - monitor_implementation: "track coordination implementation progress"
+            - validate_coordination: "verify coordination effectiveness"
+          
+          ENHANCEMENT:
+            - monitor_improvements: "track coordination enhancement progress"
+            - validate_improvements: "verify coordination improvement success"
+          
+          MIGRATION:
+            - monitor_conversion: "track coordination pattern migration"
+            - validate_migration: "verify coordination migration success"
+
+    panic_detection:
+      triggers:
+        - rapid_reassignments: "more than 3 agent reassignments in 5 minutes"
+        - coordination_failures: "repeated handoff failures between agents"
+        - agent_conflicts: "multiple agent conflicts occurring simultaneously"
+      
+      response:
+        immediate_action: "STOP_ALL_COORDINATION"
+        rollback_action: "RESTORE_PREVIOUS_ASSIGNMENTS"
+        escalation: "ALERT_ERPNEXT_PRODUCT_OWNER"
+
+    decision_gate:
+      condition: "coordination_successful AND tasks_progressing"
+      fail_action: "INCREMENT_ATTEMPT_COUNTER"
+      success_action: "PROCEED_TO_VALIDATION"
+
+  # STAGE 5: MANDATORY VALIDATION (Cannot Skip)
+  - name: validation_and_verification
+    description: "Verify coordination effectiveness and task completion"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: coordination_effectiveness_verification
+        description: "Verify coordination is working effectively"
+        actions:
+          - assess_agent_performance: "evaluate individual agent performance"
+          - measure_coordination_efficiency: "assess handoff effectiveness"
+          - identify_bottlenecks: "detect coordination inefficiencies"
+      
+      - name: cross_verification
+        description: "Independent verification by product owner"
+        actions:
+          - request_verification: "erpnext-product-owner review"
+          - await_confirmation: "independent coordination assessment"
+          - address_feedback: "resolve any identified coordination issues"
+      
+      - name: documentation_completion
+        description: "Complete coordination documentation"
+        actions:
+          - finalize_changelog: "complete coordination change documentation"
+          - generate_coordination_report: "comprehensive coordination results"
+          - update_coordination_records: "maintain coordination tracking"
+
+    decision_gate:
+      condition: "coordination_verified AND documentation_complete"
+      fail_action: "RETURN_TO_COORDINATION_PLANNING"
+      success_action: "WORKFLOW_COMPLETE"
+
+# FAILURE HANDLING
+failure_handling:
+  third_attempt_failure:
+    action: "STOP_AND_ESCALATE"
+    escalation_target: "erpnext-product-owner"
+    documentation_required: true
+  
+  panic_mode_triggered:
+    immediate_action: "EMERGENCY_STOP"
+    rollback_required: true
+    human_intervention: true
+  
+  coordination_timeout:
+    action: "GRACEFUL_STOP"
+    documentation_required: true
+    retry_strategy: "manual_review_required"
+
+# SUCCESS CRITERIA
+success_criteria:
+  - coordination_efficiency_above_85_percent: true
+  - zero_critical_handoff_failures: true
+  - all_agents_performing_effectively: true
+  - documentation_complete: true
+  - cross_verification_passed: true
+
+# INTEGRATION POINTS
+integration:
+  prerequisite_workflows: []
+  dependent_workflows: ["all_agent_workflows"]
+  notification_targets: ["erpnext-product-owner", "erpnext-architect"]
+  
+# METRICS AND MONITORING
+metrics:
+  track:
+    - coordination_efficiency
+    - handoff_success_rate
+    - agent_utilization
+    - panic_mode_incidents
+    - cross_verification_success_rate
+  
+  alerts:
+    - coordination_efficiency_below_threshold
+    - repeated_handoff_failures
+    - panic_mode_activation
+    - verification_rejection

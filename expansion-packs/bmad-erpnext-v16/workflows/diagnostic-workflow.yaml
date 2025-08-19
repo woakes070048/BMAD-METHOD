@@ -25,21 +25,108 @@ prerequisites:
   - "Monitoring tools access"
   - "Test environment available"
 
+safety_configuration:
+  panic_detection: enabled
+  max_attempts_per_task: 3
+  changelog_required: true
+  root_cause_required: true
+  rollback_plan_required: true
+
 workflow_stages:
+  # MANDATORY STAGE 0: Safety Setup
+  - stage: "safety_setup"
+    name: "MANDATORY: Initialize Safety Protocols"
+    required: true
+    cannot_skip: true
+    
+    tasks:
+      - task: "initialize_changelog"
+        description: "Create diagnostic session changelog"
+        mandatory: true
+        command: |
+          touch SESSION-CHANGELOG-DIAGNOSTIC-$(date +%Y%m%d-%H%M%S).md
+          echo "# Diagnostic Session: $(date)" >> SESSION-CHANGELOG-*.md
+          echo "Issue: [initial_symptom]" >> SESSION-CHANGELOG-*.md
+        validation:
+          - "Changelog created"
+          - "Issue documented"
+          
+      - task: "create_safety_checkpoint"
+        description: "Create restoration point"
+        mandatory: true
+        command: "git stash save 'Pre-diagnostic checkpoint $(date)'"
+        
+      - task: "document_working_state"
+        description: "Document what IS working"
+        mandatory: true
+        checklist:
+          - "What features are still functional?"
+          - "When did issue start?"
+          - "What changed recently?"
+          - "Who is affected?"
+        outputs:
+          - "working_state_document"
+    
+    decision_point:
+      question: "Safety protocols initialized?"
+      yes: "proceed_to_initial_assessment"
+      no: "cannot_proceed"
+      enforcement: "MANDATORY"
+
   - stage: "initial_assessment"
-    name: "Initial Problem Assessment"
+    name: "Context-Adaptive Problem Assessment"
     agents:
       - "diagnostic-specialist"
       - "bench-operator"
+    max_attempts: 1  # Don't retry assessment
+    context_adaptive: true
     
     tasks:
+      - task: "detect_context_type"
+        description: "Determine diagnostic context type"
+        agent: "diagnostic-specialist"
+        mandatory: true
+        actions:
+          - determine_context: ["TROUBLESHOOTING", "NEW_DEVELOPMENT", "ENHANCEMENT", "MIGRATION"]
+          - log_context: "echo '## Context: [CONTEXT_TYPE] Diagnostic work' >> SESSION-CHANGELOG-*.md"
+      
+      - task: "gather_context_specific_information"
+        description: "Collect information appropriate to context type"
+        agent: "diagnostic-specialist"
+        context_branches:
+          TROUBLESHOOTING:
+            - execute: "pwd && git status && tail -20 ../logs/frappe.log"
+            - analyze: "runtime errors, system failures, performance issues"
+            - document: "current error state and diagnostic requirements"
+          
+          NEW_DEVELOPMENT:
+            - execute: "pwd && git status && ls -la"
+            - analyze: "diagnostic requirements, monitoring needs, error detection setup"
+            - document: "diagnostic goals and monitoring architecture"
+          
+          ENHANCEMENT:
+            - execute: "pwd && git status && git diff"
+            - analyze: "current diagnostic state, improvement opportunities"
+            - document: "diagnostic enhancement goals and monitoring improvements"
+          
+          MIGRATION:
+            - execute: "pwd && git status"
+            - analyze: "source diagnostic patterns, target monitoring requirements"
+            - document: "diagnostic migration strategy and monitoring preservation"
+      
       - task: "gather_symptoms"
         description: "Collect issue symptoms and error messages"
         agent: "diagnostic-specialist"
+        safety_rules:
+          - "READ ONLY - no changes"
+          - "Document everything"
+          - "No assumptions"
+          - "Context-aware analysis"
         outputs:
           - "symptom_list"
           - "error_logs"
           - "affected_areas"
+          - "context_type"
           
       - task: "system_health_check"
         description: "Run initial system health diagnostics"
@@ -85,16 +172,114 @@ workflow_stages:
       - task: "document_incident"
         description: "Create incident report"
         
+  - stage: "root_cause_analysis"
+    name: "MANDATORY: Root Cause Analysis"
+    required: true
+    agents:
+      - "diagnostic-specialist"
+    
+    tasks:
+      - task: "form_hypothesis"
+        description: "Develop root cause hypothesis"
+        mandatory: true
+        documentation_required:
+          - "What do we think is broken?"
+          - "Why do we think this?"
+          - "How can we test this?"
+        changelog_entry: |
+          ## Root Cause Investigation
+          Hypothesis: [hypothesis]
+          Evidence: [evidence]
+          Test plan: [test]
+          
+      - task: "test_hypothesis"
+        description: "Test hypothesis WITHOUT changing code"
+        safety_rules:
+          - "NO CODE CHANGES"
+          - "Read-only investigation"
+          - "Use test environment if needed"
+        max_attempts: 3
+        
+      - task: "confirm_root_cause"
+        description: "Validate root cause identified"
+        validation_checklist:
+          - "Can reproduce issue consistently"
+          - "Can explain why it happens"
+          - "Have evidence supporting conclusion"
+          - "Documented in changelog"
+    
+    decision_point:
+      question: "Root cause identified and documented?"
+      yes: "proceed_to_solution_planning"
+      no: "escalate_cannot_fix_symptoms"
+      enforcement: "CANNOT_FIX_WITHOUT_ROOT_CAUSE"
+      
+  - stage: "solution_planning"
+    name: "Plan Fix Before Implementation"
+    required: true
+    agents:
+      - "diagnostic-specialist"
+      - "refactoring-expert"
+    
+    tasks:
+      - task: "design_solution"
+        description: "Design fix for root cause"
+        required_outputs:
+          - "Specific changes needed"
+          - "Files to be modified"
+          - "Impact assessment"
+          - "Rollback strategy"
+          
+      - task: "document_plan"
+        description: "Document fix plan in changelog"
+        mandatory: true
+        changelog_entry: |
+          ## Solution Plan
+          Root cause: [cause]
+          Fix: [solution]
+          Files: [list]
+          Impact: [assessment]
+          Rollback: [strategy]
+          
+      - task: "get_approval"
+        description: "Approval gate"
+        approval_criteria:
+          - "Addresses root cause"
+          - "Minimal change"
+          - "Has rollback plan"
+    
+    decision_point:
+      question: "Fix plan approved?"
+      yes: "proceed_to_implementation"
+      no: "revise_plan"
+      
   - stage: "detailed_diagnosis"
-    name: "Detailed Diagnostic Analysis"
+    name: "Implementation with Safety"
     agents:
       - "diagnostic-specialist"
       - "testing-specialist"
       - "data-integration-expert"
-      
+    panic_monitoring: "ACTIVE"
+    
     tasks:
+      - task: "implement_fix"
+        description: "Apply the planned fix"
+        agent: "diagnostic-specialist"
+        safety_rules:
+          - "ONE change at a time"
+          - "Test after EACH change"
+          - "Update changelog immediately"
+        attempt_limit: 3
+        on_failure: "rollback"
+        panic_detection:
+          triggers:
+            - "Making multiple rapid changes"
+            - "New errors appearing"
+            - "Can't explain failures"
+          action: "STOP_IMMEDIATELY"
+          
       - task: "analyze_logs"
-        description: "Deep dive into system logs"
+        description: "Verify fix in logs"
         agent: "diagnostic-specialist"
         log_sources:
           - "frappe-bench/logs/bench.log"

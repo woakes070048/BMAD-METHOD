@@ -1,0 +1,239 @@
+# Bench Operations Workflow
+# For bench-operator agent - CRITICAL SAFETY for dangerous bench commands
+# Based on SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+
+name: bench-operations-workflow
+description: Safe bench command execution with mandatory validation and rollback capability
+version: 1.0.0
+agent_assignments:
+  primary: bench-operator
+  support: [testing-specialist, frappe-compliance-validator]
+  verification: testing-specialist
+
+# MANDATORY SAFETY INTEGRATION
+safety_integration:
+  template_base: SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+  context_detection: automatic
+  panic_monitoring: active
+  rollback_capability: required
+
+stages:
+  # STAGE 1: MANDATORY ENVIRONMENT VALIDATION (Cannot Skip)
+  - name: environment_validation
+    description: "Validate bench environment and command safety"
+    mandatory: true
+    can_skip: false
+    context_adaptive: true
+    
+    substages:
+      - name: environment_state_check
+        description: "Verify current environment state and safety"
+        actions:
+          - check_working_directory: "pwd && verify correct bench location"
+          - verify_bench_status: "bench status && assess current state"
+          - check_active_sites: "bench --site all list-apps && verify site states"
+          - assess_risk_level: "determine command danger level (LOW/MEDIUM/HIGH/CRITICAL)"
+      
+      - name: backup_strategy_establishment
+        description: "Establish backup and rollback strategy based on risk"
+        context_branches:
+          TROUBLESHOOTING:
+            - create_emergency_backup: "backup current state before troubleshooting"
+            - establish_recovery_plan: "document recovery steps for failure scenarios"
+          
+          NEW_DEVELOPMENT:
+            - create_development_checkpoint: "backup before new installations"
+            - verify_development_isolation: "ensure dev environment safety"
+          
+          ENHANCEMENT:
+            - backup_current_state: "preserve working state before enhancements"
+            - document_enhancement_plan: "record planned changes and rollback"
+          
+          MIGRATION:
+            - create_migration_backup: "full backup before migration operations"
+            - verify_migration_safety: "validate migration prerequisites"
+
+    decision_gate:
+      condition: "environment_verified AND backup_established"
+      fail_action: "ABORT_UNSAFE_OPERATION"
+      success_action: "PROCEED_TO_COMMAND_VALIDATION"
+
+  # STAGE 2: MANDATORY COMMAND VALIDATION (Cannot Skip)
+  - name: command_validation
+    description: "Validate bench command safety and prerequisites"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: command_analysis
+        description: "Analyze command safety and impact"
+        actions:
+          - parse_command_intent: "understand what the command will do"
+          - assess_command_impact: "evaluate effects on sites and apps"
+          - identify_dependencies: "map command dependencies and prerequisites"
+          - evaluate_risk_factors: "assess potential failure points and impacts"
+      
+      - name: prerequisite_verification
+        description: "Verify all command prerequisites are met"
+        actions:
+          - check_app_dependencies: "verify app compatibility and versions"
+          - validate_site_readiness: "ensure sites can handle the operation"
+          - verify_permissions: "confirm adequate permissions for operation"
+          - check_disk_space: "verify adequate disk space for operation"
+      
+      - name: dry_run_validation
+        description: "Perform dry run where possible"
+        actions:
+          - attempt_dry_run: "use --dry-run flags where available"
+          - simulate_operation: "predict operation outcomes"
+          - validate_expected_results: "confirm expected vs actual outcomes"
+
+    decision_gate:
+      condition: "command_validated AND prerequisites_met"
+      fail_action: "ESCALATE_COMMAND_SAFETY"
+      success_action: "PROCEED_TO_EXECUTION"
+
+  # STAGE 3: CONTROLLED EXECUTION (With Panic Detection)
+  - name: controlled_execution
+    description: "Execute bench command with monitoring and safety controls"
+    panic_detection: true
+    attempt_limit: 3
+    
+    substages:
+      - name: pre_execution_setup
+        description: "Final preparation before command execution"
+        actions:
+          - initialize_monitoring: "start command monitoring and logging"
+          - establish_abort_mechanism: "setup command abort capability"
+          - verify_rollback_readiness: "confirm rollback capability"
+          - document_execution_plan: "log intended command and rationale"
+      
+      - name: command_execution
+        description: "Execute the bench command with monitoring"
+        safety_checks:
+          - monitor_command_progress: true
+          - detect_error_patterns: true
+          - validate_expected_behavior: true
+          - maintain_abort_capability: true
+        
+        actions:
+          - execute_command_safely: "run command with full monitoring"
+          - monitor_system_health: "watch for system issues during execution"
+          - validate_intermediate_results: "check progress at key milestones"
+          - log_execution_details: "maintain detailed execution log"
+      
+      - name: post_execution_validation
+        description: "Validate command execution success"
+        context_branches:
+          TROUBLESHOOTING:
+            - verify_issue_resolution: "confirm troubleshooting goal achieved"
+            - test_system_stability: "ensure system remains stable"
+          
+          NEW_DEVELOPMENT:
+            - validate_installation: "confirm new components installed correctly"
+            - test_functionality: "verify new functionality works"
+          
+          ENHANCEMENT:
+            - validate_improvements: "confirm enhancements work as expected"
+            - test_backward_compatibility: "ensure existing functionality preserved"
+          
+          MIGRATION:
+            - validate_migration_success: "confirm migration completed correctly"
+            - test_migrated_functionality: "verify all functionality works"
+
+    panic_detection:
+      triggers:
+        - rapid_command_execution: "more than 3 commands in 5 minutes"
+        - error_cascade: "multiple command failures in sequence"
+        - system_instability: "bench status showing critical issues"
+      
+      response:
+        immediate_action: "STOP_ALL_BENCH_OPERATIONS"
+        rollback_action: "RESTORE_LAST_GOOD_STATE"
+        escalation: "ALERT_TESTING_SPECIALIST"
+
+    decision_gate:
+      condition: "command_executed AND results_validated"
+      fail_action: "INCREMENT_ATTEMPT_COUNTER"
+      success_action: "PROCEED_TO_VERIFICATION"
+
+  # STAGE 4: MANDATORY VERIFICATION (Cannot Skip)
+  - name: verification_and_cleanup
+    description: "Verify operation success and cleanup"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: comprehensive_verification
+        description: "Comprehensive verification of bench operation results"
+        actions:
+          - verify_system_health: "confirm overall system health"
+          - test_critical_functionality: "test key system functions"
+          - validate_app_status: "confirm all apps in expected state"
+          - check_site_accessibility: "verify all sites accessible"
+      
+      - name: cross_verification
+        description: "Independent verification by testing specialist"
+        actions:
+          - request_verification: "testing-specialist review"
+          - await_confirmation: "independent testing and validation"
+          - address_verification_issues: "resolve any identified problems"
+      
+      - name: operation_completion
+        description: "Complete bench operation and cleanup"
+        actions:
+          - finalize_operation_log: "complete detailed operation log"
+          - cleanup_temporary_files: "remove temporary files and backups if successful"
+          - update_system_documentation: "update configuration documentation"
+          - establish_monitoring: "setup ongoing monitoring if needed"
+
+    decision_gate:
+      condition: "verified_by_specialist AND system_healthy"
+      fail_action: "RETURN_TO_EXECUTION"
+      success_action: "WORKFLOW_COMPLETE"
+
+# FAILURE HANDLING
+failure_handling:
+  third_attempt_failure:
+    action: "STOP_AND_ESCALATE"
+    escalation_target: "testing-specialist"
+    rollback_required: true
+  
+  panic_mode_triggered:
+    immediate_action: "EMERGENCY_STOP"
+    rollback_required: true
+    human_intervention: true
+  
+  system_instability_detected:
+    action: "IMMEDIATE_ROLLBACK"
+    escalation_target: "testing-specialist"
+    investigation_required: true
+
+# SUCCESS CRITERIA
+success_criteria:
+  - command_executed_successfully: true
+  - system_health_maintained: true
+  - all_sites_accessible: true
+  - no_data_loss_occurred: true
+  - operation_fully_documented: true
+
+# INTEGRATION POINTS
+integration:
+  prerequisite_workflows: ["universal-context-detection-workflow"]
+  dependent_workflows: []
+  notification_targets: ["testing-specialist", "frappe-compliance-validator"]
+  
+# METRICS AND MONITORING
+metrics:
+  track:
+    - command_execution_time
+    - success_rate
+    - rollback_frequency
+    - panic_mode_incidents
+    - system_stability_metrics
+  
+  alerts:
+    - command_execution_failure
+    - system_instability_detected
+    - panic_mode_activation
+    - verification_failure

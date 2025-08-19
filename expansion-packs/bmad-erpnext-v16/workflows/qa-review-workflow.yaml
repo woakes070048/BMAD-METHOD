@@ -1,0 +1,271 @@
+# QA Review Workflow
+# For erpnext-qa-lead agent - CRITICAL SAFETY for code review and quality assurance
+# Based on SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+
+name: qa-review-workflow
+description: Comprehensive QA review workflow with mandatory testing and cross-verification
+version: 1.0.0
+agent_assignments:
+  primary: erpnext-qa-lead
+  support: [testing-specialist, frappe-compliance-validator]
+  verification: testing-specialist
+
+# MANDATORY SAFETY INTEGRATION
+safety_integration:
+  template_base: SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+  context_detection: automatic
+  panic_monitoring: active
+  rollback_capability: required
+
+stages:
+  # STAGE 1: MANDATORY QA SCOPE DEFINITION (Cannot Skip)
+  - name: qa_scope_definition
+    description: "Define comprehensive QA review scope and quality standards"
+    mandatory: true
+    can_skip: false
+    context_adaptive: true
+    
+    substages:
+      - name: review_target_analysis
+        description: "Analyze what needs QA review and establish quality criteria"
+        actions:
+          - identify_review_targets: "catalog all code/components requiring review"
+          - establish_quality_criteria: "define specific quality standards and metrics"
+          - assess_review_complexity: "evaluate complexity and risk levels"
+          - define_acceptance_criteria: "establish clear pass/fail criteria"
+      
+      - name: context_specific_qa_planning
+        description: "Establish QA approach appropriate to work context"
+        context_branches:
+          TROUBLESHOOTING:
+            - analyze_failure_context: "understand what failed and why"
+            - establish_fix_validation: "define how to validate fixes work correctly"
+            - plan_regression_testing: "ensure fixes don't break other functionality"
+          
+          NEW_DEVELOPMENT:
+            - establish_quality_gates: "define quality checkpoints for new code"
+            - plan_comprehensive_testing: "design testing strategy for new functionality"
+            - define_integration_testing: "plan testing with existing systems"
+          
+          ENHANCEMENT:
+            - assess_change_impact: "understand scope and impact of enhancements"
+            - plan_backward_compatibility: "ensure enhancements don't break existing features"
+            - define_performance_testing: "validate performance improvements"
+          
+          MIGRATION:
+            - establish_migration_validation: "define how to validate migration success"
+            - plan_data_integrity_testing: "ensure data integrity throughout migration"
+            - define_functionality_preservation: "verify all functionality migrates correctly"
+      
+      - name: qa_accountability_setup
+        description: "Establish QA accountability and verification mechanisms"
+        actions:
+          - define_qa_responsibilities: "establish clear QA responsibilities and scope"
+          - establish_evidence_requirements: "define what evidence must be maintained"
+          - setup_cross_verification: "arrange independent verification by testing-specialist"
+          - document_qa_standards: "record QA standards and decision criteria"
+
+    decision_gate:
+      condition: "scope_defined AND criteria_established AND accountability_ready"
+      fail_action: "CLARIFY_QA_REQUIREMENTS"
+      success_action: "PROCEED_TO_CODE_ANALYSIS"
+
+  # STAGE 2: MANDATORY COMPREHENSIVE CODE ANALYSIS (Cannot Skip)
+  - name: comprehensive_code_analysis
+    description: "Thorough analysis of code quality, security, and compliance"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: code_quality_assessment
+        description: "Comprehensive code quality evaluation"
+        actions:
+          - analyze_code_structure: "evaluate code organization and architecture"
+          - assess_coding_standards: "verify adherence to ERPNext coding standards"
+          - evaluate_error_handling: "assess error handling and recovery mechanisms"
+          - check_performance_patterns: "identify performance issues and optimizations"
+      
+      - name: security_and_compliance_review
+        description: "Security assessment and framework compliance verification"
+        actions:
+          - execute_dependency_analysis: "MANDATORY: run analyze-app-dependencies task"
+          - assess_security_patterns: "evaluate security implementation and vulnerabilities"
+          - verify_permission_handling: "ensure proper permission checks and validation"
+          - validate_input_sanitization: "verify input validation and sanitization"
+          - check_frappe_compliance: "ensure Frappe Framework compliance"
+      
+      - name: integration_and_compatibility_analysis
+        description: "Assess integration points and compatibility"
+        actions:
+          - analyze_api_interfaces: "review API design and implementation"
+          - assess_database_interactions: "evaluate database usage patterns"
+          - verify_doctype_relationships: "validate DocType relationships and integrity"
+          - check_workflow_integration: "ensure proper workflow integration"
+
+    decision_gate:
+      condition: "code_analyzed AND security_verified AND integration_assessed"
+      fail_action: "IMPROVE_ANALYSIS_METHODOLOGY"
+      success_action: "PROCEED_TO_TESTING_VALIDATION"
+
+  # STAGE 3: CONTROLLED TESTING AND VALIDATION (With Panic Detection)
+  - name: controlled_testing_validation
+    description: "Execute comprehensive testing with continuous quality monitoring"
+    panic_detection: true
+    attempt_limit: 3
+    
+    substages:
+      - name: systematic_testing_execution
+        description: "Execute systematic testing based on context and scope"
+        safety_checks:
+          - test_one_component_at_time: true
+          - validate_after_each_test: true
+          - maintain_test_evidence: true
+          - monitor_system_stability: true
+        
+        actions:
+          - execute_unit_testing: "run and validate unit tests"
+          - perform_integration_testing: "test integration points and dependencies"
+          - conduct_functional_testing: "validate functional requirements"
+          - execute_regression_testing: "ensure existing functionality preserved"
+      
+      - name: context_specific_validation
+        description: "Execute validation appropriate to work context"
+        context_branches:
+          TROUBLESHOOTING:
+            - validate_issue_resolution: "confirm reported issues are resolved"
+            - test_fix_effectiveness: "verify fixes work in all scenarios"
+            - validate_stability_improvement: "ensure fixes improve system stability"
+          
+          NEW_DEVELOPMENT:
+            - validate_new_functionality: "confirm new features work as designed"
+            - test_edge_cases: "validate behavior in edge cases and error conditions"
+            - verify_requirements_satisfaction: "ensure all requirements met"
+          
+          ENHANCEMENT:
+            - validate_improvements: "confirm enhancements deliver expected benefits"
+            - test_performance_gains: "measure and validate performance improvements"
+            - verify_backward_compatibility: "ensure existing functionality preserved"
+          
+          MIGRATION:
+            - validate_migration_completeness: "confirm all data and functionality migrated"
+            - test_migrated_functionality: "verify all features work in new environment"
+            - validate_data_integrity: "confirm data integrity maintained"
+      
+      - name: quality_metrics_validation
+        description: "Validate quality metrics and acceptance criteria"
+        actions:
+          - measure_code_coverage: "calculate and validate test coverage"
+          - assess_performance_metrics: "measure performance against benchmarks"
+          - validate_security_compliance: "confirm security requirements met"
+          - verify_acceptance_criteria: "ensure all acceptance criteria satisfied"
+
+    panic_detection:
+      triggers:
+        - rapid_test_failures: "high rate of test failures in short time"
+        - quality_degradation: "quality metrics falling below thresholds"
+        - system_instability: "system becoming unstable during testing"
+      
+      response:
+        immediate_action: "STOP_ALL_QA_ACTIVITIES"
+        rollback_action: "RESTORE_STABLE_STATE"
+        escalation: "ALERT_TESTING_SPECIALIST"
+
+    decision_gate:
+      condition: "testing_completed AND validation_successful AND metrics_satisfied"
+      fail_action: "INCREMENT_ATTEMPT_COUNTER"
+      success_action: "PROCEED_TO_FINAL_VERIFICATION"
+
+  # STAGE 4: MANDATORY FINAL VERIFICATION (Cannot Skip)
+  - name: final_verification_and_approval
+    description: "Final verification and QA approval with accountability"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: comprehensive_qa_verification
+        description: "Final comprehensive QA verification"
+        actions:
+          - verify_all_quality_criteria: "confirm all quality criteria met"
+          - validate_test_completeness: "ensure comprehensive testing completed"
+          - assess_risk_level: "final risk assessment for release/deployment"
+          - verify_documentation_completeness: "ensure adequate documentation"
+      
+      - name: independent_testing_verification
+        description: "Independent verification by testing specialist"
+        actions:
+          - request_testing_verification: "testing-specialist independent review"
+          - verify_test_execution: "confirm tests executed properly"
+          - validate_test_results: "verify test results interpretation"
+          - assess_qa_thoroughness: "evaluate QA review completeness"
+      
+      - name: qa_approval_and_accountability
+        description: "QA approval with full accountability documentation"
+        actions:
+          - document_qa_decision: "record QA approval/rejection decision with rationale"
+          - create_qa_report: "comprehensive QA report with findings and recommendations"
+          - establish_monitoring_plan: "setup ongoing quality monitoring"
+          - document_qa_accountability: "record QA lead responsibility and sign-off"
+
+    decision_gate:
+      condition: "qa_verified AND testing_confirmed AND approval_documented"
+      fail_action: "RETURN_TO_TESTING_VALIDATION"
+      success_action: "WORKFLOW_COMPLETE"
+
+# FAILURE HANDLING
+failure_handling:
+  third_attempt_failure:
+    action: "STOP_AND_ESCALATE"
+    escalation_target: "testing-specialist"
+    qa_review_required: true
+  
+  panic_mode_triggered:
+    immediate_action: "EMERGENCY_STOP"
+    system_stabilization_required: true
+    human_intervention: true
+  
+  quality_standards_failure:
+    action: "COMPREHENSIVE_REVIEW"
+    escalation_target: "frappe-compliance-validator"
+    standards_review_required: true
+
+# SUCCESS CRITERIA
+success_criteria:
+  - all_quality_criteria_met: true
+  - comprehensive_testing_completed: true
+  - security_requirements_satisfied: true
+  - performance_standards_met: true
+  - independent_verification_passed: true
+
+# QA ACCOUNTABILITY METRICS
+qa_accountability:
+  decision_documentation:
+    - approval_rationale_recorded
+    - evidence_maintained
+    - risk_assessment_completed
+    - recommendations_documented
+  
+  verification_requirements:
+    - independent_testing_verification
+    - cross_validation_completed
+    - accountability_trail_maintained
+
+# INTEGRATION POINTS
+integration:
+  prerequisite_workflows: ["universal-context-detection-workflow"]
+  dependent_workflows: []
+  notification_targets: ["testing-specialist", "frappe-compliance-validator"]
+  
+# METRICS AND MONITORING
+metrics:
+  track:
+    - qa_review_completion_time
+    - quality_criteria_pass_rate
+    - test_coverage_percentage
+    - defect_detection_rate
+    - qa_approval_accuracy
+  
+  alerts:
+    - quality_standards_failure
+    - test_coverage_below_threshold
+    - panic_mode_activation
+    - verification_failure

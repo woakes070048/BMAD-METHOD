@@ -1,0 +1,407 @@
+# Frappe-First Validation Workflow
+# MANDATORY for ALL agents before writing ANY code
+# This ensures ALL agents use Frappe's built-in features
+
+name: frappe-first-validation-workflow
+description: Universal Frappe-first validation that ALL agents must execute before writing code
+version: 1.0.0
+agent_assignments:
+  primary: ANY_AGENT
+  support: []
+  verification: self
+
+# MANDATORY FOR ALL AGENTS
+universal_application: true
+cannot_skip: true
+prerequisite_for_code_generation: true
+
+# FRAPPE-FIRST INTEGRATION
+frappe_first_enforcement:
+  mandatory: true
+  applies_to: ALL_AGENTS
+  validation_before: ["code_writing", "api_creation", "task_implementation"]
+  
+stages:
+  # STAGE 1: FRAPPE FEATURE CHECK (Cannot Skip)
+  - name: frappe_feature_identification
+    description: "Identify which Frappe features to use instead of external libraries"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: identify_requirements
+        description: "Identify what functionality is needed"
+        checklist:
+          - "What data operations are needed?"
+          - "What background processing is required?"
+          - "What caching is needed?"
+          - "What notifications/emails are required?"
+          - "What scheduling is needed?"
+          - "What authentication is required?"
+          - "What file operations are needed?"
+          
+      - name: map_to_frappe_features
+        description: "Map requirements to Frappe built-in features"
+        frappe_feature_map:
+          # Database Operations
+          database_operations:
+            NEVER_USE: ["import sqlalchemy", "import psycopg2", "raw SQL"]
+            ALWAYS_USE:
+              - "frappe.get_doc() - Get single document"
+              - "frappe.get_all() - Get list of documents"
+              - "frappe.get_list() - Get filtered list"
+              - "frappe.db.get_value() - Get specific field"
+              - "frappe.db.set_value() - Update field"
+              - "frappe.db.sql() - Only when absolutely necessary"
+          
+          # Background Jobs
+          background_processing:
+            NEVER_USE: ["import celery", "import rq", "threading"]
+            ALWAYS_USE:
+              - "frappe.enqueue() - Async job execution"
+              - "frappe.enqueue_doc() - Document method queuing"
+              - "timeout parameter for long jobs"
+              - "job_name for tracking"
+          
+          # Caching
+          caching:
+            NEVER_USE: ["import redis", "import memcache", "file caching"]
+            ALWAYS_USE:
+              - "frappe.cache().set_value() - Set cache"
+              - "frappe.cache().get_value() - Get cache"
+              - "frappe.cache().delete_value() - Clear cache"
+              - "frappe.clear_cache() - Clear all cache"
+          
+          # HTTP Requests
+          http_requests:
+            NEVER_USE: ["import requests", "import urllib", "import httplib", "import urllib3"]
+            ALWAYS_USE:
+              - "frappe.request - Access current request object"
+              - "frappe.make_get_request(url, headers=None, auth=None) - GET requests to external APIs"
+              - "frappe.make_post_request(url, headers=None, data=None) - POST requests to external APIs"
+              - "frappe.make_put_request(url, headers=None, data=None) - PUT requests to external APIs"
+              - "frappe.make_delete_request(url, headers=None) - DELETE requests to external APIs"
+            
+            EXAMPLES:
+              GET_REQUEST: |
+                # Instead of: import requests; response = requests.get(url)
+                response = frappe.make_get_request(
+                    url="https://api.example.com/data",
+                    headers={"Authorization": "Bearer token"}
+                )
+                # response is already parsed JSON if content-type is application/json
+                
+              POST_REQUEST: |
+                # Instead of: import requests; response = requests.post(url, json=data)
+                response = frappe.make_post_request(
+                    url="https://api.example.com/create",
+                    headers={"Content-Type": "application/json"},
+                    data={"key": "value"}  # Will be JSON encoded automatically
+                )
+                
+              ERROR_HANDLING: |
+                try:
+                    response = frappe.make_get_request(url)
+                except Exception as e:
+                    frappe.log_error(f"API call failed: {str(e)}", "External API Error")
+                    frappe.throw(_("Failed to fetch data from external service"))
+          
+          # Email/Notifications
+          communications:
+            NEVER_USE: ["import smtplib", "import email", "sendgrid"]
+            ALWAYS_USE:
+              - "frappe.sendmail() - Send emails"
+              - "frappe.get_email_queue() - Email queue"
+              - "frappe.publish_realtime() - Real-time notifications"
+              - "frappe.msgprint() - User messages"
+          
+          # Authentication
+          authentication:
+            NEVER_USE: ["import jwt", "import oauth", "custom auth"]
+            ALWAYS_USE:
+              - "frappe.session - Session management"
+              - "frappe.has_permission() - Permission checks"
+              - "frappe.only_for() - Role restrictions"
+              - "@frappe.whitelist() - API authentication"
+          
+          # Scheduling
+          scheduling:
+            NEVER_USE: ["import schedule", "cron directly", "apscheduler"]
+            ALWAYS_USE:
+              - "hooks.py scheduler_events - Scheduled jobs"
+              - "frappe.enqueue with delay - Delayed execution"
+              - "Scheduled Job DocType - User-configurable schedules"
+          
+          # File Operations
+          file_operations:
+            NEVER_USE: ["open() directly", "os.path for uploads", "shutil"]
+            ALWAYS_USE:
+              - "frappe.get_site_path() - Site file paths"
+              - "frappe.utils.get_files_path() - File storage"
+              - "File DocType - File management"
+              - "frappe.attach_print() - PDF generation"
+          
+          # Logging
+          logging:
+            NEVER_USE: ["import logging", "print statements", "custom logs"]
+            ALWAYS_USE:
+              - "frappe.log_error() - Error logging"
+              - "frappe.logger() - Debug logging"
+              - "frappe.throw() - Exceptions with logging"
+              - "Error Log DocType - Error tracking"
+          
+          # Date/Time
+          datetime_operations:
+            NEVER_USE: ["from datetime import", "import time", "pytz"]
+            ALWAYS_USE:
+              - "frappe.utils.now() - Current timestamp"
+              - "frappe.utils.today() - Current date"
+              - "frappe.utils.add_days() - Date arithmetic"
+              - "frappe.utils.get_datetime() - Parse datetime"
+              - "frappe.utils.format_date() - Format dates"
+          
+          # Real-time/WebSocket Features
+          realtime_communication:
+            NEVER_USE: ["import websocket", "import socketio", "import ws4py", "flask-socketio"]
+            ALWAYS_USE:
+              - "frappe.publish_realtime(event, message, user) - Real-time updates"
+              - "frappe.publish_progress(percent, title, description) - Progress bars"
+              - "frappe.publish_realtime('doc_update', doc.as_dict()) - Document updates"
+              - "frappe.publish_realtime('notification', message, room) - Room notifications"
+          
+          # Template Rendering
+          template_rendering:
+            NEVER_USE: ["import jinja2", "from jinja2 import", "import django.template"]
+            ALWAYS_USE:
+              - "frappe.render_template(template, context) - Render templates"
+              - "frappe.get_template(template_name) - Get template object"
+              - "Email Template DocType - Manage email templates"
+              - "Print Format DocType - Custom print layouts"
+          
+          # PDF Generation
+          pdf_generation:
+            NEVER_USE: ["import reportlab", "import pdfkit", "import weasyprint", "import fpdf"]
+            ALWAYS_USE:
+              - "frappe.utils.get_pdf(html) - Generate PDF from HTML"
+              - "frappe.attach_print(doctype, name, print_format) - Attach PDF"
+              - "frappe.get_print(doctype, name, format) - Get print HTML"
+              - "Print Format DocType - Custom print layouts"
+          
+          # File Operations
+          file_operations:
+            NEVER_USE: ["open() for uploads", "os.path for files", "shutil for copying"]
+            ALWAYS_USE:
+              - "frappe.get_site_path() - Site file paths"
+              - "frappe.utils.get_files_path() - File storage"
+              - "File DocType - File management"
+              - "frappe.get_doc('File', file_url) - File document access"
+          
+          # Translation/Internationalization
+          translation:
+            NEVER_USE: ["import gettext", "import babel", "django.utils.translation"]
+            ALWAYS_USE:
+              - "frappe._('Text to translate') - Translate text"
+              - "frappe.translate(text, language) - Dynamic translation"
+              - "Translation DocType - Manage translations"
+              - "Language DocType - Supported languages"
+          
+          # Testing Framework
+          testing:
+            NEVER_USE: ["import unittest", "import pytest", "import nose"]
+            ALWAYS_USE:
+              - "frappe.tests.utils.FrappeTestCase - Base test class"
+              - "frappe.get_test_records(doctype) - Test data"
+              - "frappe.set_user(user) - Test user context"
+              - "frappe.db.rollback() - Test cleanup"
+          
+          # Advanced Document Operations
+          document_operations_advanced:
+            NEVER_USE: ["Custom document creation", "Manual copying logic"]
+            ALWAYS_USE:
+              - "frappe.new_doc(doctype) - Create new document"
+              - "frappe.copy_doc(doc, ignore_no_copy=False) - Copy document"
+              - "frappe.rename_doc(doctype, old_name, new_name) - Rename"
+              - "frappe.delete_doc(doctype, name, force=False) - Delete"
+              - "frappe.get_single(doctype) - Single DocType access"
+          
+          # Request/Response Handling
+          request_response:
+            NEVER_USE: ["flask.request", "flask.response", "request.args", "request.form"]
+            ALWAYS_USE:
+              - "frappe.form_dict - Form data access"
+              - "frappe.request - Current request object"
+              - "frappe.response - Response modification"
+              - "frappe.local - Request context data"
+              - "frappe.flags - Request-specific flags"
+          
+          # Validation
+          validation:
+            NEVER_USE: ["custom validators", "cerberus", "marshmallow"]
+            ALWAYS_USE:
+              - "DocType validations - Field-level validation"
+              - "doc.validate() - Document validation"
+              - "frappe.validate_email() - Email validation"
+              - "frappe.utils.validate_url() - URL validation"
+
+  # STAGE 2: CODE GENERATION RULES (Cannot Skip)
+  - name: code_generation_rules
+    description: "Apply Frappe-first rules to all code generation"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: import_validation
+        description: "Validate all imports before code generation"
+        rules:
+          - "SCAN all imports for blocked libraries"
+          - "REPLACE external libraries with Frappe equivalents"
+          - "VALIDATE no anti-patterns present"
+          
+        blocked_imports:
+          - "requests → Use frappe.make_get_request/make_post_request"
+          - "redis → Use frappe.cache()"
+          - "celery → Use frappe.enqueue()"
+          - "jwt/pyjwt → Use frappe.session"
+          - "smtplib → Use frappe.sendmail()"
+          - "logging → Use frappe.logger()"
+          - "sqlalchemy → Use frappe.db"
+          - "datetime → Use frappe.utils date functions"
+          - "bcrypt/hashlib → Use frappe.utils.password"
+          - "jinja2 → Use frappe.render_template()"
+          - "websocket/socketio → Use frappe.publish_realtime()"
+          - "reportlab/pdfkit → Use frappe.utils.get_pdf()"
+          - "gettext/babel → Use frappe._()"
+          - "unittest/pytest → Use frappe.tests.utils.FrappeTestCase"
+          - "flask.request → Use frappe.form_dict/frappe.request"
+      
+      - name: api_endpoint_validation
+        description: "Ensure all API endpoints follow Frappe patterns"
+        rules:
+          - "ALL endpoints MUST have @frappe.whitelist()"
+          - "ALL endpoints MUST check permissions"
+          - "ALL endpoints MUST validate input"
+          - "ALL endpoints MUST return structured response"
+          
+        template: |
+          @frappe.whitelist()
+          def api_method(param1, param2=None):
+              # Permission check FIRST
+              if not frappe.has_permission("DocType", "read"):
+                  frappe.throw(_("Insufficient permissions"))
+              
+              # Input validation
+              if not param1:
+                  frappe.throw(_("param1 is required"))
+              
+              try:
+                  # Use Frappe features
+                  data = frappe.get_all("DocType", filters={...})
+                  
+                  # Return structured response
+                  return {
+                      "success": True,
+                      "data": data
+                  }
+              except Exception as e:
+                  # Use Frappe error logging
+                  frappe.log_error(frappe.get_traceback(), "API Error")
+                  frappe.throw(_("An error occurred"))
+      
+      - name: background_job_validation
+        description: "Ensure background jobs use Frappe patterns"
+        template: |
+          # ALWAYS use frappe.enqueue
+          frappe.enqueue(
+              method="app.module.long_running_task",
+              queue="long",  # short, default, long
+              timeout=300,
+              job_name="descriptive_job_name",
+              arg1=value1,
+              arg2=value2
+          )
+          
+          # For document methods
+          frappe.enqueue_doc(
+              doctype="Sales Order",
+              name=doc_name,
+              method="process_order"
+          )
+
+  # STAGE 3: VALIDATION OUTPUT (Cannot Skip)
+  - name: validation_output
+    description: "Generate validation report for code"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: generate_report
+        description: "Create Frappe-first validation report"
+        outputs:
+          - "List of Frappe features being used"
+          - "Confirmation no external libraries"
+          - "API endpoint compliance"
+          - "Background job patterns"
+          - "Error handling approach"
+          
+      - name: enforce_compliance
+        description: "Block non-compliant code"
+        rules:
+          - "IF external library found: STOP and request correction"
+          - "IF missing @frappe.whitelist: STOP and add decorator"
+          - "IF missing permission check: STOP and add check"
+          - "IF using print instead of frappe.log: STOP and fix"
+
+# Decision Gates
+decision_gates:
+  - gate: "external_library_check"
+    condition: "No external libraries used"
+    pass_action: "Continue to code generation"
+    fail_action: "STOP - Replace with Frappe equivalent"
+    
+  - gate: "api_compliance_check"
+    condition: "All APIs use @frappe.whitelist"
+    pass_action: "Continue"
+    fail_action: "STOP - Add proper decorators"
+    
+  - gate: "permission_check"
+    condition: "All operations check permissions"
+    pass_action: "Continue"
+    fail_action: "STOP - Add permission checks"
+
+# Integration with Agents
+agent_integration:
+  enforcement_level: "MANDATORY"
+  applies_to:
+    - "ALL product owners when defining requirements"
+    - "ALL architects when designing systems"
+    - "ALL developers when writing code"
+    - "ALL testers when creating tests"
+    - "ALL reviewers when checking code"
+  
+  integration_points:
+    - "BEFORE any code generation task"
+    - "DURING code review processes"
+    - "AFTER code changes"
+    - "IN continuous validation"
+
+# Quick Reference for Agents
+quick_reference:
+  message_to_agents: |
+    REMEMBER: You MUST use Frappe's built-in features:
+    - Database: frappe.get_doc(), not SQL
+    - Jobs: frappe.enqueue(), not Celery
+    - Cache: frappe.cache(), not Redis
+    - HTTP: frappe.make_get_request(), not requests
+    - Email: frappe.sendmail(), not smtplib
+    - Auth: frappe.session, not JWT
+    - Schedule: hooks.py, not cron
+    - Logs: frappe.log_error(), not logging
+    - Real-time: frappe.publish_realtime(), not WebSocket
+    - Templates: frappe.render_template(), not Jinja2
+    - PDF: frappe.utils.get_pdf(), not reportlab
+    - Translation: frappe._(), not gettext
+    - Testing: frappe.tests.utils.FrappeTestCase, not unittest
+    - Files: File DocType, not direct file operations
+    - Request: frappe.form_dict, not flask.request
+    
+    NO EXTERNAL LIBRARIES when Frappe provides the feature!

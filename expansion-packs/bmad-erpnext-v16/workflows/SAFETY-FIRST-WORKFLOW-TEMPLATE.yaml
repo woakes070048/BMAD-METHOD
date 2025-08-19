@@ -1,0 +1,321 @@
+name: "Safety-First Workflow Template"
+description: "MANDATORY template showing how ALL workflows must incorporate safety protocols"
+version: "2.0.0"
+enforcement: "REQUIRED FOR ALL WORKFLOWS"
+
+# ============================================
+# MANDATORY SAFETY METADATA
+# ============================================
+safety_configuration:
+  panic_detection: enabled
+  max_attempts_per_task: 3
+  changelog_required: true
+  root_cause_required: true
+  rollback_plan_required: true
+  
+workflow_metadata:
+  category: "Template"
+  safety_level: "ENFORCED"
+  audit_trail: "MANDATORY"
+
+# ============================================
+# STAGE 0: MANDATORY CONTEXT GATHERING
+# ============================================
+workflow_stages:
+  - stage: "context_gathering"
+    name: "MANDATORY: Context and Safety Setup"
+    required: true  # Cannot skip this stage
+    safety_gates:
+      - "working_directory_confirmed"
+      - "changelog_initialized"
+      - "backup_created"
+    
+    tasks:
+      - task: "initialize_changelog"
+        description: "Create session changelog"
+        mandatory: true
+        command: |
+          touch SESSION-CHANGELOG-$(date +%Y%m%d-%H%M%S).md
+          echo "# Session started: $(date)" >> SESSION-CHANGELOG-*.md
+          echo "Purpose: [workflow_purpose]" >> SESSION-CHANGELOG-*.md
+        validation:
+          - "Changelog file exists"
+          - "Timestamp recorded"
+          
+      - task: "gather_context"
+        description: "Understand current state"
+        mandatory: true
+        checklist:
+          - "What is the exact error/issue?"
+          - "What was working before?"
+          - "What recently changed?"
+          - "What is the business impact?"
+        outputs:
+          - "context_document"
+          - "problem_statement"
+          
+      - task: "create_safety_backup"
+        description: "Backup current state"
+        mandatory: true
+        command: "git stash save 'Safety backup before [workflow_name]'"
+        validation:
+          - "Backup created successfully"
+          
+    # SAFETY GATE: Cannot proceed without context
+    decision_point:
+      question: "Is context fully documented?"
+      yes: "proceed_to_diagnosis"
+      no: "return_to_context_gathering"
+      enforcement: "CANNOT_SKIP"
+
+  # ============================================
+  # STAGE 1: ROOT CAUSE ANALYSIS (Not Symptom Fixing!)
+  # ============================================
+  - stage: "root_cause_analysis"
+    name: "MANDATORY: Find Root Cause"
+    required: true
+    max_duration: "30 minutes"  # Prevent endless investigation
+    
+    tasks:
+      - task: "hypothesis_formation"
+        description: "Form hypothesis about root cause"
+        mandatory: true
+        documentation_required:
+          - "Hypothesis statement"
+          - "Evidence supporting hypothesis"
+          - "How to test hypothesis"
+        
+      - task: "test_hypothesis"
+        description: "Test without changing code"
+        safety_rules:
+          - "NO code changes yet"
+          - "Use read-only investigation"
+          - "Document findings"
+        
+      - task: "confirm_root_cause"
+        description: "Validate root cause found"
+        validation_checklist:
+          - "Can explain why error occurs"
+          - "Can reproduce consistently"
+          - "Understanding documented"
+          
+    # SAFETY GATE: No fixes without root cause
+    decision_point:
+      question: "Root cause identified and documented?"
+      yes: "proceed_to_solution_planning"
+      no: "escalate_or_get_help"
+      enforcement: "CANNOT_PROCEED_WITHOUT_ROOT_CAUSE"
+
+  # ============================================
+  # STAGE 2: SOLUTION PLANNING (Before Acting!)
+  # ============================================
+  - stage: "solution_planning"
+    name: "Plan Before Acting"
+    required: true
+    
+    tasks:
+      - task: "design_solution"
+        description: "Design fix for root cause"
+        required_outputs:
+          - "solution_design"
+          - "impact_analysis"
+          - "rollback_plan"
+          
+      - task: "document_change_plan"
+        description: "Document what will be changed"
+        changelog_entry: |
+          ## Change Plan
+          - Problem: [root_cause]
+          - Solution: [planned_fix]
+          - Files affected: [list]
+          - Rollback: [how_to_undo]
+          
+      - task: "get_approval"
+        description: "Approval gate for changes"
+        approval_criteria:
+          - "Root cause addressed"
+          - "Minimal change approach"
+          - "Rollback plan exists"
+          
+    decision_point:
+      question: "Solution approved and documented?"
+      yes: "proceed_to_implementation"
+      no: "return_to_planning"
+
+  # ============================================
+  # STAGE 3: CONTROLLED IMPLEMENTATION
+  # ============================================
+  - stage: "implementation"
+    name: "Controlled Change Execution"
+    safety_monitoring: "ACTIVE"
+    
+    tasks:
+      - task: "implement_change"
+        description: "Make the planned change"
+        safety_rules:
+          - "ONE change at a time"
+          - "Test after EACH change"
+          - "Document in changelog"
+        attempt_limit: 3
+        on_failure: "rollback_and_reassess"
+        
+      - task: "verify_fix"
+        description: "Test that fix works"
+        verification_required:
+          - "Original issue resolved"
+          - "No new errors introduced"
+          - "Related features still work"
+          
+      - task: "update_changelog"
+        description: "Document outcome"
+        mandatory: true
+        changelog_entry: |
+          ## Implementation Result
+          - Change made: [description]
+          - Result: [success/failure]
+          - Side effects: [any]
+          - Next steps: [if_any]
+          
+    # SAFETY GATE: Panic mode detection
+    panic_detection:
+      triggers:
+        - "More than 3 changes without success"
+        - "New errors appearing"
+        - "Can't explain why changes not working"
+      action: "immediate_stop_and_rollback"
+
+  # ============================================
+  # STAGE 4: VALIDATION & CLOSURE
+  # ============================================
+  - stage: "validation"
+    name: "Ensure Success"
+    required: true
+    
+    tasks:
+      - task: "comprehensive_testing"
+        description: "Test all affected areas"
+        test_checklist:
+          - "Original issue fixed"
+          - "Related features work"
+          - "Performance acceptable"
+          - "No new errors in logs"
+          
+      - task: "document_resolution"
+        description: "Final documentation"
+        required_documentation:
+          - "What was the problem"
+          - "What was the root cause"
+          - "How it was fixed"
+          - "Lessons learned"
+          
+      - task: "close_changelog"
+        description: "Finalize session log"
+        changelog_entry: |
+          ## Session Complete
+          - Total changes: [number]
+          - Success rate: [percentage]
+          - Issues resolved: [list]
+          - Time taken: [duration]
+
+# ============================================
+# SAFETY ENFORCEMENT RULES
+# ============================================
+safety_enforcement:
+  mandatory_rules:
+    - "CANNOT skip context gathering"
+    - "CANNOT fix without root cause"
+    - "CANNOT make changes without plan"
+    - "MUST maintain changelog throughout"
+    - "MUST stop after 3 failed attempts"
+    
+  automatic_stops:
+    - trigger: "panic_mode_detected"
+      action: "halt_workflow"
+    - trigger: "attempt_limit_reached"
+      action: "escalate_to_human"
+    - trigger: "cascading_failures"
+      action: "rollback_all_changes"
+      
+  rollback_procedures:
+    immediate: "git stash pop"
+    selective: "git checkout -- [file]"
+    complete: "git reset --hard [commit]"
+
+# ============================================
+# INTEGRATION WITH AGENTS
+# ============================================
+agent_requirements:
+  all_agents_must:
+    - "Follow workflow stages in order"
+    - "Cannot skip safety gates"
+    - "Must document in changelog"
+    - "Must stop at failure limits"
+    
+  agent_specific:
+    diagnostic-specialist:
+      focus: "Root cause analysis"
+      forbidden: "Fixing without diagnosis"
+    refactoring-expert:
+      focus: "Planned changes only"
+      forbidden: "Exploratory refactoring"
+    testing-specialist:
+      focus: "Validation and verification"
+      forbidden: "Proceeding without tests"
+
+# ============================================
+# METRICS & MONITORING
+# ============================================
+workflow_metrics:
+  track:
+    - "Time in each stage"
+    - "Number of attempts per task"
+    - "Rollback frequency"
+    - "Success rate"
+    - "Panic mode triggers"
+    
+  alerts:
+    - "Stage taking >30 minutes"
+    - "More than 2 rollbacks"
+    - "Panic mode activated"
+    - "Changelog not updated >10 minutes"
+
+# ============================================
+# EXAMPLE USAGE
+# ============================================
+example_execution:
+  scenario: "API endpoint returning 500 error"
+  
+  stage_0_context:
+    - Initialize changelog ✓
+    - Document error: "500 on /api/customer/get"
+    - Note working: "Was working yesterday"
+    - Create backup ✓
+    
+  stage_1_root_cause:
+    - Hypothesis: "Permission issue"
+    - Test: "Check with admin user"
+    - Finding: "Missing permission check"
+    - Root cause: "No frappe.has_permission()"
+    
+  stage_2_planning:
+    - Solution: "Add permission check"
+    - Impact: "Only this endpoint"
+    - Rollback: "Remove added check"
+    
+  stage_3_implementation:
+    - Change: "Add if not frappe.has_permission()"
+    - Test: "Works for all user types"
+    - Changelog: "Fixed with permission check"
+    
+  stage_4_validation:
+    - Test all user roles ✓
+    - Document fix ✓
+    - Close changelog ✓
+
+# ============================================
+# THIS IS THE WAY
+# ============================================
+mandate: |
+  Every workflow in this expansion pack MUST follow this template.
+  No exceptions. No shortcuts. No panic mode.
+  Safety first. Always.

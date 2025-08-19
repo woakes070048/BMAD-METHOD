@@ -1,0 +1,251 @@
+# App Cleaning Workflow
+# For erpnext-app-cleaner agent - CRITICAL SAFETY for code deletion/modification
+# Based on SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+
+name: app-cleaning-workflow
+description: Safe app cleanup with mandatory dependency analysis and comprehensive backup
+version: 1.0.0
+agent_assignments:
+  primary: erpnext-app-cleaner
+  support: [frappe-compliance-validator, testing-specialist]
+  verification: frappe-compliance-validator
+
+# MANDATORY SAFETY INTEGRATION
+safety_integration:
+  template_base: SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+  context_detection: automatic
+  panic_monitoring: active
+  rollback_capability: required
+
+stages:
+  # STAGE 1: MANDATORY DEPENDENCY ANALYSIS (Cannot Skip)
+  - name: dependency_analysis
+    description: "Comprehensive analysis of app dependencies before any cleanup"
+    mandatory: true
+    can_skip: false
+    context_adaptive: true
+    
+    substages:
+      - name: app_structure_analysis
+        description: "Analyze current app structure and identify cleanup targets"
+        actions:
+          - scan_app_structure: "complete inventory of all app files and components"
+          - identify_cleanup_targets: "identify redundant, unnecessary, or problematic code"
+          - categorize_by_risk: "classify cleanup targets by risk level (LOW/MEDIUM/HIGH/CRITICAL)"
+          - map_dependencies: "understand relationships between components"
+      
+      - name: mandatory_dependency_check
+        description: "CRITICAL: Execute analyze-app-dependencies task"
+        actions:
+          - execute_dependency_analysis: "MANDATORY: run analyze-app-dependencies task"
+          - map_doctype_relationships: "identify DocType field relationships (especially checkbox conditional logic)"
+          - trace_import_dependencies: "map import dependencies between files"
+          - analyze_business_logic: "understand business logic patterns that could break"
+          - identify_workflow_dependencies: "map critical workflow dependencies"
+      
+      - name: ai_code_problem_identification
+        description: "Identify specific AI coding tool problems to address"
+        context_branches:
+          TROUBLESHOOTING:
+            - identify_broken_patterns: "find AI-generated code causing current issues"
+            - analyze_failure_points: "understand where AI code is failing"
+          
+          NEW_DEVELOPMENT:
+            - scan_for_antipatterns: "identify AI antipatterns in new code"
+            - validate_frappe_compliance: "check for Frappe-first violations"
+          
+          ENHANCEMENT:
+            - assess_improvement_opportunities: "find AI code that can be improved"
+            - prioritize_cleanup_targets: "rank improvements by impact"
+          
+          MIGRATION:
+            - identify_migration_blockers: "find AI code preventing migration"
+            - assess_conversion_requirements: "understand cleanup needed for migration"
+
+    decision_gate:
+      condition: "dependencies_analyzed AND ai_problems_identified"
+      fail_action: "ABORT_UNSAFE_CLEANUP"
+      success_action: "PROCEED_TO_BACKUP_STRATEGY"
+
+  # STAGE 2: MANDATORY BACKUP AND SAFETY PLANNING (Cannot Skip)
+  - name: backup_and_safety_planning
+    description: "Establish comprehensive backup and rollback strategy"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: comprehensive_backup_creation
+        description: "Create complete backups before any modifications"
+        actions:
+          - create_full_app_backup: "backup entire app structure"
+          - backup_individual_files: "create individual file backups for all targets"
+          - backup_database_schema: "backup DocType definitions and data"
+          - document_current_state: "detailed documentation of current app state"
+      
+      - name: rollback_strategy_establishment
+        description: "Establish detailed rollback procedures"
+        actions:
+          - design_rollback_procedure: "step-by-step rollback instructions"
+          - test_backup_integrity: "verify backups are complete and restorable"
+          - establish_checkpoint_system: "create restoration checkpoints"
+          - validate_recovery_capability: "confirm ability to restore any component"
+      
+      - name: safety_constraint_definition
+        description: "Define safety constraints for cleanup operations"
+        actions:
+          - establish_no_delete_zones: "identify code that must never be deleted"
+          - define_modification_limits: "set boundaries for safe modifications"
+          - create_validation_checkpoints: "establish testing points during cleanup"
+          - plan_incremental_approach: "design step-by-step cleanup process"
+
+    decision_gate:
+      condition: "backups_created AND rollback_tested AND constraints_defined"
+      fail_action: "IMPROVE_BACKUP_STRATEGY"
+      success_action: "PROCEED_TO_CLEANUP_EXECUTION"
+
+  # STAGE 3: CONTROLLED CLEANUP EXECUTION (With Panic Detection)
+  - name: controlled_cleanup_execution
+    description: "Execute app cleanup with continuous monitoring and validation"
+    panic_detection: true
+    attempt_limit: 3
+    
+    substages:
+      - name: incremental_cleanup_execution
+        description: "Execute cleanup in small, validated increments"
+        safety_checks:
+          - one_component_at_time: true
+          - validate_after_each_change: true
+          - maintain_rollback_capability: true
+          - monitor_system_health: true
+        
+        actions:
+          - execute_low_risk_cleanup: "start with lowest risk cleanup operations"
+          - validate_each_step: "test functionality after each cleanup operation"
+          - update_import_statements: "fix import statements when files are moved/deleted"
+          - verify_functionality: "confirm functionality preserved at each step"
+      
+      - name: ai_antipattern_remediation
+        description: "Address specific AI coding tool problems"
+        actions:
+          - remove_redundant_functions: "safely remove duplicate/unnecessary functions"
+          - eliminate_custom_auth: "replace custom auth with Frappe built-ins"
+          - replace_external_libraries: "substitute external libs with Frappe utilities"
+          - fix_structural_patterns: "correct AI-generated structural problems"
+          - enforce_frappe_first: "ensure all code follows Frappe-first principles"
+      
+      - name: continuous_validation
+        description: "Continuous validation throughout cleanup process"
+        context_branches:
+          TROUBLESHOOTING:
+            - verify_issue_resolution: "confirm cleanup resolves the original issues"
+            - test_stability_improvement: "ensure cleanup improves system stability"
+          
+          NEW_DEVELOPMENT:
+            - validate_code_quality: "confirm cleanup improves code quality"
+            - test_development_workflow: "ensure development process improved"
+          
+          ENHANCEMENT:
+            - verify_improvements: "confirm cleanup achieves enhancement goals"
+            - test_performance_gains: "measure performance improvements"
+          
+          MIGRATION:
+            - validate_migration_readiness: "confirm cleanup enables migration"
+            - test_compatibility: "ensure compatibility with target environment"
+
+    panic_detection:
+      triggers:
+        - rapid_file_deletion: "more than 5 files deleted in 10 minutes"
+        - functionality_breakdown: "critical functionality failures"
+        - import_error_cascade: "multiple import errors appearing"
+      
+      response:
+        immediate_action: "STOP_ALL_CLEANUP_OPERATIONS"
+        rollback_action: "RESTORE_LAST_WORKING_STATE"
+        escalation: "ALERT_FRAPPE_COMPLIANCE_VALIDATOR"
+
+    decision_gate:
+      condition: "cleanup_executed AND functionality_validated"
+      fail_action: "INCREMENT_ATTEMPT_COUNTER"
+      success_action: "PROCEED_TO_VERIFICATION"
+
+  # STAGE 4: MANDATORY VERIFICATION (Cannot Skip)
+  - name: verification_and_compliance
+    description: "Comprehensive verification of cleanup results and Frappe compliance"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: functionality_verification
+        description: "Verify all functionality preserved and improved"
+        actions:
+          - test_all_doctypes: "verify all DocTypes function correctly"
+          - test_api_endpoints: "confirm all APIs work properly"
+          - validate_workflows: "ensure workflows function correctly"
+          - test_ui_components: "verify frontend functionality"
+      
+      - name: frappe_compliance_verification
+        description: "Independent compliance verification"
+        actions:
+          - request_compliance_review: "frappe-compliance-validator review"
+          - verify_frappe_first_adherence: "confirm Frappe-first principles followed"
+          - validate_framework_compliance: "ensure framework compliance maintained"
+          - address_compliance_issues: "resolve any compliance violations"
+      
+      - name: cleanup_completion
+        description: "Complete cleanup operation and documentation"
+        actions:
+          - finalize_cleanup_log: "complete detailed cleanup documentation"
+          - remove_obsolete_backups: "cleanup temporary backups if successful"
+          - update_app_documentation: "update app documentation reflecting changes"
+          - establish_maintenance_plan: "plan ongoing code quality maintenance"
+
+    decision_gate:
+      condition: "functionality_verified AND compliance_validated"
+      fail_action: "RETURN_TO_CLEANUP_EXECUTION"
+      success_action: "WORKFLOW_COMPLETE"
+
+# FAILURE HANDLING
+failure_handling:
+  third_attempt_failure:
+    action: "STOP_AND_ESCALATE"
+    escalation_target: "frappe-compliance-validator"
+    rollback_required: true
+  
+  panic_mode_triggered:
+    immediate_action: "EMERGENCY_ROLLBACK"
+    rollback_required: true
+    human_intervention: true
+  
+  critical_functionality_lost:
+    action: "IMMEDIATE_ROLLBACK"
+    escalation_target: "testing-specialist"
+    investigation_required: true
+
+# SUCCESS CRITERIA
+success_criteria:
+  - ai_antipatterns_eliminated: true
+  - frappe_first_compliance: true
+  - functionality_preserved: true
+  - code_quality_improved: true
+  - no_critical_dependencies_broken: true
+
+# INTEGRATION POINTS
+integration:
+  prerequisite_workflows: ["universal-context-detection-workflow"]
+  dependent_workflows: ["refactoring-workflow"]
+  notification_targets: ["frappe-compliance-validator", "testing-specialist"]
+  
+# METRICS AND MONITORING
+metrics:
+  track:
+    - cleanup_success_rate
+    - functionality_preservation_rate
+    - antipattern_elimination_count
+    - rollback_frequency
+    - compliance_score_improvement
+  
+  alerts:
+    - functionality_degradation
+    - compliance_violations
+    - panic_mode_activation
+    - rollback_execution

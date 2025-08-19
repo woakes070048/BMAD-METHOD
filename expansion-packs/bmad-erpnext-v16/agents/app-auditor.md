@@ -33,7 +33,47 @@ agent:
   title: ERPNext App Auditor & Validator
   icon: 🔍
   whenToUse: When you need to audit an existing app or validate a new app plan to ensure all components are present and properly configured
-  customization: null
+  customization: |
+    MANDATORY ENFORCEMENT - UNIVERSAL WORKFLOW SYSTEM:
+    
+    LAYER 1 - UNIVERSAL WORKFLOW COMPLIANCE:
+    Before ANY action, I MUST execute the universal-context-detection-workflow:
+    - MANDATORY: Execute universal-context-detection-workflow FIRST
+    - CANNOT SKIP: Context detection and safety initialization 
+    - AUTOMATIC: Context type detection and appropriate information gathering
+    - ENFORCED: Safety protocol activation based on detected context
+    
+    LAYER 2 - AGENT-SPECIFIC SAFETY PROTOCOLS:
+    After universal workflow completion:
+    - FOLLOW assigned workflows: audit-workflow (when created), validation-workflow
+    - RESPECT context-appropriate safety measures established by universal workflow
+    - MAINTAIN session changelog initialized by universal workflow
+    - COMPLY with panic detection and attempt limits set by universal workflow
+    
+    AUDIT-SPECIFIC SAFETY REQUIREMENTS (ALL CONTEXTS): Before ANY audit conclusions:
+    1) Thorough component analysis (no surface-level assessments)
+    2) Root cause analysis for failures (not just symptom reporting)
+    3) Comprehensive validation methodology appropriate to context
+    4) Evidence-based findings with specific remediation steps
+    
+    LAYER 3 - WORKFLOW INTEGRATION:
+    - PRIMARY: Execute audit-workflow after universal workflow
+    - AUDIT: Component-by-component validation through established workflows
+    - VERIFICATION: Subject to cross-verification by frappe-compliance-validator
+    - ESCALATION: Follow escalation paths defined in workflow assignments
+    
+    ACCOUNTABILITY:
+    - Universal workflow establishes session tracking
+    - Audit workflows maintain accountability chain
+    - All audit findings logged through universal changelog system
+    - Performance scored through workflow compliance metrics
+    
+    CRITICAL RULE: NO AUDIT WORK WITHOUT UNIVERSAL WORKFLOW COMPLETION
+    - Must complete universal-context-detection-workflow before any audit work
+    - Cannot bypass context detection and safety initialization
+    - All audit actions tracked through universal session management
+    
+    References: universal-context-detection-workflow.yaml, audit-workflow.yaml, MANDATORY-SAFETY-PROTOCOLS.md
 
 name: app-auditor
 version: 1.0.0

@@ -1,0 +1,304 @@
+# Refactoring Workflow
+# For refactoring-expert agent
+# Based on SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+
+name: refactoring-workflow
+description: Safe code refactoring workflow with comprehensive safety monitoring and rollback capabilities
+version: 1.0.0
+agent_assignments:
+  primary: refactoring-expert
+  support: [erpnext-qa-lead, testing-specialist, diagnostic-specialist]
+  verification: erpnext-qa-lead
+
+# MANDATORY SAFETY INTEGRATION - ENHANCED FOR REFACTORING
+safety_integration:
+  template_base: SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+  context_detection: automatic
+  panic_monitoring: active
+  rollback_capability: mandatory
+  backup_strategy: comprehensive
+
+stages:
+  # STAGE 1: MANDATORY CONTEXT GATHERING (Cannot Skip)
+  - name: context_gathering
+    description: "Determine refactoring context and gather comprehensive information"
+    mandatory: true
+    can_skip: false
+    context_adaptive: true
+    
+    substages:
+      - name: detect_context_type
+        description: "Identify if this is troubleshooting, new development, enhancement, or migration"
+        actions:
+          - determine_context: ["TROUBLESHOOTING", "NEW_DEVELOPMENT", "ENHANCEMENT", "MIGRATION"]
+          - log_context: "echo '## Context: [CONTEXT_TYPE] Refactoring work' >> SESSION-CHANGELOG.md"
+      
+      - name: gather_context_specific_info
+        description: "Collect information appropriate to context type"
+        context_branches:
+          TROUBLESHOOTING:
+            - execute: "pwd && git status && tail -20 ../logs/frappe.log"
+            - analyze: "code issues requiring refactoring, technical debt, performance problems"
+            - document: "current code problems and refactoring requirements"
+          
+          NEW_DEVELOPMENT:
+            - execute: "pwd && git status && ls -la"
+            - analyze: "architectural design, code structure planning, refactoring prevention"
+            - document: "architectural goals and code quality standards"
+          
+          ENHANCEMENT:
+            - execute: "pwd && git status && git diff"
+            - analyze: "current code state, improvement opportunities, refactoring scope"
+            - document: "enhancement goals and refactoring strategy"
+          
+          MIGRATION:
+            - execute: "pwd && git status"
+            - analyze: "source code analysis, target architecture, refactoring requirements"
+            - document: "migration refactoring strategy and code transformation plan"
+
+    decision_gate:
+      condition: "context_gathered AND appropriate_info_collected"
+      fail_action: "RETURN_TO_CONTEXT_GATHERING"
+      success_action: "PROCEED_TO_ANALYSIS"
+
+  # STAGE 2: MANDATORY DEPENDENCY ANALYSIS (Cannot Skip)
+  - name: dependency_analysis
+    description: "Comprehensive analysis of code dependencies and impact"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: code_dependency_mapping
+        description: "Map all code dependencies and relationships"
+        actions:
+          - execute_task: "analyze-app-dependencies.md"
+          - map_imports: "identify all import dependencies"
+          - map_function_calls: "trace function call relationships"
+          - map_doctype_relationships: "analyze DocType field relationships"
+          - map_business_logic: "identify business logic patterns"
+      
+      - name: impact_assessment
+        description: "Assess potential impact of refactoring changes"
+        actions:
+          - identify_affected_components: "list all components that could be affected"
+          - assess_risk_levels: "categorize changes by risk level"
+          - identify_critical_paths: "map business-critical code paths"
+          - estimate_testing_requirements: "plan comprehensive testing strategy"
+      
+      - name: safety_planning
+        description: "Plan comprehensive safety measures"
+        context_branches:
+          TROUBLESHOOTING:
+            - plan_fixes: "safe refactoring approach for bug fixes"
+            - design_rollback: "comprehensive rollback strategy"
+          
+          NEW_DEVELOPMENT:
+            - plan_architecture: "refactoring-resistant architectural patterns"
+            - design_monitoring: "ongoing code quality monitoring"
+          
+          ENHANCEMENT:
+            - plan_improvements: "incremental refactoring strategy"
+            - design_validation: "continuous validation during refactoring"
+          
+          MIGRATION:
+            - plan_transformation: "safe code transformation strategy"
+            - design_verification: "post-refactoring verification plan"
+
+    decision_gate:
+      condition: "dependencies_mapped AND impact_assessed"
+      fail_action: "ESCALATE_TO_ERPNEXT_QA_LEAD"
+      success_action: "PROCEED_TO_PLANNING"
+
+  # STAGE 3: MANDATORY REFACTORING PLANNING (Cannot Skip)
+  - name: refactoring_planning
+    description: "Plan comprehensive refactoring approach with safety measures"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: refactoring_strategy_design
+        description: "Design safe refactoring strategy"
+        actions:
+          - design_incremental_approach: "break refactoring into safe incremental steps"
+          - plan_backup_strategy: "comprehensive backup and versioning plan"
+          - design_testing_strategy: "test-driven refactoring approach"
+          - plan_rollback_points: "strategic rollback checkpoints"
+      
+      - name: validation_planning
+        description: "Plan comprehensive validation at each step"
+        actions:
+          - plan_unit_tests: "unit test coverage for refactored code"
+          - plan_integration_tests: "integration test validation"
+          - plan_regression_tests: "regression test execution"
+          - plan_performance_tests: "performance impact validation"
+      
+      - name: safety_checkpoint_planning
+        description: "Plan safety checkpoints throughout refactoring"
+        actions:
+          - define_validation_gates: "mandatory validation at each step"
+          - plan_progress_checkpoints: "regular progress and safety reviews"
+          - design_panic_detection: "early warning system for refactoring issues"
+          - establish_abort_criteria: "clear criteria for stopping refactoring"
+
+    decision_gate:
+      condition: "refactoring_planned AND safety_measures_designed"
+      fail_action: "REVISE_PLAN"
+      success_action: "PROCEED_TO_IMPLEMENTATION"
+
+  # STAGE 4: CONTROLLED IMPLEMENTATION (With Enhanced Panic Detection)
+  - name: controlled_implementation
+    description: "Execute refactoring with comprehensive safety monitoring"
+    panic_detection: true
+    attempt_limit: 3
+    enhanced_safety: true
+    
+    substages:
+      - name: pre_implementation_setup
+        description: "Comprehensive preparation for refactoring"
+        actions:
+          - initialize_changelog: "create detailed refactoring log"
+          - create_comprehensive_backup: "full backup of current state"
+          - setup_testing_environment: "prepare isolated testing environment"
+          - verify_rollback_capability: "test rollback procedures"
+      
+      - name: incremental_refactoring_execution
+        description: "Execute refactoring in small, safe increments"
+        safety_checks:
+          - one_change_at_time: true
+          - validate_each_change: true
+          - test_after_each_change: true
+          - document_all_changes: true
+        
+        actions:
+          - execute_refactoring_step: "implement one refactoring increment"
+          - run_validation_tests: "execute comprehensive test suite"
+          - check_functionality: "verify business functionality unchanged"
+          - document_progress: "record refactoring progress and results"
+      
+      - name: continuous_validation
+        description: "Continuous validation during refactoring"
+        context_branches:
+          TROUBLESHOOTING:
+            - validate_fixes: "verify issues are resolved without side effects"
+            - test_regression: "ensure no new issues introduced"
+          
+          NEW_DEVELOPMENT:
+            - validate_architecture: "verify architectural integrity"
+            - test_scalability: "ensure scalability requirements met"
+          
+          ENHANCEMENT:
+            - validate_improvements: "verify enhancements achieved"
+            - test_performance: "ensure performance improvements realized"
+          
+          MIGRATION:
+            - validate_transformation: "verify code transformation correctness"
+            - test_compatibility: "ensure target system compatibility"
+
+    panic_detection:
+      triggers:
+        - rapid_changes: "more than 3 refactoring changes in 10 minutes"
+        - test_failures: "test failures in previously passing tests"
+        - functionality_breaks: "business functionality disruption"
+        - dependency_violations: "unexpected dependency errors"
+      
+      response:
+        immediate_action: "STOP_ALL_REFACTORING"
+        rollback_action: "IMMEDIATE_ROLLBACK_TO_LAST_CHECKPOINT"
+        escalation: "ALERT_ERPNEXT_QA_LEAD"
+
+    decision_gate:
+      condition: "refactoring_successful AND all_tests_passing"
+      fail_action: "INCREMENT_ATTEMPT_COUNTER"
+      success_action: "PROCEED_TO_VALIDATION"
+
+  # STAGE 5: MANDATORY COMPREHENSIVE VALIDATION (Cannot Skip)
+  - name: comprehensive_validation
+    description: "Comprehensive validation of refactoring results"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: functionality_verification
+        description: "Verify all functionality remains intact"
+        actions:
+          - run_full_test_suite: "execute complete test suite"
+          - verify_business_logic: "validate business functionality unchanged"
+          - check_performance: "ensure performance not degraded"
+          - validate_integrations: "verify integrations still working"
+      
+      - name: code_quality_verification
+        description: "Verify code quality improvements achieved"
+        actions:
+          - assess_code_quality: "measure code quality improvements"
+          - verify_maintainability: "ensure code is more maintainable"
+          - check_documentation: "verify code documentation updated"
+          - validate_standards: "ensure coding standards compliance"
+      
+      - name: cross_verification
+        description: "Independent verification by QA lead"
+        actions:
+          - request_verification: "erpnext-qa-lead review"
+          - await_confirmation: "independent refactoring assessment"
+          - address_feedback: "resolve any identified issues"
+      
+      - name: documentation_completion
+        description: "Complete refactoring documentation"
+        actions:
+          - finalize_changelog: "complete refactoring change documentation"
+          - generate_refactoring_report: "comprehensive refactoring results"
+          - update_code_documentation: "update technical documentation"
+
+    decision_gate:
+      condition: "functionality_verified AND quality_improved AND documentation_complete"
+      fail_action: "RETURN_TO_REFACTORING_PLANNING"
+      success_action: "WORKFLOW_COMPLETE"
+
+# FAILURE HANDLING - ENHANCED FOR REFACTORING
+failure_handling:
+  third_attempt_failure:
+    action: "STOP_AND_ESCALATE"
+    escalation_target: "erpnext-qa-lead"
+    rollback_required: true
+    documentation_required: true
+  
+  panic_mode_triggered:
+    immediate_action: "EMERGENCY_STOP"
+    rollback_required: true
+    human_intervention: true
+    incident_report: true
+  
+  refactoring_timeout:
+    action: "GRACEFUL_STOP"
+    rollback_to_checkpoint: true
+    documentation_required: true
+    retry_strategy: "manual_review_required"
+
+# SUCCESS CRITERIA
+success_criteria:
+  - all_tests_passing: true
+  - functionality_unchanged: true
+  - code_quality_improved: true
+  - performance_maintained_or_improved: true
+  - documentation_complete: true
+  - cross_verification_passed: true
+
+# INTEGRATION POINTS
+integration:
+  prerequisite_workflows: ["diagnostic-workflow"]
+  dependent_workflows: ["testing-workflow"]
+  notification_targets: ["erpnext-qa-lead", "testing-specialist"]
+  
+# METRICS AND MONITORING
+metrics:
+  track:
+    - refactoring_completion_time
+    - code_quality_improvement
+    - test_coverage_maintenance
+    - panic_mode_incidents
+    - rollback_frequency
+  
+  alerts:
+    - test_failures_during_refactoring
+    - performance_degradation
+    - panic_mode_activation
+    - verification_rejection

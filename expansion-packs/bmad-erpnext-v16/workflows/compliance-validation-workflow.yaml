@@ -1,0 +1,264 @@
+# Compliance Validation Workflow
+# For frappe-compliance-validator agent - CRITICAL: validates the validator itself
+# Based on SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+
+name: compliance-validation-workflow
+description: Self-validating compliance workflow that ensures the validator remains honest and accurate
+version: 1.0.0
+agent_assignments:
+  primary: frappe-compliance-validator
+  support: [erpnext-qa-lead, testing-specialist]
+  verification: erpnext-qa-lead
+
+# MANDATORY SAFETY INTEGRATION
+safety_integration:
+  template_base: SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+  context_detection: automatic
+  panic_monitoring: active
+  rollback_capability: required
+
+stages:
+  # STAGE 1: MANDATORY VALIDATION SCOPE DEFINITION (Cannot Skip)
+  - name: validation_scope_definition
+    description: "Define comprehensive validation scope and standards"
+    mandatory: true
+    can_skip: false
+    context_adaptive: true
+    
+    substages:
+      - name: compliance_standards_establishment
+        description: "Establish current Frappe Framework compliance standards"
+        actions:
+          - review_frappe_documentation: "review latest Frappe Framework standards"
+          - identify_compliance_criteria: "define specific compliance requirements"
+          - establish_validation_metrics: "create measurable compliance indicators"
+          - document_antipattern_catalog: "maintain current antipattern library"
+      
+      - name: validation_target_analysis
+        description: "Analyze what needs validation and why"
+        context_branches:
+          TROUBLESHOOTING:
+            - identify_compliance_violations: "find specific compliance issues causing problems"
+            - analyze_violation_impact: "understand business/technical impact of violations"
+          
+          NEW_DEVELOPMENT:
+            - establish_compliance_baseline: "set compliance standards for new development"
+            - define_validation_checkpoints: "establish validation gates in development"
+          
+          ENHANCEMENT:
+            - assess_current_compliance_state: "evaluate existing compliance level"
+            - identify_improvement_opportunities: "find areas for compliance enhancement"
+          
+          MIGRATION:
+            - analyze_source_compliance: "assess current system compliance"
+            - define_target_compliance_requirements: "establish migration compliance goals"
+      
+      - name: self_validation_setup
+        description: "Establish self-validation mechanisms for the validator"
+        actions:
+          - define_validator_standards: "establish standards for the validator itself"
+          - create_validator_test_cases: "create tests to validate the validator"
+          - establish_cross_validation: "setup independent validation by erpnext-qa-lead"
+          - document_validator_accountability: "record validator decision criteria"
+
+    decision_gate:
+      condition: "scope_defined AND standards_established AND self_validation_ready"
+      fail_action: "CLARIFY_VALIDATION_REQUIREMENTS"
+      success_action: "PROCEED_TO_COMPLIANCE_ANALYSIS"
+
+  # STAGE 2: MANDATORY COMPREHENSIVE COMPLIANCE ANALYSIS (Cannot Skip)
+  - name: comprehensive_compliance_analysis
+    description: "Thorough analysis of compliance state and violations"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: framework_compliance_assessment
+        description: "Assess adherence to Frappe Framework principles"
+        actions:
+          - analyze_frappe_first_adherence: "evaluate Frappe-first principle compliance"
+          - check_framework_utilities_usage: "verify use of Frappe utilities vs external libraries"
+          - validate_api_patterns: "ensure proper @frappe.whitelist() usage"
+          - assess_database_patterns: "verify frappe.db usage vs raw SQL"
+      
+      - name: antipattern_detection
+        description: "Systematic detection of anti-patterns and violations"
+        actions:
+          - scan_for_custom_auth: "detect custom authentication systems"
+          - identify_external_library_misuse: "find inappropriate external library usage"
+          - detect_raw_sql_usage: "identify raw SQL instead of frappe.db"
+          - find_permission_violations: "detect improper permission handling"
+          - identify_structural_antipatterns: "find structural violations"
+      
+      - name: dependency_compliance_verification
+        description: "Verify compliance with dependency management standards"
+        actions:
+          - execute_dependency_analysis: "MANDATORY: run analyze-app-dependencies task"
+          - validate_import_compliance: "ensure proper import patterns"
+          - check_dependency_hierarchy: "verify clean dependency structure"
+          - assess_circular_dependencies: "identify and flag circular dependencies"
+
+    decision_gate:
+      condition: "compliance_analyzed AND antipatterns_identified"
+      fail_action: "IMPROVE_ANALYSIS_METHODOLOGY"
+      success_action: "PROCEED_TO_VALIDATION_EXECUTION"
+
+  # STAGE 3: CONTROLLED VALIDATION EXECUTION (With Panic Detection)
+  - name: controlled_validation_execution
+    description: "Execute validation with self-monitoring and accountability"
+    panic_detection: true
+    attempt_limit: 3
+    
+    substages:
+      - name: systematic_compliance_validation
+        description: "Execute systematic compliance validation"
+        safety_checks:
+          - validate_one_component_at_time: true
+          - cross_reference_findings: true
+          - maintain_evidence_trail: true
+          - avoid_false_positives: true
+        
+        actions:
+          - validate_framework_adherence: "systematically check framework compliance"
+          - verify_antipattern_findings: "confirm antipattern identifications"
+          - assess_compliance_severity: "categorize violations by severity"
+          - document_evidence: "maintain detailed evidence for all findings"
+      
+      - name: self_validation_execution
+        description: "Validate the validator's own work and decisions"
+        actions:
+          - test_validation_accuracy: "verify validation findings are accurate"
+          - check_validation_completeness: "ensure no compliance issues missed"
+          - validate_severity_assessments: "confirm severity ratings are appropriate"
+          - verify_recommendation_quality: "ensure recommendations are actionable"
+      
+      - name: remediation_strategy_development
+        description: "Develop comprehensive remediation strategies"
+        context_branches:
+          TROUBLESHOOTING:
+            - prioritize_critical_fixes: "identify immediate remediation needs"
+            - design_fix_sequence: "plan safe remediation order"
+          
+          NEW_DEVELOPMENT:
+            - establish_compliance_gates: "create prevention mechanisms"
+            - design_compliance_workflow: "integrate compliance into development"
+          
+          ENHANCEMENT:
+            - plan_incremental_improvement: "design phased compliance improvement"
+            - prioritize_enhancement_efforts: "focus on highest impact improvements"
+          
+          MIGRATION:
+            - design_migration_compliance: "plan compliance during migration"
+            - establish_target_compliance: "define post-migration compliance state"
+
+    panic_detection:
+      triggers:
+        - rapid_validation_changes: "frequent changes to validation criteria"
+        - false_positive_spike: "high rate of validation errors being disputed"
+        - validation_contradiction: "conflicting validation results"
+      
+      response:
+        immediate_action: "STOP_VALIDATION_CHANGES"
+        rollback_action: "RESTORE_PREVIOUS_VALIDATION_STATE"
+        escalation: "ALERT_ERPNEXT_QA_LEAD"
+
+    decision_gate:
+      condition: "validation_executed AND self_validated AND strategies_developed"
+      fail_action: "INCREMENT_ATTEMPT_COUNTER"
+      success_action: "PROCEED_TO_CROSS_VERIFICATION"
+
+  # STAGE 4: MANDATORY CROSS-VERIFICATION (Cannot Skip)
+  - name: cross_verification_and_accountability
+    description: "Independent verification of validation results and validator performance"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: independent_qa_verification
+        description: "Independent verification by QA lead"
+        actions:
+          - request_qa_review: "erpnext-qa-lead independent review"
+          - verify_validation_accuracy: "confirm validation findings are correct"
+          - assess_validation_completeness: "ensure comprehensive validation"
+          - validate_remediation_strategies: "confirm remediation plans are sound"
+      
+      - name: validator_performance_assessment
+        description: "Assess validator's own performance and accuracy"
+        actions:
+          - measure_validation_accuracy: "calculate validation accuracy metrics"
+          - assess_false_positive_rate: "measure incorrect violation flags"
+          - evaluate_completeness_rate: "measure missed violations"
+          - validate_improvement_recommendations: "verify recommendation quality"
+      
+      - name: compliance_reporting_and_accountability
+        description: "Complete compliance reporting with full accountability"
+        actions:
+          - generate_compliance_report: "comprehensive compliance assessment report"
+          - document_validator_decisions: "record all validation decisions and rationale"
+          - establish_compliance_tracking: "setup ongoing compliance monitoring"
+          - create_accountability_record: "document validator performance metrics"
+
+    decision_gate:
+      condition: "qa_verified AND performance_assessed AND reporting_complete"
+      fail_action: "RETURN_TO_VALIDATION_EXECUTION"
+      success_action: "WORKFLOW_COMPLETE"
+
+# FAILURE HANDLING
+failure_handling:
+  third_attempt_failure:
+    action: "STOP_AND_ESCALATE"
+    escalation_target: "erpnext-qa-lead"
+    validator_review_required: true
+  
+  panic_mode_triggered:
+    immediate_action: "EMERGENCY_STOP"
+    validator_reset_required: true
+    human_intervention: true
+  
+  validation_accuracy_failure:
+    action: "VALIDATOR_RECALIBRATION"
+    escalation_target: "erpnext-qa-lead"
+    standards_review_required: true
+
+# SUCCESS CRITERIA
+success_criteria:
+  - compliance_thoroughly_assessed: true
+  - validation_accuracy_above_95_percent: true
+  - antipatterns_correctly_identified: true
+  - remediation_strategies_sound: true
+  - validator_performance_validated: true
+
+# INTEGRATION POINTS
+integration:
+  prerequisite_workflows: ["universal-context-detection-workflow"]
+  dependent_workflows: []
+  notification_targets: ["erpnext-qa-lead", "testing-specialist"]
+  
+# VALIDATOR ACCOUNTABILITY METRICS
+validator_accountability:
+  performance_metrics:
+    - validation_accuracy_rate
+    - false_positive_rate
+    - compliance_completeness_rate
+    - remediation_success_rate
+  
+  accountability_measures:
+    - all_decisions_documented
+    - evidence_maintained_for_findings
+    - cross_verification_required
+    - performance_tracking_active
+
+# METRICS AND MONITORING
+metrics:
+  track:
+    - validation_accuracy_percentage
+    - antipattern_detection_rate
+    - false_positive_rate
+    - compliance_improvement_rate
+    - validator_reliability_score
+  
+  alerts:
+    - validation_accuracy_below_threshold
+    - high_false_positive_rate
+    - panic_mode_activation
+    - qa_verification_failure

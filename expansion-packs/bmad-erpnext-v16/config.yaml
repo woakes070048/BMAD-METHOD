@@ -26,7 +26,16 @@ metadata:
     - "Bootstrap 4 (Frappe default)"
     - "Pinia"
   character_theme: "Warehouse 13 & Eureka TV series"
-  total_agents: 31
+  total_agents: 33
+  
+  # UNIVERSAL SAFETY SYSTEM
+  safety_system:
+    universal_workflow_required: true
+    universal_workflow_name: "universal-context-detection-workflow"
+    context_types: ["TROUBLESHOOTING", "NEW_DEVELOPMENT", "ENHANCEMENT", "MIGRATION"]
+    panic_detection: active
+    mandatory_changelog: true
+    attempt_limits: 3
   
 # Slash Commands Configuration
 slash_commands:
@@ -68,28 +77,48 @@ existing_apps:
       status: "active"
     
     # Add your existing custom apps here
-    # Example custom apps:
-    # - name: "your_custom_app"
-    #   type: "custom"
-    #   description: "Your custom app description"
-    #   integration_points:
-    #     - "custom_functionality"
     
-    # Example: Uncomment if you have docflow
-    # - name: "docflow"
-    #   type: "custom"
-    #   description: "Workflow management system"
-    #   integration_points:
-    #     - "workflow_engine"
-    #     - "approval_processes"
+    # DocFlow - Workflow Management System
+    - name: "docflow"
+      type: "custom"
+      description: "Comprehensive document flow and workflow management system"
+      version: "active"
+      integration_points:
+        - "Multi-stage approval workflows"
+        - "Document routing and state management"
+        - "Role-based task assignments"
+        - "Intelligent workload balancing"
+        - "Parallel and sequential processing"
+      supported_features:
+        - "Sales process workflows"
+        - "Purchase approval chains"
+        - "Quality assurance processes"
+        - "Generic approval workflows"
+      agents_aware:
+        - "workflow-specialist"
+        - "bench-operator"
+        - "testing-specialist"
+        - "doctype-designer"
     
-    # Example: Uncomment if you have n8n_integration
+    # Server Manager - If present in your environment
+    # - name: "server_manager"
+    #   type: "custom"
+    #   description: "Server and infrastructure management"
+    #   integration_points:
+    #     - "server_monitoring"
+    #     - "deployment_management"
+    #   validation_required: true
+    #   structure_validator: "app-structure-validator"
+    
+    # n8n Integration - Automation Platform
     # - name: "n8n_integration"
     #   type: "custom"
-    #   description: "Automation and workflow integration"
+    #   description: "Automation and workflow integration with n8n"
     #   integration_points:
     #     - "webhook_triggers"
-    #     - "external_apis"
+    #     - "external_api_integration"
+    #     - "automated_workflows"
+    #     - "data_synchronization"
   
   available:
     - name: "erpnext"
@@ -107,7 +136,7 @@ agents:
     - "api-developer"
     - "workflow-specialist"
     - "testing-specialist"
-    - "vue-frontend-architect"
+    - "vue-spa-architect"
     - "frappe-ui-developer"
     - "api-architect"
     - "pwa-specialist"
@@ -119,7 +148,6 @@ agents:
     - "erpnext-qa-lead"
     - "main-dev-coordinator"
   frontend:
-    - "vue-frontend-architect"
     - "vue-spa-architect"
     - "frappe-ui-developer"
     - "ui-layout-designer"
@@ -154,7 +182,7 @@ agents:
   
 agent_teams:
   modern_app_team:
-    - "vue-frontend-architect"
+    - "vue-spa-architect"
     - "vue-spa-architect"
     - "frappe-ui-developer"
     - "api-architect"
@@ -202,13 +230,13 @@ agent_teams:
   mobile_team:
     - "mobile-ui-specialist"
     - "pwa-specialist"
-    - "vue-frontend-architect"
+    - "vue-spa-architect"
     - "api-architect"
   complete_app_scaffolding_team:
     - "app-scaffold-coordinator"
     - "erpnext-architect"
     - "business-analyst"
-    - "vue-frontend-architect"
+    - "vue-spa-architect"
     - "frappe-ui-developer"
     - "api-architect"
   troubleshooting_team:
@@ -289,6 +317,48 @@ tasks:
     - "pre-deployment-verification.md"
 
 workflows:
+  # UNIVERSAL SAFETY WORKFLOW - MANDATORY FOR ALL AGENTS
+  universal_context_detection:
+    description: "Universal context detection and safety initialization - MANDATORY for all agents"
+    mandatory: true
+    cannot_skip: true
+    stages:
+      - "context_detection"
+      - "context_specific_gathering" 
+      - "safety_initialization"
+    
+  # CORE SAFETY WORKFLOWS
+  structure_validation:
+    description: "App structure validation and compliance checking"
+    agent: "app-structure-validator"
+    prerequisites: ["universal_context_detection"]
+  
+  audit:
+    description: "Comprehensive app auditing and validation"
+    agent: "app-auditor"
+    prerequisites: ["universal_context_detection"]
+  
+  coordination:
+    description: "Multi-agent coordination and task routing"
+    agent: "main-dev-coordinator"
+    prerequisites: ["universal_context_detection"]
+  
+  refactoring:
+    description: "Safe code refactoring with comprehensive safety monitoring"
+    agent: "refactoring-expert"
+    prerequisites: ["universal_context_detection"]
+  
+  documentation:
+    description: "Documentation creation and maintenance"
+    agent: "documentation-specialist"
+    prerequisites: ["universal_context_detection"]
+  
+  diagnostic:
+    description: "Diagnostic and troubleshooting with context-adaptive safety"
+    agent: "diagnostic-specialist"
+    prerequisites: ["universal_context_detection"]
+  
+  # APPLICATION DEVELOPMENT WORKFLOWS
   modern_app_development:
     - "analyze_requirements"
     - "design_architecture"
@@ -399,7 +469,7 @@ data:
     - "frappe-ui-components.md"
     - "frappe-ui-patterns.md"
     - "vue-spa-patterns.md"
-    - "vue-frontend-architecture.md"
+    - "vue-spa-architecture.md"
     - "pegas-starter-guide.md"
     - "api-whitelisting-guide.md"
     - "pwa-implementation.md"
@@ -460,29 +530,64 @@ checklists:
 
 integration:
   existing_systems:
-    # CUSTOMIZE: Uncomment and modify if you have docflow
-    # docflow:
-    #   description: "Workflow management system"
-    #   integration_points:
-    #     - "Use docflow for complex approval processes"
-    #     - "Leverage existing workflow templates"
-    #     - "Maintain compatibility with docflow APIs"
-    #   considerations:
-    #     - "Check docflow version compatibility"
-    #     - "Test workflow triggers"
-    #     - "Validate data flow between systems"
+    # DocFlow Integration - ACTIVE
+    docflow:
+      description: "Comprehensive workflow management system with document flow capabilities"
+      status: "active"
+      integration_points:
+        - "Use docflow for complex multi-stage approval processes"
+        - "Leverage existing workflow templates (sales, purchase, QA)"
+        - "Maintain compatibility with docflow APIs"
+        - "Intelligent user assignment with workload balancing"
+        - "Automatic stage execution and state management"
+      supported_workflows:
+        - "Sales process (Lead → Opportunity → Quotation → Order)"
+        - "Purchase approval chains with multi-level authorization"
+        - "Quality assurance and testing workflows"
+        - "Generic approval processes with escalation"
+      considerations:
+        - "Check docflow version compatibility before updates"
+        - "Test workflow triggers after app changes"
+        - "Validate data flow between DocFlow and DocTypes"
+        - "Monitor workflow performance and completion times"
+        - "Ensure proper permissions for workflow stages"
+      best_practices:
+        - "Use workflow-specialist agent for DocFlow tasks"
+        - "Run integrate-docflow.md task for new integrations"
+        - "Test with testing-specialist for multi-app compatibility"
+        - "Monitor with DocFlow dashboard components"
     
-    # CUSTOMIZE: Uncomment and modify if you have n8n_integration
+    # Server Manager Integration - If present
+    # server_manager:
+    #   description: "Server and infrastructure management application"
+    #   status: "requires_validation"
+    #   integration_points:
+    #     - "Server monitoring and management"
+    #     - "Deployment automation"
+    #     - "Infrastructure as code"
+    #   validation_requirements:
+    #     - "Use app-structure-validator (Eva Thorne) before changes"
+    #     - "Run validate-app-structure.md task"
+    #     - "Check for import violations and anti-patterns"
+    #     - "Ensure naming convention compliance"
+    #   considerations:
+    #     - "Historical structural issues require extra validation"
+    #     - "Use enforcement tasks to maintain compliance"
+    #     - "Monitor for anti-patterns continuously"
+    
+    # n8n Integration - Automation Platform
     # n8n_integration:
-    #   description: "Automation platform integration"
+    #   description: "Automation platform integration with n8n workflows"
     #   integration_points:
     #     - "Webhook triggers for external systems"
     #     - "Automated data synchronization"
-    #     - "Event-driven processes"
+    #     - "Event-driven process automation"
+    #     - "External API integrations"
     #   considerations:
-    #     - "Test webhook endpoints"
+    #     - "Test webhook endpoints thoroughly"
     #     - "Validate n8n workflow configurations"
     #     - "Check authentication and security"
+    #     - "Monitor API rate limits"
   
   migration_capabilities:
     n8n_workflows:

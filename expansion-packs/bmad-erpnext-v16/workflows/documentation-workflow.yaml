@@ -1,0 +1,299 @@
+# Documentation Workflow
+# For documentation-specialist agent
+# Based on SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+
+name: documentation-workflow
+description: Comprehensive documentation creation and maintenance workflow with context-adaptive safety
+version: 1.0.0
+agent_assignments:
+  primary: documentation-specialist
+  support: [erpnext-architect, business-analyst, erpnext-product-owner]
+  verification: erpnext-product-owner
+
+# MANDATORY SAFETY INTEGRATION
+safety_integration:
+  template_base: SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+  context_detection: automatic
+  panic_monitoring: active
+  rollback_capability: required
+
+stages:
+  # STAGE 1: MANDATORY CONTEXT GATHERING (Cannot Skip)
+  - name: context_gathering
+    description: "Determine documentation context and gather appropriate information"
+    mandatory: true
+    can_skip: false
+    context_adaptive: true
+    
+    substages:
+      - name: detect_context_type
+        description: "Identify if this is troubleshooting, new development, enhancement, or migration"
+        actions:
+          - determine_context: ["TROUBLESHOOTING", "NEW_DEVELOPMENT", "ENHANCEMENT", "MIGRATION"]
+          - log_context: "echo '## Context: [CONTEXT_TYPE] Documentation work' >> SESSION-CHANGELOG.md"
+      
+      - name: gather_context_specific_info
+        description: "Collect information appropriate to context type"
+        context_branches:
+          TROUBLESHOOTING:
+            - execute: "pwd && git status && tail -20 ../logs/frappe.log"
+            - analyze: "documentation gaps causing user issues, missing troubleshooting guides"
+            - document: "current documentation problems and user pain points"
+          
+          NEW_DEVELOPMENT:
+            - execute: "pwd && git status && ls -la"
+            - analyze: "new features requiring documentation, architecture documentation needs"
+            - document: "documentation requirements and target audience"
+          
+          ENHANCEMENT:
+            - execute: "pwd && git status && git diff"
+            - analyze: "existing documentation needing updates, improvement opportunities"
+            - document: "documentation enhancement goals and scope"
+          
+          MIGRATION:
+            - execute: "pwd && git status"
+            - analyze: "documentation requiring migration, format changes, platform updates"
+            - document: "migration documentation strategy and preservation plan"
+
+    decision_gate:
+      condition: "context_gathered AND appropriate_info_collected"
+      fail_action: "RETURN_TO_CONTEXT_GATHERING"
+      success_action: "PROCEED_TO_ANALYSIS"
+
+  # STAGE 2: MANDATORY CONTENT ANALYSIS (Cannot Skip)
+  - name: content_analysis
+    description: "Analyze content requirements and documentation scope"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: audience_analysis
+        description: "Identify target audience and their needs"
+        actions:
+          - identify_users: "determine primary and secondary audiences"
+          - assess_skill_levels: "understand technical expertise levels"
+          - map_use_cases: "identify primary use cases and scenarios"
+          - determine_formats: "select appropriate documentation formats"
+      
+      - name: content_scope_analysis
+        description: "Define documentation scope and requirements"
+        actions:
+          - inventory_existing: "catalog existing documentation"
+          - identify_gaps: "determine missing documentation"
+          - prioritize_content: "rank content by importance and urgency"
+          - estimate_effort: "assess time and resource requirements"
+      
+      - name: quality_requirements_analysis
+        description: "Define quality standards and success criteria"
+        context_branches:
+          TROUBLESHOOTING:
+            - analyze: "documentation quality issues, user confusion points"
+            - document: "specific quality problems and improvement targets"
+          
+          NEW_DEVELOPMENT:
+            - analyze: "quality standards for new documentation, consistency requirements"
+            - document: "quality goals and measurement criteria"
+          
+          ENHANCEMENT:
+            - analyze: "current quality state, improvement opportunities"
+            - document: "quality enhancement strategy and targets"
+          
+          MIGRATION:
+            - analyze: "source quality assessment, target quality requirements"
+            - document: "quality preservation and improvement plan"
+
+    decision_gate:
+      condition: "audience_identified AND scope_defined AND quality_requirements_clear"
+      fail_action: "ESCALATE_TO_BUSINESS_ANALYST"
+      success_action: "PROCEED_TO_PLANNING"
+
+  # STAGE 3: MANDATORY DOCUMENTATION PLANNING (Cannot Skip)
+  - name: documentation_planning
+    description: "Plan comprehensive documentation approach"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: content_strategy_design
+        description: "Design overall content strategy"
+        actions:
+          - design_information_architecture: "organize content structure"
+          - plan_content_types: "select appropriate content formats"
+          - design_user_journeys: "map user paths through documentation"
+          - plan_maintenance_strategy: "ongoing update and maintenance approach"
+      
+      - name: creation_approach_planning
+        description: "Plan content creation methodology"
+        context_branches:
+          TROUBLESHOOTING:
+            - plan_fixes: "documentation repair and gap-filling strategy"
+            - design_rollback: "content rollback and version control"
+          
+          NEW_DEVELOPMENT:
+            - plan_creation: "new content development approach"
+            - design_review: "content review and approval process"
+          
+          ENHANCEMENT:
+            - plan_improvements: "content enhancement roadmap"
+            - design_migration: "safe transition to improved content"
+          
+          MIGRATION:
+            - plan_conversion: "content transformation strategy"
+            - design_validation: "post-migration content verification"
+      
+      - name: quality_assurance_planning
+        description: "Plan quality assurance approach"
+        actions:
+          - design_review_process: "content review and approval workflow"
+          - plan_testing_approach: "user testing and feedback collection"
+          - establish_quality_metrics: "measurable quality indicators"
+          - design_maintenance_plan: "ongoing quality maintenance"
+
+    decision_gate:
+      condition: "strategy_designed AND approach_planned AND quality_assured"
+      fail_action: "REVISE_PLAN"
+      success_action: "PROCEED_TO_IMPLEMENTATION"
+
+  # STAGE 4: CONTROLLED IMPLEMENTATION (With Panic Detection)
+  - name: controlled_implementation
+    description: "Execute documentation plan with safety monitoring"
+    panic_detection: true
+    attempt_limit: 3
+    
+    substages:
+      - name: pre_implementation_setup
+        description: "Prepare for documentation creation"
+        actions:
+          - initialize_changelog: "create detailed documentation log"
+          - backup_existing_content: "preserve existing documentation"
+          - setup_collaboration_tools: "prepare review and feedback tools"
+          - verify_access_and_tools: "ensure all required tools are available"
+      
+      - name: content_creation_execution
+        description: "Execute planned content creation"
+        safety_checks:
+          - one_section_at_time: true
+          - validate_each_section: true
+          - collect_feedback_regularly: true
+          - document_all_changes: true
+        
+        actions:
+          - create_content_incrementally: "build content in planned increments"
+          - collect_stakeholder_feedback: "gather feedback at regular intervals"
+          - validate_against_requirements: "verify content meets requirements"
+          - maintain_quality_standards: "ensure consistent quality"
+      
+      - name: content_validation
+        description: "Validate created content"
+        context_branches:
+          TROUBLESHOOTING:
+            - validate_fixes: "verify documentation issues are resolved"
+            - test_user_scenarios: "ensure user problems are addressed"
+          
+          NEW_DEVELOPMENT:
+            - validate_completeness: "verify all requirements are covered"
+            - test_user_journeys: "ensure documentation supports user goals"
+          
+          ENHANCEMENT:
+            - validate_improvements: "verify enhancements are achieved"
+            - test_usability: "ensure improved user experience"
+          
+          MIGRATION:
+            - validate_transformation: "verify content migration correctness"
+            - test_functionality: "ensure all features are documented"
+
+    panic_detection:
+      triggers:
+        - rapid_changes: "more than 5 content changes in 10 minutes"
+        - quality_degradation: "quality metrics falling below threshold"
+        - stakeholder_conflicts: "conflicting feedback from stakeholders"
+      
+      response:
+        immediate_action: "STOP_ALL_CONTENT_CREATION"
+        rollback_action: "RESTORE_PREVIOUS_VERSION"
+        escalation: "ALERT_ERPNEXT_PRODUCT_OWNER"
+
+    decision_gate:
+      condition: "content_created AND validated AND stakeholders_satisfied"
+      fail_action: "INCREMENT_ATTEMPT_COUNTER"
+      success_action: "PROCEED_TO_VALIDATION"
+
+  # STAGE 5: MANDATORY VALIDATION (Cannot Skip)
+  - name: validation_and_verification
+    description: "Comprehensive validation of documentation results"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: user_validation
+        description: "Validate documentation with target users"
+        actions:
+          - conduct_user_testing: "test documentation with real users"
+          - collect_user_feedback: "gather comprehensive user feedback"
+          - measure_success_metrics: "evaluate against success criteria"
+          - identify_remaining_gaps: "find any outstanding issues"
+      
+      - name: cross_verification
+        description: "Independent verification by product owner"
+        actions:
+          - request_verification: "erpnext-product-owner review"
+          - await_confirmation: "independent quality assessment"
+          - address_feedback: "resolve any identified issues"
+      
+      - name: documentation_completion
+        description: "Complete documentation delivery"
+        actions:
+          - finalize_changelog: "complete documentation change log"
+          - generate_delivery_report: "comprehensive delivery documentation"
+          - establish_maintenance_plan: "ongoing maintenance procedures"
+
+    decision_gate:
+      condition: "user_validated AND cross_verified AND delivered"
+      fail_action: "RETURN_TO_CONTENT_CREATION"
+      success_action: "WORKFLOW_COMPLETE"
+
+# FAILURE HANDLING
+failure_handling:
+  third_attempt_failure:
+    action: "STOP_AND_ESCALATE"
+    escalation_target: "erpnext-product-owner"
+    documentation_required: true
+  
+  panic_mode_triggered:
+    immediate_action: "EMERGENCY_STOP"
+    rollback_required: true
+    human_intervention: true
+  
+  documentation_timeout:
+    action: "GRACEFUL_STOP"
+    documentation_required: true
+    retry_strategy: "manual_review_required"
+
+# SUCCESS CRITERIA
+success_criteria:
+  - user_satisfaction_above_85_percent: true
+  - all_requirements_covered: true
+  - quality_standards_met: true
+  - maintenance_plan_established: true
+  - cross_verification_passed: true
+
+# INTEGRATION POINTS
+integration:
+  prerequisite_workflows: []
+  dependent_workflows: ["user-training-workflow"]
+  notification_targets: ["erpnext-product-owner", "business-analyst"]
+  
+# METRICS AND MONITORING
+metrics:
+  track:
+    - documentation_completion_time
+    - user_satisfaction_score
+    - content_quality_metrics
+    - panic_mode_incidents
+    - maintenance_frequency
+  
+  alerts:
+    - user_satisfaction_below_threshold
+    - quality_metrics_degradation
+    - panic_mode_activation
+    - verification_rejection

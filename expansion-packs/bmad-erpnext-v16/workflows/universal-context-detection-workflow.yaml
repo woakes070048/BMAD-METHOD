@@ -1,0 +1,291 @@
+# Universal Context Detection Workflow
+# MANDATORY for ALL agents before any work begins
+# Based on SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+
+name: universal-context-detection-workflow
+description: Universal context detection and safety initialization workflow that ALL agents must execute before any work
+version: 1.0.0
+agent_assignments:
+  primary: ANY_AGENT
+  support: []
+  verification: self
+
+# MANDATORY FOR ALL AGENTS
+universal_application: true
+cannot_skip: true
+prerequisite_for_all_work: true
+
+# SAFETY INTEGRATION
+safety_integration:
+  template_base: SAFETY-FIRST-WORKFLOW-TEMPLATE.yaml
+  context_detection: automatic
+  panic_monitoring: active
+  rollback_capability: required
+
+stages:
+  # STAGE 1: MANDATORY CONTEXT DETECTION (Cannot Skip)
+  - name: context_detection
+    description: "Universal context type detection for all agents"
+    mandatory: true
+    can_skip: false
+    universal: true
+    
+    substages:
+      - name: detect_work_context
+        description: "Automatically detect the type of work being requested"
+        actions:
+          - analyze_user_request: "examine user input for context indicators"
+          - check_system_state: "assess current system state"
+          - determine_context_type: ["TROUBLESHOOTING", "NEW_DEVELOPMENT", "ENHANCEMENT", "MIGRATION"]
+        
+        context_indicators:
+          TROUBLESHOOTING:
+            keywords: ["error", "broken", "issue", "problem", "failure", "debug", "fix", "not working"]
+            system_state: ["error logs present", "failed processes", "broken functionality"]
+          
+          NEW_DEVELOPMENT:
+            keywords: ["create", "new", "build", "develop", "design", "implement", "from scratch"]
+            system_state: ["clean environment", "planning phase", "no existing implementation"]
+          
+          ENHANCEMENT:
+            keywords: ["improve", "enhance", "optimize", "upgrade", "modify", "add feature"]
+            system_state: ["existing working code", "improvement opportunities", "enhancement requests"]
+          
+          MIGRATION:
+            keywords: ["migrate", "convert", "transform", "port", "upgrade", "move"]
+            system_state: ["source system present", "target system requirements", "conversion needs"]
+      
+      - name: log_detected_context
+        description: "Log the detected context for session tracking"
+        actions:
+          - create_session_log: "echo '## Context Detection: [CONTEXT_TYPE] - $(date)' >> SESSION-CHANGELOG.md"
+          - document_indicators: "echo 'Detected indicators: [indicators]' >> SESSION-CHANGELOG.md"
+          - log_reasoning: "echo 'Context reasoning: [reasoning]' >> SESSION-CHANGELOG.md"
+
+    decision_gate:
+      condition: "context_detected AND logged"
+      fail_action: "REQUEST_USER_CLARIFICATION"
+      success_action: "PROCEED_TO_CONTEXT_GATHERING"
+
+  # STAGE 2: CONTEXT-SPECIFIC GATHERING (Cannot Skip)
+  - name: context_specific_gathering
+    description: "Gather information appropriate to detected context"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: execute_context_commands
+        description: "Execute commands appropriate to detected context"
+        context_branches:
+          TROUBLESHOOTING:
+            commands:
+              - "pwd && echo 'Working directory confirmed'"
+              - "git status && echo 'Git status checked'"
+              - "tail -20 ../logs/frappe.log && echo 'Recent logs reviewed'"
+              - "echo 'TROUBLESHOOTING context - error analysis mode active'"
+            gather:
+              - "current error state"
+              - "recent system changes"
+              - "failure patterns"
+              - "working vs broken functionality"
+          
+          NEW_DEVELOPMENT:
+            commands:
+              - "pwd && echo 'Working directory confirmed'"
+              - "git status && echo 'Git status checked'"
+              - "ls -la && echo 'Directory structure reviewed'"
+              - "echo 'NEW_DEVELOPMENT context - creation mode active'"
+            gather:
+              - "project requirements"
+              - "available resources"
+              - "architectural constraints"
+              - "success criteria"
+          
+          ENHANCEMENT:
+            commands:
+              - "pwd && echo 'Working directory confirmed'"
+              - "git status && echo 'Git status checked'"
+              - "git diff && echo 'Current changes reviewed'"
+              - "echo 'ENHANCEMENT context - improvement mode active'"
+            gather:
+              - "current implementation state"
+              - "improvement opportunities"
+              - "impact assessment"
+              - "backwards compatibility requirements"
+          
+          MIGRATION:
+            commands:
+              - "pwd && echo 'Working directory confirmed'"
+              - "git status && echo 'Git status checked'"
+              - "echo 'MIGRATION context - transformation mode active'"
+            gather:
+              - "source system analysis"
+              - "target system requirements"
+              - "transformation strategy"
+              - "validation approach"
+      
+      - name: verify_capability
+        description: "Verify agent has capability for detected context"
+        actions:
+          - check_tools: "verify required tools are available"
+          - check_permissions: "verify required permissions"
+          - check_knowledge: "verify agent has context-appropriate knowledge"
+          - plan_rollback: "establish rollback strategy appropriate to context"
+
+    decision_gate:
+      condition: "context_info_gathered AND capability_verified"
+      fail_action: "ESCALATE_MISSING_CAPABILITY"
+      success_action: "PROCEED_TO_SAFETY_INITIALIZATION"
+
+  # STAGE 3: FRAPPE-FIRST VALIDATION (Cannot Skip) 
+  - name: frappe_first_validation
+    description: "Ensure all code will use Frappe built-in features ONLY"
+    mandatory: true
+    can_skip: false
+    universal: true
+    
+    substages:
+      - name: load_frappe_patterns
+        description: "Load and enforce Frappe-first patterns"
+        actions:
+          - load_workflow: "frappe-first-validation-workflow.yaml"
+          - validate_imports: "Check no external libraries will be used"
+          - enforce_frappe_apis: "Ensure all APIs will use @frappe.whitelist"
+          - verify_frappe_methods: "Confirm Frappe built-in methods will be used"
+      
+      - name: validate_frappe_usage
+        description: "Validate Frappe features will be used correctly"
+        validations:
+          database: "frappe.get_doc(), frappe.get_all() - NOT raw SQL"
+          background_jobs: "frappe.enqueue() - NOT celery/threading"  
+          caching: "frappe.cache() - NOT redis directly"
+          http_requests: "frappe.make_get_request() - NOT import requests"
+          email: "frappe.sendmail() - NOT smtplib"
+          authentication: "frappe.session - NOT JWT"
+          scheduling: "hooks.py scheduler_events - NOT cron/apscheduler"
+          logging: "frappe.log_error() - NOT import logging"
+          datetime: "frappe.utils date functions - NOT datetime module"
+          realtime: "frappe.publish_realtime() - NOT websocket/socketio"
+          templates: "frappe.render_template() - NOT jinja2 directly"
+          pdf: "frappe.utils.get_pdf() - NOT reportlab/pdfkit"
+          translation: "frappe._() - NOT gettext/babel"
+          testing: "frappe.tests.utils.FrappeTestCase - NOT unittest"
+          files: "File DocType - NOT direct file operations"
+          request_data: "frappe.form_dict - NOT flask.request"
+      
+      - name: set_frappe_first_rules
+        description: "Set mandatory Frappe-first rules for session"
+        rules:
+          - "BLOCK any import requests → use frappe.make_get_request()"
+          - "BLOCK any import redis → use frappe.cache()"
+          - "BLOCK any import celery → use frappe.enqueue()"
+          - "BLOCK any import jwt → use frappe.session"
+          - "BLOCK any import logging → use frappe.log_error()"
+          - "BLOCK any import websocket/socketio → use frappe.publish_realtime()"
+          - "BLOCK any import jinja2 → use frappe.render_template()"
+          - "BLOCK any import reportlab/pdfkit → use frappe.utils.get_pdf()"
+          - "BLOCK any import gettext/babel → use frappe._()"
+          - "BLOCK any import unittest/pytest → use frappe.tests.utils.FrappeTestCase"
+          - "BLOCK any flask.request → use frappe.form_dict"
+          - "REQUIRE @frappe.whitelist() on ALL APIs"
+          - "REQUIRE frappe.has_permission() checks"
+    
+    decision_gate:
+      condition: "frappe_first_rules_active AND no_external_libraries"
+      fail_action: "CANNOT_PROCEED_NON_FRAPPE_PATTERNS"
+      success_action: "PROCEED_TO_SAFETY_INITIALIZATION"
+
+  # STAGE 4: SAFETY PROTOCOL INITIALIZATION (Cannot Skip)
+  - name: safety_initialization
+    description: "Initialize safety protocols appropriate to context"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: initialize_safety_measures
+        description: "Set up context-appropriate safety measures"
+        actions:
+          - initialize_changelog: "create SESSION-CHANGELOG-$(date +%Y%m%d-%H%M%S).md"
+          - setup_panic_detection: "activate panic mode detection"
+          - establish_attempt_tracking: "initialize attempt counter at 0"
+          - create_checkpoint: "create restoration point if applicable"
+      
+      - name: document_safety_plan
+        description: "Document safety approach for this context"
+        context_branches:
+          TROUBLESHOOTING:
+            safety_focus:
+              - "Root cause analysis before fixes"
+              - "One change at a time"
+              - "Comprehensive rollback capability"
+              - "Impact assessment before changes"
+          
+          NEW_DEVELOPMENT:
+            safety_focus:
+              - "Requirements validation before implementation"
+              - "Incremental development approach"
+              - "Continuous validation"
+              - "Documentation as you go"
+          
+          ENHANCEMENT:
+            safety_focus:
+              - "Impact assessment before changes"
+              - "Backwards compatibility preservation"
+              - "Incremental improvement approach"
+              - "Regression testing"
+          
+          MIGRATION:
+            safety_focus:
+              - "Source preservation"
+              - "Incremental transformation"
+              - "Continuous validation"
+              - "Fallback strategy"
+      
+      - name: activate_monitoring
+        description: "Activate appropriate monitoring for context"
+        actions:
+          - enable_panic_detection: "context-appropriate panic triggers"
+          - setup_progress_tracking: "milestone-based progress tracking"
+          - establish_escalation: "clear escalation paths"
+
+    decision_gate:
+      condition: "safety_initialized AND monitoring_active"
+      fail_action: "CANNOT_PROCEED_SAFELY"
+      success_action: "CONTEXT_DETECTION_COMPLETE"
+
+# FAILURE HANDLING
+failure_handling:
+  context_detection_failure:
+    action: "REQUEST_USER_CLARIFICATION"
+    message: "Unable to automatically detect context. Please specify: TROUBLESHOOTING, NEW_DEVELOPMENT, ENHANCEMENT, or MIGRATION"
+  
+  capability_missing:
+    action: "ESCALATE_TO_COORDINATOR"
+    message: "Agent lacks required capability for detected context"
+  
+  safety_initialization_failure:
+    action: "CANNOT_PROCEED"
+    message: "Unable to establish safe working environment"
+
+# SUCCESS CRITERIA
+success_criteria:
+  - context_type_detected: true
+  - appropriate_info_gathered: true
+  - safety_protocols_active: true
+  - monitoring_established: true
+  - agent_capability_verified: true
+
+# OUTPUT FOR OTHER WORKFLOWS
+workflow_outputs:
+  - detected_context_type: "TROUBLESHOOTING|NEW_DEVELOPMENT|ENHANCEMENT|MIGRATION"
+  - gathered_context_info: "context-specific information collected"
+  - safety_status: "safety protocols initialized and active"
+  - session_id: "unique session identifier for tracking"
+  - changelog_file: "path to session changelog file"
+
+# INTEGRATION REQUIREMENTS
+integration:
+  prerequisite_workflows: []
+  must_execute_before: ["ALL_OTHER_WORKFLOWS"]
+  cannot_be_skipped: true
+  universal_application: true
