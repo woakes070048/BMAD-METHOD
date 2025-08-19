@@ -1,0 +1,566 @@
+# Frappe UI Component Template
+
+# Component Metadata
+component:
+  name: ""              # PascalCase component name (e.g., CustomerCard)
+  category: ""          # Category: form, display, navigation, feedback, layout
+  description: ""       # Brief description of component purpose
+  version: "1.0.0"      # Component version
+  author: ""            # Component author/maintainer
+  created_date: ""      # Creation date (YYYY-MM-DD)
+  
+# Design Specifications
+design:
+  purpose: ""           # Primary purpose and use case
+  target_users: []      # Target user types (admin, user, customer)
+  accessibility_level: "WCAG-AA"  # Accessibility compliance level
+  
+  # Visual Design
+  visual:
+    primary_color: ""   # Primary color (CSS variable or hex)
+    accent_color: ""    # Accent color
+    background: ""      # Background treatment
+    typography: ""      # Typography specifications
+    spacing: ""         # Spacing/padding specifications
+    border_radius: ""   # Border radius specifications
+    
+  # Component Sizes
+  sizes:
+    small:
+      width: ""         # Small variant width
+      height: ""        # Small variant height
+      padding: ""       # Small variant padding
+    medium:
+      width: ""         # Medium variant width
+      height: ""        # Medium variant height
+      padding: ""       # Medium variant padding
+    large:
+      width: ""         # Large variant width
+      height: ""        # Large variant height
+      padding: ""       # Large variant padding
+
+# Props Interface
+props:
+  - name: ""            # Prop name (camelCase)
+    type: ""            # Type: String, Number, Boolean, Array, Object, Function
+    required: false     # Is prop required
+    default: ""         # Default value
+    description: ""     # Prop description
+    validation: ""      # Validation rules or pattern
+    examples: []        # Example values
+    
+  # Add more props as needed
+
+# Events Interface  
+events:
+  - name: ""            # Event name (kebab-case)
+    description: ""     # Event description
+    payload: ""         # Payload type/structure
+    when: ""            # When event is triggered
+    examples: []        # Example event payloads
+
+# Slots Interface
+slots:
+  - name: ""            # Slot name
+    description: ""     # Slot description
+    scope: {}           # Scoped slot props
+    fallback: ""        # Fallback content description
+    examples: []        # Example slot usage
+
+# Component States
+states:
+  default:
+    description: ""     # Default state description
+    appearance: ""      # Visual appearance
+    behavior: ""        # Behavior description
+    
+  hover:
+    description: ""     # Hover state description
+    appearance: ""      # Visual changes on hover
+    transition: ""      # Transition specifications
+    
+  active:
+    description: ""     # Active/pressed state
+    appearance: ""      # Visual changes when active
+    transition: ""      # Transition specifications
+    
+  disabled:
+    description: ""     # Disabled state description
+    appearance: ""      # Visual appearance when disabled
+    behavior: ""        # Behavior when disabled
+    
+  loading:
+    description: ""     # Loading state description
+    appearance: ""      # Loading state appearance
+    behavior: ""        # Behavior during loading
+    
+  error:
+    description: ""     # Error state description
+    appearance: ""      # Error state appearance
+    behavior: ""        # Error state behavior
+
+# Implementation Template
+implementation:
+  template: |
+    <template>
+      <div 
+        :class="componentClasses"
+        :aria-label="ariaLabel"
+        :aria-disabled="disabled"
+        @click="handleClick"
+        @keydown="handleKeydown"
+      >
+        <!-- Header slot -->
+        <div v-if="$slots.header" class="component-header">
+          <slot name="header" />
+        </div>
+        
+        <!-- Default content -->
+        <div class="component-content">
+          <slot />
+        </div>
+        
+        <!-- Footer slot -->
+        <div v-if="$slots.footer" class="component-footer">
+          <slot name="footer" />
+        </div>
+      </div>
+    </template>
+
+  script: |
+    <script setup>
+    import { computed, ref } from 'vue'
+    
+    // Props definition
+    const props = defineProps({
+      // Define props based on props interface above
+      variant: {
+        type: String,
+        default: 'default',
+        validator: (value) => ['default', 'primary', 'secondary'].includes(value)
+      },
+      size: {
+        type: String,
+        default: 'medium',
+        validator: (value) => ['small', 'medium', 'large'].includes(value)
+      },
+      disabled: {
+        type: Boolean,
+        default: false
+      },
+      loading: {
+        type: Boolean,
+        default: false
+      }
+    })
+    
+    // Events definition
+    const emit = defineEmits([
+      'click',
+      'change', 
+      'update:modelValue'
+    ])
+    
+    // Local state
+    const isActive = ref(false)
+    const hasError = ref(false)
+    
+    // Computed properties
+    const componentClasses = computed(() => {
+      return [
+        'component-base',
+        `component-${props.variant}`,
+        `component-${props.size}`,
+        {
+          'component-disabled': props.disabled,
+          'component-loading': props.loading,
+          'component-active': isActive.value,
+          'component-error': hasError.value
+        }
+      ]
+    })
+    
+    const ariaLabel = computed(() => {
+      // Compute accessible label
+      return props.ariaLabel || props.label || 'Component'
+    })
+    
+    // Methods
+    function handleClick(event) {
+      if (props.disabled || props.loading) return
+      
+      isActive.value = true
+      emit('click', event)
+      
+      // Reset active state after animation
+      setTimeout(() => {
+        isActive.value = false
+      }, 150)
+    }
+    
+    function handleKeydown(event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault()
+        handleClick(event)
+      }
+    }
+    
+    // Expose public methods
+    defineExpose({
+      focus: () => {
+        // Focus implementation
+      },
+      blur: () => {
+        // Blur implementation
+      }
+    })
+    </script>
+
+  styles: |
+    <style scoped>
+    .component-base {
+      /* Base component styles */
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      background-color: var(--background-color);
+      color: var(--text-color);
+      font-family: var(--font-family);
+      font-weight: var(--font-weight);
+      line-height: var(--line-height);
+      cursor: pointer;
+      transition: all var(--transition-duration) var(--transition-timing);
+      user-select: none;
+      
+      /* Focus styles */
+      &:focus {
+        outline: 2px solid var(--focus-color);
+        outline-offset: 2px;
+      }
+      
+      /* Hover styles */
+      &:hover:not(.component-disabled) {
+        background-color: var(--background-hover);
+        border-color: var(--border-hover);
+        transform: translateY(-1px);
+      }
+      
+      /* Active styles */
+      &.component-active {
+        transform: translateY(0);
+        background-color: var(--background-active);
+      }
+    }
+    
+    /* Size variants */
+    .component-small {
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--text-sm);
+      min-height: 2rem;
+    }
+    
+    .component-medium {
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--text-base);
+      min-height: 2.5rem;
+    }
+    
+    .component-large {
+      padding: var(--space-4) var(--space-6);
+      font-size: var(--text-lg);
+      min-height: 3rem;
+    }
+    
+    /* Variant styles */
+    .component-primary {
+      background-color: var(--primary-500);
+      border-color: var(--primary-500);
+      color: white;
+      
+      &:hover:not(.component-disabled) {
+        background-color: var(--primary-600);
+        border-color: var(--primary-600);
+      }
+    }
+    
+    .component-secondary {
+      background-color: var(--gray-100);
+      border-color: var(--gray-300);
+      color: var(--gray-700);
+      
+      &:hover:not(.component-disabled) {
+        background-color: var(--gray-200);
+        border-color: var(--gray-400);
+      }
+    }
+    
+    /* State styles */
+    .component-disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    
+    .component-loading {
+      cursor: wait;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        border: 2px solid transparent;
+        border-top: 2px solid currentColor;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+    }
+    
+    .component-error {
+      border-color: var(--danger-500);
+      background-color: var(--danger-50);
+      color: var(--danger-700);
+    }
+    
+    /* Animations */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Content sections */
+    .component-header {
+      margin-bottom: var(--space-2);
+    }
+    
+    .component-content {
+      flex: 1;
+    }
+    
+    .component-footer {
+      margin-top: var(--space-2);
+    }
+    </style>
+
+# Usage Examples
+usage_examples:
+  basic: |
+    <!-- Basic usage -->
+    <ComponentName>
+      Default content
+    </ComponentName>
+    
+  with_props: |
+    <!-- With props -->
+    <ComponentName
+      variant="primary"
+      size="large"
+      :disabled="isDisabled"
+      @click="handleAction"
+    >
+      Click me
+    </ComponentName>
+    
+  with_slots: |
+    <!-- With slots -->
+    <ComponentName variant="secondary">
+      <template #header>
+        <h3>Component Title</h3>
+      </template>
+      
+      <p>Main content goes here</p>
+      
+      <template #footer>
+        <small>Footer content</small>
+      </template>
+    </ComponentName>
+    
+  advanced: |
+    <!-- Advanced usage with v-model -->
+    <ComponentName
+      v-model="formValue"
+      variant="primary"
+      size="medium"
+      :loading="isLoading"
+      :error="validationError"
+      @change="handleChange"
+      @update:modelValue="updateValue"
+    >
+      <template #error="{ error }">
+        <span class="error-message">{{ error }}</span>
+      </template>
+    </ComponentName>
+
+# Testing Specifications
+testing:
+  unit_tests:
+    - description: "Renders with default props"
+      test_case: |
+        it('renders with default props', () => {
+          const wrapper = mount(ComponentName)
+          expect(wrapper.exists()).toBe(true)
+          expect(wrapper.classes()).toContain('component-base')
+          expect(wrapper.classes()).toContain('component-medium')
+        })
+        
+    - description: "Emits click event when clicked"
+      test_case: |
+        it('emits click event when clicked', async () => {
+          const wrapper = mount(ComponentName)
+          await wrapper.trigger('click')
+          expect(wrapper.emitted()).toHaveProperty('click')
+        })
+        
+    - description: "Applies disabled state correctly"
+      test_case: |
+        it('applies disabled state correctly', () => {
+          const wrapper = mount(ComponentName, {
+            props: { disabled: true }
+          })
+          expect(wrapper.classes()).toContain('component-disabled')
+          expect(wrapper.attributes('aria-disabled')).toBe('true')
+        })
+  
+  accessibility_tests:
+    - description: "Has proper ARIA attributes"
+      test_case: |
+        it('has proper ARIA attributes', () => {
+          const wrapper = mount(ComponentName, {
+            props: { ariaLabel: 'Test Component' }
+          })
+          expect(wrapper.attributes('aria-label')).toBe('Test Component')
+        })
+        
+    - description: "Supports keyboard navigation"
+      test_case: |
+        it('supports keyboard navigation', async () => {
+          const wrapper = mount(ComponentName)
+          await wrapper.trigger('keydown', { key: 'Enter' })
+          expect(wrapper.emitted()).toHaveProperty('click')
+        })
+
+# Documentation Requirements
+documentation:
+  readme_sections:
+    - "Installation and import instructions"
+    - "Basic usage examples"
+    - "Props API reference"
+    - "Events API reference"
+    - "Slots API reference"
+    - "Styling and customization"
+    - "Accessibility features"
+    - "Browser support"
+    
+  code_comments:
+    - "Document complex logic"
+    - "Explain accessibility implementations"
+    - "Document performance considerations"
+    - "Explain browser compatibility workarounds"
+    
+  examples:
+    - "Interactive Storybook stories"
+    - "CodePen/CodeSandbox demos"
+    - "Real-world usage scenarios"
+    - "Integration examples"
+
+# Performance Considerations
+performance:
+  bundle_size:
+    target: "< 5KB gzipped"
+    dependencies: []
+    
+  runtime:
+    rendering: "Should render in < 16ms"
+    interactions: "Should respond in < 100ms"
+    
+  optimization:
+    - "Use CSS-only animations where possible"
+    - "Implement virtual scrolling for large lists"
+    - "Lazy load heavy dependencies"
+    - "Use computed properties for expensive calculations"
+
+# Browser Support
+browser_support:
+  target_browsers:
+    - "Chrome >= 90"
+    - "Firefox >= 88"
+    - "Safari >= 14"
+    - "Edge >= 90"
+    
+  fallbacks:
+    - "CSS custom properties with fallbacks"
+    - "Progressive enhancement for advanced features"
+    - "Polyfills for missing APIs"
+
+# Maintenance
+maintenance:
+  versioning: "Semantic versioning (semver)"
+  changelog: "Maintain detailed changelog"
+  breaking_changes: "Document breaking changes with migration guide"
+  deprecation_policy: "6-month deprecation notice"
+  
+  review_schedule:
+    - "Monthly dependency updates"
+    - "Quarterly accessibility audits"
+    - "Bi-annual design review"
+    - "Annual API review"
+
+# Integration Points
+integration:
+  frappe_ui_library:
+    compatibility: "Compatible with frappe-ui v0.1.171+"
+    dependencies: []
+    peer_dependencies: ["vue@^3.0.0"]
+    
+  frappe_framework:
+    hooks: []
+    permissions: []
+    translations: true
+    
+  erpnext:
+    doctypes: []
+    custom_fields: []
+    workflows: []
+
+# Checklist
+checklist:
+  design:
+    - [ ] Component purpose clearly defined
+    - [ ] Design specifications documented
+    - [ ] Accessibility requirements identified
+    - [ ] Brand guidelines followed
+    
+  implementation:
+    - [ ] Vue 3 Composition API used
+    - [ ] TypeScript definitions provided
+    - [ ] Proper prop validation
+    - [ ] Event handling implemented
+    - [ ] Keyboard accessibility support
+    - [ ] Screen reader support
+    
+  testing:
+    - [ ] Unit tests written and passing
+    - [ ] Accessibility tests included
+    - [ ] Visual regression tests
+    - [ ] Cross-browser testing
+    
+  documentation:
+    - [ ] API documentation complete
+    - [ ] Usage examples provided
+    - [ ] Accessibility features documented
+    - [ ] Migration guide (if applicable)
+    
+  performance:
+    - [ ] Bundle size optimized
+    - [ ] Runtime performance tested
+    - [ ] Memory leaks checked
+    - [ ] Lazy loading implemented (if applicable)
+    
+  release:
+    - [ ] Version number updated
+    - [ ] Changelog updated
+    - [ ] Breaking changes documented
+    - [ ] Backward compatibility maintained

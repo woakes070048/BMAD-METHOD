@@ -4,7 +4,7 @@ short-title: ERPNext v16 Native Vue Builder
 description: >-
   Complete BMAD expansion pack for building modern ERPNext v16 apps with native Vue integration.
   Includes Vue 3 with Frappe's asset pipeline, native PWA support, and comprehensive migration tools.
-  Features 31 specialized AI agents with Warehouse 13 & Eureka character names.
+  Features 33 specialized AI agents with Warehouse 13 & Eureka character names.
 author: BMAD Team
 slashPrefix: bmadErpNext
 
@@ -61,13 +61,13 @@ environment:
   bench_path: "/home/frappe/frappe-bench"
   
   # Default site name (update for your environment)
-  primary_site: "prima-erpnext.pegashosting.com"
+  primary_site: "your-site.localhost"
   
   # Update this to your user (usually 'frappe' or your system user)
   user: "frappe"
   
   # Update this to your development directory
-  development_directory: "/home/frappe/frappe-bench/apps/ai_employee"
+  development_directory: "/home/frappe/frappe-bench/apps/your_custom_app"
   
 # UPDATE THIS SECTION WITH YOUR EXISTING APPS
 existing_apps:
@@ -76,29 +76,39 @@ existing_apps:
       version: "16.0.0"  # Update with your version
       status: "active"
     
-    # Add your existing custom apps here
+    - name: "erpnext"
+      version: "16.0.0"  # Update with your version
+      status: "active"
     
-    # DocFlow - Workflow Management System
-    - name: "docflow"
-      type: "custom"
-      description: "Comprehensive document flow and workflow management system"
-      version: "active"
-      integration_points:
-        - "Multi-stage approval workflows"
-        - "Document routing and state management"
-        - "Role-based task assignments"
-        - "Intelligent workload balancing"
-        - "Parallel and sequential processing"
-      supported_features:
-        - "Sales process workflows"
-        - "Purchase approval chains"
-        - "Quality assurance processes"
-        - "Generic approval workflows"
-      agents_aware:
-        - "workflow-specialist"
-        - "bench-operator"
-        - "testing-specialist"
-        - "doctype-designer"
+    # Add your existing custom apps here
+    # Example:
+    # - name: "your_custom_app"
+    #   type: "custom"
+    #   description: "Your custom application description"
+    #   version: "1.0.0"
+    #   status: "active"
+    
+    # DocFlow - Workflow Management System (uncomment if you have it)
+    # - name: "docflow"
+    #   type: "custom"
+    #   description: "Comprehensive document flow and workflow management system"
+    #   version: "active"
+    #   integration_points:
+    #     - "Multi-stage approval workflows"
+    #     - "Document routing and state management"
+    #     - "Role-based task assignments"
+    #     - "Intelligent workload balancing"
+    #     - "Parallel and sequential processing"
+    #   supported_features:
+    #     - "Sales process workflows"
+    #     - "Purchase approval chains"
+    #     - "Quality assurance processes"
+    #     - "Generic approval workflows"
+    #   agents_aware:
+    #     - "workflow-specialist"
+    #     - "bench-operator"
+    #     - "testing-specialist"
+    #     - "doctype-designer"
     
     # Server Manager - If present in your environment
     # - name: "server_manager"
@@ -158,6 +168,7 @@ agents:
     - "api-developer"
     - "doctype-designer"
     - "data-integration-expert"
+    - "workspace-architect"
   business_analysis:
     - "business-analyst"
     - "n8n-workflow-analyst"
@@ -172,17 +183,23 @@ agents:
     - "business-analyst"
   utilities:
     - "jinja-template-specialist"
+    - "app-scaffold-coordinator"
+    - "erpnext-app-cleaner"
   compliance:
     - "frappe-compliance-validator"
+    - "app-structure-validator"
   debugging:
     - "diagnostic-specialist"
     - "refactoring-expert"
   documentation:
     - "documentation-specialist"
+  auditing:
+    - "app-auditor"
+  orchestration:
+    - "bmad-orchestrator"
   
 agent_teams:
   modern_app_team:
-    - "vue-spa-architect"
     - "vue-spa-architect"
     - "frappe-ui-developer"
     - "api-architect"
@@ -522,40 +539,36 @@ checklists:
   integration:
     - "multi-app-compatibility.md"
   validation:
-    - "validation-automation-guide.md"
-  recovery:
-    - "recovery-procedures.md"
-  validation_automation:
-    - "validation-automation-guide.md"
+    - "code-change-preflight-checklist.md"
 
 integration:
   existing_systems:
-    # DocFlow Integration - ACTIVE
-    docflow:
-      description: "Comprehensive workflow management system with document flow capabilities"
-      status: "active"
-      integration_points:
-        - "Use docflow for complex multi-stage approval processes"
-        - "Leverage existing workflow templates (sales, purchase, QA)"
-        - "Maintain compatibility with docflow APIs"
-        - "Intelligent user assignment with workload balancing"
-        - "Automatic stage execution and state management"
-      supported_workflows:
-        - "Sales process (Lead → Opportunity → Quotation → Order)"
-        - "Purchase approval chains with multi-level authorization"
-        - "Quality assurance and testing workflows"
-        - "Generic approval processes with escalation"
-      considerations:
-        - "Check docflow version compatibility before updates"
-        - "Test workflow triggers after app changes"
-        - "Validate data flow between DocFlow and DocTypes"
-        - "Monitor workflow performance and completion times"
-        - "Ensure proper permissions for workflow stages"
-      best_practices:
-        - "Use workflow-specialist agent for DocFlow tasks"
-        - "Run integrate-docflow.md task for new integrations"
-        - "Test with testing-specialist for multi-app compatibility"
-        - "Monitor with DocFlow dashboard components"
+    # DocFlow Integration - EXAMPLE (uncomment if you have DocFlow)
+    # docflow:
+    #   description: "Comprehensive workflow management system with document flow capabilities"
+    #   status: "active"
+    #   integration_points:
+    #     - "Use docflow for complex multi-stage approval processes"
+    #     - "Leverage existing workflow templates (sales, purchase, QA)"
+    #     - "Maintain compatibility with docflow APIs"
+    #     - "Intelligent user assignment with workload balancing"
+    #     - "Automatic stage execution and state management"
+    #   supported_workflows:
+    #     - "Sales process (Lead → Opportunity → Quotation → Order)"
+    #     - "Purchase approval chains with multi-level authorization"
+    #     - "Quality assurance and testing workflows"
+    #     - "Generic approval processes with escalation"
+    #   considerations:
+    #     - "Check docflow version compatibility before updates"
+    #     - "Test workflow triggers after app changes"
+    #     - "Validate data flow between DocFlow and DocTypes"
+    #     - "Monitor workflow performance and completion times"
+    #     - "Ensure proper permissions for workflow stages"
+    #   best_practices:
+    #     - "Use workflow-specialist agent for DocFlow tasks"
+    #     - "Run integrate-docflow.md task for new integrations"
+    #     - "Test with testing-specialist for multi-app compatibility"
+    #     - "Monitor with DocFlow dashboard components"
     
     # Server Manager Integration - If present
     # server_manager:

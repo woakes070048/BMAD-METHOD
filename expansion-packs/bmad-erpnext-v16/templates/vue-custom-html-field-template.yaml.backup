@@ -1,0 +1,524 @@
+name: "vue-custom-html-field-template"
+title: "Vue in Custom HTML Fields"
+description: "Template for embedding Vue components in DocType HTML fields for dynamic UI elements"
+version: "1.0.0"
+
+parameters:
+  doctype_name:
+    type: "string"
+    required: true
+    description: "DocType name (PascalCase)"
+  field_name:
+    type: "string"
+    required: true
+    description: "HTML field name"
+  component_type:
+    type: "string"
+    required: true
+    description: "Type of component (dashboard|chart|kanban|custom)"
+
+templates:
+  simple_html_field_vue: |
+    // For simple Vue components in HTML fields
+    // Add this to DocType's client script or [doctype].js file
+    
+    frappe.ui.form.on('{{doctype_name}}', {
+      refresh: function(frm) {
+        // Render Vue component in HTML field
+        render_{{field_name}}_component(frm);
+      }
+    });
+
+    function render_{{field_name}}_component(frm) {
+      // Get the HTML field wrapper
+      const field = frm.fields_dict.{{field_name}};
+      if (!field) return;
+      
+      // Set the HTML content with mount point
+      field.$wrapper.html(`
+        <div id="{{field_name}}-app" class="custom-vue-field">
+          <div class="text-center text-muted">Loading...</div>
+        </div>
+      `);
+      
+      // Create inline Vue component (no separate bundle needed)
+      const { createApp } = Vue;
+      
+      const app = createApp({
+        template: `
+          <div class="{{field_name}}-component">
+            <div class="frappe-card">
+              <div class="card-body">
+                <h5>{{ title }}</h5>
+                <div class="row mt-3">
+                  <div class="col-md-3" v-for="stat in stats" :key="stat.label">
+                    <div class="stat-card">
+                      <div class="stat-label">{{ stat.label }}</div>
+                      <div class="stat-value">{{ stat.value }}</div>
+                    </div>
+                  </div>
+                </div>
+                <button 
+                  class="btn btn-sm btn-primary mt-3"
+                  @click="refreshData"
+                >
+                  {{ __('Refresh') }}
+                </button>
+              </div>
+            </div>
+          </div>
+        `,
+        data() {
+          return {
+            title: '{{field_name|title}}',
+            stats: [],
+            loading: false
+          }
+        },
+        methods: {
+          async loadData() {
+            this.loading = true;
+            try {
+              const response = await frappe.call({
+                method: 'frappe.client.get_list',
+                args: {
+                  doctype: 'Sales Order',
+                  filters: { customer: frm.doc.name },
+                  fields: ['name', 'grand_total', 'status'],
+                  limit: 5
+                }
+              });
+              
+              // Process data for display
+              this.processData(response.message);
+            } catch (error) {
+              frappe.msgprint(__('Error loading data'));
+            } finally {
+              this.loading = false;
+            }
+          },
+          
+          processData(data) {
+            // Calculate statistics
+            const total = data.reduce((sum, d) => sum + d.grand_total, 0);
+            
+            this.stats = [
+              { label: __('Total Orders'), value: data.length },
+              { label: __('Total Amount'), value: frappe.format(total, {fieldtype: 'Currency'}) },
+              { label: __('Average'), value: frappe.format(total/data.length || 0, {fieldtype: 'Currency'}) }
+            ];
+          },
+          
+          refreshData() {
+            frappe.show_alert(__('Refreshing...'));
+            this.loadData();
+          },
+          
+          // Make __ available in template
+          __: window.__
+        },
+        mounted() {
+          this.loadData();
+        }
+      });
+      
+      // Mount the app
+      app.mount('#{{field_name}}-app');
+      
+      // Store reference for cleanup
+      frm.{{field_name}}_vue = app;
+    }
+
+  advanced_dashboard_component: |
+    // For more complex dashboards with charts
+    frappe.ui.form.on('{{doctype_name}}', {
+      refresh: function(frm) {
+        if (frm.fields_dict.{{field_name}}) {
+          render_advanced_dashboard(frm);
+        }
+      }
+    });
+
+    function render_advanced_dashboard(frm) {
+      const wrapper = frm.fields_dict.{{field_name}}.$wrapper[0];
+      
+      // Clear and set HTML structure
+      wrapper.innerHTML = `
+        <div id="dashboard-app">
+          <div class="dashboard-container">
+            <div class="dashboard-header">
+              <h4>${__('Analytics Dashboard')}</h4>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div id="chart1"></div>
+              </div>
+              <div class="col-md-4">
+                <div id="chart2"></div>
+              </div>
+              <div class="col-md-4">
+                <div id="stats"></div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <div id="timeline"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Initialize Vue with charts
+      const { createApp, ref, onMounted } = Vue;
+      
+      const DashboardApp = {
+        setup() {
+          const chartData = ref(null);
+          const stats = ref([]);
+          const loading = ref(false);
+          
+          const loadDashboardData = async () => {
+            loading.value = true;
+            try {
+              // Fetch multiple data sources
+              const [salesData, statsData] = await Promise.all([
+                frappe.call({
+                  method: 'app.api.get_sales_data',
+                  args: { customer: frm.doc.name }
+                }),
+                frappe.call({
+                  method: 'app.api.get_customer_stats',
+                  args: { customer: frm.doc.name }
+                })
+              ]);
+              
+              // Render charts
+              renderCharts(salesData.message);
+              stats.value = statsData.message;
+              
+            } catch (error) {
+              frappe.throw(__('Failed to load dashboard data'));
+            } finally {
+              loading.value = false;
+            }
+          };
+          
+          const renderCharts = (data) => {
+            // Render using Frappe Charts
+            new frappe.Chart('#chart1', {
+              data: data.chart1,
+              type: 'line',
+              height: 250,
+              colors: ['#7cd6fd']
+            });
+            
+            new frappe.Chart('#chart2', {
+              data: data.chart2,
+              type: 'pie',
+              height: 250
+            });
+          };
+          
+          onMounted(() => {
+            loadDashboardData();
+            
+            // Auto-refresh every 30 seconds
+            setInterval(loadDashboardData, 30000);
+          });
+          
+          return {
+            chartData,
+            stats,
+            loading
+          };
+        },
+        template: `
+          <div v-if="loading" class="text-center p-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        `
+      };
+      
+      const app = createApp(DashboardApp);
+      app.mount('#dashboard-app');
+      
+      // Store for cleanup
+      frm.dashboard_vue = app;
+    }
+
+  inline_kanban_board: |
+    // Inline Kanban board in HTML field
+    frappe.ui.form.on('{{doctype_name}}', {
+      refresh: function(frm) {
+        render_kanban_board(frm);
+      },
+      
+      onload_post_render: function(frm) {
+        // Setup drag and drop after render
+        setup_kanban_interactions(frm);
+      }
+    });
+
+    function render_kanban_board(frm) {
+      const wrapper = frm.fields_dict.{{field_name}}.$wrapper[0];
+      
+      wrapper.innerHTML = '<div id="kanban-board"></div>';
+      
+      const { createApp, ref, reactive } = Vue;
+      
+      const KanbanBoard = {
+        setup() {
+          const columns = ref([
+            { id: 'todo', title: 'To Do', items: [] },
+            { id: 'progress', title: 'In Progress', items: [] },
+            { id: 'done', title: 'Done', items: [] }
+          ]);
+          
+          const loadTasks = async () => {
+            const response = await frappe.call({
+              method: 'frappe.client.get_list',
+              args: {
+                doctype: 'Task',
+                filters: { project: frm.doc.name },
+                fields: ['name', 'subject', 'status', 'priority']
+              }
+            });
+            
+            // Distribute tasks to columns
+            response.message.forEach(task => {
+              const column = getColumnByStatus(task.status);
+              column.items.push(task);
+            });
+          };
+          
+          const getColumnByStatus = (status) => {
+            const map = {
+              'Open': columns.value[0],
+              'Working': columns.value[1],
+              'Completed': columns.value[2]
+            };
+            return map[status] || columns.value[0];
+          };
+          
+          const moveTask = async (taskId, newStatus) => {
+            await frappe.call({
+              method: 'frappe.client.set_value',
+              args: {
+                doctype: 'Task',
+                name: taskId,
+                fieldname: 'status',
+                value: newStatus
+              }
+            });
+            
+            frappe.show_alert({
+              message: __('Task moved'),
+              indicator: 'green'
+            });
+          };
+          
+          return {
+            columns,
+            loadTasks,
+            moveTask
+          };
+        },
+        template: `
+          <div class="kanban-board">
+            <div class="kanban-columns">
+              <div 
+                v-for="column in columns" 
+                :key="column.id"
+                class="kanban-column"
+              >
+                <div class="column-header">
+                  <h5>{{ column.title }}</h5>
+                  <span class="badge badge-secondary">{{ column.items.length }}</span>
+                </div>
+                <div class="column-items">
+                  <div 
+                    v-for="item in column.items"
+                    :key="item.name"
+                    class="kanban-item"
+                    draggable="true"
+                    @dragstart="onDragStart($event, item)"
+                    @drop="onDrop($event, column.id)"
+                    @dragover.prevent
+                  >
+                    <div class="item-title">{{ item.subject }}</div>
+                    <div class="item-meta">
+                      <span class="badge" :class="getPriorityClass(item.priority)">
+                        {{ item.priority }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        methods: {
+          onDragStart(e, item) {
+            e.dataTransfer.setData('taskId', item.name);
+          },
+          
+          onDrop(e, columnId) {
+            const taskId = e.dataTransfer.getData('taskId');
+            const statusMap = {
+              'todo': 'Open',
+              'progress': 'Working',
+              'done': 'Completed'
+            };
+            this.moveTask(taskId, statusMap[columnId]);
+          },
+          
+          getPriorityClass(priority) {
+            const classes = {
+              'High': 'badge-danger',
+              'Medium': 'badge-warning',
+              'Low': 'badge-info'
+            };
+            return classes[priority] || 'badge-secondary';
+          }
+        },
+        mounted() {
+          this.loadTasks();
+        }
+      };
+      
+      const app = createApp(KanbanBoard);
+      app.mount('#kanban-board');
+      
+      frm.kanban_vue = app;
+    }
+
+  styles: |
+    <style>
+    /* Add to your app's CSS or in a style tag */
+    .custom-vue-field {
+      padding: 15px;
+    }
+    
+    .stat-card {
+      background: var(--fg-color);
+      padding: 15px;
+      border-radius: 4px;
+      text-align: center;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .dashboard-container {
+      padding: 20px;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+    }
+    
+    .kanban-board {
+      padding: 15px;
+    }
+    
+    .kanban-columns {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .kanban-column {
+      flex: 1;
+      background: var(--fg-color);
+      border-radius: 4px;
+      padding: 10px;
+      min-height: 400px;
+    }
+    
+    .column-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 2px solid var(--border-color);
+      margin-bottom: 10px;
+    }
+    
+    .kanban-item {
+      background: white;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 4px;
+      cursor: move;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .kanban-item:hover {
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
+    
+    .item-title {
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    
+    .item-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    </style>
+
+instructions:
+  setup: |
+    1. Add HTML field to DocType:
+       ```json
+       {
+         "fieldname": "{{field_name}}",
+         "fieldtype": "HTML",
+         "label": "{{field_name|title}}"
+       }
+       ```
+    
+    2. Add client script code to:
+       - DocType's [doctype].js file, OR
+       - Client Script DocType (via UI), OR
+       - Custom app's public/js/[doctype].js
+    
+    3. For inline Vue (no build needed):
+       - Use Vue global from CDN or Frappe
+       - Write component directly in JavaScript
+    
+    4. For complex components:
+       - Create .bundle.js files
+       - Build with bench build
+    
+    5. Clear cache and test:
+       ```bash
+       bench --site [site-name] clear-cache
+       ```
+
+notes:
+  - HTML fields can contain full Vue apps
+  - Access to frm object and all DocType data
+  - Can update DocType fields from Vue
+  - Real-time updates possible
+  - No separate frontend needed!
+  - Works in Form view, not List view
+
+use_cases:
+  - Custom dashboards in forms
+  - Interactive charts and visualizations
+  - Kanban boards for related items
+  - Timeline views
+  - Custom workflows UI
+  - Real-time status monitors

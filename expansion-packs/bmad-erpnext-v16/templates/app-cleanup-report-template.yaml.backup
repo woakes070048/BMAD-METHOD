@@ -1,0 +1,380 @@
+name: "app-cleanup-report-template"
+title: "ERPNext App Cleanup Report Template"
+description: "Comprehensive template for documenting app cleanup operations, changes made, and validation results"
+version: "1.0.0"
+
+parameters:
+  app_name:
+    type: "string"
+    required: true
+    description: "Name of the ERPNext app that was cleaned"
+  cleanup_date:
+    type: "string"
+    required: true
+    description: "Date when cleanup was performed"
+  agent_version:
+    type: "string"
+    required: false
+    description: "Version of the cleanup agent used"
+    default: "1.0.0"
+
+templates:
+  executive_summary: |
+    # {{app_name}} Code Cleanup Report
+    
+    **Date:** {{cleanup_date}}
+    **App:** {{app_name}}
+    **Cleanup Agent:** ERPNext App Cleaner v{{agent_version}}
+    **Status:** {{cleanup_status}}
+    
+    ## Executive Summary
+    
+    This report documents the comprehensive cleanup performed on the {{app_name}} ERPNext application to address AI-generated code issues, redundant functions, unnecessary files, and compliance violations.
+    
+    ### Key Metrics
+    - **Files Removed:** {{files_removed_count}}
+    - **Files Modified:** {{files_modified_count}}
+    - **Functions Consolidated:** {{functions_consolidated_count}}
+    - **Import Issues Fixed:** {{import_issues_fixed_count}}
+    - **Code Quality Score:** {{quality_score_before}}% → {{quality_score_after}}%
+    - **Cleanup Duration:** {{cleanup_duration}}
+    
+    ### Critical Issues Resolved
+    {{critical_issues_resolved}}
+    
+    ### Safety Measures
+    - ✅ Full application backup created
+    - ✅ Dependency analysis completed before changes
+    - ✅ Individual file backups for all modifications
+    - ✅ Import dependencies validated and fixed
+    - ✅ Comprehensive functionality testing performed
+    - ✅ Complete rollback capability ensured
+
+  detailed_analysis: |
+    ## Detailed Analysis
+    
+    ### Anti-Patterns Detected and Fixed
+    
+    #### External Library Violations
+    {{external_library_issues}}
+    
+    #### Custom Authentication/Permission Issues
+    {{custom_auth_issues}}
+    
+    #### Direct SQL Usage
+    {{direct_sql_issues}}
+    
+    #### Code Structure Problems
+    {{structure_issues}}
+    
+    ### Files Processed
+    
+    #### Removed Files
+    {{removed_files_list}}
+    
+    #### Modified Files
+    {{modified_files_list}}
+    
+    #### Functions Consolidated
+    {{consolidated_functions_list}}
+
+  before_after_comparison: |
+    ## Before/After Comparison
+    
+    ### Code Metrics
+    | Metric | Before | After | Improvement |
+    |--------|--------|-------|-------------|
+    | Total Files | {{files_before}} | {{files_after}} | {{files_reduction}}% |
+    | Lines of Code | {{loc_before}} | {{loc_after}} | {{loc_reduction}}% |
+    | Functions | {{functions_before}} | {{functions_after}} | {{functions_reduction}}% |
+    | External Dependencies | {{deps_before}} | {{deps_after}} | {{deps_reduction}}% |
+    | Duplicate Code Blocks | {{duplicates_before}} | {{duplicates_after}} | {{duplicates_reduction}}% |
+    
+    ### Quality Metrics
+    | Category | Before Score | After Score | Improvement |
+    |----------|--------------|-------------|-------------|
+    | Frappe Compliance | {{frappe_score_before}}% | {{frappe_score_after}}% | +{{frappe_improvement}}% |
+    | Code Organization | {{org_score_before}}% | {{org_score_after}}% | +{{org_improvement}}% |
+    | Security Practices | {{security_score_before}}% | {{security_score_after}}% | +{{security_improvement}}% |
+    | Performance | {{perf_score_before}}% | {{perf_score_after}}% | +{{perf_improvement}}% |
+    
+    ### Risk Reduction
+    - **Security Vulnerabilities:** {{security_before}} → {{security_after}}
+    - **Maintenance Complexity:** {{complexity_before}} → {{complexity_after}}
+    - **Dependency Fragility:** {{dependency_risk_before}} → {{dependency_risk_after}}
+
+  cleanup_operations: |
+    ## Cleanup Operations Performed
+    
+    ### Phase 1: Safe File Removal
+    {{safe_file_operations}}
+    
+    ### Phase 2: Function Consolidation
+    {{function_consolidation_operations}}
+    
+    ### Phase 3: Import Dependency Updates
+    {{import_fix_operations}}
+    
+    ### Phase 4: Functionality Verification
+    {{verification_operations}}
+    
+    ## Technical Details
+    
+    ### Dependency Analysis Results
+    ```
+    {{dependency_analysis_summary}}
+    ```
+    
+    ### Import Changes Made
+    ```
+    {{import_changes_summary}}
+    ```
+    
+    ### Function Consolidation Details
+    ```
+    {{function_consolidation_details}}
+    ```
+
+  testing_validation: |
+    ## Testing and Validation
+    
+    ### Pre-Cleanup Testing
+    {{pre_cleanup_tests}}
+    
+    ### Post-Cleanup Validation
+    {{post_cleanup_validation}}
+    
+    ### DocType Functionality Tests
+    {{doctype_tests}}
+    
+    ### API Endpoint Tests
+    {{api_tests}}
+    
+    ### Workflow Tests
+    {{workflow_tests}}
+    
+    ### Performance Tests
+    {{performance_tests}}
+    
+    ## Validation Results
+    
+    | Test Category | Status | Details |
+    |---------------|--------|---------|
+    | DocType Operations | {{doctype_status}} | {{doctype_details}} |
+    | API Endpoints | {{api_status}} | {{api_details}} |
+    | Workflows | {{workflow_status}} | {{workflow_details}} |
+    | Reports | {{report_status}} | {{report_details}} |
+    | Import/Export | {{import_export_status}} | {{import_export_details}} |
+    | Performance | {{performance_status}} | {{performance_details}} |
+
+  rollback_instructions: |
+    ## Rollback Instructions
+    
+    If any issues are detected after cleanup, follow these procedures:
+    
+    ### 1. Full Application Rollback
+    ```bash
+    # Stop the application
+    bench stop
+    
+    # Remove current app
+    rm -rf /home/frappe/frappe-bench/apps/{{app_name}}
+    
+    # Restore from backup
+    cp -r {{backup_location}}/{{app_name}} /home/frappe/frappe-bench/apps/
+    
+    # Restart and migrate
+    bench start
+    bench --site {{site_name}} migrate
+    ```
+    
+    ### 2. Individual File Rollback
+    ```bash
+    # Each modified file has a backup with timestamp
+    # Example rollback commands:
+    {{individual_rollback_commands}}
+    ```
+    
+    ### 3. Import Dependency Rollback
+    ```bash
+    # If import issues arise, restore original imports:
+    {{import_rollback_commands}}
+    ```
+    
+    ### 4. Function Rollback
+    ```bash
+    # Restore consolidated functions if needed:
+    {{function_rollback_commands}}
+    ```
+    
+    ### Emergency Contacts
+    - **Primary:** Development Team Lead
+    - **Secondary:** System Administrator
+    - **Escalation:** Technical Director
+
+  maintenance_recommendations: |
+    ## Maintenance Recommendations
+    
+    ### Immediate Actions (Next 24-48 Hours)
+    1. **Monitor Application Performance**
+       - Watch for any unexpected errors
+       - Monitor response times
+       - Check error logs regularly
+    
+    2. **Validate Critical Workflows**
+       - Test all primary business processes
+       - Verify data integrity
+       - Check integrations
+    
+    3. **User Acceptance Testing**
+       - Have key users test functionality
+       - Document any issues found
+       - Address problems immediately
+    
+    ### Short-term Actions (Next 1-2 Weeks)
+    1. **Comprehensive Testing**
+       - Run full test suite
+       - Test edge cases
+       - Verify all reports and exports
+    
+    2. **Performance Monitoring**
+       - Establish baseline metrics
+       - Monitor resource usage
+       - Optimize if needed
+    
+    3. **Documentation Updates**
+       - Update technical documentation
+       - Revise user guides if needed
+       - Train team on any changes
+    
+    ### Long-term Actions (Next 1-3 Months)
+    1. **Quality Gates Implementation**
+       - Set up code review standards
+       - Implement automated quality checks
+       - Establish development guidelines
+    
+    2. **Continuous Monitoring**
+       - Regular code quality assessments
+       - Automated dependency checks
+       - Performance monitoring
+    
+    3. **Team Training**
+       - Frappe best practices training
+       - Code quality workshops
+       - Regular architecture reviews
+
+  quality_gates: |
+    ## Recommended Quality Gates
+    
+    To prevent future code quality degradation, implement these quality gates:
+    
+    ### Development Standards
+    - **Frappe-First Development:** Always use Frappe built-ins before external libraries
+    - **Code Review:** Mandatory review for all changes
+    - **Testing:** Minimum 70% test coverage
+    - **Documentation:** All functions must be documented
+    
+    ### Automated Checks
+    ```yaml
+    quality_gates:
+      frappe_compliance:
+        minimum_score: 85%
+        checks:
+          - no_external_libraries
+          - proper_api_whitelisting
+          - frappe_orm_usage
+          - permission_checks
+      
+      code_organization:
+        minimum_score: 80%
+        checks:
+          - no_duplicate_functions
+          - proper_file_structure
+          - import_organization
+          - naming_conventions
+      
+      security:
+        minimum_score: 95%
+        checks:
+          - input_validation
+          - sql_injection_prevention
+          - authentication_proper
+          - permission_enforcement
+    ```
+    
+    ### Monitoring Alerts
+    - Alert on external library additions
+    - Monitor for duplicate code patterns
+    - Track performance regressions
+    - Watch for security vulnerabilities
+
+  appendix: |
+    ## Appendix
+    
+    ### A. Backup Locations
+    {{backup_locations}}
+    
+    ### B. Detailed File Changes
+    {{detailed_file_changes}}
+    
+    ### C. Error Logs
+    {{error_logs}}
+    
+    ### D. Performance Benchmarks
+    {{performance_benchmarks}}
+    
+    ### E. Team Notifications
+    {{team_notifications}}
+    
+    ---
+    
+    **Report Generated By:** ERPNext App Cleaner Agent  
+    **Report Version:** {{report_version}}  
+    **Generated On:** {{generation_timestamp}}  
+    **Next Review Date:** {{next_review_date}}
+
+usage_examples:
+  basic_cleanup_report: |
+    # Example usage for basic cleanup report
+    app_name: "my_custom_app"
+    cleanup_date: "2024-01-15"
+    cleanup_status: "Completed Successfully"
+    files_removed_count: 15
+    files_modified_count: 23
+    functions_consolidated_count: 8
+    import_issues_fixed_count: 12
+    quality_score_before: 62
+    quality_score_after: 89
+    cleanup_duration: "2 hours 45 minutes"
+
+  comprehensive_report: |
+    # Example usage for comprehensive cleanup report with all sections
+    app_name: "inventory_management"
+    cleanup_date: "2024-01-15"
+    agent_version: "1.2.0"
+    cleanup_status: "Completed with Minor Issues"
+    
+    # Include all metrics, before/after comparisons
+    # Add detailed technical analysis
+    # Provide specific rollback instructions
+    # Include performance benchmarks
+
+validation_checklist:
+  pre_cleanup:
+    - "App backup created and verified"
+    - "Dependency analysis completed"
+    - "Risk assessment performed"
+    - "Testing protocol established"
+  
+  during_cleanup:
+    - "Each operation logged with timestamps"
+    - "Individual file backups created"
+    - "Import dependencies tracked"
+    - "Functionality verified at each step"
+  
+  post_cleanup:
+    - "All tests passing"
+    - "No broken imports detected"
+    - "Performance within acceptable limits"
+    - "Report generated and reviewed"
+    - "Rollback procedures documented"

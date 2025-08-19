@@ -1,0 +1,421 @@
+---
+template_name: "PWA Configuration Template"
+template_type: "pwa_configuration"
+version: "1.0.0"
+description: "Template for configuring Progressive Web App features in ERPNext applications"
+
+# PWA Configuration
+pwa_config:
+  manifest:
+    name: "ERPNext Mobile App"
+    short_name: "ERPNext"
+    description: "ERPNext Mobile Progressive Web App"
+    start_url: "/"
+    display: "standalone"
+    orientation: "portrait"
+    theme_color: "#007bff"
+    background_color: "#ffffff"
+    scope: "/"
+    
+    icons:
+      - src: "/assets/app_icons/icon-72x72.png"
+        sizes: "72x72"
+        type: "image/png"
+      - src: "/assets/app_icons/icon-96x96.png"
+        sizes: "96x96"
+        type: "image/png"
+      - src: "/assets/app_icons/icon-128x128.png"
+        sizes: "128x128"
+        type: "image/png"
+      - src: "/assets/app_icons/icon-144x144.png"
+        sizes: "144x144"
+        type: "image/png"
+      - src: "/assets/app_icons/icon-152x152.png"
+        sizes: "152x152"
+        type: "image/png"
+      - src: "/assets/app_icons/icon-192x192.png"
+        sizes: "192x192"
+        type: "image/png"
+      - src: "/assets/app_icons/icon-384x384.png"
+        sizes: "384x384"
+        type: "image/png"
+      - src: "/assets/app_icons/icon-512x512.png"
+        sizes: "512x512"
+        type: "image/png"
+
+  service_worker:
+    cache_strategy: "cache_first"
+    cache_name: "erpnext-cache-v1"
+    offline_fallback: "/offline.html"
+    
+    cache_rules:
+      static_assets:
+        pattern: "\\.(css|js|png|jpg|jpeg|svg|ico|woff|woff2)$"
+        strategy: "cache_first"
+        max_age: 7776000  # 90 days
+        
+      api_calls:
+        pattern: "/api/"
+        strategy: "network_first"
+        max_age: 300  # 5 minutes
+        
+      html_pages:
+        pattern: "\\.(html)$"
+        strategy: "network_first"
+        max_age: 3600  # 1 hour
+
+  offline_capabilities:
+    enabled: true
+    offline_page: "/offline.html"
+    cache_essentials: true
+    
+    cached_routes:
+      - "/"
+      - "/app"
+      - "/login"
+      - "/desk"
+      
+    offline_features:
+      - "view_cached_documents"
+      - "create_draft_documents"
+      - "queue_offline_actions"
+      - "sync_when_online"
+
+# Service Worker Implementation
+service_worker_template: |
+  const CACHE_NAME = '{cache_name}';
+  const urlsToCache = {cached_urls};
+  
+  self.addEventListener('install', event => {
+    event.waitUntil(
+      caches.open(CACHE_NAME)
+        .then(cache => {
+          return cache.addAll(urlsToCache);
+        })
+    );
+  });
+  
+  self.addEventListener('fetch', event => {
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => {
+          if (response) {
+            return response;
+          }
+          return fetch(event.request);
+        }
+      )
+    );
+  });
+
+# PWA Features
+pwa_features:
+  push_notifications:
+    enabled: true
+    vapid_keys:
+      public_key: "your-vapid-public-key"
+      private_key: "your-vapid-private-key"
+    
+    notification_types:
+      - "document_approval_required"
+      - "workflow_status_changed"
+      - "system_alerts"
+      - "reminders"
+    
+    implementation: |
+      // Request notification permission
+      async function requestNotificationPermission() {
+        if ('Notification' in window && 'serviceWorker' in navigator) {
+          const permission = await Notification.requestPermission();
+          if (permission === 'granted') {
+            subscribeToNotifications();
+          }
+        }
+      }
+      
+      // Subscribe to push notifications
+      async function subscribeToNotifications() {
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: '{vapid_public_key}'
+        });
+        
+        // Send subscription to server
+        await fetch('/api/method/save_push_subscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            subscription: subscription
+          })
+        });
+      }
+
+  background_sync:
+    enabled: true
+    sync_tags:
+      - "document-sync"
+      - "file-upload"
+      - "offline-actions"
+    
+    implementation: |
+      // Register background sync
+      self.addEventListener('sync', event => {
+        if (event.tag === 'document-sync') {
+          event.waitUntil(syncDocuments());
+        }
+      });
+      
+      async function syncDocuments() {
+        const offlineActions = await getOfflineActions();
+        
+        for (const action of offlineActions) {
+          try {
+            await executeOfflineAction(action);
+            await removeOfflineAction(action.id);
+          } catch (error) {
+            console.error('Sync failed for action:', action, error);
+          }
+        }
+      }
+
+  app_install_banner:
+    enabled: true
+    install_criteria:
+      - "user_engagement_threshold": 3
+      - "return_visits": 2
+      - "time_spent_minutes": 10
+    
+    custom_install_prompt: |
+      let deferredPrompt;
+      
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        showInstallButton();
+      });
+      
+      function showInstallButton() {
+        const installButton = document.getElementById('install-button');
+        installButton.style.display = 'block';
+        
+        installButton.addEventListener('click', async () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const result = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+            hideInstallButton();
+          }
+        });
+      }
+
+# Offline Data Management
+offline_data_management:
+  indexeddb_config:
+    database_name: "ERPNextOfflineDB"
+    version: 1
+    
+    object_stores:
+      documents:
+        keyPath: "name"
+        indexes:
+          - name: "doctype"
+            keyPath: "doctype"
+          - name: "modified"
+            keyPath: "modified"
+      
+      offline_actions:
+        keyPath: "id"
+        auto_increment: true
+        indexes:
+          - name: "timestamp"
+            keyPath: "timestamp"
+      
+      cached_data:
+        keyPath: "key"
+        
+  sync_strategies:
+    document_sync:
+      strategy: "last_modified_wins"
+      conflict_resolution: "manual"
+      batch_size: 50
+      
+    file_sync:
+      strategy: "queue_based"
+      max_queue_size: 100
+      retry_attempts: 3
+      
+    real_time_sync:
+      enabled: true
+      websocket_url: "wss://your-domain.com/realtime"
+      reconnect_attempts: 5
+
+# Mobile Optimizations
+mobile_optimizations:
+  viewport_config:
+    width: "device-width"
+    initial_scale: 1.0
+    maximum_scale: 5.0
+    user_scalable: true
+    
+  touch_optimizations:
+    touch_action: "manipulation"
+    fast_click_elimination: true
+    touch_callout: "none"
+    user_select: "none"
+    
+  performance:
+    lazy_loading: true
+    image_optimization: true
+    code_splitting: true
+    prefetch_critical_resources: true
+    
+  ui_adaptations:
+    responsive_breakpoints:
+      mobile: "max-width: 768px"
+      tablet: "max-width: 1024px"
+      desktop: "min-width: 1025px"
+    
+    mobile_specific_css: |
+      @media (max-width: 768px) {
+        .desktop-only { display: none; }
+        .mobile-friendly { font-size: 16px; line-height: 1.5; }
+        .touch-target { min-height: 44px; min-width: 44px; }
+        .form-control { font-size: 16px; } /* Prevent zoom on iOS */
+      }
+
+# Security Considerations
+security_config:
+  content_security_policy:
+    default_src: "'self'"
+    script_src: "'self' 'unsafe-inline' 'unsafe-eval'"
+    style_src: "'self' 'unsafe-inline'"
+    img_src: "'self' data: https:"
+    font_src: "'self' data:"
+    connect_src: "'self' wss: https:"
+    
+  https_enforcement:
+    enabled: true
+    hsts_max_age: 31536000
+    include_subdomains: true
+    
+  secure_headers:
+    x_frame_options: "DENY"
+    x_content_type_options: "nosniff"
+    x_xss_protection: "1; mode=block"
+    referrer_policy: "strict-origin-when-cross-origin"
+
+# Analytics and Monitoring
+pwa_analytics:
+  performance_monitoring:
+    enabled: true
+    metrics:
+      - "first_contentful_paint"
+      - "largest_contentful_paint"
+      - "first_input_delay"
+      - "cumulative_layout_shift"
+    
+  user_engagement:
+    track_install_events: true
+    track_offline_usage: true
+    track_background_sync: true
+    
+  custom_events:
+    - "pwa_installed"
+    - "offline_mode_activated"
+    - "background_sync_completed"
+    - "push_notification_received"
+
+# Implementation Scripts
+implementation_scripts:
+  pwa_registration: |
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+          console.log('SW registered: ', registration);
+        })
+        .catch(registrationError => {
+          console.log('SW registration failed: ', registrationError);
+        });
+    }
+    
+    // Add to home screen prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      // Show install button
+    });
+
+  offline_detection: |
+    // Detect online/offline status
+    window.addEventListener('online', () => {
+      document.body.classList.remove('offline');
+      syncOfflineData();
+    });
+    
+    window.addEventListener('offline', () => {
+      document.body.classList.add('offline');
+      showOfflineMessage();
+    });
+    
+    function showOfflineMessage() {
+      frappe.show_alert({
+        message: __('You are now offline. Changes will be saved locally and synced when connection is restored.'),
+        indicator: 'orange'
+      });
+    }
+
+# Deployment Configuration
+deployment_config:
+  build_settings:
+    minify_assets: true
+    optimize_images: true
+    generate_manifest: true
+    create_service_worker: true
+    
+  server_configuration:
+    mime_types:
+      ".webmanifest": "application/manifest+json"
+      ".js": "application/javascript"
+      
+    cache_headers:
+      static_assets: "max-age=31536000, immutable"
+      manifest: "max-age=0, no-cache"
+      service_worker: "max-age=0, no-cache"
+
+# Usage Examples
+usage_examples:
+  basic_pwa_setup:
+    files_needed:
+      - "manifest.json"
+      - "sw.js"
+      - "offline.html"
+    
+    html_tags: |
+      <link rel="manifest" href="/manifest.json">
+      <meta name="theme-color" content="#007bff">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+  advanced_offline_support:
+    features:
+      - "document_caching"
+      - "offline_form_creation"
+      - "background_sync"
+      - "push_notifications"
+
+# Best Practices
+best_practices:
+  - "Start with a minimal viable PWA and add features gradually"
+  - "Ensure core functionality works offline"
+  - "Optimize for mobile-first experience"
+  - "Use appropriate caching strategies for different content types"
+  - "Implement meaningful offline fallbacks"
+  - "Test on actual mobile devices and slow networks"
+  - "Monitor PWA metrics and user engagement"
+  - "Keep service worker updates lightweight"
+  - "Provide clear feedback about online/offline status"
+  - "Implement progressive enhancement patterns"

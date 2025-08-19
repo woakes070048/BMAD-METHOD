@@ -1,0 +1,238 @@
+# Task Assignment Template for ERPNext Development Coordination
+# Used by main-dev-coordinator for systematic task assignment and tracking
+
+task_assignment:
+  metadata:
+    assignment_id: "TASK-{YYYY}-{MM}-{DD}-{SEQ}"
+    created_date: "{timestamp}"
+    coordinator: "{coordinator_name}"
+    project: "{project_name}"
+    sprint: "{sprint_number}"
+    
+  task_details:
+    title: "{task_title}"
+    description: |
+      {detailed_task_description}
+    
+    type: # Select one
+      - "feature_development"
+      - "bug_fix"
+      - "enhancement"
+      - "refactoring"
+      - "documentation"
+      - "testing"
+      - "deployment"
+      - "migration"
+      - "integration"
+    
+    category: # Based on task-routing-guidelines.md
+      - "doctype_tasks"
+      - "business_logic_tasks"
+      - "frontend_tasks"
+      - "api_tasks"
+      - "integration_tasks"
+      - "testing_tasks"
+      - "deployment_tasks"
+    
+    complexity: # Determines assignment strategy
+      low: # < 4 hours
+        description: "Single agent, standard patterns"
+        assignment_type: "individual"
+      medium: # 4-16 hours
+        description: "May need consultation"
+        assignment_type: "primary_with_support"
+      high: # > 16 hours
+        description: "Multi-agent collaboration"
+        assignment_type: "team"
+    
+    priority: # Based on priority matrix
+      level: "P0 | P1 | P2 | P3"
+      business_impact: "critical | high | medium | low"
+      technical_dependency: "blocking | dependent | independent"
+      deadline: "{date}"
+      
+  requirements:
+    functional:
+      - "{requirement_1}"
+      - "{requirement_2}"
+    
+    technical:
+      - "{technical_requirement_1}"
+      - "{technical_requirement_2}"
+    
+    prerequisites:
+      completed_tasks:
+        - "{task_id_1}"
+        - "{task_id_2}"
+      
+      required_knowledge:
+        - "{knowledge_area_1}"
+        - "{knowledge_area_2}"
+      
+      environment_setup:
+        - "{setup_requirement_1}"
+        - "{setup_requirement_2}"
+    
+    dependencies:
+      doctypes:
+        - "{doctype_name}"
+      
+      modules:
+        - "{module_name}"
+      
+      external_systems:
+        - "{system_name}"
+      
+      apis:
+        - "{api_endpoint}"
+        
+  agent_assignment:
+    primary_agent:
+      role: "{agent_role}" # e.g., doctype-designer, api-developer
+      name: "{agent_identifier}"
+      rationale: "{why_this_agent}"
+      
+    secondary_agents: # For consultation or support
+      - role: "{support_agent_role}"
+        name: "{support_agent_identifier}"
+        involvement: "consultation | review | pair_programming"
+        
+    escalation_path:
+      level_1: "{domain_expert}"
+      level_2: "{cross_domain_coordinator}"
+      level_3: "{strategic_decision_maker}"
+      
+  execution_plan:
+    estimated_effort:
+      hours: "{number}"
+      story_points: "{points}"
+      
+    timeline:
+      start_date: "{date}"
+      target_completion: "{date}"
+      milestones:
+        - date: "{date}"
+          deliverable: "{milestone_description}"
+          
+    approach:
+      methodology: "{approach_description}"
+      tools_required:
+        - "{tool_1}"
+        - "{tool_2}"
+      
+      resources_needed:
+        - "{resource_1}"
+        - "{resource_2}"
+        
+  success_criteria:
+    acceptance_criteria:
+      - "{criterion_1}"
+      - "{criterion_2}"
+      - "{criterion_3}"
+    
+    validation_method:
+      - "code_review"
+      - "unit_tests"
+      - "integration_tests"
+      - "user_acceptance"
+      - "performance_benchmarks"
+    
+    quality_metrics:
+      code_coverage: "{percentage}"
+      performance_target: "{metric}"
+      security_compliance: "{standard}"
+      
+  communication:
+    reporting_frequency: "daily | on_completion | on_blocker"
+    
+    update_format:
+      progress: "{template}"
+      blockers: "{template}"
+      completion: "{template}"
+    
+    stakeholders:
+      - role: "{stakeholder_role}"
+        notification_events:
+          - "assignment"
+          - "progress_update"
+          - "blocker"
+          - "completion"
+          
+  handoff_preparation:
+    when_required: # Conditions for handoff
+      - "primary_agent_unavailable"
+      - "expertise_needed"
+      - "task_completion"
+      - "escalation_triggered"
+    
+    documentation_required:
+      - "work_completed"
+      - "current_state"
+      - "known_issues"
+      - "next_steps"
+      - "testing_status"
+    
+    handoff_to: "{next_agent_or_team}"
+    
+  tracking:
+    status: "assigned | in_progress | blocked | review | completed"
+    
+    progress_log:
+      - timestamp: "{datetime}"
+        update: "{progress_description}"
+        agent: "{agent_name}"
+        
+    blockers:
+      - identified_at: "{datetime}"
+        description: "{blocker_description}"
+        resolution_strategy: "{strategy}"
+        resolved_at: "{datetime}"
+        
+    time_tracking:
+      actual_hours: "{number}"
+      variance: "{actual_vs_estimated}"
+      
+  outcomes:
+    deliverables:
+      - type: "{deliverable_type}"
+        location: "{path_or_reference}"
+        description: "{what_was_delivered}"
+    
+    documentation:
+      - type: "technical | user | api"
+        location: "{documentation_path}"
+    
+    lessons_learned:
+      - what_went_well: "{description}"
+      - what_could_improve: "{description}"
+      - recommendations: "{future_improvements}"
+      
+  integration_points:
+    with_existing_apps:
+      docflow:
+        required: "yes | no"
+        integration_type: "{description}"
+        
+      n8n_integration:
+        required: "yes | no"
+        webhooks: []
+        triggers: []
+        
+    multi_app_considerations:
+      - app_name: "{app}"
+        impact: "{description}"
+        coordination_needed: "{what_coordination}"
+        
+# Usage Instructions:
+# 1. Copy this template for each task assignment
+# 2. Fill in all placeholders marked with {}
+# 3. Select appropriate options from lists
+# 4. Ensure alignment with task-routing-guidelines.md
+# 5. Track progress through the task lifecycle
+# 6. Use for handoff preparation when needed
+
+# Related Documents:
+# - task-routing-guidelines.md
+# - handoff-template.yaml
+# - erpnext-technical-preferences.md
+# - PRD-TO-TASKS-GUIDE.md

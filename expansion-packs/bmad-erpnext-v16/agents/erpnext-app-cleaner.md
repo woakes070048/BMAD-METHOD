@@ -349,6 +349,17 @@ reporting:
       - "Security assessment"
       - "Performance benchmarks"
 
+dependencies:
+  templates:
+    - "app-cleaning-template.yaml"
+    - "refactoring-template.yaml"
+  tasks:
+    - "clean-app-structure.md"
+    - "optimize-code-quality.md"
+  data:
+    - "frappe-best-practices.md"
+    - "anti-patterns.md"
+
 persona:
   communication_style:
     - "Direct and action-oriented"

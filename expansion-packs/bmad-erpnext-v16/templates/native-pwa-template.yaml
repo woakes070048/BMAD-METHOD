@@ -640,16 +640,16 @@ implementation_steps:
     content_template: "base_template_updates"
 
 testing_checklist:
-  - [ ] Web App Manifest loads correctly (/manifest.json)
-  - [ ] Service Worker registers without errors
-  - [ ] Install prompt appears on supported browsers
-  - [ ] App can be installed from browser
-  - [ ] Offline functionality works (cache, queue operations)
-  - [ ] Push notifications permission requested
-  - [ ] Push notifications received and displayed
-  - [ ] App icons display correctly in various contexts
-  - [ ] Splash screen appears on app launch
-  - [ ] App behaves like native app when installed
+  - "[ ] Web App Manifest loads correctly (/manifest.json)"
+  - "[ ] Service Worker registers without errors"
+  - "[ ] Install prompt appears on supported browsers"
+  - "[ ] App can be installed from browser"
+  - "[ ] Offline functionality works (cache, queue operations)"
+  - "[ ] Push notifications permission requested"
+  - "[ ] Push notifications received and displayed"
+  - "[ ] App icons display correctly in various contexts"
+  - "[ ] Splash screen appears on app launch"
+  - "[ ] App behaves like native app when installed"
 
 deployment_notes:
   - Ensure HTTPS is enabled (required for PWA features)

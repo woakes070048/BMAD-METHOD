@@ -1,0 +1,889 @@
+---
+template_name: "List View Template"
+template_type: "vue_list_component"
+version: "1.0.0"
+description: "Template for creating list view components with filtering, sorting, and pagination"
+
+# List view component structure
+list_view_structure:
+  basic_list: |
+    <template>
+      <div class="list-view-container">
+        <!-- Header -->
+        <div class="list-header d-flex justify-content-between align-items-center mb-4">
+          <h2 class="h4">{{ listTitle }}</h2>
+          <div class="actions">
+            <button
+              class="btn btn-primary"
+              @click="createNew"
+              v-if="canCreate"
+            >
+              <i class="fa fa-plus mr-1"></i>
+              New {{ doctype }}
+            </button>
+          </div>
+        </div>
+        
+        <!-- Filters -->
+        <div class="list-filters mb-4">
+          <div class="row">
+            <div class="col-md-8">
+              <input
+                v-model="searchQuery"
+                type="text"
+                class="form-control"
+                placeholder="Search..."
+                @input="debounceSearch"
+              />
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-secondary" @click="clearFilters">
+                Clear Filters
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- List -->
+        <div v-if="loading" class="text-center py-4">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div v-else-if="rows.length === 0" class="text-center py-5">
+          <i class="fa fa-inbox fa-3x text-muted mb-3"></i>
+          <h5>{{ emptyTitle || 'No records found' }}</h5>
+          <p class="text-muted">{{ emptyDescription }}</p>
+          <button class="btn btn-primary" @click="createNew" v-if="canCreate">
+            Create First {{ doctype }}
+          </button>
+        </div>
+        <div v-else class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th v-for="column in columns" :key="column.key">
+                  {{ column.label }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="row in rows"
+                :key="row.name"
+                @click="handleRowClick(row)"
+                style="cursor: pointer;"
+              >
+                <td v-for="column in columns" :key="column.key">
+                  {{ row[column.key] }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Pagination -->
+        <nav aria-label="Page navigation" v-if="totalPages > 1">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+              <a class="page-link" @click="currentPage--" href="#">Previous</a>
+            </li>
+            <li
+              v-for="page in totalPages"
+              :key="page"
+              class="page-item"
+              :class="{ active: page === currentPage }"
+            >
+              <a class="page-link" @click="currentPage = page" href="#">{{ page }}</a>
+            </li>
+            <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+              <a class="page-link" @click="currentPage++" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </template>
+    
+    <script setup>
+    import { ref, computed, onMounted, watch } from 'vue'
+    // Use native Bootstrap components and Frappe API
+    
+    const props = defineProps({
+      doctype: String,
+      filters: Object,
+      fields: Array
+    })
+    const rows = ref([])
+    const loading = ref(false)
+    const currentPage = ref(1)
+    const pageSize = ref(20)
+    const totalRecords = ref(0)
+    const selectedRows = ref([])
+    </script>
+
+  advanced_list: |
+    <template>
+      <div class="advanced-list-view">
+        <!-- Toolbar -->
+        <div class="toolbar bg-white border-b px-4 py-2">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+              <!-- Search -->
+              <SearchInput
+                v-model="searchQuery"
+                placeholder="Search..."
+                @input="debounceSearch"
+              />
+              
+              <!-- Quick Filters -->
+              <QuickFilters
+                :filters="quickFilters"
+                v-model="activeQuickFilter"
+                @change="applyQuickFilter"
+              />
+              
+              <!-- View Toggle -->
+              <ViewToggle
+                v-model="viewMode"
+                :options="['list', 'grid', 'kanban']"
+              />
+            </div>
+            
+            <div class="flex items-center space-x-2">
+              <!-- Bulk Actions -->
+              <BulkActions
+                v-if="selectedRows.length > 0"
+                :selected-count="selectedRows.length"
+                :actions="bulkActions"
+                @action="handleBulkAction"
+              />
+              
+              <!-- Sort -->
+              <SortDropdown
+                v-model="sortBy"
+                :options="sortOptions"
+                @change="loadData"
+              />
+              
+              <!-- Export -->
+              <ExportButton
+                :data="rows"
+                :columns="columns"
+                :filename="exportFilename"
+              />
+              
+              <!-- Settings -->
+              <ListSettings
+                v-model="listSettings"
+                @save="saveListSettings"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="list-content">
+          <component
+            :is="viewComponent"
+            :data="rows"
+            :columns="columns"
+            :loading="loading"
+            v-bind="viewProps"
+          />
+        </div>
+      </div>
+    </template>
+
+# Column configuration patterns
+column_patterns:
+  basic_columns: |
+    const columns = [
+      {
+        label: 'Name',
+        key: 'name',
+        width: '200px',
+        sortable: true,
+        pinned: true
+      },
+      {
+        label: 'Status',
+        key: 'status',
+        width: '120px',
+        sortable: true,
+        formatter: (value) => {
+          return {
+            label: value,
+            color: getStatusColor(value)
+          }
+        }
+      },
+      {
+        label: 'Date',
+        key: 'creation',
+        width: '150px',
+        sortable: true,
+        formatter: (value) => formatDate(value)
+      },
+      {
+        label: 'Amount',
+        key: 'total_amount',
+        width: '120px',
+        align: 'right',
+        sortable: true,
+        formatter: (value) => formatCurrency(value)
+      },
+      {
+        label: 'Actions',
+        key: 'actions',
+        width: '100px',
+        align: 'center',
+        cellRenderer: 'ActionsCell'
+      }
+    ]
+
+  dynamic_columns: |
+    const dynamicColumns = computed(() => {
+      const baseColumns = [
+        { label: 'ID', key: 'name', pinned: true }
+      ]
+      
+      // Add columns based on doctype fields
+      if (doctypeFields.value) {
+        doctypeFields.value.forEach(field => {
+          if (field.in_list_view) {
+            baseColumns.push({
+              label: field.label,
+              key: field.fieldname,
+              width: getFieldWidth(field.fieldtype),
+              sortable: field.sortable !== false,
+              formatter: getFieldFormatter(field.fieldtype)
+            })
+          }
+        })
+      }
+      
+      // Add custom columns based on user preferences
+      if (userPreferences.value.customColumns) {
+        baseColumns.push(...userPreferences.value.customColumns)
+      }
+      
+      return baseColumns
+    })
+
+  custom_cell_renderers: |
+    // Status Cell
+    const StatusCell = {
+      template: `
+        <div class="flex items-center">
+          <span
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+            :class="statusClass"
+          >
+            <span class="w-1.5 h-1.5 mr-1.5 rounded-full" :class="dotClass"></span>
+            {{ value }}
+          </span>
+        </div>
+      `,
+      props: ['value', 'row'],
+      computed: {
+        statusClass() {
+          const statusColors = {
+            'Draft': 'bg-gray-100 text-gray-800',
+            'Submitted': 'bg-blue-100 text-blue-800',
+            'Cancelled': 'bg-red-100 text-red-800',
+            'Completed': 'bg-green-100 text-green-800'
+          }
+          return statusColors[this.value] || 'bg-gray-100 text-gray-800'
+        },
+        dotClass() {
+          const dotColors = {
+            'Draft': 'bg-gray-400',
+            'Submitted': 'bg-blue-400',
+            'Cancelled': 'bg-red-400',
+            'Completed': 'bg-green-400'
+          }
+          return dotColors[this.value] || 'bg-gray-400'
+        }
+      }
+    }
+    
+    // Actions Cell
+    const ActionsCell = {
+      template: `
+        <div class="flex items-center justify-center space-x-1">
+          <Button
+            variant="ghost"
+            size="sm"
+            @click.stop="viewItem"
+          >
+            <Icon name="eye" class="w-4 h-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            @click.stop="editItem"
+          >
+            <Icon name="edit" class="w-4 h-4" />
+          </Button>
+          <Dropdown>
+            <template #trigger>
+              <Button variant="ghost" size="sm">
+                <Icon name="more-vertical" class="w-4 h-4" />
+              </Button>
+            </template>
+            <DropdownItem @click="duplicateItem">Duplicate</DropdownItem>
+            <DropdownItem @click="deleteItem" class="text-red-600">Delete</DropdownItem>
+          </Dropdown>
+        </div>
+      `,
+      props: ['row'],
+      methods: {
+        viewItem() {
+          frappe.set_route('Form', this.row.doctype, this.row.name)
+        },
+        editItem() {
+          frappe.set_route('Form', this.row.doctype, this.row.name)
+        },
+        duplicateItem() {
+          this.$emit('duplicate', this.row)
+        },
+        deleteItem() {
+          this.$emit('delete', this.row)
+        }
+      }
+    }
+
+# Filter patterns
+filter_patterns:
+  basic_filters: |
+    const filterFields = [
+      {
+        fieldname: 'status',
+        label: 'Status',
+        fieldtype: 'Select',
+        options: ['Draft', 'Submitted', 'Cancelled']
+      },
+      {
+        fieldname: 'customer',
+        label: 'Customer',
+        fieldtype: 'Link',
+        target: 'Customer'
+      },
+      {
+        fieldname: 'date_range',
+        label: 'Date Range',
+        fieldtype: 'DateRange'
+      },
+      {
+        fieldname: 'amount_range',
+        label: 'Amount',
+        fieldtype: 'NumberRange'
+      }
+    ]
+    
+    const applyFilters = () => {
+      const filterConditions = []
+      
+      Object.entries(filters.value).forEach(([key, value]) => {
+        if (value) {
+          if (key === 'date_range' && value.from && value.to) {
+            filterConditions.push(['creation', 'between', [value.from, value.to]])
+          } else if (key === 'amount_range' && (value.min || value.max)) {
+            if (value.min) filterConditions.push(['amount', '>=', value.min])
+            if (value.max) filterConditions.push(['amount', '<=', value.max])
+          } else {
+            filterConditions.push([key, '=', value])
+          }
+        }
+      })
+      
+      activeFilters.value = filterConditions
+      loadData()
+    }
+
+  advanced_filters: |
+    const advancedFilterBuilder = {
+      conditions: ref([]),
+      
+      addCondition() {
+        this.conditions.push({
+          field: '',
+          operator: '=',
+          value: '',
+          logic: 'and'
+        })
+      },
+      
+      removeCondition(index) {
+        this.conditions.splice(index, 1)
+      },
+      
+      buildFilters() {
+        return this.conditions.map(condition => [
+          condition.field,
+          condition.operator,
+          condition.value
+        ])
+      }
+    }
+
+  saved_filters: |
+    const savedFilters = ref([])
+    
+    const loadSavedFilters = async () => {
+      const response = await frappe.call({
+        method: 'frappe.desk.reportview.get_filters',
+        args: {
+          doctype: props.doctype
+        }
+      })
+      savedFilters.value = response.message
+    }
+    
+    const saveCurrentFilter = async (name) => {
+      await frappe.call({
+        method: 'frappe.desk.reportview.save_filter',
+        args: {
+          doctype: props.doctype,
+          name: name,
+          filters: activeFilters.value
+        }
+      })
+      
+      frappe.toast({
+        title: 'Filter Saved',
+        variant: 'success'
+      })
+      
+      loadSavedFilters()
+    }
+
+# Data loading patterns
+data_loading:
+  basic_loading: |
+    const loadData = async () => {
+      loading.value = true
+      
+      try {
+        const result = await frappe.call({
+          method: 'frappe.client.get_list',
+          args: {
+            doctype: props.doctype,
+            fields: props.fields || ['*'],
+            filters: activeFilters.value,
+            order_by: sortBy.value,
+            limit_start: (currentPage.value - 1) * pageSize.value,
+            limit_page_length: pageSize.value
+          }
+        })
+        
+        rows.value = result.message
+      } catch (error) {
+        frappe.show_alert({
+          message: `Error loading data: ${error.message}`,
+          indicator: 'red'
+        })
+      } finally {
+        loading.value = false
+      }
+    }
+
+  infinite_scroll: |
+    const { isLoading, hasMore, loadMore } = useInfiniteScroll({
+      async onLoadMore() {
+        const response = await frappe.call({
+          method: 'frappe.client.get_list',
+          args: {
+            doctype: props.doctype,
+            fields: props.fields,
+            filters: activeFilters.value,
+            limit_start: rows.value.length,
+            limit_page_length: 20
+          }
+        })
+        
+        const newRows = response.message
+        rows.value.push(...newRows)
+        
+        return newRows.length === 20 // Has more if we got full page
+      }
+    })
+    
+    // Intersection Observer for infinite scroll
+    const observerTarget = ref(null)
+    
+    onMounted(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasMore.value && !isLoading.value) {
+            loadMore()
+          }
+        },
+        { threshold: 0.1 }
+      )
+      
+      if (observerTarget.value) {
+        observer.observe(observerTarget.value)
+      }
+    })
+
+  real_time_updates: |
+    // Socket.io for real-time updates
+    onMounted(() => {
+      frappe.realtime.on('list_update', (data) => {
+        if (data.doctype === props.doctype) {
+          handleRealtimeUpdate(data)
+        }
+      })
+    })
+    
+    onUnmounted(() => {
+      frappe.realtime.off('list_update')
+    })
+    
+    const handleRealtimeUpdate = (data) => {
+      switch (data.action) {
+        case 'create':
+          // Add new row at the beginning
+          rows.value.unshift(data.doc)
+          totalRecords.value++
+          break
+        
+        case 'update':
+          // Update existing row
+          const index = rows.value.findIndex(r => r.name === data.doc.name)
+          if (index > -1) {
+            rows.value[index] = { ...rows.value[index], ...data.doc }
+          }
+          break
+        
+        case 'delete':
+          // Remove row
+          rows.value = rows.value.filter(r => r.name !== data.name)
+          totalRecords.value--
+          break
+      }
+    }
+
+# Sorting patterns
+sorting_patterns:
+  basic_sorting: |
+    const sortBy = ref('creation desc')
+    const sortOptions = [
+      { label: 'Newest First', value: 'creation desc' },
+      { label: 'Oldest First', value: 'creation asc' },
+      { label: 'Name (A-Z)', value: 'name asc' },
+      { label: 'Name (Z-A)', value: 'name desc' },
+      { label: 'Amount (High to Low)', value: 'amount desc' },
+      { label: 'Amount (Low to High)', value: 'amount asc' }
+    ]
+    
+    watch(sortBy, () => {
+      loadData()
+    })
+
+  multi_column_sort: |
+    const sortColumns = ref([])
+    
+    const handleColumnSort = (column) => {
+      const existingSort = sortColumns.value.find(s => s.column === column.key)
+      
+      if (existingSort) {
+        // Toggle sort direction
+        if (existingSort.direction === 'asc') {
+          existingSort.direction = 'desc'
+        } else {
+          // Remove sort
+          sortColumns.value = sortColumns.value.filter(s => s.column !== column.key)
+        }
+      } else {
+        // Add new sort
+        sortColumns.value.push({
+          column: column.key,
+          direction: 'asc'
+        })
+      }
+      
+      // Build sort string
+      const sortString = sortColumns.value
+        .map(s => `${s.column} ${s.direction}`)
+        .join(', ')
+      
+      sortBy.value = sortString
+      loadData()
+    }
+
+# Bulk operations
+bulk_operations:
+  selection_handling: |
+    const selectedRows = ref([])
+    const isAllSelected = computed(() => {
+      return selectedRows.value.length === rows.value.length && rows.value.length > 0
+    })
+    
+    const handleSelectionChange = (selection) => {
+      selectedRows.value = selection
+    }
+    
+    const selectAll = () => {
+      if (isAllSelected.value) {
+        selectedRows.value = []
+      } else {
+        selectedRows.value = [...rows.value]
+      }
+    }
+
+  bulk_actions: |
+    const bulkActions = [
+      {
+        label: 'Export',
+        icon: 'download',
+        handler: exportSelected
+      },
+      {
+        label: 'Update Status',
+        icon: 'edit',
+        handler: bulkUpdateStatus
+      },
+      {
+        label: 'Delete',
+        icon: 'trash',
+        variant: 'danger',
+        handler: bulkDelete
+      }
+    ]
+    
+    const bulkUpdateStatus = async () => {
+      const newStatus = await frappe.prompt({
+        title: 'Update Status',
+        fields: [
+          {
+            fieldname: 'status',
+            label: 'New Status',
+            fieldtype: 'Select',
+            options: ['Draft', 'Submitted', 'Cancelled'],
+            reqd: 1
+          }
+        ]
+      })
+      
+      if (newStatus) {
+        const promises = selectedRows.value.map(row => 
+          frappe.call({
+            method: 'frappe.client.set_value',
+            args: {
+              doctype: props.doctype,
+              name: row.name,
+              fieldname: 'status',
+              value: newStatus.status
+            }
+          })
+        )
+        
+        await Promise.all(promises)
+        
+        frappe.toast({
+          title: 'Status Updated',
+          text: `Updated ${selectedRows.value.length} records`,
+          variant: 'success'
+        })
+        
+        loadData()
+        selectedRows.value = []
+      }
+    }
+    
+    const bulkDelete = async () => {
+      const confirmed = await frappe.confirm({
+        title: 'Confirm Deletion',
+        message: `Are you sure you want to delete ${selectedRows.value.length} records?`,
+        primaryAction: {
+          label: 'Delete',
+          variant: 'danger'
+        }
+      })
+      
+      if (confirmed) {
+        const promises = selectedRows.value.map(row =>
+          frappe.call({
+            method: 'frappe.client.delete',
+            args: {
+              doctype: props.doctype,
+              name: row.name
+            }
+          })
+        )
+        
+        await Promise.all(promises)
+        
+        frappe.toast({
+          title: 'Records Deleted',
+          text: `Deleted ${selectedRows.value.length} records`,
+          variant: 'success'
+        })
+        
+        loadData()
+        selectedRows.value = []
+      }
+    }
+
+# View modes
+view_modes:
+  grid_view: |
+    <template>
+      <div class="grid-view">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div
+            v-for="item in rows"
+            :key="item.name"
+            class="card p-4 border rounded-lg hover:shadow-lg transition-shadow cursor-pointer"
+            @click="handleItemClick(item)"
+          >
+            <div class="card-header mb-2">
+              <h3 class="font-semibold">{{ item.name }}</h3>
+              <Badge :variant="getStatusVariant(item.status)">
+                {{ item.status }}
+              </Badge>
+            </div>
+            <div class="card-body text-sm text-gray-600">
+              <p>{{ item.description }}</p>
+              <div class="mt-2">
+                <span class="font-medium">{{ formatCurrency(item.amount) }}</span>
+              </div>
+            </div>
+            <div class="card-footer mt-3 flex justify-between">
+              <span class="text-xs text-gray-500">{{ formatDate(item.date) }}</span>
+              <Button size="sm" variant="ghost" @click.stop="showActions(item)">
+                <Icon name="more-horizontal" class="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+
+  kanban_view: |
+    <template>
+      <div class="kanban-view">
+        <div class="kanban-board flex gap-4 overflow-x-auto">
+          <div
+            v-for="column in kanbanColumns"
+            :key="column.value"
+            class="kanban-column flex-shrink-0 w-80"
+          >
+            <div class="column-header bg-gray-100 p-3 rounded-t-lg">
+              <h3 class="font-semibold">{{ column.label }}</h3>
+              <span class="text-sm text-gray-600">{{ getColumnCount(column.value) }}</span>
+            </div>
+            <div class="column-body bg-gray-50 min-h-[400px] p-2">
+              <draggable
+                v-model="getColumnItems(column.value)"
+                group="kanban"
+                @change="handleDragChange"
+                item-key="name"
+              >
+                <template #item="{ element }">
+                  <div class="kanban-card bg-white p-3 mb-2 rounded shadow-sm">
+                    <h4 class="font-medium">{{ element.name }}</h4>
+                    <p class="text-sm text-gray-600 mt-1">{{ element.description }}</p>
+                  </div>
+                </template>
+              </draggable>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+
+# Export functionality
+export_functionality:
+  export_data: |
+    const exportData = async (format = 'csv') => {
+      const exportColumns = columns.value.filter(c => c.key !== 'actions')
+      
+      // Prepare data for export
+      const exportRows = selectedRows.value.length > 0 
+        ? selectedRows.value 
+        : rows.value
+      
+      if (format === 'csv') {
+        exportToCSV(exportRows, exportColumns)
+      } else if (format === 'xlsx') {
+        exportToExcel(exportRows, exportColumns)
+      } else if (format === 'pdf') {
+        await exportToPDF(exportRows, exportColumns)
+      }
+    }
+    
+    const exportToCSV = (data, columns) => {
+      const headers = columns.map(c => c.label).join(',')
+      const rows = data.map(row => 
+        columns.map(c => {
+          const value = row[c.key]
+          // Escape commas and quotes
+          return typeof value === 'string' && value.includes(',') 
+            ? `"${value.replace(/"/g, '""')}"`
+            : value
+        }).join(',')
+      )
+      
+      const csv = [headers, ...rows].join('\n')
+      const blob = new Blob([csv], { type: 'text/csv' })
+      const url = URL.createObjectURL(blob)
+      
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `${props.doctype}_${Date.now()}.csv`
+      link.click()
+      
+      URL.revokeObjectURL(url)
+    }
+
+# Performance optimization
+performance_optimization:
+  virtual_scrolling: |
+    import { VirtualList } from '@tanstack/react-virtual'
+    
+    const virtualListRef = ref(null)
+    const rowVirtualizer = useVirtualizer({
+      count: rows.value.length,
+      getScrollElement: () => virtualListRef.value,
+      estimateSize: () => 50, // Estimated row height
+      overscan: 5
+    })
+
+  lazy_loading: |
+    const visibleRows = computed(() => {
+      const start = (currentPage.value - 1) * pageSize.value
+      const end = start + pageSize.value
+      return rows.value.slice(start, end)
+    })
+    
+    // Lazy load images
+    const lazyImageObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target
+          img.src = img.dataset.src
+          lazyImageObserver.unobserve(img)
+        }
+      })
+    })
+
+# Best practices
+best_practices:
+  - "Implement proper pagination for large datasets"
+  - "Use virtual scrolling for long lists"
+  - "Debounce search and filter inputs"
+  - "Show loading states during data fetching"
+  - "Handle empty states gracefully"
+  - "Implement error handling and retry logic"
+  - "Cache data when appropriate"
+  - "Use optimistic updates for better UX"
+  - "Implement keyboard navigation"
+  - "Make lists responsive for mobile"
+  - "Provide clear visual feedback for actions"
+  - "Support bulk operations efficiently"
+  - "Allow customization of columns and filters"
+  - "Implement proper accessibility features"
+  - "Test with large datasets for performance"

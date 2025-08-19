@@ -1,0 +1,372 @@
+name: ERPNext Epic Document
+description: Template for creating comprehensive ERPNext epic documents with business value, technical architecture, and story breakdown
+template:
+  id: erpnext-epic-template-v1
+  name: ERPNext Epic Document
+  version: 1.0
+  output:
+    format: markdown
+    filename: docs/epics/Epic-{{epic_num}}-{{epic_title_short}}.md
+    title: "ERPNext Epic {{epic_num}}: {{epic_title_short}}"
+
+workflow:
+  mode: interactive
+  elicitation: erpnext-requirements-elicitation
+  framework: frappe
+
+sections:
+  - id: epic-overview
+    title: Epic Overview
+    instruction: |
+      High-level description of the ERPNext epic including business value,
+      scope, and relationship to ERPNext ecosystem.
+    sections:
+      - id: epic-statement
+        title: Epic Statement
+        type: template-text
+        template: |
+          **As a** {{user_type}} using ERPNext,
+          **I want** {{epic_capability}} in the ERPNext system,
+          **so that** {{business_value}} within my ERPNext workflow
+        instruction: Define the epic using ERPNext-specific context
+        elicit: true
+      
+      - id: business-value
+        title: Business Value
+        type: paragraphs
+        instruction: |
+          Describe the business value this epic provides:
+          - Process improvements within ERPNext
+          - User experience enhancements
+          - Integration benefits with existing apps
+          - Efficiency gains and automation opportunities
+        elicit: true
+      
+      - id: scope
+        title: Scope
+        instruction: |
+          Define what is included and excluded in this epic:
+          - ERPNext modules affected
+          - DocTypes involved (new and modified)
+          - Integration touchpoints
+          - User groups impacted
+        elicit: true
+        sections:
+          - id: in-scope
+            title: In Scope
+            type: bullet-list
+            instruction: What is included in this epic
+          
+          - id: out-of-scope
+            title: Out of Scope
+            type: bullet-list
+            instruction: What is explicitly excluded from this epic
+
+  - id: erpnext-context
+    title: ERPNext Context
+    instruction: |
+      ERPNext-specific context and technical considerations.
+    sections:
+      - id: affected-modules
+        title: Affected ERPNext Modules
+        instruction: |
+          List ERPNext modules that will be impacted:
+          - Core modules (Accounts, Stock, CRM, etc.)
+          - Custom modules
+          - Third-party app modules
+        template: |
+          **Core Modules:** {{core_modules}}
+          **Custom Modules:** {{custom_modules}}
+          **Integration Modules:** {{integration_modules}}
+      
+      - id: doctype-impact
+        title: DocType Impact Analysis
+        instruction: |
+          Analysis of DocType changes required:
+          - New DocTypes to be created
+          - Existing DocTypes to be modified
+          - Relationship changes
+          - Permission impacts
+        template: |
+          **New DocTypes:** {{new_doctypes}}
+          **Modified DocTypes:** {{modified_doctypes}}
+          **New Relationships:** {{new_relationships}}
+          **Permission Changes:** {{permission_impacts}}
+      
+      - id: framework-considerations
+        title: Frappe Framework Considerations
+        instruction: |
+          Frappe Framework specific considerations:
+          - Framework version requirements
+          - Built-in capabilities to leverage
+          - Constraints and limitations
+          - Compliance requirements
+        template: |
+          **Framework Version:** {{framework_version}}
+          **Built-in Capabilities:** {{capabilities_to_use}}
+          **Constraints:** {{framework_constraints}}
+          **Compliance Needs:** {{compliance_requirements}}
+
+  - id: integration-analysis
+    title: Integration Analysis
+    instruction: |
+      Analysis of integration requirements with existing apps.
+    sections:
+      - id: docflow-integration
+        title: docflow Integration
+        instruction: |
+          Requirements for docflow workflow integration:
+          - Workflow processes to be created or modified
+          - Approval chains and role assignments
+          - State management requirements
+          - Integration complexity assessment
+        template: |
+          **New Workflows:** {{new_workflows}}
+          **Modified Workflows:** {{modified_workflows}}
+          **Approval Processes:** {{approval_requirements}}
+          **Complexity Level:** {{integration_complexity}}
+      
+      - id: n8n-integration
+        title: n8n_integration Requirements
+        instruction: |
+          Requirements for n8n_integration automation:
+          - Automation opportunities
+          - External system integrations
+          - Event triggers and webhooks
+          - Data synchronization needs
+        template: |
+          **Automation Opportunities:** {{automation_possibilities}}
+          **External Systems:** {{external_integrations}}
+          **Event Triggers:** {{trigger_requirements}}
+          **Data Sync:** {{synchronization_needs}}
+      
+      - id: existing-app-compatibility
+        title: Existing App Compatibility
+        instruction: |
+          Assessment of compatibility with existing custom apps:
+          - Potential conflicts or overlaps
+          - Required coordination
+          - Shared resource considerations
+          - Migration requirements
+        template: |
+          **Potential Conflicts:** {{app_conflicts}}
+          **Coordination Needs:** {{coordination_requirements}}
+          **Shared Resources:** {{shared_resources}}
+          **Migration Needs:** {{migration_requirements}}
+
+  - id: technical-architecture
+    title: Technical Architecture
+    instruction: |
+      High-level technical architecture for the epic.
+    sections:
+      - id: backend-architecture
+        title: Backend Architecture
+        instruction: |
+          Backend architecture considerations:
+          - DocType design patterns
+          - Controller logic organization
+          - Database schema impacts
+          - API endpoint design
+        template: |
+          **DocType Patterns:** {{doctype_patterns}}
+          **Controller Design:** {{controller_architecture}}
+          **Database Impact:** {{database_changes}}
+          **API Design:** {{api_architecture}}
+      
+      - id: frontend-architecture
+        title: Frontend Architecture
+        instruction: |
+          Frontend architecture using Vue.js and Frappe UI:
+          - Component structure and organization
+          - State management approach
+          - Responsive design strategy
+          - PWA considerations
+        template: |
+          **Component Structure:** {{component_architecture}}
+          **State Management:** {{state_management_approach}}
+          **Responsive Design:** {{responsive_strategy}}
+          **PWA Features:** {{pwa_considerations}}
+      
+      - id: mobile-architecture
+        title: Mobile Architecture
+        instruction: |
+          Mobile-specific architecture considerations:
+          - Mobile-first design approach
+          - Touch interaction patterns
+          - Offline functionality
+          - Performance optimization
+        template: |
+          **Mobile Design:** {{mobile_design_approach}}
+          **Touch Interactions:** {{touch_patterns}}
+          **Offline Features:** {{offline_functionality}}
+          **Performance:** {{mobile_performance_strategy}}
+
+  - id: story-breakdown
+    title: Story Breakdown
+    instruction: |
+      Break down the epic into individual stories with clear sequencing.
+    sections:
+      - id: story-list
+        title: Story List
+        type: numbered-list
+        instruction: |
+          List of stories that comprise this epic:
+          - Each story should be implementable in 1-3 days
+          - Stories should have clear dependencies
+          - Include story priority and effort estimates
+        template: |
+          1. **Story {{story_num}}: {{story_title}}**
+             - **Description:** {{story_description}}
+             - **Priority:** {{story_priority}}
+             - **Effort:** {{story_effort}}
+             - **Dependencies:** {{story_dependencies}}
+             - **Acceptance Criteria Preview:** {{ac_preview}}
+        elicit: true
+      
+      - id: story-dependencies
+        title: Story Dependencies
+        instruction: |
+          Document dependencies between stories:
+          - Technical dependencies (DocType before API, etc.)
+          - Business process dependencies
+          - Integration dependencies
+          - Testing dependencies
+        template: |
+          **Dependency Chain:** {{dependency_sequence}}
+          **Critical Path:** {{critical_path_stories}}
+          **Parallel Opportunities:** {{parallel_development_options}}
+      
+      - id: story-sequencing
+        title: Story Sequencing Strategy
+        instruction: |
+          Recommended sequence for story development:
+          - Foundation stories (DocTypes, basic functionality)
+          - Core business logic stories
+          - Integration stories
+          - UI/UX enhancement stories
+          - Testing and validation stories
+        template: |
+          **Phase 1 - Foundation:** {{foundation_stories}}
+          **Phase 2 - Core Logic:** {{core_logic_stories}}
+          **Phase 3 - Integration:** {{integration_stories}}
+          **Phase 4 - UI/UX:** {{ui_enhancement_stories}}
+          **Phase 5 - Validation:** {{testing_stories}}
+
+  - id: acceptance-criteria
+    title: Epic Acceptance Criteria
+    type: numbered-list
+    instruction: |
+      High-level acceptance criteria for the entire epic:
+      - Business value delivery criteria
+      - Technical implementation criteria
+      - Integration success criteria
+      - User experience criteria
+      - Performance and quality criteria
+    elicit: true
+
+  - id: risks-and-assumptions
+    title: Risks and Assumptions
+    sections:
+      - id: technical-risks
+        title: Technical Risks
+        type: bullet-list
+        instruction: |
+          Technical risks specific to ERPNext development:
+          - Frappe Framework limitations or constraints
+          - Performance risks with large datasets
+          - Integration complexity risks
+          - Mobile development challenges
+      
+      - id: business-risks
+        title: Business Risks
+        type: bullet-list
+        instruction: |
+          Business and process risks:
+          - User adoption challenges
+          - Business process disruption risks
+          - Training and change management needs
+          - Timeline and resource risks
+      
+      - id: assumptions
+        title: Assumptions
+        type: bullet-list
+        instruction: |
+          Key assumptions underlying this epic:
+          - Technical capability assumptions
+          - Resource availability assumptions
+          - Business process assumptions
+          - Integration compatibility assumptions
+
+  - id: success-metrics
+    title: Success Metrics
+    instruction: |
+      Measurable criteria for epic success.
+    sections:
+      - id: business-metrics
+        title: Business Metrics
+        type: bullet-list
+        instruction: |
+          Business success measurements:
+          - Process efficiency improvements
+          - User productivity gains
+          - Error reduction metrics
+          - Business value realization
+      
+      - id: technical-metrics
+        title: Technical Metrics
+        type: bullet-list
+        instruction: |
+          Technical success measurements:
+          - Performance benchmarks
+          - Security compliance scores
+          - Framework compliance metrics
+          - Integration reliability metrics
+      
+      - id: user-metrics
+        title: User Metrics
+        type: bullet-list
+        instruction: |
+          User experience success measurements:
+          - User satisfaction scores
+          - Task completion rates
+          - Mobile usability metrics
+          - Accessibility compliance scores
+
+  - id: timeline-and-effort
+    title: Timeline and Effort
+    sections:
+      - id: effort-estimate
+        title: Effort Estimate
+        instruction: |
+          Overall effort estimation for the epic:
+          - Story point totals by category
+          - Development time estimates
+          - Testing time estimates
+          - Integration time estimates
+        template: |
+          **Total Story Points:** {{total_story_points}}
+          **Development Time:** {{development_time_estimate}}
+          **Testing Time:** {{testing_time_estimate}}
+          **Integration Time:** {{integration_time_estimate}}
+          **Total Timeline:** {{total_timeline_estimate}}
+      
+      - id: milestone-schedule
+        title: Milestone Schedule
+        instruction: |
+          Key milestones and target dates:
+          - Story completion milestones
+          - Integration milestones
+          - Testing milestones
+          - Deployment milestones
+        template: |
+          **Foundation Complete:** {{foundation_milestone}}
+          **Core Logic Complete:** {{core_logic_milestone}}
+          **Integration Complete:** {{integration_milestone}}
+          **Testing Complete:** {{testing_milestone}}
+          **Deployment Ready:** {{deployment_milestone}}
+
+  - id: change-log
+    title: Change Log
+    type: table
+    columns: [Date, Version, Description, Author]
+    instruction: Track changes made to this epic document

@@ -602,7 +602,19 @@ integration_points:
   - "Works with security specialists on authentication"
   - "Coordinates with performance specialists on optimization"
 
+dependencies:
+  templates:
+    - "trigger-mapping-template.yaml"
+    - "webhook-trigger-template.yaml"
+  tasks:
+    - "map-triggers.md"
+    - "design-event-handlers.md"
+  data:
+    - "event-patterns.md"
+    - "trigger-best-practices.md"
+
 commands:
+  - safety-check: MANDATORY: Analyze app dependencies before any code changes (analyze-app-dependencies.md)
   - help: Show numbered list of the following commands to allow selection
   - map-triggers: map business events to system triggers
   - design-webhooks: design webhook endpoints for triggers

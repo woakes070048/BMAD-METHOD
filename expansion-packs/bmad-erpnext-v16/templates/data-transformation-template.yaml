@@ -146,7 +146,7 @@ transformation_pipeline:
             fill_value: "{{ fill_value }}"
         - remove_outliers:
             method: "{{ outlier_method }}"  # zscore, iqr
-            threshold: {{ threshold }}
+            threshold: "{{ threshold }}"
             
     - stage: "data_enrichment"
       operations:
@@ -164,8 +164,8 @@ transformation_pipeline:
       operations:
         - validate_ranges:
             - field: "{{ numeric_field }}"
-              min: {{ min_value }}
-              max: {{ max_value }}
+              min: "{{ min_value }}"
+              max: "{{ max_value }}"
         - validate_formats:
             - field: "{{ format_field }}"
               pattern: "{{ regex_pattern }}"
@@ -258,7 +258,7 @@ quality_checks:
       threshold: 5
       
     - check: "missing_required_fields"
-      fields: {{ required_fields | tojson }}
+      fields: "{{ required_fields }}"
       
   accuracy:
     - check: "data_type_consistency"

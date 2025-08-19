@@ -1,0 +1,367 @@
+name: "Business Requirements Template"
+description: "Comprehensive template for documenting and analyzing business requirements for ERPNext implementation"
+version: "1.0.0"
+
+document_metadata:
+  project_name: "{{ project_name }}"
+  client: "{{ client_name }}"
+  version: "{{ document_version }}"
+  status: "{{ status }}"  # Draft, Review, Approved, Baseline
+  created_date: "{{ created_date }}"
+  last_modified: "{{ last_modified }}"
+  authors:
+    - name: "{{ author_name }}"
+      role: "{{ author_role }}"
+      email: "{{ author_email }}"
+  reviewers:
+    - name: "{{ reviewer_name }}"
+      role: "{{ reviewer_role }}"
+      approval_date: "{{ approval_date }}"
+
+executive_summary:
+  project_overview: |
+    {{ project_description }}
+    
+  business_objectives:
+    - objective: "{{ objective_1 }}"
+      success_metric: "{{ metric_1 }}"
+      target_date: "{{ date_1 }}"
+      
+    - objective: "{{ objective_2 }}"
+      success_metric: "{{ metric_2 }}"
+      target_date: "{{ date_2 }}"
+      
+  scope:
+    in_scope:
+      - "{{ inscope_item_1 }}"
+      - "{{ inscope_item_2 }}"
+      - "{{ inscope_item_3 }}"
+      
+    out_of_scope:
+      - "{{ outscope_item_1 }}"
+      - "{{ outscope_item_2 }}"
+      
+  constraints:
+    budget: "{{ budget_amount }}"
+    timeline: "{{ project_duration }}"
+    resources: "{{ resource_constraints }}"
+    technical: "{{ technical_constraints }}"
+
+stakeholder_analysis:
+  stakeholder_register:
+    - name: "{{ stakeholder_name }}"
+      role: "{{ stakeholder_role }}"
+      department: "{{ department }}"
+      influence: "{{ influence_level }}"  # High, Medium, Low
+      interest: "{{ interest_level }}"  # High, Medium, Low
+      requirements_area: "{{ focus_area }}"
+      communication_preference: "{{ comm_method }}"
+      
+  stakeholder_matrix:
+    high_influence_high_interest:
+      strategy: "Manage Closely"
+      stakeholders: {{ key_stakeholders | tojson }}
+      engagement_frequency: "Weekly"
+      
+    high_influence_low_interest:
+      strategy: "Keep Satisfied"
+      stakeholders: {{ executive_stakeholders | tojson }}
+      engagement_frequency: "Monthly"
+      
+    low_influence_high_interest:
+      strategy: "Keep Informed"
+      stakeholders: {{ enduser_stakeholders | tojson }}
+      engagement_frequency: "Bi-weekly"
+      
+    low_influence_low_interest:
+      strategy: "Monitor"
+      stakeholders: {{ peripheral_stakeholders | tojson }}
+      engagement_frequency: "As needed"
+
+business_process_analysis:
+  processes:
+    - process_name: "{{ process_name }}"
+      process_area: "{{ process_area }}"  # Sales, Purchase, Inventory, etc.
+      
+      current_state:
+        description: |
+          {{ current_process_description }}
+          
+        steps:
+          - step: "{{ step_number }}"
+            activity: "{{ activity_description }}"
+            actor: "{{ responsible_role }}"
+            system: "{{ current_system }}"
+            duration: "{{ time_taken }}"
+            
+        pain_points:
+          - issue: "{{ pain_point }}"
+            impact: "{{ impact_level }}"  # High, Medium, Low
+            frequency: "{{ occurrence_frequency }}"
+            cost: "{{ estimated_cost }}"
+            
+        metrics:
+          cycle_time: "{{ current_cycle_time }}"
+          error_rate: "{{ current_error_rate }}"
+          cost_per_transaction: "{{ current_cost }}"
+          
+      future_state:
+        description: |
+          {{ future_process_description }}
+          
+        improvements:
+          - improvement: "{{ improvement_description }}"
+            benefit: "{{ expected_benefit }}"
+            
+        expected_metrics:
+          cycle_time: "{{ target_cycle_time }}"
+          error_rate: "{{ target_error_rate }}"
+          cost_per_transaction: "{{ target_cost }}"
+          
+      gap_analysis:
+        gaps:
+          - gap: "{{ gap_description }}"
+            solution: "{{ proposed_solution }}"
+            effort: "{{ implementation_effort }}"  # High, Medium, Low
+
+functional_requirements:
+  requirement_categories:
+    - category: "{{ category_name }}"
+      module: "{{ erpnext_module }}"
+      
+      requirements:
+        - id: "{{ req_id }}"
+          priority: "{{ priority }}"  # Must Have, Should Have, Could Have, Won't Have
+          description: |
+            {{ requirement_description }}
+            
+          business_rule: |
+            {{ business_rule_description }}
+            
+          acceptance_criteria:
+            - "{{ acceptance_criterion_1 }}"
+            - "{{ acceptance_criterion_2 }}"
+            - "{{ acceptance_criterion_3 }}"
+            
+          user_story: |
+            As a {{ user_role }}
+            I want to {{ user_action }}
+            So that {{ user_benefit }}
+            
+          erpnext_mapping:
+            doctype: "{{ mapped_doctype }}"
+            feature: "{{ mapped_feature }}"
+            customization_required: {{ needs_customization }}
+            configuration: |
+              {{ configuration_details }}
+              
+          dependencies:
+            - "{{ dependent_req_id }}"
+            
+          test_scenarios:
+            - scenario: "{{ test_scenario }}"
+              input: "{{ test_input }}"
+              expected_output: "{{ expected_result }}"
+              
+          effort_estimate:
+            development: "{{ dev_hours }}"
+            testing: "{{ test_hours }}"
+            total: "{{ total_hours }}"
+
+non_functional_requirements:
+  performance:
+    - requirement: "Page load time"
+      target: "< 3 seconds"
+      measurement: "95th percentile"
+      
+    - requirement: "Concurrent users"
+      target: "{{ concurrent_users }}"
+      measurement: "Peak load"
+      
+    - requirement: "Transaction throughput"
+      target: "{{ transactions_per_second }} TPS"
+      measurement: "Average load"
+      
+  security:
+    - requirement: "Authentication"
+      specification: "{{ auth_method }}"
+      
+    - requirement: "Authorization"
+      specification: "Role-based access control"
+      
+    - requirement: "Data encryption"
+      specification: "{{ encryption_standard }}"
+      
+    - requirement: "Audit trail"
+      specification: "All transactions logged"
+      
+  usability:
+    - requirement: "User training time"
+      target: "< {{ training_hours }} hours"
+      
+    - requirement: "Error rate"
+      target: "< {{ error_percentage }}%"
+      
+    - requirement: "User satisfaction"
+      target: "> {{ satisfaction_score }}/5"
+      
+  availability:
+    - requirement: "Uptime"
+      target: "{{ uptime_percentage }}%"
+      
+    - requirement: "Recovery time"
+      target: "< {{ recovery_minutes }} minutes"
+      
+    - requirement: "Backup frequency"
+      target: "{{ backup_frequency }}"
+
+data_requirements:
+  data_migration:
+    source_systems:
+      - system: "{{ source_system }}"
+        data_volume: "{{ record_count }}"
+        migration_priority: "{{ priority }}"
+        
+    data_mapping:
+      - source_entity: "{{ source_entity }}"
+        target_doctype: "{{ target_doctype }}"
+        field_mappings:
+          - source: "{{ source_field }}"
+            target: "{{ target_field }}"
+            transformation: "{{ transformation_rule }}"
+            
+    data_quality:
+      - check: "Completeness"
+        threshold: "{{ completeness_threshold }}%"
+        
+      - check: "Accuracy"
+        threshold: "{{ accuracy_threshold }}%"
+        
+      - check: "Consistency"
+        validation_rule: "{{ consistency_rule }}"
+        
+  master_data:
+    entities:
+      - entity: "{{ master_entity }}"
+        attributes: {{ attributes | tojson }}
+        validation_rules: {{ validation_rules | tojson }}
+        
+  reporting:
+    reports:
+      - name: "{{ report_name }}"
+        type: "{{ report_type }}"  # Operational, Analytical, Strategic
+        frequency: "{{ report_frequency }}"
+        recipients: {{ report_recipients | tojson }}
+        data_sources: {{ data_sources | tojson }}
+        
+    dashboards:
+      - name: "{{ dashboard_name }}"
+        widgets: {{ widget_list | tojson }}
+        refresh_rate: "{{ refresh_interval }}"
+        access_roles: {{ authorized_roles | tojson }}
+
+integration_requirements:
+  systems:
+    - system: "{{ external_system }}"
+      integration_type: "{{ integration_type }}"  # API, File, Database
+      direction: "{{ data_direction }}"  # Inbound, Outbound, Bidirectional
+      frequency: "{{ sync_frequency }}"
+      
+      data_flow:
+        - entity: "{{ data_entity }}"
+          operation: "{{ operation_type }}"  # Create, Update, Delete, Sync
+          trigger: "{{ trigger_event }}"
+          
+      technical_specs:
+        protocol: "{{ protocol }}"  # REST, SOAP, FTP, etc.
+        authentication: "{{ auth_method }}"
+        format: "{{ data_format }}"  # JSON, XML, CSV
+        
+      error_handling:
+        retry_policy: "{{ retry_strategy }}"
+        notification: "{{ error_notification }}"
+        fallback: "{{ fallback_mechanism }}"
+
+compliance_requirements:
+  regulations:
+    - regulation: "{{ regulation_name }}"
+      requirements:
+        - "{{ compliance_requirement_1 }}"
+        - "{{ compliance_requirement_2 }}"
+      verification_method: "{{ verification_approach }}"
+      
+  audit:
+    requirements:
+      - "{{ audit_requirement }}"
+      
+  data_governance:
+    retention_policy: "{{ retention_period }}"
+    privacy_requirements: "{{ privacy_rules }}"
+    access_controls: "{{ access_matrix }}"
+
+implementation_approach:
+  phases:
+    - phase: "{{ phase_number }}"
+      name: "{{ phase_name }}"
+      duration: "{{ phase_duration }}"
+      
+      deliverables:
+        - "{{ deliverable_1 }}"
+        - "{{ deliverable_2 }}"
+        
+      milestones:
+        - milestone: "{{ milestone_name }}"
+          date: "{{ milestone_date }}"
+          criteria: "{{ success_criteria }}"
+          
+      resources:
+        - role: "{{ resource_role }}"
+          allocation: "{{ allocation_percentage }}%"
+          
+  risks:
+    - risk: "{{ risk_description }}"
+      probability: "{{ probability_level }}"  # High, Medium, Low
+      impact: "{{ impact_level }}"  # High, Medium, Low
+      mitigation: "{{ mitigation_strategy }}"
+      
+  assumptions:
+    - "{{ assumption_1 }}"
+    - "{{ assumption_2 }}"
+    
+  dependencies:
+    - "{{ dependency_1 }}"
+    - "{{ dependency_2 }}"
+
+success_metrics:
+  kpis:
+    - metric: "{{ kpi_name }}"
+      current_value: "{{ baseline_value }}"
+      target_value: "{{ target_value }}"
+      measurement_method: "{{ measurement_approach }}"
+      frequency: "{{ measurement_frequency }}"
+      
+  benefits:
+    quantitative:
+      - benefit: "{{ quantitative_benefit }}"
+        value: "{{ monetary_value }}"
+        timeframe: "{{ realization_period }}"
+        
+    qualitative:
+      - benefit: "{{ qualitative_benefit }}"
+        impact: "{{ impact_description }}"
+
+appendices:
+  glossary:
+    - term: "{{ term }}"
+      definition: "{{ definition }}"
+      
+  references:
+    - document: "{{ reference_document }}"
+      version: "{{ doc_version }}"
+      location: "{{ doc_location }}"
+      
+  change_log:
+    - version: "{{ version_number }}"
+      date: "{{ change_date }}"
+      author: "{{ change_author }}"
+      changes: "{{ change_description }}"

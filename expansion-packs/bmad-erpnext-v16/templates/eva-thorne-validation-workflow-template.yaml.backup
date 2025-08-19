@@ -1,0 +1,457 @@
+# Eva Thorne Validation Workflow Template
+# Complete agent-driven structure validation workflow for preventing DocFlow/Server Manager issues
+# Copy and customize for your specific app development
+
+app_info:
+  name: "[YOUR_APP_NAME]"
+  description: "[BRIEF_APP_DESCRIPTION]"
+  features:
+    - "[FEATURE_1]"
+    - "[FEATURE_2]"
+    - "[FEATURE_N]"
+  target_compliance: "≥95%"
+  reference_standard: "/home/frappe/crm/crm"
+
+# PHASE 1: PRE-DEVELOPMENT STRUCTURE PLANNING
+pre_development_workflow:
+  step_1_concept_validation:
+    agent: "eva-thorne"
+    command: "/bmadErpNext:agent:app-structure-validator"
+    prompt_template: |
+      Eva, I want to create a new Frappe app called '[APP_NAME]' with these features:
+      [LIST_FEATURES]
+      
+      Please analyze this concept and recommend a proper Frappe-compliant structure based on the CRM reference at /home/frappe/crm/crm.
+    
+    expected_outputs:
+      - high_level_structure_recommendations
+      - module_organization_suggestions
+      - integration_considerations
+      - anti_pattern_warnings
+    
+    success_criteria:
+      - concept_validated_by_eva
+      - no_anti_patterns_identified
+      - clear_structure_direction
+    
+    time_estimate: "10 minutes"
+
+  step_2_detailed_template:
+    agent: "eva-thorne"
+    command: "/bmadErpNext:agent:app-structure-validator"
+    prompt_template: |
+      Eva, create a detailed structure template for '[APP_NAME]' based on Frappe CRM patterns. Include:
+      1. Complete directory structure
+      2. Correct import patterns
+      3. Module vs business module organization
+      4. Hooks.py configuration guidance
+      5. Compliance score estimation
+      6. Anti-patterns to avoid specifically
+    
+    expected_outputs:
+      - complete_directory_tree
+      - import_pattern_examples
+      - hooks_configuration_template
+      - compliance_score_estimate
+      - anti_pattern_prevention_guide
+    
+    success_criteria:
+      - template_compliance_score: "≥95%"
+      - clear_import_patterns
+      - no_docflow_antipatterns
+    
+    time_estimate: "15 minutes"
+
+  step_3_template_validation:
+    agent: "eva-thorne"
+    command: "/bmadErpNext:agent:app-structure-validator"
+    prompt_template: |
+      Eva, validate this structure template and score it for compliance:
+      [PASTE_TEMPLATE_HERE]
+      
+      Confirm this achieves ≥95% compliance and is ready for development start.
+    
+    expected_outputs:
+      - final_compliance_score
+      - validation_results
+      - adjustment_recommendations
+      - development_approval
+    
+    success_criteria:
+      - compliance_score: "≥95%"
+      - zero_critical_violations
+      - development_approved
+    
+    time_estimate: "5 minutes"
+
+  step_4_team_coordination:
+    agent: "claudia-donovan"
+    command: "/bmadErpNext:agent:main-dev-coordinator"
+    prompt_template: |
+      Claudia, coordinate template validation for [APP_NAME] with:
+      - Eva Thorne (structure compliance ≥95%)
+      - Allison Blake (Frappe standards validation)
+      - Team lead approval
+      
+      Require all approvals before development begins.
+    
+    expected_outputs:
+      - multi_agent_coordination
+      - stakeholder_approvals
+      - development_authorization
+    
+    success_criteria:
+      - all_agents_approve
+      - team_lead_signoff
+      - development_authorized
+    
+    time_estimate: "10 minutes"
+
+# PHASE 2: DEVELOPMENT-TIME VALIDATION
+development_workflow:
+  daily_morning_check:
+    frequency: "Daily"
+    agent: "eva-thorne"
+    command: "/bmadErpNext:agent:app-structure-validator"
+    prompt_template: |
+      Eva, good morning! Daily structure audit for [APP_NAME] at [APP_PATH]:
+      - Check for new structural violations
+      - Validate import pattern compliance
+      - Assess drift from approved template
+      - Provide current compliance score
+      - Recommend today's priorities
+    
+    expected_outputs:
+      - current_compliance_status
+      - violation_detection_results
+      - trending_analysis
+      - daily_recommendations
+      - priority_issues
+    
+    success_criteria:
+      - compliance_maintained: "≥85%"
+      - no_new_critical_violations
+      - clear_daily_direction
+    
+    time_estimate: "2 minutes"
+
+  post_code_change_validation:
+    frequency: "After significant changes"
+    agent: "eva-thorne"
+    command: "/bmadErpNext:agent:app-structure-validator"
+    prompt_template: |
+      Eva, I just made these changes to [APP_NAME]:
+      
+      New imports added:
+      [PASTE_IMPORT_STATEMENTS]
+      
+      New directories/files created:
+      [LIST_NEW_FILES]
+      
+      Please validate against Frappe standards and DocFlow anti-patterns.
+    
+    expected_outputs:
+      - import_validation_results
+      - directory_structure_assessment
+      - anti_pattern_warnings
+      - compliance_impact_analysis
+      - fix_recommendations
+    
+    success_criteria:
+      - imports_validated_correct
+      - no_antipatterns_introduced
+      - compliance_maintained
+    
+    time_estimate: "3-5 minutes"
+
+  pre_commit_validation:
+    frequency: "Before each commit"
+    agent: "eva-thorne"
+    command: "/bmadErpNext:agent:app-structure-validator"
+    prompt_template: |
+      Eva, pre-commit validation for [APP_NAME]:
+      - Overall compliance score check
+      - Blocking violation detection
+      - Structural integrity assessment
+      - Import pattern correctness
+      - Commit readiness evaluation
+    
+    expected_outputs:
+      - go_no_go_decision
+      - current_compliance_score
+      - blocking_issues_list
+      - commit_recommendations
+      - next_steps_guidance
+    
+    enforcement:
+      min_compliance_score: 85
+      block_commit_if_below: true
+      require_eva_approval: true
+    
+    time_estimate: "2 minutes"
+
+  weekly_team_review:
+    frequency: "Weekly"
+    agent: "claudia-donovan"
+    command: "/bmadErpNext:agent:main-dev-coordinator"
+    prompt_template: |
+      Claudia, weekly compliance review for all active apps:
+      1. Eva Thorne comprehensive audit
+      2. Compliance trend analysis
+      3. Team training needs assessment
+      4. Process improvement recommendations
+      5. Stakeholder status reporting
+    
+    time_estimate: "30 minutes"
+
+# PHASE 3: PRE-DEPLOYMENT CERTIFICATION
+deployment_workflow:
+  comprehensive_final_audit:
+    agent: "eva-thorne"
+    command: "/bmadErpNext:agent:app-structure-validator"
+    prompt_template: |
+      Eva, comprehensive final deployment audit for [APP_NAME]:
+      
+      CRITICAL VALIDATION REQUIRED:
+      1. Complete structure compliance analysis (≥95% required)
+      2. All import patterns validated against standards
+      3. Zero DocFlow-style anti-patterns confirmed
+      4. Hooks configuration compliance verified
+      5. Module organization matches Frappe CRM standards
+      6. Production deployment certification or REJECTION
+      7. Risk assessment for deployment
+      8. Post-deployment monitoring plan
+    
+    expected_outputs:
+      - comprehensive_compliance_report
+      - pass_fail_deployment_recommendation
+      - detailed_violation_list
+      - risk_assessment
+      - deployment_checklist
+      - monitoring_plan
+    
+    success_criteria:
+      - compliance_score: "≥95%"
+      - zero_critical_violations
+      - zero_antipatterns
+      - deployment_certified
+    
+    time_estimate: "20 minutes"
+
+  multi_agent_validation_pipeline:
+    stage_1_structure:
+      agent: "eva-thorne"
+      timeout: "15 minutes"
+      criteria: "≥95% compliance, zero anti-patterns"
+      blocking: true
+    
+    stage_2_compliance:
+      agent: "allison-blake"
+      command: "/bmadErpNext:agent:frappe-compliance-validator"
+      timeout: "15 minutes"
+      criteria: "Frappe-first principles validated"
+      blocking: true
+    
+    stage_3_integration:
+      agent: "nathan-stark"
+      command: "/bmadErpNext:agent:data-integration-expert"
+      timeout: "15 minutes"
+      criteria: "Multi-app compatibility verified"
+      blocking: true
+    
+    stage_4_qa:
+      agent: "steve-jinks"
+      command: "/bmadErpNext:agent:testing-specialist"
+      timeout: "15 minutes"
+      criteria: "Quality gates passed, testing complete"
+      blocking: true
+    
+    stage_5_coordination:
+      agent: "claudia-donovan"
+      command: "/bmadErpNext:agent:main-dev-coordinator"
+      timeout: "10 minutes"
+      criteria: "Final approval and deployment coordination"
+      blocking: true
+
+  final_deployment_decision:
+    agent: "eva-thorne"
+    command: "/bmadErpNext:agent:app-structure-validator"
+    prompt_template: |
+      Eva, final deployment decision for [APP_NAME]:
+      - Is the app structure production-ready?
+      - What is the final compliance score?
+      - Any last-minute concerns or risks?
+      - Post-deployment monitoring plan
+      - Success criteria for production validation
+    
+    expected_outputs:
+      - final_production_readiness
+      - compliance_score_final
+      - risk_assessment_final
+      - monitoring_plan
+      - success_criteria
+    
+    time_estimate: "10 minutes"
+
+# EMERGENCY RESPONSE WORKFLOWS
+emergency_workflows:
+  critical_violation_response:
+    trigger: "Compliance <50% OR DocFlow pattern detected"
+    immediate_actions:
+      - stop_development_immediately
+      - create_emergency_backup_branch
+      - activate_eva_for_emergency_analysis
+      - notify_team_and_stakeholders
+    
+    agent_prompt: |
+      EMERGENCY: Critical structure violations detected in [APP_NAME].
+      Current compliance: [SCORE]%
+      
+      Eva, provide immediate emergency response:
+      1. Analyze current structure violations
+      2. Compare to DocFlow failure patterns
+      3. Create step-by-step migration plan
+      4. Identify immediate risks
+      5. Provide timeline for remediation
+      6. Coordinate with other agents for emergency response
+    
+    escalation:
+      - eva_thorne: "primary_remediation_lead"
+      - claudia_donovan: "team_coordination"
+      - allison_blake: "compliance_oversight"
+      - stakeholder_notification: "immediate"
+    
+    time_limit: "1 hour for initial assessment"
+
+  moderate_violation_intervention:
+    trigger: "Compliance 50-84%"
+    response_actions:
+      - create_structure_fix_branch
+      - eva_detailed_analysis
+      - coordinate_with_team
+      - implement_structured_fixes
+    
+    agent_prompt: |
+      Moderate structure violations detected in [APP_NAME].
+      Current compliance: [SCORE]%
+      
+      Eva, provide structured remediation plan:
+      1. List specific violations with locations
+      2. Prioritize fixes by impact and effort
+      3. Step-by-step remediation process
+      4. Estimated time for each fix
+      5. Dependencies between fixes
+      6. Testing plan for validation
+    
+    time_limit: "24 hours for remediation plan"
+
+# QUALITY GATES AND ENFORCEMENT
+quality_gates:
+  pre_development:
+    gate_name: "Structure Template Approval"
+    criteria:
+      - eva_compliance_score: "≥95%"
+      - team_lead_approval: true
+      - template_documented: true
+    blocker: "Cannot start coding without approved template"
+  
+  daily_development:
+    gate_name: "Daily Structure Monitoring"
+    criteria:
+      - no_new_violations: true
+      - compliance_maintained: "≥85%"
+      - eva_daily_check: true
+    alert: "Real-time violation notification"
+  
+  pre_commit:
+    gate_name: "Commit-time Validation"
+    criteria:
+      - compliance_score: "≥85%"
+      - eva_validation: "passed"
+      - no_blocking_violations: true
+    blocker: "Block commits that reduce compliance"
+  
+  pre_deployment:
+    gate_name: "Production Readiness"
+    criteria:
+      - compliance_score: "≥95%"
+      - comprehensive_audit: "passed"
+      - multi_agent_approval: true
+    blocker: "Cannot deploy without certification"
+
+# SUCCESS METRICS AND MONITORING
+success_metrics:
+  primary_objectives:
+    - zero_apps_deployed_below_85_percent: true
+    - zero_docflow_style_violations: true
+    - hundred_percent_pre_dev_validation: true
+    - real_time_violation_detection: true
+  
+  kpis:
+    technical:
+      compliance_distribution:
+        excellent_95_plus: "80% target"
+        good_85_94: "20% target"
+        needs_work_below_85: "0% target"
+      
+      response_times:
+        violation_detection: "<5 minutes"
+        fix_implementation: "<24 hours"
+        compliance_recovery: "<48 hours"
+    
+    business:
+      productivity_impact: "maintain_or_improve"
+      cost_effectiveness: "prevention_vs_remediation_savings"
+      team_satisfaction: "positive_agent_experience"
+
+# CUSTOMIZATION INSTRUCTIONS
+customization_guide:
+  app_specific_modifications:
+    - replace_app_name_placeholders
+    - customize_feature_lists
+    - adjust_compliance_thresholds_if_needed
+    - modify_time_estimates_based_on_complexity
+  
+  team_specific_adjustments:
+    - customize_agent_interaction_preferences
+    - adjust_enforcement_levels
+    - modify_escalation_procedures
+    - customize_reporting_requirements
+  
+  integration_considerations:
+    - git_hook_setup
+    - ci_cd_pipeline_integration
+    - ide_plugin_configuration
+    - team_training_requirements
+
+# TEMPLATE USAGE INSTRUCTIONS
+usage_instructions:
+  getting_started:
+    1. "Copy this template to your project directory"
+    2. "Replace all [PLACEHOLDER] values with your app specifics"
+    3. "Customize workflows based on your team preferences"
+    4. "Test the workflow with Eva Thorne on a small example"
+    5. "Train your team on the agent interaction patterns"
+  
+  maintenance:
+    - "Review and update monthly based on experience"
+    - "Incorporate lessons learned from Eva's feedback"
+    - "Adjust compliance thresholds based on team maturity"
+    - "Update agent prompts based on effectiveness"
+
+# SUPPORT AND RESOURCES
+support_resources:
+  documentation:
+    - "AGENT-DRIVEN-STRUCTURE-VALIDATION-GUIDE.md"
+    - "app-structure-validator-implementation-plan.md"
+    - "agent-driven-structure-validation-checklist.md"
+  
+  training_materials:
+    - "Eva Thorne interaction examples"
+    - "Common violation patterns and fixes"
+    - "Best practices for agent coordination"
+  
+  troubleshooting:
+    - "FAQ for common agent interaction issues"
+    - "Escalation procedures for complex problems"
+    - "Performance optimization for large projects"

@@ -561,7 +561,19 @@ integration_with_other_agents:
   - "Provides code to ERPNext architects for review"
   - "Supplies test cases to testing specialists"
 
+dependencies:
+  templates:
+    - "workflow-conversion-template.yaml"
+    - "erpnext-automation-template.yaml"
+  tasks:
+    - "convert-workflows.md"
+    - "generate-automation-code.md"
+  data:
+    - "conversion-patterns.md"
+    - "erpnext-workflow-guide.md"
+
 commands:
+  - safety-check: MANDATORY: Analyze app dependencies before any code changes (analyze-app-dependencies.md)
   - help: Show numbered list of the following commands to allow selection
   - convert-workflows: convert external workflows to ERPNext
   - analyze-processes: analyze business processes for conversion

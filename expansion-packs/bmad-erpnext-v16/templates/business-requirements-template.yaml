@@ -60,22 +60,22 @@ stakeholder_analysis:
   stakeholder_matrix:
     high_influence_high_interest:
       strategy: "Manage Closely"
-      stakeholders: {{ key_stakeholders | tojson }}
+      stakeholders: "{{ key_stakeholders }}"
       engagement_frequency: "Weekly"
       
     high_influence_low_interest:
       strategy: "Keep Satisfied"
-      stakeholders: {{ executive_stakeholders | tojson }}
+      stakeholders: "{{ executive_stakeholders }}"
       engagement_frequency: "Monthly"
       
     low_influence_high_interest:
       strategy: "Keep Informed"
-      stakeholders: {{ enduser_stakeholders | tojson }}
+      stakeholders: "{{ enduser_stakeholders }}"
       engagement_frequency: "Bi-weekly"
       
     low_influence_low_interest:
       strategy: "Monitor"
-      stakeholders: {{ peripheral_stakeholders | tojson }}
+      stakeholders: "{{ peripheral_stakeholders }}"
       engagement_frequency: "As needed"
 
 business_process_analysis:
@@ -151,7 +151,7 @@ functional_requirements:
           erpnext_mapping:
             doctype: "{{ mapped_doctype }}"
             feature: "{{ mapped_feature }}"
-            customization_required: {{ needs_customization }}
+            customization_required: "{{ needs_customization }}"
             configuration: |
               {{ configuration_details }}
               
@@ -243,22 +243,22 @@ data_requirements:
   master_data:
     entities:
       - entity: "{{ master_entity }}"
-        attributes: {{ attributes | tojson }}
-        validation_rules: {{ validation_rules | tojson }}
+        attributes: "{{ attributes }}"
+        validation_rules: "{{ validation_rules }}"
         
   reporting:
     reports:
       - name: "{{ report_name }}"
         type: "{{ report_type }}"  # Operational, Analytical, Strategic
         frequency: "{{ report_frequency }}"
-        recipients: {{ report_recipients | tojson }}
-        data_sources: {{ data_sources | tojson }}
+        recipients: "{{ report_recipients }}"
+        data_sources: "{{ data_sources }}"
         
     dashboards:
       - name: "{{ dashboard_name }}"
-        widgets: {{ widget_list | tojson }}
+        widgets: "{{ widget_list }}"
         refresh_rate: "{{ refresh_interval }}"
-        access_roles: {{ authorized_roles | tojson }}
+        access_roles: "{{ authorized_roles }}"
 
 integration_requirements:
   systems:
@@ -296,8 +296,8 @@ compliance_requirements:
       
   data_governance:
     retention_policy: "{{ retention_period }}"
-    privacy_requirements: {{ privacy_rules | tojson }}
-    access_controls: {{ access_matrix | tojson }}
+    privacy_requirements: "{{ privacy_rules }}"
+    access_controls: "{{ access_matrix }}"
 
 implementation_approach:
   phases:

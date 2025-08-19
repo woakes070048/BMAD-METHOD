@@ -1,0 +1,687 @@
+---
+template_name: "Technical Specification Template"
+template_type: "technical_documentation"
+version: "1.0.0"
+description: "Comprehensive template for technical specifications of ERPNext applications"
+
+# Technical specification structure
+spec_structure:
+  cover_page: |
+    # Technical Specification
+    ## {PROJECT_NAME}
+    
+    **Document Version:** {VERSION}
+    **Date:** {DATE}
+    **Status:** {STATUS}
+    **Author(s):** {AUTHORS}
+    **Reviewers:** {REVIEWERS}
+    
+    ### Document Control
+    | Version | Date | Author | Changes |
+    |---------|------|--------|---------|  
+    {VERSION_HISTORY}
+    
+    ### Approval
+    | Role | Name | Signature | Date |
+    |------|------|-----------|------|
+    {APPROVAL_TABLE}
+
+  executive_summary: |
+    ## Executive Summary
+    
+    ### Project Overview
+    {PROJECT_OVERVIEW}
+    
+    ### Objectives
+    {OBJECTIVES_LIST}
+    
+    ### Scope
+    #### In Scope
+    {IN_SCOPE_ITEMS}
+    
+    #### Out of Scope
+    {OUT_OF_SCOPE_ITEMS}
+    
+    ### Key Deliverables
+    {DELIVERABLES_LIST}
+    
+    ### Success Criteria
+    {SUCCESS_CRITERIA}
+
+# System architecture
+system_architecture:
+  overview: |
+    ## System Architecture
+    
+    ### Architecture Overview
+    ```mermaid
+    graph TB
+        subgraph "Presentation Layer"
+            UI[Web UI]
+            Mobile[Mobile App]
+            API[REST API]
+        end
+        
+        subgraph "Application Layer"
+            BL[Business Logic]
+            WF[Workflow Engine]
+            INT[Integration Layer]
+        end
+        
+        subgraph "Data Layer"
+            DB[(Database)]
+            Cache[(Cache)]
+            Files[File Storage]
+        end
+        
+        UI --> BL
+        Mobile --> API
+        API --> BL
+        BL --> DB
+        BL --> Cache
+        BL --> Files
+        BL --> WF
+        BL --> INT
+    ```
+    
+    ### Architecture Principles
+    1. **Modularity**: Loosely coupled components
+    2. **Scalability**: Horizontal and vertical scaling
+    3. **Security**: Defense in depth
+    4. **Performance**: Response time < 2s
+    5. **Reliability**: 99.9% uptime
+    6. **Maintainability**: Clean code practices
+
+  components: |
+    ### System Components
+    
+    #### Frontend Components
+    | Component | Technology | Purpose | Dependencies |
+    |-----------|-----------|---------|---------------|
+    {FRONTEND_COMPONENTS}
+    
+    #### Backend Components
+    | Component | Technology | Purpose | Dependencies |
+    |-----------|-----------|---------|---------------|
+    {BACKEND_COMPONENTS}
+    
+    #### Infrastructure Components
+    | Component | Technology | Purpose | Specifications |
+    |-----------|-----------|---------|----------------|
+    {INFRASTRUCTURE_COMPONENTS}
+
+# Functional requirements
+functional_requirements:
+  template: |
+    ## Functional Requirements
+    
+    ### Requirement ID: {REQ_ID}
+    **Priority:** {PRIORITY}
+    **Category:** {CATEGORY}
+    
+    #### Description
+    {REQUIREMENT_DESCRIPTION}
+    
+    #### Acceptance Criteria
+    {ACCEPTANCE_CRITERIA}
+    
+    #### User Story
+    As a {USER_ROLE}
+    I want to {ACTION}
+    So that {BENEFIT}
+    
+    #### Business Rules
+    {BUSINESS_RULES}
+    
+    #### Validation Rules
+    {VALIDATION_RULES}
+    
+    #### Dependencies
+    - Depends on: {DEPENDENCIES}
+    - Required by: {DEPENDENTS}
+    
+    #### Test Cases
+    {TEST_CASES}
+
+  use_case: |
+    ### Use Case: {USE_CASE_NAME}
+    
+    **ID:** {UC_ID}
+    **Actor:** {ACTOR}
+    **Preconditions:** {PRECONDITIONS}
+    **Postconditions:** {POSTCONDITIONS}
+    
+    #### Main Flow
+    1. {STEP_1}
+    2. {STEP_2}
+    3. {STEP_3}
+    
+    #### Alternative Flows
+    {ALTERNATIVE_FLOWS}
+    
+    #### Exception Flows
+    {EXCEPTION_FLOWS}
+    
+    #### UI Mockup
+    ![Mockup]({MOCKUP_IMAGE})
+
+# Non-functional requirements
+non_functional_requirements:
+  performance: |
+    ### Performance Requirements
+    
+    #### Response Time
+    | Operation | Expected | Maximum | Conditions |
+    |-----------|----------|---------|------------|
+    | Page Load | < 2s | 5s | Normal load |
+    | API Response | < 200ms | 1s | Single request |
+    | Report Generation | < 5s | 30s | < 10000 records |
+    | Search | < 500ms | 2s | Indexed fields |
+    
+    #### Throughput
+    - Concurrent Users: {CONCURRENT_USERS}
+    - Transactions/Second: {TPS}
+    - Data Volume: {DATA_VOLUME}
+    
+    #### Resource Usage
+    - CPU: < 70% average
+    - Memory: < 80% usage
+    - Storage: {STORAGE_REQUIREMENTS}
+    - Network: {BANDWIDTH_REQUIREMENTS}
+
+  security: |
+    ### Security Requirements
+    
+    #### Authentication
+    - Method: {AUTH_METHOD}
+    - Multi-factor: {MFA_REQUIRED}
+    - Session timeout: {SESSION_TIMEOUT}
+    - Password policy: {PASSWORD_POLICY}
+    
+    #### Authorization
+    - Role-based access control (RBAC)
+    - Principle of least privilege
+    - Permission inheritance
+    - Audit logging
+    
+    #### Data Security
+    - Encryption at rest: {ENCRYPTION_AT_REST}
+    - Encryption in transit: {ENCRYPTION_IN_TRANSIT}
+    - Data classification: {DATA_CLASSIFICATION}
+    - PII handling: {PII_HANDLING}
+    
+    #### Compliance
+    {COMPLIANCE_REQUIREMENTS}
+
+  scalability: |
+    ### Scalability Requirements
+    
+    #### Horizontal Scaling
+    - Load balancing strategy
+    - Session management
+    - Data partitioning
+    - Cache distribution
+    
+    #### Vertical Scaling
+    - Resource limits
+    - Performance benchmarks
+    - Upgrade paths
+    
+    #### Growth Projections
+    | Metric | Current | 6 Months | 1 Year | 2 Years |
+    |--------|---------|----------|--------|---------|  
+    | Users | {CURRENT} | {6M} | {1Y} | {2Y} |
+    | Data | {CURRENT} | {6M} | {1Y} | {2Y} |
+    | Transactions | {CURRENT} | {6M} | {1Y} | {2Y} |
+
+# Data architecture
+data_architecture:
+  data_model: |
+    ## Data Model
+    
+    ### Entity Relationship Diagram
+    ```mermaid
+    erDiagram
+        CUSTOMER ||--o{ ORDER : places
+        CUSTOMER {
+            string customer_id PK
+            string name
+            string email
+            string phone
+            date created_date
+        }
+        ORDER ||--|{ ORDER_ITEM : contains
+        ORDER {
+            string order_id PK
+            string customer_id FK
+            date order_date
+            decimal total_amount
+            string status
+        }
+        ORDER_ITEM {
+            string item_id PK
+            string order_id FK
+            string product_id FK
+            int quantity
+            decimal price
+        }
+        PRODUCT ||--o{ ORDER_ITEM : included_in
+        PRODUCT {
+            string product_id PK
+            string name
+            string description
+            decimal price
+            int stock_quantity
+        }
+    ```
+    
+    ### Data Dictionary
+    {DATA_DICTIONARY}
+
+  database_design: |
+    ### Database Design
+    
+    #### Database Schema
+    **Database:** {DATABASE_NAME}
+    **Type:** {DATABASE_TYPE}
+    **Version:** {DATABASE_VERSION}
+    
+    #### Tables
+    {TABLE_DEFINITIONS}
+    
+    #### Indexes
+    | Table | Index Name | Columns | Type | Purpose |
+    |-------|------------|---------|------|---------|  
+    {INDEX_DEFINITIONS}
+    
+    #### Constraints
+    | Constraint | Type | Definition | Purpose |
+    |------------|------|------------|---------|  
+    {CONSTRAINT_DEFINITIONS}
+    
+    #### Stored Procedures
+    {STORED_PROCEDURES}
+    
+    #### Triggers
+    {TRIGGER_DEFINITIONS}
+
+# API specifications
+api_specifications:
+  rest_api: |
+    ## REST API Specification
+    
+    ### API Overview
+    **Base URL:** `{BASE_URL}`
+    **Version:** `v{VERSION}`
+    **Authentication:** {AUTH_TYPE}
+    
+    ### Endpoints
+    
+    #### {RESOURCE} Resource
+    
+    **GET** `/{resource}`
+    - Description: List all {resource}s
+    - Parameters: page, limit, sort, filter
+    - Response: 200 OK
+    ```json
+    {
+      "data": [{resource_objects}],
+      "meta": {
+        "page": 1,
+        "total": 100
+      }
+    }
+    ```
+    
+    **GET** `/{resource}/{id}`
+    - Description: Get specific {resource}
+    - Response: 200 OK / 404 Not Found
+    
+    **POST** `/{resource}`
+    - Description: Create new {resource}
+    - Body: {resource_object}
+    - Response: 201 Created
+    
+    **PUT** `/{resource}/{id}`
+    - Description: Update {resource}
+    - Body: {resource_object}
+    - Response: 200 OK
+    
+    **DELETE** `/{resource}/{id}`
+    - Description: Delete {resource}
+    - Response: 204 No Content
+
+  graphql_api: |
+    ## GraphQL API Specification
+    
+    ### Schema
+    ```graphql
+    type Query {
+      {query_definitions}
+    }
+    
+    type Mutation {
+      {mutation_definitions}
+    }
+    
+    type Subscription {
+      {subscription_definitions}
+    }
+    
+    {type_definitions}
+    ```
+    
+    ### Example Queries
+    {example_queries}
+    
+    ### Example Mutations
+    {example_mutations}
+
+# Integration specifications
+integration_specifications:
+  template: |
+    ## Integration Specifications
+    
+    ### Integration Points
+    
+    #### {SYSTEM_NAME} Integration
+    
+    **Type:** {INTEGRATION_TYPE}
+    **Protocol:** {PROTOCOL}
+    **Direction:** {DIRECTION}
+    **Frequency:** {FREQUENCY}
+    
+    ##### Data Mapping
+    | Source Field | Target Field | Transformation | Validation |
+    |--------------|--------------|----------------|------------|
+    {FIELD_MAPPING}
+    
+    ##### Authentication
+    {AUTH_DETAILS}
+    
+    ##### Error Handling
+    {ERROR_HANDLING}
+    
+    ##### Monitoring
+    - Health check endpoint
+    - Metrics to track
+    - Alert conditions
+    - SLA requirements
+
+# Testing specifications
+testing_specifications:
+  test_plan: |
+    ## Test Plan
+    
+    ### Testing Scope
+    {TESTING_SCOPE}
+    
+    ### Testing Approach
+    {TESTING_APPROACH}
+    
+    ### Test Levels
+    1. **Unit Testing**
+       - Coverage target: {COVERAGE}%
+       - Framework: {FRAMEWORK}
+    
+    2. **Integration Testing**
+       - API testing
+       - Database testing
+       - External system testing
+    
+    3. **System Testing**
+       - End-to-end workflows
+       - Performance testing
+       - Security testing
+    
+    4. **User Acceptance Testing**
+       - Business scenarios
+       - User workflows
+       - Production data
+    
+    ### Test Cases
+    {TEST_CASES}
+    
+    ### Test Data
+    {TEST_DATA_REQUIREMENTS}
+    
+    ### Test Environment
+    {TEST_ENVIRONMENT}
+
+# Deployment specifications
+deployment_specifications:
+  template: |
+    ## Deployment Specifications
+    
+    ### Deployment Architecture
+    ```mermaid
+    graph LR
+        Dev[Development] --> QA[QA/Testing]
+        QA --> Staging[Staging]
+        Staging --> Prod[Production]
+    ```
+    
+    ### Environment Specifications
+    
+    #### Development
+    - **Purpose**: Development and testing
+    - **Infrastructure**: {DEV_INFRA}
+    - **Access**: Development team
+    
+    #### QA/Testing
+    - **Purpose**: Quality assurance
+    - **Infrastructure**: {QA_INFRA}
+    - **Access**: QA team
+    
+    #### Staging
+    - **Purpose**: Pre-production testing
+    - **Infrastructure**: {STAGING_INFRA}
+    - **Access**: Limited
+    
+    #### Production
+    - **Purpose**: Live system
+    - **Infrastructure**: {PROD_INFRA}
+    - **Access**: Restricted
+    
+    ### Deployment Process
+    1. Code review and approval
+    2. Automated testing
+    3. Build artifacts
+    4. Deploy to staging
+    5. Smoke tests
+    6. Deploy to production
+    7. Post-deployment verification
+    
+    ### Rollback Plan
+    {ROLLBACK_PROCEDURES}
+
+# Monitoring specifications
+monitoring_specifications:
+  template: |
+    ## Monitoring and Observability
+    
+    ### Metrics
+    
+    #### Application Metrics
+    - Response time
+    - Error rate
+    - Throughput
+    - Active users
+    
+    #### System Metrics
+    - CPU usage
+    - Memory usage
+    - Disk I/O
+    - Network traffic
+    
+    #### Business Metrics
+    - Transaction volume
+    - Conversion rate
+    - User engagement
+    - Revenue impact
+    
+    ### Logging
+    
+    #### Log Levels
+    - ERROR: System errors
+    - WARN: Warnings
+    - INFO: Information
+    - DEBUG: Debug information
+    
+    #### Log Format
+    ```json
+    {
+      "timestamp": "ISO8601",
+      "level": "ERROR|WARN|INFO|DEBUG",
+      "service": "service_name",
+      "message": "log_message",
+      "context": {additional_context}
+    }
+    ```
+    
+    ### Alerting
+    
+    | Alert | Condition | Severity | Action |
+    |-------|-----------|----------|--------|
+    {ALERT_DEFINITIONS}
+    
+    ### Dashboards
+    {DASHBOARD_SPECIFICATIONS}
+
+# Maintenance specifications
+maintenance_specifications:
+  template: |
+    ## Maintenance and Support
+    
+    ### Maintenance Windows
+    - **Schedule**: {MAINTENANCE_SCHEDULE}
+    - **Duration**: {DURATION}
+    - **Notification**: {NOTIFICATION_PERIOD}
+    
+    ### Backup and Recovery
+    
+    #### Backup Strategy
+    - **Frequency**: {BACKUP_FREQUENCY}
+    - **Retention**: {RETENTION_PERIOD}
+    - **Storage**: {BACKUP_STORAGE}
+    - **Encryption**: {BACKUP_ENCRYPTION}
+    
+    #### Recovery Procedures
+    - **RTO**: {RECOVERY_TIME_OBJECTIVE}
+    - **RPO**: {RECOVERY_POINT_OBJECTIVE}
+    - **Procedures**: {RECOVERY_PROCEDURES}
+    
+    ### Support Levels
+    
+    | Level | Response Time | Resolution Time | Availability |
+    |-------|---------------|-----------------|-------------|
+    | Critical | 15 minutes | 4 hours | 24/7 |
+    | High | 1 hour | 8 hours | 24/7 |
+    | Medium | 4 hours | 24 hours | Business hours |
+    | Low | 24 hours | 72 hours | Business hours |
+
+# Risk assessment
+risk_assessment:
+  template: |
+    ## Risk Assessment
+    
+    ### Risk Matrix
+    
+    | Risk ID | Description | Probability | Impact | Mitigation |
+    |---------|-------------|-------------|--------|------------|
+    {RISK_MATRIX}
+    
+    ### Technical Risks
+    {TECHNICAL_RISKS}
+    
+    ### Business Risks
+    {BUSINESS_RISKS}
+    
+    ### Security Risks
+    {SECURITY_RISKS}
+    
+    ### Mitigation Strategies
+    {MITIGATION_STRATEGIES}
+
+# Compliance and standards
+compliance_standards:
+  template: |
+    ## Compliance and Standards
+    
+    ### Regulatory Compliance
+    - **GDPR**: {GDPR_REQUIREMENTS}
+    - **HIPAA**: {HIPAA_REQUIREMENTS}
+    - **PCI-DSS**: {PCI_REQUIREMENTS}
+    - **SOC 2**: {SOC2_REQUIREMENTS}
+    
+    ### Industry Standards
+    - **ISO 27001**: Information security
+    - **ISO 9001**: Quality management
+    - **OWASP**: Security best practices
+    
+    ### Coding Standards
+    - **Language**: {LANGUAGE_STANDARDS}
+    - **Framework**: {FRAMEWORK_STANDARDS}
+    - **Documentation**: {DOC_STANDARDS}
+    - **Testing**: {TEST_STANDARDS}
+    
+    ### Accessibility Standards
+    - **WCAG 2.1**: Level AA compliance
+    - **Section 508**: US accessibility
+    - **ADA**: Americans with Disabilities Act
+
+# Appendices
+appendices:
+  template: |
+    ## Appendices
+    
+    ### Appendix A: Glossary
+    {GLOSSARY}
+    
+    ### Appendix B: References
+    {REFERENCES}
+    
+    ### Appendix C: Assumptions
+    {ASSUMPTIONS}
+    
+    ### Appendix D: Dependencies
+    {DEPENDENCIES}
+    
+    ### Appendix E: Change Log
+    {CHANGE_LOG}
+    
+    ### Appendix F: Sign-off
+    {SIGNOFF_SECTION}
+
+# Document metadata
+document_metadata:
+  template: |
+    ---
+    title: {TITLE}
+    version: {VERSION}
+    date: {DATE}
+    status: {STATUS}
+    classification: {CLASSIFICATION}
+    distribution: {DISTRIBUTION}
+    owner: {OWNER}
+    review_cycle: {REVIEW_CYCLE}
+    next_review: {NEXT_REVIEW}
+    ---
+
+# Best practices
+best_practices:
+  - "Be specific and measurable in requirements"
+  - "Include clear acceptance criteria"
+  - "Document all assumptions"
+  - "Provide traceability between requirements"
+  - "Use consistent terminology"
+  - "Include diagrams and visual representations"
+  - "Version control all changes"
+  - "Get stakeholder sign-off"
+  - "Keep technical and business sections separate"
+  - "Include both functional and non-functional requirements"
+  - "Document interfaces and integration points"
+  - "Specify error handling and edge cases"
+  - "Include performance benchmarks"
+  - "Define security requirements clearly"
+  - "Maintain living documentation"

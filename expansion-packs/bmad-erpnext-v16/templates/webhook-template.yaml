@@ -6,10 +6,10 @@ webhook_config:
   name: "{{ webhook_name }}"
   description: "{{ webhook_description }}"
   endpoint_url: "/api/method/{{ app_name }}.{{ module }}.{{ handler_function }}"
-  http_methods: {{ allowed_methods | default(["POST"]) | tojson }}
+  http_methods: "{{ allowed_methods | default([\"POST\"]) }}"
   
 authentication:
-  enabled: {{ auth_enabled | default(true) }}
+  enabled: "{{ auth_enabled | default(true) }}"
   methods:
     - type: "signature"
       header: "X-Webhook-Signature"
@@ -42,7 +42,7 @@ webhook_handler:
         Webhook handler for {{ webhook_name }}
         
         Expected payload:
-        {{ payload_schema | tojson(indent=8) }}
+        {{ payload_schema }}
         """
         
         try:
@@ -121,7 +121,7 @@ webhook_handler:
     
     def validate_payload(payload):
         """Validate webhook payload structure"""
-        required_fields = {{ required_fields | default([]) | tojson }}
+        required_fields = "{{ required_fields | default([]) }}"
         
         if not payload:
             return False
@@ -186,31 +186,30 @@ webhook_handler:
 
 payload_schema:
   type: "object"
-  required: {{ required_fields | default([]) | tojson }}
+  required: "{{ required_fields | default([]) }}"
   properties:
-    {% for field, config in field_definitions.items() %}
-    {{ field }}:
-      type: "{{ config.type }}"
-      {% if config.description %}description: "{{ config.description }}"{% endif %}
-      {% if config.format %}format: "{{ config.format }}"{% endif %}
-      {% if config.enum %}enum: {{ config.enum | tojson }}{% endif %}
-    {% endfor %}
+    # Template: for field, config in field_definitions.items()
+    "{{ field_name }}":
+      type: "{{ field_type }}"
+      description: "{{ field_description }}"
+      format: "{{ field_format }}"
+      enum: "{{ field_enum }}"
 
 error_handling:
   retry_policy:
-    enabled: {{ retry_enabled | default(true) }}
-    max_attempts: {{ max_retries | default(3) }}
+    enabled: "{{ retry_enabled | default(true) }}"
+    max_attempts: "{{ max_retries | default(3) }}"
     backoff_strategy: "exponential"
     base_delay: 60  # seconds
     
   dead_letter_queue:
-    enabled: {{ dlq_enabled | default(false) }}
+    enabled: "{{ dlq_enabled | default(false) }}"
     queue_name: "webhook_failures"
     
   notifications:
     on_failure:
       - type: "email"
-        recipients: {{ error_recipients | default([]) | tojson }}
+        recipients: "{{ error_recipients | default([]) }}"
         
     on_success:
       - type: "log"
@@ -233,7 +232,7 @@ monitoring:
   logging:
     enabled: true
     log_level: "INFO"
-    include_payload: {{ log_payload | default(false) }}
+    include_payload: "{{ log_payload | default(false) }}"
     
   alerts:
     - condition: "error_rate > 0.05"
@@ -283,7 +282,7 @@ testing:
   test_payload: |
     {
       {% for field, config in field_definitions.items() %}
-      "{{ field }}": {{ config.example | tojson }}{% if not loop.last %},{% endif %}
+      "{{ field }}": "{{ config.example }}"{% if not loop.last %},{% endif %}
       {% endfor %}
     }
     
@@ -346,10 +345,10 @@ security:
     - "Use idempotency keys for duplicate prevention"
     
   rate_limiting:
-    enabled: {{ rate_limit_enabled | default(true) }}
-    requests_per_minute: {{ rate_limit | default(60) }}
-    burst_size: {{ burst_size | default(10) }}
+    enabled: "{{ rate_limit_enabled | default(true) }}"
+    requests_per_minute: "{{ rate_limit | default(60) }}"
+    burst_size: "{{ burst_size | default(10) }}"
     
   ip_whitelist:
-    enabled: {{ ip_whitelist_enabled | default(false) }}
-    allowed_ips: {{ allowed_ips | default([]) | tojson }}
+    enabled: "{{ ip_whitelist_enabled | default(false) }}"
+    allowed_ips: "{{ allowed_ips | default([]) }}"

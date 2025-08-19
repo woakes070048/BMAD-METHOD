@@ -186,16 +186,15 @@ webhook_handler:
 payload_validation:
   schema:
     type: "object"
-    required: {{ required_fields | tojson }}
+    required: "{{ required_fields }}"
     properties:
-      {% for field, config in field_schemas.items() %}
-      {{ field }}:
-        type: "{{ config.type }}"
-        {% if config.format %}format: "{{ config.format }}"{% endif %}
-        {% if config.pattern %}pattern: "{{ config.pattern }}"{% endif %}
-        {% if config.min %}minimum: {{ config.min }}{% endif %}
-        {% if config.max %}maximum: {{ config.max }}{% endif %}
-      {% endfor %}
+      # Template: for field, config in field_schemas.items()
+      "{{ field_name }}":
+        type: "{{ field_type }}"
+        format: "{{ field_format }}"
+        pattern: "{{ field_pattern }}"
+        minimum: "{{ field_min }}"
+        maximum: "{{ field_max }}"
       
   validation_code: |
     def validate_payload(data, schema):

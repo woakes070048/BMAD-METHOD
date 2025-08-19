@@ -1,0 +1,505 @@
+name: "vue-script-report-template"
+title: "Vue Component in Script Reports"
+description: "Template for integrating Vue components into Script Reports for advanced visualizations and interactions"
+version: "1.0.0"
+
+parameters:
+  report_name:
+    type: "string"
+    required: true
+    description: "Name of the Script Report (snake_case)"
+  module_name:
+    type: "string"
+    required: true
+    description: "Module for the report"
+  doctype:
+    type: "string"
+    required: true
+    description: "Reference DocType for the report"
+
+templates:
+  report_py: |
+    # {{module_name}}/report/{{report_name}}/{{report_name}}.py
+    import frappe
+    from frappe import _
+
+    def execute(filters=None):
+        columns = get_columns()
+        data = get_data(filters)
+        
+        # Optional: Add chart data for Vue visualization
+        chart = get_chart_data(data)
+        
+        # Optional: Add report summary
+        report_summary = get_report_summary(data)
+        
+        # Pass data to Vue component via message
+        message = {
+            "vue_component": True,
+            "component_data": {
+                "filters": filters,
+                "summary": report_summary
+            }
+        }
+        
+        return columns, data, message, chart, report_summary
+
+    def get_columns():
+        return [
+            {"label": _("Date"), "fieldname": "date", "fieldtype": "Date", "width": 100},
+            {"label": _("Customer"), "fieldname": "customer", "fieldtype": "Link", "options": "Customer", "width": 150},
+            {"label": _("Amount"), "fieldname": "amount", "fieldtype": "Currency", "width": 120},
+            {"label": _("Status"), "fieldname": "status", "fieldtype": "Data", "width": 100},
+        ]
+
+    def get_data(filters):
+        conditions = get_conditions(filters)
+        
+        data = frappe.db.sql("""
+            SELECT 
+                posting_date as date,
+                customer,
+                grand_total as amount,
+                status
+            FROM `tabSales Invoice`
+            WHERE docstatus = 1
+            {conditions}
+            ORDER BY posting_date DESC
+        """.format(conditions=conditions), filters, as_dict=1)
+        
+        return data
+
+    def get_conditions(filters):
+        conditions = ""
+        
+        if filters.get("from_date"):
+            conditions += " AND posting_date >= %(from_date)s"
+        
+        if filters.get("to_date"):
+            conditions += " AND posting_date <= %(to_date)s"
+        
+        if filters.get("customer"):
+            conditions += " AND customer = %(customer)s"
+        
+        return conditions
+
+    def get_chart_data(data):
+        # Prepare data for Vue chart component
+        labels = []
+        values = []
+        
+        for row in data[:10]:  # Top 10 for chart
+            labels.append(row.get("customer"))
+            values.append(row.get("amount"))
+        
+        return {
+            "data": {
+                "labels": labels,
+                "datasets": [{
+                    "name": "Sales Amount",
+                    "values": values
+                }]
+            },
+            "type": "bar",
+            "colors": ["#7cd6fd"]
+        }
+
+    def get_report_summary(data):
+        total = sum(d.get("amount", 0) for d in data)
+        
+        return [
+            {
+                "value": total,
+                "label": _("Total Sales"),
+                "datatype": "Currency",
+                "currency": frappe.defaults.get_global_default("currency")
+            },
+            {
+                "value": len(data),
+                "label": _("Total Transactions"),
+                "datatype": "Int"
+            }
+        ]
+
+  report_js: |
+    // {{module_name}}/report/{{report_name}}/{{report_name}}.js
+    frappe.query_reports["{{report_name}}"] = {
+      filters: [
+        {
+          fieldname: "from_date",
+          label: __("From Date"),
+          fieldtype: "Date",
+          default: frappe.datetime.add_months(frappe.datetime.get_today(), -1)
+        },
+        {
+          fieldname: "to_date",
+          label: __("To Date"),
+          fieldtype: "Date",
+          default: frappe.datetime.get_today()
+        },
+        {
+          fieldname: "customer",
+          label: __("Customer"),
+          fieldtype: "Link",
+          options: "Customer"
+        }
+      ],
+      
+      onload: function(report) {
+        // Add custom buttons
+        report.page.add_inner_button(__("Visualize"), function() {
+          show_vue_visualization(report);
+        });
+      },
+      
+      after_datatable_render: function(datatable_obj) {
+        // Check if we should show Vue component
+        const message = frappe.query_report.message;
+        if (message && message.vue_component) {
+          render_vue_component(message.component_data);
+        }
+      }
+    };
+
+    function show_vue_visualization(report) {
+      // Create dialog with Vue component
+      const dialog = new frappe.ui.Dialog({
+        title: __('{{report_name|title}} Visualization'),
+        fields: [{
+          fieldtype: 'HTML',
+          fieldname: 'vue_container'
+        }],
+        size: 'extra-large'
+      });
+      
+      dialog.show();
+      
+      // Mount Vue component in dialog
+      const wrapper = dialog.fields_dict.vue_container.$wrapper[0];
+      
+      frappe.require('{{report_name}}_viz.bundle.js').then(() => {
+        new frappe.ui.{{report_name|pascalcase}}Viz({
+          wrapper: wrapper,
+          data: frappe.query_report.data,
+          filters: frappe.query_report.filters
+        });
+      });
+    }
+
+    function render_vue_component(component_data) {
+      // Add Vue component above or below the report
+      const report_wrapper = document.querySelector('.query-report');
+      
+      // Create container for Vue component
+      const vue_container = document.createElement('div');
+      vue_container.id = '{{report_name}}-vue-component';
+      vue_container.className = 'mt-4';
+      
+      // Insert before the datatable
+      const datatable = report_wrapper.querySelector('.datatable');
+      datatable.parentNode.insertBefore(vue_container, datatable);
+      
+      // Load and mount Vue component
+      frappe.require('{{report_name}}_dashboard.bundle.js').then(() => {
+        new frappe.ui.{{report_name|pascalcase}}Dashboard({
+          wrapper: vue_container,
+          data: component_data
+        });
+      });
+    }
+
+  visualization_bundle_js: |
+    // public/js/{{report_name}}_viz.bundle.js
+    import { createApp } from "vue";
+    import VisualizationComponent from "./{{report_name}}/Visualization.vue";
+
+    class {{report_name|pascalcase}}Viz {
+      constructor({ wrapper, data, filters }) {
+        this.wrapper = wrapper;
+        this.data = data;
+        this.filters = filters;
+        
+        this.init();
+      }
+      
+      init() {
+        const app = createApp(VisualizationComponent, {
+          data: this.data,
+          filters: this.filters
+        });
+        
+        SetVueGlobals(app);
+        this.app = app.mount(this.wrapper);
+      }
+    }
+
+    frappe.provide("frappe.ui");
+    frappe.ui.{{report_name|pascalcase}}Viz = {{report_name|pascalcase}}Viz;
+
+  visualization_vue: |
+    <!-- public/js/{{report_name}}/Visualization.vue -->
+    <template>
+      <div class="report-visualization">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>{{ __('Data Visualization') }}</h4>
+          </div>
+        </div>
+        
+        <!-- Chart Section -->
+        <div class="row mt-3">
+          <div class="col-md-8">
+            <div class="chart-container" ref="chartContainer">
+              <!-- Chart will be rendered here -->
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="stats-panel">
+              <h5>{{ __('Statistics') }}</h5>
+              <div class="stat-item" v-for="stat in statistics" :key="stat.label">
+                <div class="stat-label">{{ stat.label }}</div>
+                <div class="stat-value">{{ formatValue(stat.value, stat.type) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Interactive Filters -->
+        <div class="row mt-4">
+          <div class="col-md-12">
+            <div class="filter-section">
+              <button 
+                v-for="filter in quickFilters" 
+                :key="filter.value"
+                class="btn btn-sm"
+                :class="selectedFilter === filter.value ? 'btn-primary' : 'btn-default'"
+                @click="applyFilter(filter.value)"
+              >
+                {{ filter.label }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <script setup>
+    import { ref, onMounted, computed } from 'vue';
+
+    const props = defineProps({
+      data: Array,
+      filters: Object
+    });
+
+    const { __ } = window;
+    const { frappe } = window;
+
+    const chartContainer = ref(null);
+    const selectedFilter = ref('all');
+
+    const quickFilters = [
+      { label: __('All'), value: 'all' },
+      { label: __('This Month'), value: 'month' },
+      { label: __('This Quarter'), value: 'quarter' },
+      { label: __('This Year'), value: 'year' }
+    ];
+
+    const statistics = computed(() => {
+      const stats = [];
+      
+      // Calculate statistics from data
+      const total = props.data.reduce((sum, row) => sum + (row.amount || 0), 0);
+      const average = total / props.data.length || 0;
+      
+      stats.push({
+        label: __('Total Amount'),
+        value: total,
+        type: 'currency'
+      });
+      
+      stats.push({
+        label: __('Average'),
+        value: average,
+        type: 'currency'
+      });
+      
+      stats.push({
+        label: __('Count'),
+        value: props.data.length,
+        type: 'number'
+      });
+      
+      return stats;
+    });
+
+    function formatValue(value, type) {
+      if (type === 'currency') {
+        return frappe.format(value, { fieldtype: 'Currency' });
+      }
+      return frappe.format(value, { fieldtype: 'Int' });
+    }
+
+    function renderChart() {
+      // Prepare chart data
+      const chartData = prepareChartData();
+      
+      // Render using Frappe Charts
+      new frappe.Chart(chartContainer.value, {
+        data: chartData,
+        type: 'bar',
+        height: 300,
+        colors: ['#7cd6fd', '#5e64ff'],
+        axisOptions: {
+          xAxisMode: 'tick',
+          xIsSeries: 1
+        },
+        barOptions: {
+          spaceRatio: 0.5
+        }
+      });
+    }
+
+    function prepareChartData() {
+      // Group data for chart
+      const grouped = {};
+      
+      props.data.forEach(row => {
+        const key = row.customer || 'Unknown';
+        if (!grouped[key]) {
+          grouped[key] = 0;
+        }
+        grouped[key] += row.amount || 0;
+      });
+      
+      const labels = Object.keys(grouped).slice(0, 10);
+      const values = labels.map(k => grouped[k]);
+      
+      return {
+        labels: labels,
+        datasets: [{
+          name: __('Sales Amount'),
+          values: values
+        }]
+      };
+    }
+
+    function applyFilter(filter) {
+      selectedFilter.value = filter;
+      // Apply filter logic
+      frappe.show_alert({
+        message: __('Filter applied: {0}', [filter]),
+        indicator: 'blue'
+      });
+    }
+
+    onMounted(() => {
+      renderChart();
+    });
+    </script>
+
+    <style scoped>
+    .report-visualization {
+      padding: 20px;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+    }
+
+    .chart-container {
+      background: white;
+      padding: 15px;
+      border-radius: 4px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stats-panel {
+      background: var(--fg-color);
+      padding: 15px;
+      border-radius: 4px;
+    }
+
+    .stat-item {
+      margin-bottom: 15px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    .filter-section {
+      display: flex;
+      gap: 10px;
+    }
+    </style>
+
+  report_json: |
+    {
+      "add_total_row": 1,
+      "columns": [],
+      "creation": "2024-01-01 00:00:00.000000",
+      "disable_prepared_report": 0,
+      "disabled": 0,
+      "docstatus": 0,
+      "doctype": "Report",
+      "filters": [],
+      "idx": 0,
+      "is_standard": "Yes",
+      "javascript": null,
+      "json": null,
+      "letter_head": null,
+      "modified": "2024-01-01 00:00:00.000000",
+      "modified_by": "Administrator",
+      "module": "{{module_name}}",
+      "name": "{{report_name}}",
+      "owner": "Administrator",
+      "prepared_report": 0,
+      "query": null,
+      "ref_doctype": "{{doctype}}",
+      "report_name": "{{report_name}}",
+      "report_type": "Script Report",
+      "roles": [
+        {
+          "role": "System Manager"
+        }
+      ]
+    }
+
+instructions:
+  setup: |
+    1. Create report structure:
+       ```bash
+       mkdir -p {{module_name}}/report/{{report_name}}
+       ```
+    
+    2. Add report files:
+       - {{report_name}}.py (Python logic)
+       - {{report_name}}.js (JavaScript configuration)
+       - {{report_name}}.json (Report definition)
+    
+    3. Create Vue components:
+       - public/js/{{report_name}}_viz.bundle.js
+       - public/js/{{report_name}}/Visualization.vue
+    
+    4. Build assets:
+       ```bash
+       bench build --app {{app_name}}
+       ```
+    
+    5. Clear cache and test:
+       ```bash
+       bench --site [site-name] clear-cache
+       ```
+
+notes:
+  - Vue components enhance standard reports
+  - Can add interactive visualizations
+  - Access to all report data
+  - Works with existing report infrastructure
+  - No separate frontend needed!

@@ -1,0 +1,380 @@
+---
+template_name: "Workflow State Template"
+template_type: "workflow_configuration"
+version: "1.0.0"
+description: "Template for defining workflow states and transitions in Frappe Framework"
+
+# Workflow state definitions
+workflow_states:
+  common_states:
+    draft:
+      name: "Draft"
+      doc_status: 0
+      allow_edit: "All"
+      style: "primary"
+      message: "Document is in draft state and can be edited"
+      actions: ["edit", "delete", "submit"]
+      
+    pending:
+      name: "Pending Approval"
+      doc_status: 0
+      allow_edit: "System Manager"
+      style: "warning"
+      message: "Document is pending approval"
+      actions: ["approve", "reject", "request_changes"]
+      
+    approved:
+      name: "Approved"
+      doc_status: 1
+      allow_edit: "System Manager"
+      style: "success"
+      message: "Document has been approved"
+      actions: ["cancel", "amend"]
+      
+    rejected:
+      name: "Rejected"
+      doc_status: 0
+      allow_edit: "All"
+      style: "danger"
+      message: "Document has been rejected"
+      actions: ["edit", "resubmit", "delete"]
+      
+    cancelled:
+      name: "Cancelled"
+      doc_status: 2
+      allow_edit: "System Manager"
+      style: "secondary"
+      message: "Document has been cancelled"
+      actions: ["amend"]
+
+  approval_workflow_states:
+    - name: "Draft"
+      doc_status: 0
+      allow_edit: "All"
+      style: "primary"
+      
+    - name: "Pending Manager Approval"
+      doc_status: 0
+      allow_edit: "Manager"
+      style: "warning"
+      
+    - name: "Pending Finance Approval"
+      doc_status: 0
+      allow_edit: "Accounts Manager"
+      style: "warning"
+      
+    - name: "Approved"
+      doc_status: 1
+      allow_edit: "System Manager"
+      style: "success"
+      
+    - name: "Rejected"
+      doc_status: 0
+      allow_edit: "All"
+      style: "danger"
+
+# Workflow transitions
+workflow_transitions:
+  basic_approval:
+    - from_state: "Draft"
+      action: "Submit for Approval"
+      to_state: "Pending Approval"
+      allowed_roles: ["Employee", "Manager"]
+      condition: null
+      allow_self_approval: false
+      
+    - from_state: "Pending Approval"
+      action: "Approve"
+      to_state: "Approved"
+      allowed_roles: ["Manager", "System Manager"]
+      condition: null
+      allow_self_approval: false
+      
+    - from_state: "Pending Approval"
+      action: "Reject"
+      to_state: "Rejected"
+      allowed_roles: ["Manager", "System Manager"]
+      condition: null
+      allow_self_approval: false
+      
+    - from_state: "Rejected"
+      action: "Resubmit"
+      to_state: "Draft"
+      allowed_roles: ["Employee", "Manager"]
+      condition: null
+      allow_self_approval: true
+
+  multi_level_approval:
+    - from_state: "Draft"
+      action: "Submit"
+      to_state: "Pending Manager Approval"
+      allowed_roles: ["Employee"]
+      condition: "doc.grand_total <= 10000"
+      
+    - from_state: "Draft"
+      action: "Submit"
+      to_state: "Pending Finance Approval"
+      allowed_roles: ["Employee"]
+      condition: "doc.grand_total > 10000"
+      
+    - from_state: "Pending Manager Approval"
+      action: "Approve"
+      to_state: "Approved"
+      allowed_roles: ["Manager"]
+      condition: "doc.grand_total <= 50000"
+      
+    - from_state: "Pending Manager Approval"
+      action: "Escalate"
+      to_state: "Pending Finance Approval"
+      allowed_roles: ["Manager"]
+      condition: "doc.grand_total > 50000"
+
+# State configuration templates
+state_configurations:
+  document_permissions:
+    by_state:
+      "Draft":
+        read: ["All"]
+        write: ["All"]
+        submit: ["Employee", "Manager"]
+        cancel: ["System Manager"]
+        delete: ["All"]
+        
+      "Pending Approval":
+        read: ["All"]
+        write: ["Manager", "System Manager"]
+        submit: []
+        cancel: ["System Manager"]
+        delete: []
+        
+      "Approved":
+        read: ["All"]
+        write: ["System Manager"]
+        submit: []
+        cancel: ["Manager", "System Manager"]
+        delete: []
+        
+      "Rejected":
+        read: ["All"]
+        write: ["All"]
+        submit: ["Employee", "Manager"]
+        cancel: ["System Manager"]
+        delete: ["All"]
+
+  field_permissions:
+    by_state:
+      "Draft":
+        editable_fields: ["all"]
+        readonly_fields: ["workflow_state", "name"]
+        hidden_fields: []
+        
+      "Pending Approval":
+        editable_fields: ["remarks"]
+        readonly_fields: ["all_except_remarks"]
+        hidden_fields: []
+        
+      "Approved":
+        editable_fields: []
+        readonly_fields: ["all"]
+        hidden_fields: []
+
+# Notification templates
+notification_templates:
+  state_change_notification:
+    subject: "Workflow Status Update: {{doc.name}}"
+    message: |
+      Dear {{frappe.db.get_value("User", doc.owner, "full_name") or doc.owner}},
+      
+      The status of your {{doc.doctype}} ({{doc.name}}) has been updated.
+      
+      **New Status:** {{doc.workflow_state}}
+      
+      {% if doc.workflow_state == "Approved" %}
+      Congratulations! Your document has been approved.
+      {% elif doc.workflow_state == "Rejected" %}
+      Your document has been rejected. Please review the comments and resubmit.
+      {% endif %}
+      
+      **Document Details:**
+      - Document: {{doc.name}}
+      - Type: {{doc.doctype}}
+      - Current State: {{doc.workflow_state}}
+      - Last Updated: {{frappe.utils.format_datetime(doc.modified)}}
+      
+      Thank you.
+    
+  approval_required_notification:
+    subject: "Approval Required: {{doc.name}}"
+    message: |
+      Dear Approver,
+      
+      A {{doc.doctype}} ({{doc.name}}) requires your approval.
+      
+      **Document Details:**
+      - Document: {{doc.name}}
+      - Submitted by: {{frappe.db.get_value("User", doc.owner, "full_name") or doc.owner}}
+      - Current State: {{doc.workflow_state}}
+      - Amount: {% if doc.get("grand_total") %}{{frappe.utils.fmt_money(doc.grand_total)}}{% endif %}
+      
+      Please review and take appropriate action.
+      
+      [View Document]({{frappe.utils.get_url_to_form(doc.doctype, doc.name)}})
+      
+      Thank you.
+
+# Workflow validation rules
+validation_rules:
+  state_transitions:
+    validate_user_role: |
+      def validate_workflow_transition(doc, transition):
+          user_roles = frappe.get_roles(frappe.session.user)
+          allowed_roles = transition.get("allowed_roles", [])
+          
+          if not any(role in user_roles for role in allowed_roles):
+              frappe.throw(_("You don't have permission to perform this action"))
+    
+    validate_conditions: |
+      def validate_transition_conditions(doc, transition):
+          condition = transition.get("condition")
+          if condition:
+              # Evaluate condition in document context
+              if not eval(condition, {"doc": doc, "frappe": frappe}):
+                  frappe.throw(_("Transition condition not met"))
+    
+    validate_self_approval: |
+      def validate_self_approval(doc, transition):
+          if not transition.get("allow_self_approval", False):
+              if doc.owner == frappe.session.user:
+                  frappe.throw(_("You cannot approve your own document"))
+
+  document_validation:
+    before_transition: |
+      def validate_before_workflow_action(doc, workflow_state):
+          # State-specific validations
+          if workflow_state == "Pending Approval":
+              validate_required_fields_for_approval(doc)
+              validate_document_completeness(doc)
+          elif workflow_state == "Approved":
+              validate_approval_authority(doc)
+    
+    required_fields_validation: |
+      def validate_required_fields_for_approval(doc):
+          required_fields = get_required_fields_for_doctype(doc.doctype)
+          
+          for field in required_fields:
+              if not doc.get(field):
+                  frappe.throw(_("Field '{0}' is required for approval").format(field))
+
+# JavaScript client-side implementations
+client_side_implementations:
+  workflow_buttons: |
+    frappe.ui.form.on("{doctype}", {{
+        refresh: function(frm) {{
+            if (frm.doc.workflow_state) {{
+                add_workflow_buttons(frm);
+            }}
+        }}
+    }});
+    
+    function add_workflow_buttons(frm) {{
+        // Get available transitions for current state
+        frappe.call({{
+            method: "frappe.client.get",
+            args: {{
+                doctype: "Workflow",
+                filters: {{"document_type": frm.doc.doctype}}
+            }},
+            callback: function(r) {{
+                if (r.message && r.message.length > 0) {{
+                    let workflow = r.message[0];
+                    add_transition_buttons(frm, workflow);
+                }}
+            }}
+        }});
+    }}
+    
+    function add_transition_buttons(frm, workflow) {{
+        let current_state = frm.doc.workflow_state;
+        let transitions = workflow.transitions || [];
+        
+        transitions.forEach(function(transition) {{
+            if (transition.state === current_state) {{
+                frm.add_custom_button(transition.action, function() {{
+                    execute_workflow_transition(frm, transition);
+                }}, __("Actions"));
+            }}
+        }});
+    }}
+
+  workflow_styling: |
+    frappe.ui.form.on("{doctype}", {{
+        refresh: function(frm) {{
+            if (frm.doc.workflow_state) {{
+                apply_workflow_styling(frm);
+            }}
+        }}
+    }});
+    
+    function apply_workflow_styling(frm) {{
+        let state_colors = {{
+            "Draft": "blue",
+            "Pending Approval": "orange", 
+            "Approved": "green",
+            "Rejected": "red",
+            "Cancelled": "grey"
+        }};
+        
+        let color = state_colors[frm.doc.workflow_state] || "blue";
+        frm.dashboard.set_headline_alert(
+            `<div class="indicator ${color}">Status: ${frm.doc.workflow_state}</div>`
+        );
+    }}
+
+# Workflow implementation examples
+implementation_examples:
+  simple_approval:
+    doctype: "Purchase Request"
+    workflow_name: "Purchase Request Approval"
+    states: "basic_approval"
+    transitions: "basic_approval"
+    
+  complex_approval:
+    doctype: "Purchase Order"
+    workflow_name: "Purchase Order Approval"
+    states: "approval_workflow_states"
+    transitions: "multi_level_approval"
+    
+  custom_workflow:
+    doctype: "Leave Application"
+    states:
+      - name: "Applied"
+        doc_status: 0
+        allow_edit: "Employee"
+      - name: "Approved by Manager"
+        doc_status: 0
+        allow_edit: "HR Manager"
+      - name: "Approved"
+        doc_status: 1
+        allow_edit: "System Manager"
+    transitions:
+      - from_state: "Applied"
+        action: "Approve"
+        to_state: "Approved by Manager"
+        allowed_roles: ["Manager"]
+      - from_state: "Approved by Manager"
+        action: "Final Approve"
+        to_state: "Approved"
+        allowed_roles: ["HR Manager"]
+
+# Best practices
+best_practices:
+  - "Keep workflow states minimal and meaningful"
+  - "Use clear, action-oriented transition names"
+  - "Implement proper role-based permissions"
+  - "Add validation rules for state transitions"
+  - "Provide clear feedback to users about state changes"
+  - "Test workflow thoroughly with different user roles"
+  - "Document workflow logic for future maintenance"
+  - "Consider rollback scenarios for complex workflows"
+  - "Use notifications to keep stakeholders informed"
+  - "Implement audit trails for compliance requirements"

@@ -417,6 +417,7 @@ workflow_instructions:
   - "Optimize based on feedback"
 
 commands:
+  - safety-check: MANDATORY: Analyze app dependencies before any code changes (analyze-app-dependencies.md)
   - help: Show numbered list of the following commands to allow selection
   - implement-pwa: execute the task implement-pwa.md
   - setup-manifest: configure PWA manifest and icons
