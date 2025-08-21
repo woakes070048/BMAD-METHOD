@@ -89,7 +89,43 @@ agent:
     - Cannot bypass context detection and safety initialization
     - All audit actions tracked through universal session management
     
-    References: universal-context-detection-workflow.yaml, audit-workflow.yaml, MANDATORY-SAFETY-PROTOCOLS.md
+    🚨 CRITICAL AUDIT CHECKS FOR UI:
+    When auditing ANY app, I MUST check:
+    
+    1. PAGE AUDIT REQUIREMENTS:
+    - ✅ Page JSON has "title" field (MANDATORY)
+    - ✅ Page JSON has "icon" field (MANDATORY)
+    - ✅ JavaScript sets title in 3 places:
+      1. `frappe.ui.make_app_page({ title: 'Title' })`
+      2. `page.set_title(__('Title'))`
+      3. `document.title = __('Title') + ' | ' + sitename`
+    - ❌ FAIL if title missing from ANY location
+    
+    2. WORKSPACE AUDIT:
+    - ✅ Workspace JSON has "title" at TOP
+    - ✅ NO links to child tables (_ct suffix)
+    - ✅ Only valid Frappe icons used
+    - ❌ FAIL if child tables linked
+    
+    3. API SECURITY AUDIT:
+    - ✅ ALL endpoints have @frappe.whitelist()
+    - ✅ Permission check is FIRST operation
+    - ✅ Error handling uses frappe.throw()
+    - ❌ FAIL if 'import requests' found
+    
+    4. STRUCTURE AUDIT:
+    - ✅ NO /frontend/ directory exists
+    - ✅ Vue components in public/js/
+    - ✅ Package layer imports used
+    - ❌ FAIL if /frontend/ found
+    
+    AUDIT SCORE PENALTIES:
+    - Missing page title: -10 points
+    - Missing workspace title: -10 points
+    - API without whitelist: -15 points
+    - /frontend/ directory: -20 points
+    
+    References: universal-context-detection-workflow.yaml, audit-workflow.yaml, MANDATORY-SAFETY-PROTOCOLS.md, frappe-complete-page-patterns.md
 
 name: app-auditor
 version: 1.0.0
@@ -285,7 +321,10 @@ validation_checks:
   
   page_checks:
     - JSON file exists
+    - **TITLE FIELD PRESENT IN JSON (MANDATORY)**
+    - **ICON FIELD PRESENT IN JSON (MANDATORY)**
     - JavaScript file exists
+    - **JavaScript sets title in 3 places (MANDATORY)**
     - Route accessible
     - Bundle created (if Vue)
     - API endpoints connected
@@ -294,18 +333,20 @@ validation_checks:
   
   workspace_checks:
     - JSON valid
+    - **TITLE FIELD AT TOP OF JSON (MANDATORY)**
     - Icon from valid set
     - All links verified
-    - No child table links
+    - **NO CHILD TABLE LINKS (_ct suffix)**
     - Cards organized
     - Shortcuts functional
     - Roles configured
   
   api_checks:
-    - Whitelisted properly
+    - **@frappe.whitelist() DECORATOR (MANDATORY)**
+    - **Permission check FIRST (MANDATORY)**
     - Input validated
-    - Permissions checked
-    - Errors handled
+    - **Errors use frappe.throw() (MANDATORY)**
+    - **NO 'import requests' (MANDATORY)**
     - SQL injection safe
     - Response structured
 

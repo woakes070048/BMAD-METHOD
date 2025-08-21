@@ -1,0 +1,151 @@
+name: bmad-integration-tools
+version: 1.0.0
+short-title: Integration & Migration Tools
+description: >-
+  Specialized tools for integrating ERPNext with external systems.
+  Includes agents for n8n workflow conversion, Airtable migration, and general integration tasks.
+  Features 8 specialized AI agents for complex system integrations.
+author: BMAD Team
+slashPrefix: bmadIntegration
+
+metadata:
+  target_framework: "Frappe Framework v15-v16"
+  target_application: "ERPNext v15-v16"
+  compatibility:
+    frappe: ">=15.0.0,<17.0.0"
+    erpnext: ">=15.0.0,<17.0.0"
+  focus_areas:
+    - "n8n workflow conversion"
+    - "Airtable database migration"
+    - "Workflow orchestration"
+    - "Integration compliance"
+    - "PRD generation for integrations"
+  total_agents: 8
+
+# Slash Commands Configuration
+slash_commands:
+  agent_pattern: "/bmadIntegration:agent:{agent-id}"
+  examples:
+    - "/bmadIntegration:agent:airtable-analyzer"
+    - "/bmadIntegration:agent:n8n-workflow-analyst"
+    - "/bmadIntegration:agent:workflow-orchestrator"
+    - "/bmadIntegration:agent:prd-generator"
+
+# Documentation Links
+documentation:
+  main_guide: "README.md"
+  
+agents:
+  migration:
+    - "airtable-analyzer"
+    - "n8n-workflow-analyst"
+    - "trigger-mapper"
+    - "workflow-converter"
+  orchestration:
+    - "workflow-orchestrator"
+    - "workflow-specialist"
+  compliance:
+    - "structure-compliance-agent"
+  requirements:
+    - "prd-generator"
+
+agent_teams:
+  n8n_conversion_team:
+    - "n8n-workflow-analyst"
+    - "workflow-converter"
+    - "trigger-mapper"
+    - "workflow-specialist"
+  airtable_migration_team:
+    - "airtable-analyzer"
+    - "prd-generator"
+    - "structure-compliance-agent"
+  integration_orchestration_team:
+    - "workflow-orchestrator"
+    - "workflow-specialist"
+    - "structure-compliance-agent"
+    - "prd-generator"
+
+templates:
+  migration:
+    - "airtable-migration-template.yaml"
+    - "n8n-to-erpnext-template.yaml"
+  
+tasks:
+  analysis:
+    - "analyze-airtable-base.md"
+    - "convert-external-workflows.md"
+  conversion:
+    - "convert-n8n-workflow.md"
+    - "setup-n8n-triggers.md"
+
+workflows:
+  - "airtable-to-erpnext-migration.yaml"
+  - "combined-airtable-n8n-conversion.yaml"
+  - "n8n-workflow-conversion.yaml"
+
+data:
+  reference:
+    - "n8n-node-mappings.yaml"
+
+integration_capabilities:
+  n8n_workflows:
+    description: "Convert n8n workflows to ERPNext automation"
+    capabilities:
+      - "Analyze n8n workflow JSON structure"
+      - "Map n8n nodes to ERPNext functionality"
+      - "Generate ERPNext automation code"
+      - "Create webhook endpoints and API handlers"
+      - "Convert triggers to ERPNext events"
+      - "Implement scheduled jobs from cron triggers"
+    agents:
+      - "n8n-workflow-analyst"
+      - "workflow-converter"
+      - "trigger-mapper"
+      - "workflow-specialist"
+  
+  airtable_bases:
+    description: "Migrate Airtable databases to ERPNext"
+    capabilities:
+      - "Analyze Airtable base structure"
+      - "Map Airtable fields to ERPNext field types"
+      - "Convert relationships and formulas"
+      - "Generate migration scripts"
+      - "Validate data integrity"
+      - "Recreate views as ERPNext reports"
+    agents:
+      - "airtable-analyzer"
+      - "structure-compliance-agent"
+  
+  workflow_orchestration:
+    description: "Orchestrate complex multi-system integrations"
+    capabilities:
+      - "Coordinate multiple integration agents"
+      - "Manage phased migrations"
+      - "Handle dependency resolution"
+      - "Monitor integration progress"
+      - "Execute rollback procedures"
+    agents:
+      - "workflow-orchestrator"
+      - "workflow-specialist"
+  
+  requirements_documentation:
+    description: "Generate comprehensive integration requirements"
+    capabilities:
+      - "Create integration PRDs"
+      - "Document migration plans"
+      - "Define success criteria"
+      - "Identify integration risks"
+      - "Plan phased deliveries"
+    agents:
+      - "prd-generator"
+
+# Environment settings (inherits from main ERPNext config)
+environment:
+  bench_path: "/home/frappe/frappe-bench"
+  
+settings:
+  integration:
+    validate_structures: true
+    enforce_compliance: true
+    generate_documentation: true
+    create_rollback_plans: true

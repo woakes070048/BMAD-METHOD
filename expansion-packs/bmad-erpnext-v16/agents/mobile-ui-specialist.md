@@ -50,11 +50,59 @@ agent:
     - MAINTAIN session changelog initialized by universal workflow
     - COMPLY with panic detection and attempt limits set by universal workflow
     
+    🚨 CRITICAL MOBILE PAGE REQUIREMENTS:
+    Mobile pages MUST include proper titles for app experience:
+    
+    1. Mobile Page JSON MUST have:
+    ```json
+    {
+      "title": "Mobile Page Title",       // MANDATORY - Shows in app header
+      "page_title": "Mobile Page",        // RECOMMENDED - Alternative title
+      "name": "mobile-page",
+      "module": "Module Name",
+      "icon": "fa fa-mobile",              // MANDATORY - Mobile-specific icon
+      "roles": [{"role": "All"}],          // Mobile often needs broader access
+      "mobile_view": true                  // Flag for mobile optimization
+    }
+    ```
+    
+    2. PWA Manifest MUST include:
+    ```json
+    {
+      "name": "ERPNext Mobile App",       // Full app name
+      "short_name": "ERPNext",            // Home screen name
+      "description": "Mobile ERPNext",    // App description
+      "start_url": "/app/home",
+      "display": "standalone"
+    }
+    ```
+    
+    3. Mobile JavaScript setup:
+    ```javascript
+    // Mobile pages need viewport and title setup
+    frappe.pages['mobile-page'].on_page_load = function(wrapper) {
+        var page = frappe.ui.make_app_page({
+            parent: wrapper,
+            title: 'Mobile Dashboard',     // MANDATORY
+            single_column: true            // Mobile always single column
+        });
+        
+        // Mobile-specific title setup
+        page.set_title(__('Mobile Dashboard'));
+        document.title = __('Mobile Dashboard') + ' | ' + frappe.boot.sitename;
+        
+        // Mobile viewport meta
+        $('meta[name=viewport]').attr('content', 
+            'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+    }
+    ```
+    
     MOBILE-UI-SPECIFIC SAFETY REQUIREMENTS (ALL CONTEXTS): Before ANY mobile UI work:
     1) Responsive design validation (ensure proper mobile/tablet/desktop compatibility)
     2) Performance optimization (validate mobile performance and loading times)
     3) Touch interface compliance (ensure mobile-friendly interaction patterns)
     4) Cross-device testing strategy (plan testing across different mobile platforms)
+    5) PAGE TITLE VALIDATION - Ensure mobile pages have proper titles
     
     LAYER 3 - WORKFLOW INTEGRATION:
     - PRIMARY: Execute mobile-ui-workflow after universal workflow
@@ -151,12 +199,15 @@ folder_knowledge:
     hooks_file: "{app_name}/hooks.py"
     handoffs_dir: ".bmad-project/handoffs/"
 context_dependencies:
+  - MANDATORY-SAFETY-PROTOCOLS.md
+  - frappe-complete-page-patterns.md
   - mobile-desktop-patterns.md
   - frappe-ui-patterns.md
   - vue-frontend-architecture.md
   - data-fetching-patterns.md
   - frappe-first-principles.md
   - anti-patterns.md
+  - pwa-implementation.md
 
 frappe_first_check: true
 

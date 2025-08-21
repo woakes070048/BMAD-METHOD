@@ -1,0 +1,710 @@
+# Airtable Data Volume Assessment and Migration Complexity Calculator
+# Comprehensive framework for assessing data volume and calculating migration complexity
+
+name: "Airtable Data Volume Assessment Framework"
+description: "Complete framework for assessing data volume, estimating migration complexity, and planning resource requirements"
+version: "1.0.0"
+
+# Data Volume Assessment Categories
+volume_assessment:
+  
+  table_level_metrics:
+    record_count:
+      categories:
+        small: 
+          range: "< 1,000 records"
+          characteristics: "Quick to migrate, minimal performance impact"
+          migration_approach: "Single batch processing"
+          estimated_time: "< 1 hour"
+          
+        medium:
+          range: "1,000 - 10,000 records"
+          characteristics: "Moderate migration time, some performance considerations"
+          migration_approach: "Batch processing with monitoring"
+          estimated_time: "1-4 hours"
+          
+        large:
+          range: "10,000 - 100,000 records"
+          characteristics: "Significant migration time, performance optimization needed"
+          migration_approach: "Multi-batch processing with progress tracking"
+          estimated_time: "4-24 hours"
+          
+        very_large:
+          range: "> 100,000 records"
+          characteristics: "Extended migration time, advanced optimization required"
+          migration_approach: "Chunked processing with error recovery"
+          estimated_time: "> 24 hours"
+          
+    field_complexity:
+      simple_fields:
+        count_weight: 1
+        examples: ["Text", "Number", "Date", "Checkbox"]
+        processing_impact: "Minimal"
+        
+      moderate_fields:
+        count_weight: 2
+        examples: ["Select", "Email", "Phone", "URL"]
+        processing_impact: "Low validation overhead"
+        
+      complex_fields:
+        count_weight: 4
+        examples: ["Link", "Lookup", "Multiple Select"]
+        processing_impact: "Relationship resolution required"
+        
+      very_complex_fields:
+        count_weight: 8
+        examples: ["Formula", "Rollup", "Attachment"]
+        processing_impact: "Custom processing logic needed"
+        
+    data_quality_factors:
+      completeness:
+        excellent: "> 95% fields populated"
+        good: "90-95% fields populated"
+        fair: "80-90% fields populated" 
+        poor: "< 80% fields populated"
+        impact_multiplier: [1.0, 1.2, 1.5, 2.0]
+        
+      consistency:
+        excellent: "< 1% data format issues"
+        good: "1-5% data format issues"
+        fair: "5-10% data format issues"
+        poor: "> 10% data format issues"
+        impact_multiplier: [1.0, 1.3, 1.6, 2.5]
+        
+      relationships:
+        intact: "All references valid"
+        minor_issues: "< 5% orphaned references"
+        moderate_issues: "5-15% orphaned references"
+        major_issues: "> 15% orphaned references"
+        impact_multiplier: [1.0, 1.4, 2.0, 3.0]
+
+  base_level_metrics:
+    total_tables:
+      impact_assessment: |
+        Tables: {{ table_count }}
+        Complexity Factor: {{ complexity_factor }}
+        Coordination Overhead: {{ coordination_factor }}
+        
+    total_records:
+      calculation: |
+        Total Records: {{ total_records }}
+        Average per Table: {{ average_per_table }}
+        Largest Table: {{ largest_table_size }}
+        Distribution: {{ size_distribution }}
+        
+    relationship_complexity:
+      simple:
+        description: "Basic one-to-many relationships"
+        tables_affected: "< 50% of tables"
+        complexity_multiplier: 1.0
+        
+      moderate:
+        description: "Mixed relationship types, some many-to-many"
+        tables_affected: "50-80% of tables"
+        complexity_multiplier: 1.5
+        
+      complex:
+        description: "Complex many-to-many, circular references"
+        tables_affected: "> 80% of tables"
+        complexity_multiplier: 2.5
+
+# Migration Complexity Calculator
+complexity_calculator:
+  
+  scoring_algorithm:
+    base_score_calculation: |
+      # Base complexity score calculation
+      def calculate_base_complexity(table_analysis):
+          total_score = 0
+          
+          for table in table_analysis:
+              table_score = 0
+              
+              # Record count factor
+              record_count = table['record_count']
+              if record_count < 1000:
+                  record_factor = 1
+              elif record_count < 10000:
+                  record_factor = 2
+              elif record_count < 100000:
+                  record_factor = 4
+              else:
+                  record_factor = 8
+                  
+              table_score += record_factor
+              
+              # Field complexity factor
+              field_complexity = 0
+              for field in table['fields']:
+                  field_type = field['type']
+                  if field_type in ['text', 'number', 'date', 'checkbox']:
+                      field_complexity += 1
+                  elif field_type in ['select', 'email', 'phone', 'url']:
+                      field_complexity += 2
+                  elif field_type in ['link', 'lookup', 'multiselect']:
+                      field_complexity += 4
+                  elif field_type in ['formula', 'rollup', 'attachment']:
+                      field_complexity += 8
+                      
+              table_score += field_complexity
+              
+              # Data quality multiplier
+              quality_score = table.get('data_quality_score', 1.0)
+              table_score *= quality_score
+              
+              total_score += table_score
+              
+          return total_score
+          
+    relationship_complexity_factor: |
+      # Relationship complexity calculation
+      def calculate_relationship_complexity(relationships):
+          complexity = 0
+          
+          for relationship in relationships:
+              rel_type = relationship['type']
+              if rel_type == 'one_to_many':
+                  complexity += 5
+              elif rel_type == 'many_to_many':
+                  complexity += 15
+              elif rel_type == 'lookup':
+                  complexity += 3
+              elif rel_type == 'rollup':
+                  complexity += 10
+              elif rel_type == 'circular':
+                  complexity += 25
+                  
+          return complexity
+          
+    automation_complexity_factor: |
+      # Automation complexity calculation
+      def calculate_automation_complexity(automations):
+          complexity = 0
+          
+          for automation in automations:
+              auto_type = automation['type']
+              if auto_type == 'simple_trigger':
+                  complexity += 10
+              elif auto_type == 'conditional':
+                  complexity += 20
+              elif auto_type == 'multi_step':
+                  complexity += 35
+              elif auto_type == 'external_integration':
+                  complexity += 50
+                  
+          return complexity
+          
+    formula_complexity_factor: |
+      # Formula complexity calculation
+      def calculate_formula_complexity(formulas):
+          complexity = 0
+          
+          for formula in formulas:
+              formula_type = formula['complexity_level']
+              if formula_type == 'simple':
+                  complexity += 5
+              elif formula_type == 'moderate':
+                  complexity += 15
+              elif formula_type == 'complex':
+                  complexity += 30
+              elif formula_type == 'very_complex':
+                  complexity += 50
+                  
+          return complexity
+
+  time_estimation:
+    base_migration_time: |
+      # Base time estimation per table
+      def estimate_table_migration_time(table_data):
+          base_time_minutes = 30  # Setup and basic migration
+          
+          # Record processing time
+          record_count = table_data['record_count']
+          records_per_minute = 100  # Processing rate
+          record_time = record_count / records_per_minute
+          
+          # Field complexity time
+          field_time = 0
+          for field in table_data['fields']:
+              field_complexity = field.get('complexity_weight', 1)
+              field_time += field_complexity * 2  # minutes per complex field
+              
+          # Data quality adjustment
+          quality_factor = table_data.get('quality_factor', 1.0)
+          total_time = (base_time_minutes + record_time + field_time) * quality_factor
+          
+          return total_time
+          
+    relationship_resolution_time: |
+      # Time for relationship resolution
+      def estimate_relationship_time(relationships):
+          total_time = 0
+          
+          for relationship in relationships:
+              rel_type = relationship['type']
+              record_count = relationship.get('record_count', 0)
+              
+              if rel_type == 'one_to_many':
+                  total_time += record_count * 0.1  # 0.1 min per relationship
+              elif rel_type == 'many_to_many':
+                  total_time += record_count * 0.5  # 0.5 min per relationship
+              elif rel_type == 'lookup':
+                  total_time += record_count * 0.05  # 0.05 min per lookup
+              elif rel_type == 'rollup':
+                  total_time += record_count * 0.3  # 0.3 min per rollup calculation
+                  
+          return total_time
+          
+    validation_testing_time: |
+      # Validation and testing time estimation
+      def estimate_validation_time(complexity_score):
+          base_validation = 120  # 2 hours base validation
+          
+          if complexity_score < 100:
+              validation_multiplier = 1.0
+          elif complexity_score < 300:
+              validation_multiplier = 1.5
+          elif complexity_score < 500:
+              validation_multiplier = 2.0
+          else:
+              validation_multiplier = 3.0
+              
+          return base_validation * validation_multiplier
+
+# Resource Requirements Calculator
+resource_calculator:
+  
+  technical_resources:
+    developer_requirements: |
+      # Developer skill requirements based on complexity
+      def determine_developer_requirements(complexity_analysis):
+          requirements = {
+              'junior_hours': 0,
+              'senior_hours': 0,
+              'specialist_hours': 0,
+              'skills_needed': []
+          }
+          
+          # Basic migration work
+          total_tables = complexity_analysis['table_count']
+          requirements['junior_hours'] += total_tables * 4  # Basic setup per table
+          
+          # Complex field handling
+          complex_fields = complexity_analysis['complex_field_count']
+          requirements['senior_hours'] += complex_fields * 2
+          
+          # Relationship resolution
+          complex_relationships = complexity_analysis['complex_relationship_count']
+          requirements['senior_hours'] += complex_relationships * 3
+          
+          # Formula conversion
+          formula_count = complexity_analysis.get('formula_count', 0)
+          requirements['specialist_hours'] += formula_count * 1.5
+          
+          # Automation conversion
+          automation_count = complexity_analysis.get('automation_count', 0)
+          requirements['specialist_hours'] += automation_count * 2
+          
+          return requirements
+          
+    infrastructure_requirements: |
+      # Infrastructure requirements based on data volume
+      def calculate_infrastructure_needs(volume_analysis):
+          requirements = {
+              'storage_gb': 0,
+              'memory_gb': 8,  # Base ERPNext requirement
+              'cpu_cores': 2,   # Base requirement
+              'network_bandwidth': 'Standard'
+          }
+          
+          # Storage calculation
+          total_records = volume_analysis['total_records']
+          avg_record_size_kb = 2  # Average record size
+          requirements['storage_gb'] = (total_records * avg_record_size_kb) / 1024 / 1024
+          
+          # Memory scaling
+          if total_records > 100000:
+              requirements['memory_gb'] = 16
+          if total_records > 500000:
+              requirements['memory_gb'] = 32
+              
+          # CPU scaling
+          if total_records > 50000:
+              requirements['cpu_cores'] = 4
+          if total_records > 200000:
+              requirements['cpu_cores'] = 8
+              
+          # Network considerations
+          attachment_count = volume_analysis.get('attachment_count', 0)
+          if attachment_count > 1000:
+              requirements['network_bandwidth'] = 'High'
+              
+          return requirements
+          
+  timeline_calculation:
+    phase_breakdown: |
+      # Migration phase timeline calculation
+      def calculate_migration_timeline(complexity_score, resource_allocation):
+          phases = {
+              'analysis_and_planning': {
+                  'duration_days': max(3, complexity_score / 50),
+                  'resources': ['senior_developer', 'business_analyst']
+              },
+              'environment_setup': {
+                  'duration_days': 2,
+                  'resources': ['system_administrator', 'senior_developer']
+              },
+              'doctype_development': {
+                  'duration_days': max(5, complexity_score / 30),
+                  'resources': ['senior_developer', 'junior_developer']
+              },
+              'data_migration': {
+                  'duration_days': max(3, complexity_score / 40),
+                  'resources': ['senior_developer', 'data_specialist']
+              },
+              'testing_validation': {
+                  'duration_days': max(3, complexity_score / 35),
+                  'resources': ['qa_specialist', 'business_analyst']
+              },
+              'deployment_training': {
+                  'duration_days': 2,
+                  'resources': ['senior_developer', 'trainer']
+              }
+          }
+          
+          # Adjust for parallel work
+          total_duration = max([phase['duration_days'] for phase in phases.values()])
+          
+          # Add buffer for complex projects
+          if complexity_score > 500:
+              total_duration *= 1.3
+              
+          return phases, total_duration
+
+# Risk Assessment Framework
+risk_assessment:
+  
+  data_risk_factors:
+    data_loss_risk:
+      low:
+        characteristics: "Simple data types, good quality, clear relationships"
+        mitigation: "Standard backup and validation procedures"
+        probability: "< 1%"
+        
+      medium:
+        characteristics: "Complex fields, moderate quality issues, some circular references"
+        mitigation: "Enhanced validation, staged migration, comprehensive testing"
+        probability: "1-5%"
+        
+      high:
+        characteristics: "Very complex formulas, poor data quality, extensive relationships"
+        mitigation: "Extensive pre-migration cleanup, custom validation, parallel running"
+        probability: "> 5%"
+        
+    data_integrity_risk:
+      assessment_criteria:
+        - "Relationship complexity and circular dependencies"
+        - "Formula accuracy and business logic preservation"
+        - "Data type conversion accuracy"
+        - "Validation rule implementation"
+        
+      mitigation_strategies:
+        - "Comprehensive data validation scripts"
+        - "Business logic verification tests"
+        - "Sample data comparison validation"
+        - "User acceptance testing protocols"
+        
+  performance_risk_factors:
+    migration_performance:
+      bottlenecks:
+        - "Large attachment files"
+        - "Complex relationship resolution"
+        - "Formula recalculation overhead"
+        - "Database constraint validation"
+        
+      optimization_strategies:
+        - "Batch processing optimization"
+        - "Parallel processing where possible"
+        - "Temporary constraint disabling"
+        - "Staged relationship resolution"
+        
+    post_migration_performance:
+      risk_indicators:
+        - "Large tables without proper indexing"
+        - "Complex calculated fields on frequently accessed data"
+        - "Heavy automation on high-volume tables"
+        - "Inefficient relationship queries"
+        
+      performance_optimization:
+        - "Database indexing strategy"
+        - "Calculation caching implementation"
+        - "Query optimization"
+        - "Background processing for heavy tasks"
+
+# Assessment Templates and Worksheets
+assessment_templates:
+  
+  data_volume_worksheet:
+    template: |
+      # Data Volume Assessment Worksheet
+      
+      ## Base Overview
+      **Base Name**: {{ base_name }}
+      **Assessment Date**: {{ assessment_date }}
+      **Assessed By**: {{ assessor_name }}
+      
+      ## Table-Level Analysis
+      
+      ### Table: {{ table_name }}
+      
+      #### Volume Metrics
+      - **Current Record Count**: {{ current_count }}
+      - **Growth Rate**: {{ growth_rate }} records/month
+      - **Projected Count at Migration**: {{ projected_count }}
+      - **Size Category**: {{ size_category }}
+      
+      #### Field Complexity
+      | Field Type | Count | Complexity Weight | Score |
+      |------------|-------|-------------------|-------|
+      | Simple | {{ simple_count }} | 1 | {{ simple_score }} |
+      | Moderate | {{ moderate_count }} | 2 | {{ moderate_score }} |
+      | Complex | {{ complex_count }} | 4 | {{ complex_score }} |
+      | Very Complex | {{ very_complex_count }} | 8 | {{ very_complex_score }} |
+      | **Total** | {{ total_fields }} | | {{ total_field_score }} |
+      
+      #### Data Quality Assessment
+      **Completeness**: {{ completeness_percentage }}% ({{ completeness_rating }})
+      **Consistency**: {{ consistency_percentage }}% ({{ consistency_rating }})
+      **Relationship Integrity**: {{ relationship_percentage }}% ({{ relationship_rating }})
+      
+      **Quality Factor**: {{ overall_quality_factor }}
+      
+      #### Complexity Calculation
+      - Base Table Score: {{ base_score }}
+      - Field Complexity Score: {{ field_score }}
+      - Quality Adjustment: {{ quality_adjustment }}
+      - **Total Table Score**: {{ total_table_score }}
+      
+      ## Base-Level Summary
+      
+      #### Overall Metrics
+      - **Total Tables**: {{ total_tables }}
+      - **Total Records**: {{ total_records }}
+      - **Total Fields**: {{ total_fields }}
+      - **Total Relationships**: {{ total_relationships }}
+      
+      #### Complexity Breakdown
+      - **Base Data Complexity**: {{ base_data_complexity }}
+      - **Relationship Complexity**: {{ relationship_complexity }}
+      - **Automation Complexity**: {{ automation_complexity }}
+      - **Formula Complexity**: {{ formula_complexity }}
+      - **Total Complexity Score**: {{ total_complexity_score }}
+      
+      #### Risk Assessment
+      **Overall Risk Level**: {{ risk_level }}
+      **Key Risk Factors**:
+      {% for risk in risk_factors %}
+      - {{ risk.factor }}: {{ risk.level }} ({{ risk.mitigation }})
+      {% endfor %}
+      
+  migration_estimate_report:
+    template: |
+      # Migration Estimate Report
+      
+      ## Executive Summary
+      **Project**: {{ project_name }}
+      **Estimated Duration**: {{ total_duration }} days
+      **Complexity Level**: {{ complexity_level }}
+      **Recommended Team Size**: {{ team_size }} people
+      **Estimated Cost**: {{ estimated_cost }}
+      
+      ## Detailed Breakdown
+      
+      ### Time Estimation
+      | Phase | Duration | Resources | Dependencies |
+      |-------|----------|-----------|--------------|
+      {% for phase in phases %}
+      | {{ phase.name }} | {{ phase.duration }} days | {{ phase.resources }} | {{ phase.dependencies }} |
+      {% endfor %}
+      
+      ### Resource Requirements
+      
+      #### Technical Resources
+      - **Senior Developer**: {{ senior_dev_hours }} hours
+      - **Junior Developer**: {{ junior_dev_hours }} hours
+      - **Data Specialist**: {{ data_specialist_hours }} hours
+      - **QA Specialist**: {{ qa_hours }} hours
+      
+      #### Infrastructure Requirements
+      - **Storage**: {{ storage_requirements }} GB
+      - **Memory**: {{ memory_requirements }} GB
+      - **CPU**: {{ cpu_requirements }} cores
+      - **Network**: {{ network_requirements }}
+      
+      ### Risk Mitigation Plan
+      {% for risk in risks %}
+      **{{ risk.name }}** ({{ risk.level }})
+      - Impact: {{ risk.impact }}
+      - Probability: {{ risk.probability }}
+      - Mitigation: {{ risk.mitigation }}
+      {% endfor %}
+      
+      ### Success Criteria
+      - Data migration accuracy: {{ accuracy_target }}%
+      - Performance benchmarks: {{ performance_targets }}
+      - User acceptance: {{ acceptance_criteria }}
+      
+      ### Recommendations
+      {% for recommendation in recommendations %}
+      - {{ recommendation.priority }}: {{ recommendation.description }}
+      {% endfor %}
+
+# Validation and Quality Assurance
+validation_framework:
+  
+  pre_migration_validation:
+    data_quality_checks: |
+      # Pre-migration data quality validation
+      def validate_data_quality(table_data):
+          validation_results = {
+              'completeness_issues': [],
+              'consistency_issues': [],
+              'relationship_issues': [],
+              'quality_score': 0
+          }
+          
+          # Completeness check
+          for field in table_data['fields']:
+              null_percentage = calculate_null_percentage(table_data, field['name'])
+              if null_percentage > 20:  # More than 20% null values
+                  validation_results['completeness_issues'].append({
+                      'field': field['name'],
+                      'null_percentage': null_percentage,
+                      'severity': 'high' if null_percentage > 50 else 'medium'
+                  })
+                  
+          # Consistency check
+          for field in table_data['fields']:
+              if field['type'] in ['email', 'phone', 'url']:
+                  invalid_percentage = validate_format_consistency(table_data, field)
+                  if invalid_percentage > 5:
+                      validation_results['consistency_issues'].append({
+                          'field': field['name'],
+                          'invalid_percentage': invalid_percentage,
+                          'issue': 'format_inconsistency'
+                      })
+                      
+          # Calculate overall quality score
+          validation_results['quality_score'] = calculate_quality_score(validation_results)
+          
+          return validation_results
+          
+    volume_impact_analysis: |
+      # Analyze impact of data volume on migration
+      def analyze_volume_impact(volume_data):
+          impact_analysis = {
+              'migration_duration': 0,
+              'resource_requirements': {},
+              'performance_considerations': [],
+              'recommended_approach': ''
+          }
+          
+          total_records = sum([table['record_count'] for table in volume_data['tables']])
+          
+          # Duration impact
+          if total_records < 10000:
+              impact_analysis['migration_duration'] = 'short'  # < 1 day
+              impact_analysis['recommended_approach'] = 'single_batch'
+          elif total_records < 100000:
+              impact_analysis['migration_duration'] = 'medium'  # 1-3 days
+              impact_analysis['recommended_approach'] = 'multi_batch'
+          else:
+              impact_analysis['migration_duration'] = 'extended'  # > 3 days
+              impact_analysis['recommended_approach'] = 'chunked_processing'
+              
+          # Performance considerations
+          largest_table = max(volume_data['tables'], key=lambda x: x['record_count'])
+          if largest_table['record_count'] > 50000:
+              impact_analysis['performance_considerations'].append(
+                  f"Large table {largest_table['name']} may require special handling"
+              )
+              
+          return impact_analysis
+          
+  post_migration_validation:
+    data_integrity_verification: |
+      # Verify data integrity after migration
+      def verify_migration_integrity(source_data, target_data):
+          verification_results = {
+              'record_count_match': True,
+              'data_accuracy': 0,
+              'relationship_integrity': True,
+              'calculation_accuracy': True,
+              'issues_found': []
+          }
+          
+          # Record count verification
+          for table_name, source_count in source_data['record_counts'].items():
+              target_count = target_data['record_counts'].get(table_name, 0)
+              if source_count != target_count:
+                  verification_results['record_count_match'] = False
+                  verification_results['issues_found'].append({
+                      'type': 'count_mismatch',
+                      'table': table_name,
+                      'source_count': source_count,
+                      'target_count': target_count
+                  })
+                  
+          # Sample data accuracy check
+          accuracy_score = validate_sample_data_accuracy(source_data, target_data)
+          verification_results['data_accuracy'] = accuracy_score
+          
+          if accuracy_score < 99:
+              verification_results['issues_found'].append({
+                  'type': 'data_accuracy',
+                  'score': accuracy_score,
+                  'threshold': 99
+              })
+              
+          return verification_results
+
+# Success Metrics and KPIs
+success_metrics:
+  
+  migration_success_criteria:
+    data_completeness: "100% of source records migrated successfully"
+    data_accuracy: ">99.9% field-level accuracy"
+    relationship_integrity: "100% of relationships preserved"
+    performance_benchmarks: "System response time < 2 seconds for standard operations"
+    user_acceptance: ">90% user satisfaction with migrated system"
+    
+  quality_metrics:
+    error_rate: "<0.1% data corruption or loss"
+    rollback_success: "100% successful rollback capability if needed"
+    documentation_completeness: "100% of processes documented"
+    test_coverage: ">95% of functionality tested"
+    
+  operational_metrics:
+    migration_time_accuracy: "Actual time within 20% of estimate"
+    resource_utilization: "Actual resources within 15% of planned"
+    issue_resolution_time: "<4 hours for critical issues"
+    stakeholder_communication: "Daily progress updates provided"
+
+# Implementation Guidelines
+implementation_guidelines:
+  
+  assessment_process:
+    step_1: "Gather comprehensive data about Airtable base structure"
+    step_2: "Analyze data volume and complexity using provided calculators"
+    step_3: "Calculate migration complexity score and time estimates"
+    step_4: "Assess resource requirements and infrastructure needs"
+    step_5: "Identify risks and develop mitigation strategies"
+    step_6: "Create detailed migration plan with phases and milestones"
+    step_7: "Present assessment results to stakeholders for approval"
+    
+  best_practices:
+    accuracy: "Always round time estimates up by 20% for buffer"
+    validation: "Validate calculations with multiple scenarios"
+    communication: "Present results in business terms, not just technical metrics"
+    documentation: "Document all assumptions and methodologies used"
+    review: "Have assessments reviewed by experienced team members"

@@ -1,0 +1,1024 @@
+# Airtable to ERPNext Field Mapping Comprehensive Guide
+# Complete field type conversion specifications and implementation guidance
+
+name: "Airtable to ERPNext Field Mapping Guide"
+description: "Comprehensive mapping guide for converting Airtable field types to ERPNext with implementation details and best practices"
+version: "1.0.0"
+
+# Complete Field Type Mappings
+field_mappings:
+  
+  # TEXT FIELD CATEGORIES
+  text_fields:
+    single_line_text:
+      airtable_specs:
+        max_length: "Unlimited (practical limit ~50k chars)"
+        validation: "None by default"
+        formatting: "Plain text only"
+        use_cases: ["Names", "Titles", "Short descriptions", "Identifiers"]
+        
+      erpnext_mapping:
+        primary_type: "Data"
+        max_length: 140  # ERPNext default limit
+        validation_options: ["Email", "Name", "Phone", "URL"]
+        
+      implementation_details:
+        field_properties:
+          fieldtype: "Data"
+          length: "Configurable (default 140)"
+          reqd: "Based on Airtable required setting"
+          unique: "If Airtable field is unique"
+          
+        validation_script: |
+          # Add to DocType validation if custom validation needed
+          def validate(self):
+              if self.field_name and len(self.field_name) > 140:
+                  frappe.throw("Field name too long")
+                  
+        migration_script: |
+          # Data transformation for migration
+          def transform_single_line_text(value):
+              if value:
+                  # Truncate if too long
+                  return str(value)[:140] if len(str(value)) > 140 else str(value)
+              return ""
+              
+      migration_complexity: "Low"
+      migration_notes:
+        - "Check for data longer than ERPNext limits"
+        - "Preserve important validation rules"
+        - "Consider using Small Text for longer content"
+
+    long_text:
+      airtable_specs:
+        max_length: "Unlimited (up to 100,000 chars)"
+        formatting: "Rich text with basic formatting"
+        features: ["Line breaks", "URLs auto-linked"]
+        use_cases: ["Descriptions", "Notes", "Comments", "Rich content"]
+        
+      erpnext_mapping:
+        primary_type: "Text Editor"
+        alternatives: ["Small Text", "Text", "HTML Editor"]
+        
+      implementation_details:
+        field_properties:
+          fieldtype: "Text Editor"
+          editor: "Default (supports HTML)"
+          
+        alternative_mappings:
+          small_text:
+            max_length: 1000
+            use_case: "Short descriptions without formatting"
+            
+          text:
+            max_length: "Unlimited"
+            use_case: "Plain text, no formatting needed"
+            
+          html_editor:
+            features: "Full HTML editing"
+            use_case: "Complex formatted content"
+            
+        migration_script: |
+          def transform_long_text(value):
+              if value:
+                  # Preserve line breaks and basic formatting
+                  return str(value).replace('\n', '<br>')
+              return ""
+              
+      migration_complexity: "Low"
+      migration_notes:
+        - "Preserve formatting where possible"
+        - "Consider mobile display implications"
+        - "May need HTML sanitization"
+
+    email:
+      airtable_specs:
+        validation: "Email format validation"
+        display: "Clickable email links"
+        use_cases: ["Contact emails", "User identification"]
+        
+      erpnext_mapping:
+        primary_type: "Data"
+        validation: "Email"
+        
+      implementation_details:
+        field_properties:
+          fieldtype: "Data"
+          options: "Email"
+          
+        validation_script: |
+          def validate(self):
+              if self.email_field:
+                  import re
+                  if not re.match(r'^[^@]+@[^@]+\.[^@]+$', self.email_field):
+                      frappe.throw("Invalid email format")
+                      
+        client_script: |
+          frappe.ui.form.on('DocType', {
+              email_field: function(frm) {
+                  // Auto-format or validate on client side
+                  if (frm.doc.email_field) {
+                      frm.doc.email_field = frm.doc.email_field.toLowerCase().trim();
+                  }
+              }
+          });
+          
+      migration_complexity: "Low"
+      migration_notes:
+        - "Maintain email validation"
+        - "Consider duplicate checking across system"
+        - "Link to User DocType if applicable"
+
+    url:
+      airtable_specs:
+        validation: "URL format validation"
+        display: "Clickable links"
+        features: "Auto-detection of URLs"
+        use_cases: ["Website links", "Document URLs", "Social media"]
+        
+      erpnext_mapping:
+        primary_type: "Data"
+        validation: "URL"
+        
+      implementation_details:
+        field_properties:
+          fieldtype: "Data"
+          options: "URL"
+          
+        validation_script: |
+          def validate(self):
+              if self.url_field:
+                  import re
+                  url_pattern = re.compile(
+                      r'^https?://'  # http:// or https://
+                      r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?|'  # domain...
+                      r'localhost|'  # localhost...
+                      r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+                      r'(?::\d+)?'  # optional port
+                      r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+                  if not url_pattern.match(self.url_field):
+                      frappe.throw("Invalid URL format")
+                      
+      migration_complexity: "Low"
+      migration_notes:
+        - "Ensure URLs are properly formatted"
+        - "Consider security implications of external links"
+        - "May need protocol prefix addition"
+
+    phone:
+      airtable_specs:
+        validation: "Phone number format"
+        formatting: "International format support"
+        display: "Click-to-call on mobile"
+        use_cases: ["Contact numbers", "Emergency contacts"]
+        
+      erpnext_mapping:
+        primary_type: "Phone"
+        alternatives: ["Data with phone validation"]
+        
+      implementation_details:
+        field_properties:
+          fieldtype: "Phone"
+          
+        validation_script: |
+          def validate(self):
+              if self.phone_field:
+                  import re
+                  # Basic phone validation - adjust pattern as needed
+                  phone_pattern = re.compile(r'^\+?1?\d{9,15}$')
+                  clean_phone = re.sub(r'[^\d+]', '', self.phone_field)
+                  if not phone_pattern.match(clean_phone):
+                      frappe.throw("Invalid phone number format")
+                      
+      migration_complexity: "Low"
+      migration_notes:
+        - "Standardize phone number format"
+        - "Consider international format requirements"
+        - "May need data cleaning for consistency"
+
+  # SELECTION FIELD CATEGORIES
+  selection_fields:
+    single_select:
+      airtable_specs:
+        options: "Predefined list with colors"
+        behavior: "One selection only"
+        features: ["Color coding", "Custom ordering"]
+        use_cases: ["Status", "Category", "Priority", "Type"]
+        
+      erpnext_mapping:
+        primary_type: "Select"
+        
+      implementation_details:
+        field_properties:
+          fieldtype: "Select"
+          options: "Newline-separated list"
+          default: "First option or specific default"
+          
+        migration_script: |
+          def migrate_select_options(airtable_options):
+              # Convert Airtable options to ERPNext format
+              options_list = []
+              for option in airtable_options:
+                  options_list.append(option['name'])
+              return '\n'.join(options_list)
+              
+        color_preservation: |
+          # CSS for preserving color coding
+          .frappe-control[data-fieldtype="Select"] select option[value="High Priority"] {
+              background-color: #ff6b6b;
+              color: white;
+          }
+          
+      migration_complexity: "Low"
+      migration_notes:
+        - "Preserve all option values exactly"
+        - "Maintain option order if important"
+        - "Handle color coding with custom CSS"
+        - "Set appropriate default value"
+
+    multiple_select:
+      airtable_specs:
+        options: "Multiple selections from predefined list"
+        display: "Tags with colors"
+        features: ["Color coding", "Easy add/remove"]
+        use_cases: ["Tags", "Skills", "Categories", "Features"]
+        
+      erpnext_mapping:
+        primary_type: "Multiselect"
+        alternatives: ["Table MultiSelect (Child Table)"]
+        
+      implementation_details:
+        multiselect_approach:
+          field_properties:
+            fieldtype: "Multiselect"
+            options: "Newline-separated list"
+            
+          limitations:
+            - "Limited formatting options"
+            - "No individual item colors"
+            - "String storage (comma-separated)"
+            
+        child_table_approach:
+          advantages:
+            - "Better relational integrity"
+            - "Individual record properties"
+            - "Better reporting capabilities"
+            
+          structure:
+            parent_field:
+              fieldtype: "Table"
+              options: "Child DocType Name"
+              
+            child_doctype_fields:
+              - fieldname: "option_value"
+                fieldtype: "Select"
+                options: "Same as original options"
+                
+        migration_script: |
+          def migrate_multiselect(airtable_values, use_child_table=False):
+              if use_child_table:
+                  # Create child table records
+                  child_records = []
+                  for value in airtable_values:
+                      child_records.append({"option_value": value})
+                  return child_records
+              else:
+                  # Create comma-separated string
+                  return ','.join(airtable_values) if airtable_values else ""
+                  
+      migration_complexity: "Medium"
+      migration_notes:
+        - "Evaluate if child table approach is better"
+        - "Consider reporting and filtering needs"
+        - "Plan for option management"
+
+    checkbox:
+      airtable_specs:
+        values: "True/False only"
+        display: "Checkmark when true"
+        default: "Unchecked (false)"
+        use_cases: ["Boolean flags", "Yes/No questions", "Feature toggles"]
+        
+      erpnext_mapping:
+        primary_type: "Check"
+        
+      implementation_details:
+        field_properties:
+          fieldtype: "Check"
+          default: "0 or 1"
+          
+        migration_script: |
+          def migrate_checkbox(airtable_value):
+              # Handle various true/false representations
+              if airtable_value in [True, 1, '1', 'true', 'True', 'yes', 'Yes']:
+                  return 1
+              elif airtable_value in [False, 0, '0', 'false', 'False', 'no', 'No']:
+                  return 0
+              else:
+                  return 0  # Default to unchecked
+                  
+      migration_complexity: "Low"
+      migration_notes:
+        - "Handle null vs false distinction"
+        - "Set appropriate default value"
+        - "Consider business logic implications"
+
+  # NUMBER FIELD CATEGORIES
+  number_fields:
+    number:
+      airtable_specs:
+        precision: "Variable precision"
+        formats: ["Integer", "Decimal", "Exponential"]
+        validation: "Numeric validation"
+        use_cases: ["Quantities", "IDs", "Scores", "Measurements"]
+        
+      erpnext_mapping:
+        primary_type: "Float"
+        alternatives: ["Int", "Currency"]
+        
+      implementation_details:
+        type_selection:
+          int:
+            use_case: "Whole numbers only"
+            range: "-2,147,483,648 to 2,147,483,647"
+            
+          float:
+            use_case: "Decimal numbers"
+            precision: "Configurable decimal places"
+            
+          currency:
+            use_case: "Monetary values"
+            features: "Currency symbol, formatting"
+            
+        field_properties:
+          fieldtype: "Float"  # or "Int" or "Currency"
+          precision: "2"  # decimal places
+          
+        validation_script: |
+          def validate(self):
+              if self.number_field:
+                  if self.number_field < 0:
+                      frappe.throw("Negative values not allowed")
+                  if self.number_field > 999999:
+                      frappe.throw("Value exceeds maximum limit")
+                      
+      migration_complexity: "Low"
+      migration_notes:
+        - "Choose appropriate numeric type"
+        - "Set precision requirements"
+        - "Consider validation ranges"
+        - "Handle null vs zero distinction"
+
+    currency:
+      airtable_specs:
+        precision: "2 decimal places (configurable)"
+        display: "Currency symbol"
+        formatting: "Thousand separators"
+        use_cases: ["Prices", "Costs", "Revenue", "Budgets"]
+        
+      erpnext_mapping:
+        primary_type: "Currency"
+        
+      implementation_details:
+        field_properties:
+          fieldtype: "Currency"
+          precision: "2"
+          options: "currency_field"  # Link to currency field
+          
+        currency_handling:
+          single_currency:
+            approach: "Set default currency in field options"
+            currency_field: "Not required"
+            
+          multi_currency:
+            approach: "Reference currency field"
+            currency_field: "Required"
+            
+        migration_script: |
+          def migrate_currency(airtable_value, currency_code="USD"):
+              if airtable_value:
+                  return {
+                      "amount": float(airtable_value),
+                      "currency": currency_code
+                  }
+              return {"amount": 0.0, "currency": currency_code}
+              
+      migration_complexity: "Medium"
+      migration_notes:
+        - "Identify currency requirements"
+        - "Set up currency field if multi-currency"
+        - "Preserve precision settings"
+
+    percent:
+      airtable_specs:
+        storage: "Decimal (0.5 = 50%)"
+        display: "Percentage symbol"
+        range: "0 to 1 (0% to 100%)"
+        use_cases: ["Completion rates", "Discounts", "Percentages"]
+        
+      erpnext_mapping:
+        primary_type: "Percent"
+        
+      implementation_details:
+        field_properties:
+          fieldtype: "Percent"
+          
+        storage_format:
+          airtable: "0.5 for 50%"
+          erpnext: "50 for 50%"
+          conversion_needed: true
+          
+        migration_script: |
+          def migrate_percent(airtable_value):
+              if airtable_value is not None:
+                  # Convert decimal to percentage
+                  return float(airtable_value) * 100
+              return 0
+              
+        validation_script: |
+          def validate(self):
+              if self.percent_field is not None:
+                  if self.percent_field < 0 or self.percent_field > 100:
+                      frappe.throw("Percentage must be between 0 and 100")
+                      
+      migration_complexity: "Low"
+      migration_notes:
+        - "Convert storage format (decimal to percentage)"
+        - "Set appropriate validation ranges"
+        - "Consider business logic implications"
+
+  # DATE AND TIME FIELDS
+  date_time_fields:
+    date:
+      airtable_specs:
+        format: "Various display formats"
+        timezone: "Date only, no timezone"
+        validation: "Date format validation"
+        use_cases: ["Birthdays", "Deadlines", "Event dates"]
+        
+      erpnext_mapping:
+        primary_type: "Date"
+        
+      implementation_details:
+        field_properties:
+          fieldtype: "Date"
+          
+        migration_script: |
+          def migrate_date(airtable_date):
+              if airtable_date:
+                  from datetime import datetime
+                  # Handle various date formats
+                  try:
+                      if isinstance(airtable_date, str):
+                          # Parse ISO date format
+                          date_obj = datetime.fromisoformat(airtable_date.replace('Z', '+00:00'))
+                          return date_obj.date()
+                      else:
+                          return airtable_date
+                  except:
+                      return None
+              return None
+              
+        validation_script: |
+          def validate(self):
+              if self.date_field:
+                  from datetime import date
+                  if self.date_field > date.today():
+                      frappe.msgprint("Date is in the future")
+                      
+      migration_complexity: "Low"
+      migration_notes:
+        - "Handle various date formats"
+        - "Preserve date values accurately"
+        - "Consider business validation rules"
+
+    datetime:
+      airtable_specs:
+        format: "Date + time with timezone"
+        timezone: "User timezone display, UTC storage"
+        precision: "Minute precision"
+        use_cases: ["Timestamps", "Appointments", "Log entries"]
+        
+      erpnext_mapping:
+        primary_type: "Datetime"
+        
+      implementation_details:
+        field_properties:
+          fieldtype: "Datetime"
+          
+        timezone_handling:
+          airtable: "User timezone display"
+          erpnext: "UTC storage, user timezone display"
+          conversion: "May be required"
+          
+        migration_script: |
+          def migrate_datetime(airtable_datetime):
+              if airtable_datetime:
+                  from datetime import datetime
+                  import pytz
+                  try:
+                      if isinstance(airtable_datetime, str):
+                          # Parse ISO datetime format
+                          dt = datetime.fromisoformat(airtable_datetime.replace('Z', '+00:00'))
+                          # Convert to UTC if not already
+                          if dt.tzinfo is None:
+                              dt = pytz.utc.localize(dt)
+                          return dt.astimezone(pytz.utc)
+                      return airtable_datetime
+                  except:
+                      return None
+              return None
+              
+      migration_complexity: "Medium"
+      migration_notes:
+        - "Handle timezone conversion carefully"
+        - "Preserve timestamp accuracy"
+        - "Consider user timezone settings"
+
+  # RELATIONSHIP FIELDS
+  relationship_fields:
+    linked_record:
+      airtable_specs:
+        type: "Foreign key reference"
+        display: "Primary field of linked record"
+        bidirectional: "Creates reverse relationship"
+        multiple: "Can link to multiple records"
+        use_cases: ["Parent-child", "Many-to-many", "References"]
+        
+      erpnext_mapping:
+        primary_type: "Link"
+        alternatives: ["Table MultiSelect", "Child Table"]
+        
+      implementation_details:
+        single_link:
+          field_properties:
+            fieldtype: "Link"
+            options: "Target DocType"
+            
+        multiple_links:
+          approach_1:
+            fieldtype: "Table MultiSelect"
+            options: "Target DocType"
+            
+          approach_2:
+            fieldtype: "Table"
+            options: "Child DocType"
+            child_structure:
+              - fieldname: "linked_doc"
+                fieldtype: "Link"
+                options: "Target DocType"
+                
+        migration_script: |
+          def migrate_linked_records(airtable_links, mapping_table):
+              """
+              Convert Airtable record IDs to ERPNext document names
+              """
+              erpnext_links = []
+              for airtable_id in airtable_links:
+                  erpnext_name = mapping_table.get(airtable_id)
+                  if erpnext_name:
+                      erpnext_links.append(erpnext_name)
+              return erpnext_links
+              
+        relationship_resolution:
+          phase_1: "Create documents without relationships"
+          phase_2: "Build ID mapping table"
+          phase_3: "Update relationships using mapping"
+          
+      migration_complexity: "High"
+      migration_notes:
+        - "Plan relationship resolution strategy"
+        - "Create comprehensive ID mapping"
+        - "Handle bidirectional relationships carefully"
+        - "Validate relationship integrity"
+
+    lookup:
+      airtable_specs:
+        source: "Field from linked record"
+        behavior: "Read-only, auto-updates"
+        display: "Value from related record"
+        use_cases: ["Display related information"]
+        
+      erpnext_mapping:
+        primary_type: "Read Only"
+        implementation: "fetch_from property"
+        
+      implementation_details:
+        field_properties:
+          fieldtype: "Read Only"
+          fetch_from: "link_field.source_field"
+          
+        fetch_configuration:
+          syntax: "parent_link_field.target_field_name"
+          example: "customer.customer_name"
+          
+        migration_considerations:
+          dependency: "Link field must exist first"
+          updates: "Automatic when parent changes"
+          performance: "Minimal impact"
+          
+        implementation_example: |
+          # In DocType JSON
+          {
+              "fieldname": "customer_email",
+              "fieldtype": "Read Only",
+              "label": "Customer Email", 
+              "fetch_from": "customer.email_address",
+              "depends_on": "customer"
+          }
+          
+      migration_complexity: "Medium"
+      migration_notes:
+        - "Identify source field in target DocType"
+        - "Ensure link field exists first"
+        - "Test automatic updates"
+
+    rollup:
+      airtable_specs:
+        function: "Aggregation (SUM, COUNT, AVG, etc.)"
+        source: "Multiple linked records"
+        behavior: "Auto-calculated, read-only"
+        use_cases: ["Totals", "Counts", "Averages", "Min/Max"]
+        
+      erpnext_mapping:
+        primary_type: "Read Only"
+        implementation: "Server script calculation"
+        alternatives: ["Currency (for sums)", "Int (for counts)"]
+        
+      implementation_details:
+        server_script_approach:
+          trigger: "Document events (save, update)"
+          calculation: "Python aggregation functions"
+          
+        common_aggregations:
+          sum:
+            implementation: |
+              def calculate_total(self):
+                  total = 0
+                  linked_docs = frappe.get_all("Child DocType", 
+                      filters={"parent_id": self.name}, 
+                      fields=["amount"])
+                  for doc in linked_docs:
+                      total += doc.amount or 0
+                  self.total_amount = total
+                  
+          count:
+            implementation: |
+              def calculate_count(self):
+                  count = frappe.db.count("Child DocType", 
+                      filters={"parent_id": self.name})
+                  self.total_count = count
+                  
+          average:
+            implementation: |
+              def calculate_average(self):
+                  linked_docs = frappe.get_all("Child DocType",
+                      filters={"parent_id": self.name},
+                      fields=["value"])
+                  if linked_docs:
+                      values = [doc.value for doc in linked_docs if doc.value]
+                      self.average_value = sum(values) / len(values) if values else 0
+                  else:
+                      self.average_value = 0
+                      
+        performance_considerations:
+          caching: "Consider caching for large datasets"
+          triggers: "Optimize calculation triggers"
+          indexing: "Index fields used in calculations"
+          
+      migration_complexity: "High"
+      migration_notes:
+        - "Identify aggregation function and source"
+        - "Implement efficient calculation logic"
+        - "Consider performance with large datasets"
+        - "Test calculation accuracy"
+
+  # SPECIAL FIELDS
+  special_fields:
+    formula:
+      airtable_specs:
+        language: "Airtable formula syntax"
+        complexity: "Simple to very complex"
+        triggers: "Auto-calculation on change"
+        functions: "Mathematical, string, date, logical"
+        use_cases: ["Calculated fields", "Conditional logic", "String manipulation"]
+        
+      erpnext_mapping:
+        primary_type: "Read Only"
+        implementation: "Server script or client script"
+        
+      implementation_details:
+        complexity_assessment:
+          simple: "Basic math, string concat"
+          medium: "Conditional logic, date calculations"  
+          complex: "Multiple conditions, nested functions"
+          very_complex: "Advanced string manipulation, complex business logic"
+          
+        implementation_strategies:
+          server_script:
+            advantages: ["Secure", "Persistent", "Server-side validation"]
+            use_case: "Business-critical calculations"
+            
+          client_script:
+            advantages: ["Real-time updates", "User feedback"]
+            use_case: "UI enhancements, immediate feedback"
+            
+        common_formula_patterns:
+          concatenation:
+            airtable: "CONCATENATE(First_Name, ' ', Last_Name)"
+            erpnext: "self.first_name + ' ' + self.last_name"
+            
+          conditional:
+            airtable: "IF(Status='Active', 'Yes', 'No')"
+            erpnext: "'Yes' if self.status == 'Active' else 'No'"
+            
+          date_calculation:
+            airtable: "DATETIME_DIFF(End_Date, Start_Date, 'days')"
+            erpnext: "(self.end_date - self.start_date).days"
+            
+          numeric_calculation:
+            airtable: "Quantity * Unit_Price"
+            erpnext: "(self.quantity or 0) * (self.unit_price or 0)"
+            
+        migration_script: |
+          def analyze_formula(airtable_formula):
+              """
+              Analyze Airtable formula and suggest ERPNext implementation
+              """
+              analysis = {
+                  "complexity": "simple",
+                  "functions_used": [],
+                  "fields_referenced": [],
+                  "suggested_implementation": "server_script"
+              }
+              
+              # Analyze formula complexity and components
+              # Return implementation strategy
+              return analysis
+              
+      migration_complexity: "Very High"
+      migration_notes:
+        - "Manual conversion required for most formulas"
+        - "Test calculations thoroughly"
+        - "Consider performance implications"
+        - "Document business logic clearly"
+
+    attachment:
+      airtable_specs:
+        multiple: "Multiple files per field"
+        types: "Images, documents, any file type"
+        storage: "Airtable cloud storage"
+        features: ["Thumbnails", "Direct download", "File info"]
+        use_cases: ["Documents", "Images", "Files", "Media"]
+        
+      erpnext_mapping:
+        primary_type: "Attach"
+        alternatives: ["Attach Image"]
+        
+      implementation_details:
+        single_attachment:
+          field_properties:
+            fieldtype: "Attach"
+            
+        multiple_attachments:
+          approach_1:
+            solution: "Child table with attach fields"
+            structure:
+              parent_table: "Table field"
+              child_table: "Attachment DocType"
+              
+          approach_2:
+            solution: "Multiple attach fields"
+            limitation: "Fixed number of attachments"
+            
+        migration_script: |
+          def migrate_attachments(airtable_attachments):
+              """
+              Download and migrate Airtable attachments
+              """
+              import requests
+              migrated_files = []
+              
+              for attachment in airtable_attachments:
+                  try:
+                      # Download file from Airtable
+                      response = requests.get(attachment['url'])
+                      response.raise_for_status()
+                      
+                      # Create ERPNext file
+                      file_doc = frappe.get_doc({
+                          "doctype": "File",
+                          "file_name": attachment.get('filename', 'attachment'),
+                          "content": response.content,
+                          "is_private": 0,
+                          "file_size": len(response.content)
+                      })
+                      file_doc.insert()
+                      migrated_files.append(file_doc.file_url)
+                      
+                  except Exception as e:
+                      frappe.log_error(f"Failed to migrate attachment: {e}")
+                      
+              return migrated_files
+              
+        storage_considerations:
+          location: "ERPNext files directory"
+          permissions: "Public or private"
+          size_limits: "ERPNext file size limits"
+          
+      migration_complexity: "Medium"
+      migration_notes:
+        - "Plan for multiple attachment handling"
+        - "Consider file size and storage limits"
+        - "Preserve file names and metadata"
+        - "Handle download failures gracefully"
+
+# Migration Planning Tools
+migration_tools:
+  
+  complexity_calculator:
+    scoring_system:
+      field_complexity_points:
+        single_line_text: 1
+        long_text: 1
+        email: 1
+        url: 1
+        phone: 1
+        single_select: 2
+        multiple_select: 4
+        checkbox: 1
+        number: 1
+        currency: 3
+        percent: 2
+        date: 2
+        datetime: 3
+        linked_record: 8
+        lookup: 5
+        rollup: 10
+        formula: 15
+        attachment: 6
+        
+      table_multipliers:
+        record_count_under_1000: 1.0
+        record_count_1000_5000: 1.2
+        record_count_5000_10000: 1.5
+        record_count_over_10000: 2.0
+        
+      relationship_complexity:
+        simple_one_to_many: 5
+        complex_one_to_many: 10
+        many_to_many: 15
+        circular_references: 25
+        
+    calculation_method: |
+      def calculate_migration_complexity(table_analysis):
+          total_complexity = 0
+          
+          for table in table_analysis['tables']:
+              table_complexity = 0
+              
+              # Field complexity
+              for field in table['fields']:
+                  field_type = field['airtable_type']
+                  field_points = field_complexity_points.get(field_type, 5)
+                  table_complexity += field_points
+              
+              # Record count multiplier
+              record_count = table['record_count']
+              if record_count > 10000:
+                  multiplier = 2.0
+              elif record_count > 5000:
+                  multiplier = 1.5
+              elif record_count > 1000:
+                  multiplier = 1.2
+              else:
+                  multiplier = 1.0
+                  
+              table_complexity *= multiplier
+              total_complexity += table_complexity
+          
+          # Add relationship complexity
+          for relationship in table_analysis['relationships']:
+              rel_type = relationship['type']
+              total_complexity += relationship_complexity.get(rel_type, 10)
+          
+          return {
+              "total_complexity": total_complexity,
+              "estimated_days": max(1, total_complexity / 50),
+              "risk_level": "Low" if total_complexity < 100 else "Medium" if total_complexity < 300 else "High"
+          }
+
+  field_mapping_worksheet:
+    template: |
+      # Field Mapping Worksheet
+      
+      ## Table: {{ table_name }}
+      
+      | Airtable Field | Type | Required | ERPNext Field | ERPNext Type | Notes | Complexity |
+      |----------------|------|----------|---------------|--------------|-------|------------|
+      {% for field in fields %}
+      | {{ field.name }} | {{ field.type }} | {{ field.required }} | {{ field.erpnext_name }} | {{ field.erpnext_type }} | {{ field.notes }} | {{ field.complexity }} |
+      {% endfor %}
+      
+      ## Relationship Mappings
+      
+      | Airtable Link | Target Table | ERPNext Implementation | Notes |
+      |---------------|--------------|------------------------|-------|
+      {% for link in links %}
+      | {{ link.field }} | {{ link.target }} | {{ link.implementation }} | {{ link.notes }} |
+      {% endfor %}
+      
+      ## Formula Conversions
+      
+      | Field | Airtable Formula | ERPNext Implementation | Complexity |
+      |-------|------------------|------------------------|------------|
+      {% for formula in formulas %}
+      | {{ formula.field }} | {{ formula.airtable }} | {{ formula.erpnext }} | {{ formula.complexity }} |
+      {% endfor %}
+
+  validation_checklist:
+    pre_migration:
+      - "All field types mapped and validated"
+      - "Relationship dependencies identified"
+      - "Formula conversion strategies defined"
+      - "Data quality issues documented"
+      - "Migration order established"
+      - "Test environment prepared"
+      - "Backup procedures verified"
+      
+    during_migration:
+      - "Monitor batch processing progress"
+      - "Validate data integrity at each step"
+      - "Check relationship resolution"
+      - "Verify calculated field accuracy"
+      - "Handle errors and exceptions"
+      - "Maintain migration logs"
+      
+    post_migration:
+      - "Compare record counts"
+      - "Validate relationship integrity"
+      - "Test business logic and calculations"
+      - "Verify user access and permissions"
+      - "Performance testing"
+      - "User acceptance testing"
+      - "Documentation updates"
+
+# Best Practices and Guidelines
+best_practices:
+  
+  field_naming:
+    conventions:
+      - "Use snake_case for field names"
+      - "Keep names under 50 characters"
+      - "Use descriptive but concise names"
+      - "Avoid reserved words"
+      - "Maintain consistency across DocTypes"
+      
+    examples:
+      good: ["customer_name", "order_date", "total_amount"]
+      avoid: ["CustomerName", "dt", "field1"]
+      
+  data_validation:
+    strategies:
+      - "Implement client-side validation for user experience"
+      - "Add server-side validation for data integrity"
+      - "Use appropriate field types for automatic validation"
+      - "Document business rules clearly"
+      - "Test edge cases thoroughly"
+      
+  performance_optimization:
+    techniques:
+      - "Index frequently queried fields"
+      - "Optimize relationship queries"
+      - "Use appropriate field types"
+      - "Implement caching for calculated fields"
+      - "Monitor query performance"
+      
+  migration_safety:
+    precautions:
+      - "Always backup original data"
+      - "Test on small datasets first"
+      - "Implement rollback procedures"
+      - "Validate data at each step"
+      - "Keep detailed migration logs"
+      - "Have contingency plans ready"
+
+# Success Metrics
+success_criteria:
+  data_accuracy:
+    - "100% record count match"
+    - "All required fields successfully migrated"
+    - "Relationships properly established"
+    - "Calculated fields producing correct results"
+    
+  functionality:
+    - "All business processes working"
+    - "User workflows functioning"
+    - "Reports generating correctly"
+    - "Integrations operational"
+    
+  performance:
+    - "Response times within acceptable limits"
+    - "No data corruption or loss"
+    - "System stability maintained"
+    - "User satisfaction above 80%"

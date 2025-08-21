@@ -30,6 +30,23 @@ This checklist ensures consistent, high-quality development practices for ERPNex
 
 ## Code Structure and Organization
 
+### [ ] App Structure Requirements 🚨
+- [ ] **NO /frontend/ directory** - Use public/js/ for Vue components
+- [ ] **NO /src/ or /backend/ directories** - Use standard Frappe structure
+- [ ] **hooks.py at package layer** (app-name/app-name/hooks.py)
+- [ ] **DocTypes in module layer** (app-name/app-name/app-name/doctype/)
+- [ ] **Child tables use _ct suffix** (e.g., sales_order_item_ct)
+- [ ] **Imports use package layer** NOT triple nesting
+
+### [ ] 🚨 CRITICAL: hooks.py Configuration (MANDATORY)
+- [ ] **app_name matches folder name exactly**
+- [ ] **app_title, app_publisher, app_description defined**
+- [ ] **doc_events configured for DocType overrides**
+- [ ] **scheduler_events configured for background tasks**
+- [ ] **fixtures list defined (even if empty)**
+- [ ] **app_include_js/css paths configured**
+- [ ] **No syntax errors** (run: python -m py_compile hooks.py)
+
 ### [ ] App Structure
 - [ ] Follow Frappe app directory structure conventions
 - [ ] Organize modules logically by business domain
@@ -81,6 +98,10 @@ This checklist ensures consistent, high-quality development practices for ERPNex
 - [ ] Use appropriate lifecycle hooks (before_save, after_insert, etc.)
 - [ ] Handle exceptions gracefully with proper error logging
 - [ ] Implement business logic following DRY principles
+- [ ] **🚨 DISTINGUISH between regular (80%) and submittable (20%) DocTypes**
+- [ ] **🚨 Regular DocTypes: validate(), before_save(), after_insert(), on_update()**
+- [ ] **🚨 Submittable DocTypes: Also implement on_submit(), on_cancel()**
+- [ ] **🚨 Set "is_submittable": 1 in JSON for submittable DocTypes**
 
 ### [ ] Validation Implementation
 - [ ] Validate required fields and data types
@@ -99,6 +120,14 @@ This checklist ensures consistent, high-quality development practices for ERPNex
 - [ ] Handle database errors gracefully
 
 ## Client-Side Development
+
+### [ ] Page Creation Requirements 🚨
+- [ ] **Page JSON includes "title" field** (MANDATORY - often missing!)
+- [ ] **Page JavaScript sets title in 3 places**: make_app_page(), set_title(), document.title
+- [ ] **Page JSON includes "icon" field** (MANDATORY)
+- [ ] **Page JSON includes "module" field** (MANDATORY)
+- [ ] **Page JSON includes "roles" array** for permissions
+- [ ] **For Vue pages**: setup_page() method sets titles before mounting
 
 ### [ ] JavaScript Form Scripts
 - [ ] Implement form event handlers (refresh, validate, etc.)
@@ -151,6 +180,18 @@ This checklist ensures consistent, high-quality development practices for ERPNex
 - [ ] Follow OWASP API security guidelines
 
 ## Testing Implementation
+
+### [ ] 🚨 MANDATORY Testing Requirements
+- [ ] **EVERY DocType has a test file** (test_[doctype_name].py)
+- [ ] **CRUD tests for ALL DocTypes** (Create, Read, Update, Delete)
+- [ ] **Validation tests for ALL validation rules**
+- [ ] **Permission tests for ALL user roles**
+- [ ] **API tests for 100% of endpoints**
+- [ ] **Test coverage >= 80% (MANDATORY)**
+- [ ] **Test Data Factory pattern used**
+- [ ] **All tests clean up their data**
+- [ ] **External services mocked (email, APIs)**
+- [ ] **Performance benchmarks included**
 
 ### [ ] Unit Testing
 - [ ] Write unit tests for all controller methods
@@ -253,6 +294,24 @@ This checklist ensures consistent, high-quality development practices for ERPNex
 - [ ] Provide user-friendly error messages
 - [ ] Implement proper error recovery mechanisms
 - [ ] Monitor and alert on critical errors
+
+## Workspace Development
+
+### [ ] Workspace Creation Requirements 🚨
+- [ ] **Workspace JSON includes "title" field at TOP** (MANDATORY - often missing!)
+- [ ] **Workspace uses valid Frappe icons** (NOT FontAwesome fa-icons)
+- [ ] **All links point to parent DocTypes** (NEVER child tables with _ct)
+- [ ] **Module field is set correctly**
+- [ ] **Roles array includes appropriate permissions**
+- [ ] **File placed in correct directory**: module/workspace/workspace_name/
+
+### [ ] Workspace Content Validation
+- [ ] All DocType links verified to exist
+- [ ] Reports are created and accessible
+- [ ] Pages exist and load correctly
+- [ ] Shortcuts have appropriate colors (Blue, Green, Orange, Grey)
+- [ ] Cards are logically organized
+- [ ] No more than 4-6 shortcuts for performance
 
 ## Integration and Deployment
 

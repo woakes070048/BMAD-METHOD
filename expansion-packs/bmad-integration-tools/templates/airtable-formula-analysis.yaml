@@ -1,0 +1,919 @@
+# Airtable Formula Analysis and ERPNext Conversion Framework
+# Comprehensive guide for analyzing Airtable formulas and converting them to ERPNext
+
+name: "Airtable Formula Analysis Framework"
+description: "Complete framework for analyzing Airtable formulas and implementing equivalent ERPNext calculations"
+version: "1.0.0"
+
+# Airtable Formula Categories and ERPNext Mappings
+formula_categories:
+  
+  text_manipulation:
+    concatenation:
+      airtable_functions:
+        CONCATENATE: "CONCATENATE(text1, text2, ...)"
+        ampersand: "text1 & text2"
+        
+      erpnext_mapping:
+        server_script: |
+          # String concatenation in Python
+          result = str(self.field1 or '') + str(self.field2 or '')
+          
+        client_script: |
+          // Client-side concatenation
+          frm.set_value('result_field', 
+              (frm.doc.field1 || '') + (frm.doc.field2 || ''));
+              
+      conversion_examples:
+        simple_concatenation:
+          airtable: "CONCATENATE({First Name}, ' ', {Last Name})"
+          erpnext: "self.full_name = (self.first_name or '') + ' ' + (self.last_name or '')"
+          
+        with_formatting:
+          airtable: "CONCATENATE('Order #', {Order ID}, ' - ', {Status})"
+          erpnext: "self.display_name = f'Order #{self.order_id or \"\"} - {self.status or \"\"}'"
+          
+    text_functions:
+      UPPER_LOWER:
+        airtable: "UPPER({Text Field}), LOWER({Text Field})"
+        erpnext: "self.text_field.upper(), self.text_field.lower()"
+        
+      TRIM:
+        airtable: "TRIM({Text Field})"
+        erpnext: "self.text_field.strip() if self.text_field else ''"
+        
+      SUBSTITUTE:
+        airtable: "SUBSTITUTE({Text Field}, 'old', 'new')"
+        erpnext: "self.text_field.replace('old', 'new') if self.text_field else ''"
+        
+      LEN:
+        airtable: "LEN({Text Field})"
+        erpnext: "len(self.text_field) if self.text_field else 0"
+        
+      LEFT_RIGHT_MID:
+        airtable_examples:
+          LEFT: "LEFT({Text Field}, 5)"
+          RIGHT: "RIGHT({Text Field}, 3)" 
+          MID: "MID({Text Field}, 3, 5)"
+        erpnext_equivalents:
+          LEFT: "self.text_field[:5] if self.text_field else ''"
+          RIGHT: "self.text_field[-3:] if self.text_field else ''"
+          MID: "self.text_field[2:7] if self.text_field else ''"
+
+  mathematical_operations:
+    basic_arithmetic:
+      addition:
+        airtable: "{Field1} + {Field2}"
+        erpnext: "(self.field1 or 0) + (self.field2 or 0)"
+        
+      subtraction:
+        airtable: "{Field1} - {Field2}"
+        erpnext: "(self.field1 or 0) - (self.field2 or 0)"
+        
+      multiplication:
+        airtable: "{Field1} * {Field2}"
+        erpnext: "(self.field1 or 0) * (self.field2 or 0)"
+        
+      division:
+        airtable: "{Field1} / {Field2}"
+        erpnext: "(self.field1 or 0) / (self.field2 or 1) if self.field2 else 0"
+        
+    mathematical_functions:
+      ROUND:
+        airtable: "ROUND({Number Field}, 2)"
+        erpnext: "round(self.number_field or 0, 2)"
+        
+      CEILING_FLOOR:
+        airtable_examples:
+          CEILING: "CEILING({Number Field})"
+          FLOOR: "FLOOR({Number Field})"
+        erpnext_equivalents:
+          CEILING: "import math; math.ceil(self.number_field or 0)"
+          FLOOR: "import math; math.floor(self.number_field or 0)"
+          
+      ABS:
+        airtable: "ABS({Number Field})"
+        erpnext: "abs(self.number_field or 0)"
+        
+      POWER:
+        airtable: "POWER({Base}, {Exponent})"
+        erpnext: "pow(self.base or 0, self.exponent or 1)"
+        
+      SQRT:
+        airtable: "SQRT({Number Field})"
+        erpnext: "import math; math.sqrt(self.number_field) if self.number_field and self.number_field >= 0 else 0"
+        
+    aggregation_functions:
+      SUM:
+        airtable: "SUM({Field1}, {Field2}, {Field3})"
+        erpnext: "sum([self.field1 or 0, self.field2 or 0, self.field3 or 0])"
+        
+      AVERAGE:
+        airtable: "AVERAGE({Field1}, {Field2}, {Field3})"
+        erpnext: |
+          values = [self.field1, self.field2, self.field3]
+          valid_values = [v for v in values if v is not None]
+          sum(valid_values) / len(valid_values) if valid_values else 0
+          
+      MIN_MAX:
+        airtable_examples:
+          MIN: "MIN({Field1}, {Field2}, {Field3})"
+          MAX: "MAX({Field1}, {Field2}, {Field3})"
+        erpnext_equivalents:
+          MIN: "min([v for v in [self.field1, self.field2, self.field3] if v is not None] or [0])"
+          MAX: "max([v for v in [self.field1, self.field2, self.field3] if v is not None] or [0])"
+
+  logical_operations:
+    conditional_logic:
+      IF:
+        airtable: "IF({Condition}, {Value if True}, {Value if False})"
+        erpnext: "value_if_true if condition else value_if_false"
+        
+      nested_IF:
+        airtable: "IF({Condition1}, {Value1}, IF({Condition2}, {Value2}, {Value3}))"
+        erpnext: |
+          if condition1:
+              result = value1
+          elif condition2:
+              result = value2
+          else:
+              result = value3
+              
+      SWITCH:
+        airtable: "SWITCH({Field}, 'Value1', 'Result1', 'Value2', 'Result2', 'Default')"
+        erpnext: |
+          switch_dict = {
+              'Value1': 'Result1',
+              'Value2': 'Result2'
+          }
+          result = switch_dict.get(self.field, 'Default')
+          
+    logical_operators:
+      AND:
+        airtable: "AND({Condition1}, {Condition2})"
+        erpnext: "condition1 and condition2"
+        
+      OR:
+        airtable: "OR({Condition1}, {Condition2})"
+        erpnext: "condition1 or condition2"
+        
+      NOT:
+        airtable: "NOT({Condition})"
+        erpnext: "not condition"
+        
+    comparison_operations:
+      equality:
+        airtable: "{Field1} = {Field2}"
+        erpnext: "self.field1 == self.field2"
+        
+      inequality:
+        airtable_examples:
+          not_equal: "{Field1} != {Field2}"
+          greater: "{Field1} > {Field2}"
+          less: "{Field1} < {Field2}"
+          greater_equal: "{Field1} >= {Field2}"
+          less_equal: "{Field1} <= {Field2}"
+        erpnext_equivalents:
+          not_equal: "self.field1 != self.field2"
+          greater: "(self.field1 or 0) > (self.field2 or 0)"
+          less: "(self.field1 or 0) < (self.field2 or 0)"
+          greater_equal: "(self.field1 or 0) >= (self.field2 or 0)"
+          less_equal: "(self.field1 or 0) <= (self.field2 or 0)"
+
+  date_time_functions:
+    date_operations:
+      TODAY:
+        airtable: "TODAY()"
+        erpnext: "from datetime import date; date.today()"
+        
+      NOW:
+        airtable: "NOW()"
+        erpnext: "from datetime import datetime; datetime.now()"
+        
+      DATE:
+        airtable: "DATE(2023, 12, 25)"
+        erpnext: "from datetime import date; date(2023, 12, 25)"
+        
+      DATETIME_PARSE:
+        airtable: "DATETIME_PARSE('2023-12-25', 'YYYY-MM-DD')"
+        erpnext: "from datetime import datetime; datetime.strptime('2023-12-25', '%Y-%m-%d')"
+        
+    date_calculations:
+      DATETIME_DIFF:
+        airtable: "DATETIME_DIFF({End Date}, {Start Date}, 'days')"
+        erpnext: "(self.end_date - self.start_date).days if self.end_date and self.start_date else 0"
+        
+      DATEADD:
+        airtable: "DATEADD({Date}, 30, 'days')"
+        erpnext: "from datetime import timedelta; self.date + timedelta(days=30) if self.date else None"
+        
+    date_extraction:
+      YEAR_MONTH_DAY:
+        airtable_examples:
+          YEAR: "YEAR({Date Field})"
+          MONTH: "MONTH({Date Field})"
+          DAY: "DAY({Date Field})"
+        erpnext_equivalents:
+          YEAR: "self.date_field.year if self.date_field else None"
+          MONTH: "self.date_field.month if self.date_field else None"
+          DAY: "self.date_field.day if self.date_field else None"
+          
+      WEEKDAY:
+        airtable: "WEEKDAY({Date Field})"
+        erpnext: "self.date_field.weekday() if self.date_field else None"
+        
+    time_operations:
+      HOUR_MINUTE_SECOND:
+        airtable_examples:
+          HOUR: "HOUR({Datetime Field})"
+          MINUTE: "MINUTE({Datetime Field})"
+          SECOND: "SECOND({Datetime Field})"
+        erpnext_equivalents:
+          HOUR: "self.datetime_field.hour if self.datetime_field else None"
+          MINUTE: "self.datetime_field.minute if self.datetime_field else None"
+          SECOND: "self.datetime_field.second if self.datetime_field else None"
+
+  lookup_and_relationship:
+    record_lookups:
+      linked_field_reference:
+        airtable: "{Linked Record.Field Name}"
+        erpnext_approaches:
+          fetch_from:
+            description: "Use fetch_from property for simple lookups"
+            implementation: |
+              # In DocType JSON field definition
+              {
+                  "fieldname": "customer_email",
+                  "fieldtype": "Read Only",
+                  "fetch_from": "customer.email_address"
+              }
+              
+          server_script:
+            description: "Custom server script for complex lookups"
+            implementation: |
+              # In server script or DocType method
+              if self.customer:
+                  customer_doc = frappe.get_doc("Customer", self.customer)
+                  self.customer_email = customer_doc.email_address
+                  
+    aggregation_lookups:
+      COUNT:
+        airtable: "COUNT({Linked Records})"
+        erpnext: |
+          # Count related records
+          count = frappe.db.count("Child DocType", 
+                                 filters={"parent_reference": self.name})
+          self.record_count = count
+          
+      SUM_from_linked:
+        airtable: "SUM({Linked Records.Amount})"
+        erpnext: |
+          # Sum values from linked records
+          total = frappe.db.sql("""
+              SELECT SUM(amount) as total 
+              FROM `tabChild DocType` 
+              WHERE parent_reference = %s
+          """, self.name)[0][0] or 0
+          self.total_amount = total
+
+# Formula Complexity Assessment
+complexity_assessment:
+  
+  simple_formulas:
+    characteristics:
+      - "Single operation (math, text, comparison)"
+      - "Direct field references"
+      - "No nested functions"
+      - "Basic conditional logic"
+      
+    examples:
+      - "{Quantity} * {Unit Price}"
+      - "CONCATENATE({First Name}, ' ', {Last Name})"
+      - "IF({Status} = 'Complete', 'Done', 'Pending')"
+      
+    erpnext_implementation: "Direct conversion to Python expressions"
+    complexity_score: 1-3
+    
+  moderate_formulas:
+    characteristics:
+      - "Multiple operations combined"
+      - "Nested functions (1-2 levels)"
+      - "Date calculations"
+      - "Multiple conditional branches"
+      
+    examples:
+      - "IF(DATETIME_DIFF({Due Date}, TODAY(), 'days') < 0, 'Overdue', 'On Time')"
+      - "ROUND(SUM({Line Items.Amount}) * (1 + {Tax Rate}/100), 2)"
+      
+    erpnext_implementation: "Server script with structured logic"
+    complexity_score: 4-6
+    
+  complex_formulas:
+    characteristics:
+      - "Multiple nested functions (3+ levels)"
+      - "Complex logical conditions"
+      - "Aggregations from multiple sources"
+      - "String manipulation with patterns"
+      
+    examples:
+      - "SWITCH(WEEKDAY(TODAY()), 1, 'Mon', 2, 'Tue', 3, 'Wed', 4, 'Thu', 5, 'Fri', 'Weekend')"
+      - "IF(AND({Priority} = 'High', {Status} != 'Complete'), DATETIME_DIFF({Due Date}, TODAY(), 'hours'), 0)"
+      
+    erpnext_implementation: "Custom methods with comprehensive logic"
+    complexity_score: 7-10
+
+# Formula Analysis Workflow
+analysis_workflow:
+  
+  discovery_phase:
+    formula_inventory:
+      description: "Identify all formula fields across tables"
+      template: |
+        # Formula Field Inventory for {{ table_name }}
+        
+        | Field Name | Formula | Complexity | Dependencies | ERPNext Strategy |
+        |------------|---------|------------|--------------|------------------|
+        {% for formula in formulas %}
+        | {{ formula.field }} | {{ formula.formula }} | {{ formula.complexity }} | {{ formula.dependencies }} | {{ formula.strategy }} |
+        {% endfor %}
+        
+        ## Complexity Summary
+        - Simple: {{ simple_count }} formulas
+        - Moderate: {{ moderate_count }} formulas  
+        - Complex: {{ complex_count }} formulas
+        - Total: {{ total_count }} formulas
+        
+    dependency_analysis:
+      description: "Map formula dependencies and calculation order"
+      template: |
+        # Formula Dependency Analysis
+        
+        ## Calculation Order
+        {% for level in dependency_levels %}
+        **Level {{ level.number }}**: {{ level.description }}
+        {% for formula in level.formulas %}
+        - {{ formula.field }}: {{ formula.dependencies }}
+        {% endfor %}
+        {% endfor %}
+        
+        ## Circular Dependencies
+        {% for circular in circular_dependencies %}
+        **{{ circular.name }}**: {{ circular.fields }} → {{ circular.resolution }}
+        {% endfor %}
+        
+  conversion_planning:
+    implementation_strategy:
+      description: "Plan ERPNext implementation approach for each formula"
+      decision_matrix:
+        client_script:
+          use_cases:
+            - "Simple calculations for immediate user feedback"
+            - "Field formatting and display logic"
+            - "Non-critical calculations"
+          pros: ["Real-time updates", "Good user experience"]
+          cons: ["Client-side only", "Security limitations"]
+          
+        server_script:
+          use_cases:
+            - "Business-critical calculations"
+            - "Complex logic requiring database access"
+            - "Calculations affecting multiple records"
+          pros: ["Secure", "Database access", "Persistent"]
+          cons: ["Not real-time", "Server load"]
+          
+        doctype_method:
+          use_cases:
+            - "Core business logic"
+            - "Reusable calculations"
+            - "Performance-critical formulas"
+          pros: ["Best performance", "Full Python access", "Maintainable"]
+          cons: ["Requires development", "Code deployment needed"]
+          
+    conversion_templates:
+      simple_calculation:
+        template: |
+          # Simple Calculation Conversion
+          # Airtable: {{ airtable_formula }}
+          
+          def calculate_{{ field_name }}(self):
+              try:
+                  {{ converted_logic }}
+                  self.{{ field_name }} = result
+              except Exception as e:
+                  frappe.log_error(f"Calculation error: {str(e)}", "{{ field_name }}")
+                  self.{{ field_name }} = 0  # or appropriate default
+                  
+      conditional_logic:
+        template: |
+          # Conditional Logic Conversion
+          # Airtable: {{ airtable_formula }}
+          
+          def calculate_{{ field_name }}(self):
+              try:
+                  {% for condition in conditions %}
+                  {% if loop.first %}
+                  if {{ condition.test }}:
+                      result = {{ condition.value }}
+                  {% elif condition.test %}
+                  elif {{ condition.test }}:
+                      result = {{ condition.value }}
+                  {% else %}
+                  else:
+                      result = {{ condition.value }}
+                  {% endif %}
+                  {% endfor %}
+                  
+                  self.{{ field_name }} = result
+              except Exception as e:
+                  frappe.log_error(f"Calculation error: {str(e)}", "{{ field_name }}")
+                  self.{{ field_name }} = {{ default_value }}
+
+# Implementation Patterns
+implementation_patterns:
+  
+  server_script_pattern:
+    description: "Standard server script implementation for formula fields"
+    template: |
+      # Server Script: {{ formula_name }}
+      # Event: Before Save
+      # DocType: {{ doctype_name }}
+      
+      # Original Airtable Formula: {{ original_formula }}
+      # Conversion Notes: {{ conversion_notes }}
+      
+      def calculate_field():
+          """
+          {{ formula_description }}
+          """
+          try:
+              # Input validation
+              {% for validation in validations %}
+              {{ validation.code }}
+              {% endfor %}
+              
+              # Main calculation logic
+              {{ main_calculation }}
+              
+              # Set result
+              doc.{{ field_name }} = result
+              
+          except ZeroDivisionError:
+              frappe.log_error("Division by zero in {{ formula_name }}")
+              doc.{{ field_name }} = 0
+              
+          except Exception as e:
+              frappe.log_error(f"Error in {{ formula_name }}: {str(e)}")
+              doc.{{ field_name }} = {{ fallback_value }}
+      
+      # Execute calculation
+      calculate_field()
+      
+  doctype_method_pattern:
+    description: "DocType method implementation for complex formulas"
+    template: |
+      # DocType Method Implementation
+      
+      class {{ DocTypeName }}(Document):
+          def validate(self):
+              # Calculate formula fields before saving
+              self.calculate_{{ field_name }}()
+              
+          def calculate_{{ field_name }}(self):
+              """
+              Calculate {{ field_description }}
+              Original Airtable Formula: {{ original_formula }}
+              """
+              try:
+                  # Dependency checks
+                  {% for dependency in dependencies %}
+                  if not self.{{ dependency.field }}:
+                      {{ dependency.handling }}
+                      return
+                  {% endfor %}
+                  
+                  # Main calculation
+                  {{ calculation_logic }}
+                  
+                  # Validation and cleanup
+                  {% for validation in result_validations %}
+                  {{ validation.code }}
+                  {% endfor %}
+                  
+                  self.{{ field_name }} = result
+                  
+              except Exception as e:
+                  frappe.log_error(
+                      message=f"Error calculating {{ field_name }}: {str(e)}",
+                      title="{{ field_name }} Calculation Error"
+                  )
+                  self.{{ field_name }} = {{ default_value }}
+                  
+          @frappe.whitelist()
+          def recalculate_{{ field_name }}(self):
+              """Manual recalculation method for users"""
+              self.calculate_{{ field_name }}()
+              self.save()
+              return self.{{ field_name }}
+              
+  client_script_pattern:
+    description: "Client-side calculation for immediate feedback"
+    template: |
+      // Client Script: {{ formula_name }}
+      // DocType: {{ doctype_name }}
+      // Original Airtable Formula: {{ original_formula }}
+      
+      frappe.ui.form.on('{{ doctype_name }}', {
+          // Trigger calculation on field changes
+          {% for trigger_field in trigger_fields %}
+          {{ trigger_field }}: function(frm) {
+              calculate_{{ field_name }}(frm);
+          },
+          {% endfor %}
+          
+          refresh: function(frm) {
+              // Calculate on form load
+              calculate_{{ field_name }}(frm);
+          }
+      });
+      
+      function calculate_{{ field_name }}(frm) {
+          try {
+              // Input validation
+              {% for validation in client_validations %}
+              {{ validation.code }}
+              {% endfor %}
+              
+              // Main calculation
+              let result = {{ client_calculation_logic }};
+              
+              // Result validation
+              {% for validation in result_validations %}
+              {{ validation.code }}
+              {% endfor %}
+              
+              // Set field value
+              frm.set_value('{{ field_name }}', result);
+              
+          } catch (error) {
+              console.error('Error calculating {{ field_name }}:', error);
+              frm.set_value('{{ field_name }}', {{ default_value }});
+          }
+      }
+
+# Advanced Formula Conversion Strategies
+advanced_strategies:
+  
+  performance_optimization:
+    caching:
+      description: "Cache expensive calculations"
+      implementation: |
+        # Caching expensive calculations
+        cache_key = f"formula_result_{self.doctype}_{self.name}_{self.modified}"
+        cached_result = frappe.cache().get_value(cache_key)
+        
+        if cached_result is not None:
+            self.{{ field_name }} = cached_result
+        else:
+            # Perform calculation
+            result = {{ calculation_logic }}
+            self.{{ field_name }} = result
+            
+            # Cache result for 1 hour
+            frappe.cache().set_value(cache_key, result, expires_in_sec=3600)
+            
+    batch_processing:
+      description: "Optimize calculations for multiple records"
+      implementation: |
+        @staticmethod
+        def bulk_calculate_{{ field_name }}(doctype_name, filters=None):
+            """
+            Bulk calculation for multiple records
+            """
+            records = frappe.get_all(doctype_name, 
+                                   filters=filters or {},
+                                   fields=["name", "{{ dependency_fields }}"])
+            
+            for record in records:
+                doc = frappe.get_doc(doctype_name, record.name)
+                doc.calculate_{{ field_name }}()
+                doc.db_set('{{ field_name }}', doc.{{ field_name }})
+                
+            frappe.db.commit()
+            
+  error_handling:
+    comprehensive_error_handling:
+      implementation: |
+        def calculate_with_error_handling(self):
+            """
+            Robust calculation with comprehensive error handling
+            """
+            try:
+                # Input validation
+                if not self.validate_calculation_inputs():
+                    self.{{ field_name }} = {{ default_value }}
+                    return
+                    
+                # Main calculation with specific error handling
+                result = self.perform_calculation()
+                
+                # Result validation
+                if not self.validate_calculation_result(result):
+                    self.{{ field_name }} = {{ fallback_value }}
+                    return
+                    
+                self.{{ field_name }} = result
+                
+            except ZeroDivisionError:
+                frappe.msgprint("Cannot divide by zero in {{ field_name }}")
+                self.{{ field_name }} = 0
+                
+            except ValueError as e:
+                frappe.log_error(f"Invalid value in {{ field_name }}: {str(e)}")
+                self.{{ field_name }} = {{ default_value }}
+                
+            except Exception as e:
+                frappe.log_error(
+                    message=f"Unexpected error in {{ field_name }}: {str(e)}",
+                    title="Formula Calculation Error"
+                )
+                self.{{ field_name }} = {{ emergency_default }}
+                
+        def validate_calculation_inputs(self):
+            """Validate all inputs before calculation"""
+            validations = [
+                {{ input_validations }}
+            ]
+            return all(validations)
+            
+        def validate_calculation_result(self, result):
+            """Validate calculation result"""
+            if result is None:
+                return False
+            if isinstance(result, (int, float)) and (result < {{ min_value }} or result > {{ max_value }}):
+                return False
+            return True
+
+# Migration Tools and Utilities
+migration_utilities:
+  
+  formula_analyzer:
+    description: "Utility to analyze and categorize Airtable formulas"
+    implementation: |
+      class AirtableFormulaAnalyzer:
+          def __init__(self):
+              self.function_patterns = {
+                  'CONCATENATE': r'CONCATENATE\s*\(',
+                  'IF': r'IF\s*\(',
+                  'SUM': r'SUM\s*\(',
+                  'DATETIME_DIFF': r'DATETIME_DIFF\s*\(',
+                  # Add more patterns
+              }
+              
+          def analyze_formula(self, formula):
+              """
+              Analyze formula complexity and dependencies
+              """
+              analysis = {
+                  'formula': formula,
+                  'functions_used': [],
+                  'field_references': [],
+                  'complexity_score': 0,
+                  'nesting_level': 0,
+                  'conversion_strategy': 'simple'
+              }
+              
+              # Identify functions
+              for func, pattern in self.function_patterns.items():
+                  if re.search(pattern, formula, re.IGNORECASE):
+                      analysis['functions_used'].append(func)
+                      
+              # Calculate complexity
+              analysis['complexity_score'] = self.calculate_complexity(analysis)
+              analysis['conversion_strategy'] = self.determine_strategy(analysis)
+              
+              return analysis
+              
+          def calculate_complexity(self, analysis):
+              """Calculate complexity score based on various factors"""
+              score = 0
+              score += len(analysis['functions_used']) * 2
+              score += analysis['nesting_level'] * 3
+              score += len(analysis['field_references'])
+              return score
+              
+          def determine_strategy(self, analysis):
+              """Determine best conversion strategy"""
+              if analysis['complexity_score'] <= 3:
+                  return 'client_script'
+              elif analysis['complexity_score'] <= 7:
+                  return 'server_script'
+              else:
+                  return 'doctype_method'
+                  
+  conversion_generator:
+    description: "Generate ERPNext code from Airtable formulas"
+    implementation: |
+      class FormulaConverter:
+          def __init__(self):
+              self.conversion_rules = {
+                  'CONCATENATE': self.convert_concatenate,
+                  'IF': self.convert_if,
+                  'SUM': self.convert_sum,
+                  # Add more conversion methods
+              }
+              
+          def convert_formula(self, airtable_formula, target_type='server_script'):
+              """
+              Convert Airtable formula to ERPNext code
+              """
+              # Parse formula
+              parsed = self.parse_formula(airtable_formula)
+              
+              # Convert to Python
+              python_code = self.generate_python_code(parsed, target_type)
+              
+              return {
+                  'original_formula': airtable_formula,
+                  'python_code': python_code,
+                  'target_type': target_type,
+                  'dependencies': self.extract_dependencies(parsed)
+              }
+              
+          def convert_concatenate(self, args):
+              """Convert CONCATENATE function"""
+              return " + ".join([f"str({arg} or '')" for arg in args])
+              
+          def convert_if(self, condition, true_value, false_value):
+              """Convert IF function"""
+              return f"{true_value} if {condition} else {false_value}"
+              
+          def convert_sum(self, args):
+              """Convert SUM function"""
+              return f"sum([{', '.join([f'({arg} or 0)' for arg in args])}])"
+
+# Testing and Validation Framework
+testing_framework:
+  
+  formula_testing:
+    unit_tests:
+      description: "Test individual formula calculations"
+      template: |
+        import unittest
+        from frappe.tests.utils import FrappeTestCase
+        
+        class Test{{ DocTypeName }}Formulas(FrappeTestCase):
+            def setUp(self):
+                # Create test data
+                self.test_doc = frappe.get_doc({
+                    "doctype": "{{ doctype_name }}",
+                    "{{ field1 }}": {{ test_value1 }},
+                    "{{ field2 }}": {{ test_value2 }}
+                })
+                
+            def test_{{ formula_name }}(self):
+                """Test {{ formula_description }}"""
+                # Execute calculation
+                self.test_doc.calculate_{{ field_name }}()
+                
+                # Assert expected result
+                expected_result = {{ expected_result }}
+                self.assertEqual(self.test_doc.{{ field_name }}, expected_result)
+                
+            def test_{{ formula_name }}_edge_cases(self):
+                """Test edge cases for {{ formula_name }}"""
+                test_cases = [
+                    {{ edge_case_test_cases }}
+                ]
+                
+                for inputs, expected in test_cases:
+                    with self.subTest(inputs=inputs):
+                        # Set test values
+                        for field, value in inputs.items():
+                            setattr(self.test_doc, field, value)
+                            
+                        # Calculate
+                        self.test_doc.calculate_{{ field_name }}()
+                        
+                        # Assert
+                        self.assertEqual(self.test_doc.{{ field_name }}, expected)
+                        
+    integration_tests:
+      description: "Test formula interactions with other system components"
+      focus_areas:
+        - "Database transaction handling"
+        - "Performance with large datasets" 
+        - "Interaction with workflows and permissions"
+        - "Real-time updates and caching"
+        
+    validation_tests:
+      description: "Validate converted formulas against Airtable results"
+      approach: |
+        # Validation test comparing Airtable vs ERPNext results
+        def validate_formula_conversion():
+            # Get sample data from Airtable
+            airtable_results = get_airtable_formula_results()
+            
+            # Calculate same formulas in ERPNext
+            erpnext_results = calculate_erpnext_formulas()
+            
+            # Compare results
+            for record_id in airtable_results:
+                airtable_value = airtable_results[record_id]
+                erpnext_value = erpnext_results[record_id]
+                
+                # Allow for small floating point differences
+                if isinstance(airtable_value, (int, float)):
+                    assert abs(airtable_value - erpnext_value) < 0.01
+                else:
+                    assert airtable_value == erpnext_value
+
+# Success Metrics and Quality Assurance
+success_criteria:
+  
+  accuracy_metrics:
+    formula_correctness: "100% of formulas produce same results as Airtable"
+    edge_case_handling: "All edge cases handled gracefully"
+    performance_standards: "Calculations complete within acceptable time"
+    
+  maintainability_metrics:
+    code_documentation: "All formulas documented with business context"
+    error_handling: "Comprehensive error handling implemented"
+    testing_coverage: "100% test coverage for formula logic"
+    
+  user_experience_metrics:
+    calculation_speed: "Real-time calculations for simple formulas"
+    error_feedback: "Clear error messages for users"
+    data_integrity: "No data corruption from formula errors"
+
+# Documentation Templates
+documentation_templates:
+  
+  formula_specification:
+    template: |
+      # Formula Specification: {{ formula_name }}
+      
+      ## Overview
+      **Field**: {{ field_name }}
+      **Table**: {{ table_name }}
+      **Business Purpose**: {{ business_purpose }}
+      
+      ## Airtable Configuration
+      **Original Formula**: `{{ airtable_formula }}`
+      **Dependencies**: {{ field_dependencies }}
+      **Complexity Level**: {{ complexity_level }}
+      
+      ## ERPNext Implementation
+      **Implementation Method**: {{ implementation_method }}
+      **Trigger Events**: {{ trigger_events }}
+      
+      ### Code Implementation
+      ```python
+      {{ python_implementation }}
+      ```
+      
+      ## Business Logic
+      {{ business_logic_explanation }}
+      
+      ## Test Cases
+      | Input | Expected Output | Notes |
+      |-------|-----------------|-------|
+      {% for test in test_cases %}
+      | {{ test.input }} | {{ test.expected }} | {{ test.notes }} |
+      {% endfor %}
+      
+      ## Error Handling
+      - {{ error_scenario_1 }}: {{ error_handling_1 }}
+      - {{ error_scenario_2 }}: {{ error_handling_2 }}
+      
+      ## Migration Notes
+      {{ migration_specific_notes }}
+      
+  conversion_summary:
+    template: |
+      # Formula Conversion Summary
+      
+      ## Overall Statistics
+      - **Total Formulas**: {{ total_formulas }}
+      - **Successfully Converted**: {{ converted_count }}
+      - **Complex Conversions**: {{ complex_count }}
+      - **Manual Review Required**: {{ manual_review_count }}
+      
+      ## Conversion Breakdown
+      | Formula Type | Count | Conversion Method | Status |
+      |--------------|-------|-------------------|--------|
+      {% for type in formula_types %}
+      | {{ type.name }} | {{ type.count }} | {{ type.method }} | {{ type.status }} |
+      {% endfor %}
+      
+      ## Implementation Summary
+      - **Client Scripts**: {{ client_script_count }}
+      - **Server Scripts**: {{ server_script_count }} 
+      - **DocType Methods**: {{ doctype_method_count }}
+      
+      ## Quality Metrics
+      - **Test Coverage**: {{ test_coverage }}%
+      - **Performance Benchmark**: {{ performance_score }}
+      - **Error Rate**: {{ error_rate }}%
+      
+      ## Next Steps
+      {{ next_steps_list }}

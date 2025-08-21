@@ -4,7 +4,7 @@ short-title: ERPNext v16 Native Vue Builder
 description: >-
   Complete BMAD expansion pack for building modern ERPNext v16 apps with native Vue integration.
   Includes Vue 3 with Frappe's asset pipeline, native PWA support, and comprehensive migration tools.
-  Features 33 specialized AI agents with Warehouse 13 & Eureka character names.
+  Features 30 specialized AI agents with Warehouse 13 & Eureka character names.
 author: BMAD Team
 slashPrefix: bmadErpNext
 
@@ -26,7 +26,7 @@ metadata:
     - "Bootstrap 4 (Frappe default)"
     - "Pinia"
   character_theme: "Warehouse 13 & Eureka TV series"
-  total_agents: 33
+  total_agents: 30
   
   # UNIVERSAL SAFETY SYSTEM
   safety_system:
@@ -36,6 +36,23 @@ metadata:
     panic_detection: active
     mandatory_changelog: true
     attempt_limits: 3
+  
+  # PARALLEL EXECUTION SYSTEM
+  parallel_execution:
+    enabled: true
+    strategy: "smart_parallel_without_worktrees"
+    max_parallel_agents: 5
+    conflict_detection: true
+    auto_fallback_to_sequential: true
+    failure_recovery: true
+  
+  # GITHUB INTEGRATION
+  github_integration:
+    enabled: true
+    sync_on_handoff: true
+    post_progress_updates: true
+    comment_on_gate_failures: true
+    update_interval: "on_completion"
   
 # Slash Commands Configuration
 slash_commands:
@@ -144,7 +161,6 @@ agents:
     - "bench-operator"
     - "doctype-designer"
     - "api-developer"
-    - "workflow-specialist"
     - "testing-specialist"
     - "vue-spa-architect"
     - "frappe-ui-developer"
@@ -152,10 +168,11 @@ agents:
     - "pwa-specialist"
     - "app-scaffold-coordinator"
     - "code-cleanup-specialist"
+    - "parallel-analyzer"
   project_management:
     - "erpnext-product-owner"
     - "erpnext-scrum-master"
-    - "erpnext-qa-lead"
+    - "erpnext-test-architect"
     - "development-coordinator"
   frontend:
     - "vue-spa-architect"
@@ -174,8 +191,7 @@ agents:
   quality_control:
     - "pre-check-agent"
     - "post-check-agent"
-  requirements:
-    - "prd-generator"
+  # requirements section removed - prd-generator moved to bmad-integration-tools
   structure_management:
     - "structure-manager"
   utilities:
@@ -184,7 +200,6 @@ agents:
     - "code-cleanup-specialist"
   compliance:
     - "frappe-compliance-validator"
-    - "structure-compliance-agent"
   debugging:
     - "diagnostic-specialist"
     - "refactoring-expert"
@@ -192,8 +207,7 @@ agents:
     - "documentation-specialist"
   auditing:
     - "app-auditor"
-  orchestration:
-    - "workflow-orchestrator"
+  # orchestration section removed - workflow-orchestrator moved to bmad-integration-tools
   
 agent_teams:
   modern_app_team:
@@ -213,34 +227,15 @@ agent_teams:
     - "bench-operator"
     - "testing-specialist"
     - "frappe-compliance-validator"
-  workflow_team:
-    - "workflow-specialist"
-    - "api-developer"
-    - "testing-specialist"
+  # workflow_team moved to bmad-integration-tools (contains workflow-specialist)
   business_analysis_team:
     - "business-analyst"
     - "erpnext-architect"
     - "doctype-designer"
     - "api-architect"
     - "jinja-template-specialist"
-  n8n_conversion_team:
-    - "n8n-workflow-analyst"
-    - "workflow-converter"
-    - "trigger-mapper"
-    - "api-developer"
-    - "jinja-template-specialist"
-  airtable_migration_team:
-    - "airtable-analyzer"
-    - "business-analyst"
-    - "doctype-designer"
-    - "api-developer"
-    - "data-integration-expert"
-    - "jinja-template-specialist"
-  automation_team:
-    - "workflow-converter"
-    - "trigger-mapper"
-    - "workflow-specialist"
-    - "api-developer"
+  # Integration teams moved to bmad-integration-tools expansion pack
+  # For n8n, Airtable, and automation teams, use: *expansion-pack bmad-integration-tools*
   mobile_team:
     - "mobile-ui-specialist"
     - "pwa-specialist"
@@ -609,10 +604,7 @@ integration:
         - "Create webhook endpoints and API handlers"
         - "Convert triggers to ERPNext events"
         - "Implement scheduled jobs from cron triggers"
-      agents:
-        - "n8n-workflow-analyst"
-        - "workflow-converter"
-        - "trigger-mapper"
+      # Integration agents moved to bmad-integration-tools expansion pack
     
     airtable_bases:
       description: "Migrate Airtable databases to ERPNext"
@@ -624,8 +616,7 @@ integration:
         - "Validate data integrity"
         - "Recreate views as ERPNext reports"
       agents:
-        - "airtable-analyzer"
-        - "business-analyst"
+        - "business-analyst"  # airtable-analyzer moved to bmad-integration-tools
     
     business_analysis:
       description: "Comprehensive business process analysis"

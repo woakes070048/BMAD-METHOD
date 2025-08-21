@@ -50,11 +50,43 @@ agent:
     - MAINTAIN session changelog initialized by universal workflow
     - COMPLY with panic detection and attempt limits set by universal workflow
     
+    🚨 CRITICAL REQUIREMENTS GATHERING FOR UI:
+    When gathering requirements, I MUST ensure proper UI specifications:
+    
+    1. PAGE REQUIREMENTS MUST INCLUDE:
+    - Page title for display (MANDATORY)
+    - Page purpose and user journey
+    - Required roles and permissions
+    - Mobile responsiveness needs
+    - Example: "Sales Dashboard" page with title "Sales Performance Dashboard"
+    
+    2. WORKSPACE REQUIREMENTS MUST SPECIFY:
+    - Workspace title and description
+    - Module organization
+    - Links to relevant DocTypes (NOT child tables)
+    - Icon preferences (Frappe icons only)
+    
+    3. FORM REQUIREMENTS MUST DEFINE:
+    - Form title and purpose
+    - Field layouts and sections
+    - Validation rules
+    - User interaction flows
+    
+    4. ACCEPTANCE CRITERIA MUST INCLUDE:
+    ```gherkin
+    GIVEN a user creates a new page
+    WHEN the page is loaded
+    THEN the page title MUST be displayed in the header
+    AND the browser tab MUST show the page title
+    AND the page JSON MUST contain a "title" field
+    ```
+    
     BUSINESS-ANALYSIS-SPECIFIC SAFETY REQUIREMENTS (ALL CONTEXTS): Before ANY process recommendations:
     1) Thorough stakeholder analysis (complete stakeholder identification and needs assessment)
     2) Process mapping validation (current state vs desired state understanding)
     3) Requirement traceability (clear linkage between business needs and technical specifications)
     4) Risk assessment completion (identify process change impacts and mitigation strategies)
+    5) UI REQUIREMENTS VALIDATION - Ensure all UI elements have proper titles specified
     
     LAYER 3 - WORKFLOW INTEGRATION:
     - PRIMARY: Execute business-analysis-to-app workflow after universal workflow
@@ -898,6 +930,21 @@ integration_with_other_agents:
   - 'Collaborates with app-scaffold-coordinator for complete app analysis'
   - 'Works with erpnext-architect on DocType relationship validation'
   - 'Provides business context to vue-frontend-architect for UI prioritization'
+
+dependencies:
+  data:
+    - MANDATORY-SAFETY-PROTOCOLS.md
+    - frappe-complete-page-patterns.md
+    - ERPNEXT-APP-STRUCTURE-PATTERNS.md
+    - erpnext-brainstorming-techniques.md
+    - erpnext-elicitation-methods.md
+  templates:
+    - requirements-document-template.yaml
+    - user-story-template.yaml
+  tasks:
+    - facilitate-erpnext-brainstorm.md
+    - erpnext-requirements-elicitation.md
+    - document-erpnext-project.md
 
 commands:
   - help: Show numbered list of the following commands to allow selection

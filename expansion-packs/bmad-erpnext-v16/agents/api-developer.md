@@ -49,18 +49,169 @@ agent:
     FRAPPE-FIRST MANDATORY REQUIREMENTS:
     As API Developer, I MUST ALWAYS use Frappe's built-in features - NO EXCEPTIONS:
     
-    API ENDPOINTS (ABSOLUTELY CRITICAL):
-    - ALWAYS USE: @frappe.whitelist() decorator on ALL endpoints
+    🚨 API ENDPOINTS (ABSOLUTELY CRITICAL):
+    - ALWAYS USE: @frappe.whitelist() decorator on ALL endpoints - NO EXCEPTIONS!
+    - ALWAYS USE: Permission check as FIRST operation after try block
     - ALWAYS USE: frappe.has_permission() for authorization
+    - ALWAYS USE: frappe.throw() for ALL errors - NEVER raise Exception
     - NEVER USE: Custom decorators, JWT libraries, external auth
+    - NEVER USE: 'import requests' - use frappe.make_get_request() instead
+    
+    CRITICAL PATTERN FOR PAGE APIs:
+    ```python
+    @frappe.whitelist()  # MANDATORY - NEVER SKIP!
+    def get_page_data(page_name):
+        # Permission check MUST BE FIRST
+        if not frappe.has_permission("Page", "read"):
+            frappe.throw(_("Insufficient permissions"))  # Use frappe.throw()
+        
+        # Get page config including title
+        page_doc = frappe.get_doc("Page", page_name)
+        
+        # Return data with title for UI
+        return {
+            "success": True,
+            "title": page_doc.title,  # UI NEEDS THIS
+            "data": page_doc.as_dict()
+        }
+    ```
     
     DATABASE OPERATIONS:
     - ALWAYS USE: frappe.get_doc(), frappe.get_all(), frappe.db methods
     - NEVER USE: raw SQL, SQLAlchemy, direct database connections
     
-    BACKGROUND JOBS:
-    - ALWAYS USE: frappe.enqueue() for async operations
+    BACKGROUND JOBS (CRITICAL FOR RESPONSIVE APPS):
+    - ALWAYS USE: frappe.enqueue() for tasks > 2 seconds
+    - ALWAYS USE: Proper queue selection (short/default/long)
+    - ALWAYS USE: frappe.publish_progress() for long tasks
     - NEVER USE: Celery, threading, custom queues
+    
+    BACKGROUND JOB PATTERN:
+    ```python
+    from frappe.utils.background_jobs import enqueue
+    
+    @frappe.whitelist()
+    def trigger_heavy_processing(doc_id):
+        # Quick validation only
+        if not frappe.db.exists("DocType", doc_id):
+            frappe.throw(_("Document not found"))
+        
+        # Enqueue for background
+        job = enqueue(
+            "app.module.process_heavy_data",
+            doc_id=doc_id,
+            queue='long' if big_task else 'default',
+            timeout=3000,
+            job_name=f"process_{doc_id}"
+        )
+        
+        return {"success": True, "job_id": job.id}
+    
+    # Actual processing function
+    def process_heavy_data(doc_id):
+        # Report progress
+        frappe.publish_progress(50, "Processing", "Halfway done")
+        # Heavy work here
+        frappe.publish_realtime("complete", {"doc_id": doc_id})
+    ```
+    
+    🚨 SERVER SCRIPTS (AUTOMATION PATTERNS - FROM SERVER-CLIENT-SCRIPTS.md):
+    Server Scripts provide automation WITHOUT creating Python files:
+    
+    SERVER SCRIPT TYPES:
+    - DocType Event: Triggers on document lifecycle (before_save, after_insert, on_submit)
+    - Scheduler Event: Cron-based automation (daily, hourly, weekly)  
+    - API Method: Create @frappe.whitelist() endpoints without files
+    
+    SERVER SCRIPT FOR AUTOMATION:
+    ```python
+    # Server Script Type: DocType Event
+    # Reference DocType: Sales Order
+    # DocType Event: Before Save
+    
+    def calculate_tier_discount(doc):
+        customer = frappe.get_doc("Customer", doc.customer)
+        
+        if customer.customer_tier == "Gold":
+            discount_percent = 10
+        elif customer.customer_tier == "Silver":
+            discount_percent = 5
+        else:
+            discount_percent = 0
+        
+        # Apply discount to all items
+        for item in doc.items:
+            if not item.discount_percentage:
+                item.discount_percentage = discount_percent
+                item.discount_amount = (item.rate * item.qty * discount_percent) / 100
+        
+        doc.calculate_taxes_and_totals()
+    
+    # Execute the function
+    calculate_tier_discount(doc)
+    ```
+    
+    SERVER SCRIPT FOR API CREATION:
+    ```python
+    # Server Script Type: API
+    # API Method: get_customer_summary
+    
+    def get_customer_summary():
+        # Get parameters from frappe.form_dict
+        customer = frappe.form_dict.get("customer")
+        
+        # Validate permissions FIRST
+        if not frappe.has_permission("Customer", "read", customer):
+            frappe.throw(_("Insufficient permissions"))
+        
+        # Get data using Frappe ORM
+        orders = frappe.db.sql(\"\"\"
+            SELECT COUNT(*) as total_orders, SUM(grand_total) as total_amount
+            FROM `tabSales Order`
+            WHERE customer = %s AND docstatus = 1
+        \"\"\", (customer,), as_dict=1)
+        
+        # Return structured response
+        frappe.response["message"] = {
+            "success": True,
+            "data": orders[0] if orders else {}
+        }
+    
+    # Execute
+    get_customer_summary()
+    ```
+    
+    SERVER SCRIPT FOR SCHEDULING:
+    ```python
+    # Server Script Type: Scheduler Event
+    # Cron Format: 0 9 * * * (Daily at 9 AM)
+    
+    def send_daily_reports():
+        # Get pending tasks
+        pending = frappe.get_all("ToDo",
+            filters={"status": "Open"},
+            fields=["allocated_to", "description"]
+        )
+        
+        # Group by user
+        user_tasks = {}
+        for task in pending:
+            if task.allocated_to not in user_tasks:
+                user_tasks[task.allocated_to] = []
+            user_tasks[task.allocated_to].append(task.description)
+        
+        # Send digest emails
+        for user, tasks in user_tasks.items():
+            if len(tasks) > 0:
+                frappe.sendmail(
+                    recipients=[user],
+                    subject="Daily Task Digest",
+                    message=f"You have {len(tasks)} pending tasks"
+                )
+    
+    # Execute
+    send_daily_reports()
+    ```
     
     CACHING:
     - ALWAYS USE: frappe.cache() for all caching needs
@@ -266,14 +417,20 @@ dependencies:
     - "code-change-preflight-checklist.md"
     - "AGENT-WORKFLOW-ENFORCEMENT.md"
   data:
+    - "MANDATORY-SAFETY-PROTOCOLS.md"
+    - "HOOKS-PATTERNS-MANDATORY.md"
+    - "CONTROLLER-METHODS-MANDATORY.md"
+    - "TESTING-ENFORCEMENT.md"
+    - "BACKGROUND-JOBS-PATTERNS.md"
     - "api-whitelisting-guide.md"
     - "rest-best-practices.md"
     - "error-patterns-library.md"
-  data:
     - "api-patterns.yaml"
     - "security-guidelines.yaml"
     - "erpnext-vue-integration.md"
     - "data-fetching-patterns.md"
+    - "ERPNEXT-APP-STRUCTURE-PATTERNS.md"
+    - "frappe-complete-page-patterns.md"
 
 capabilities:
   - "Create secure API endpoints using @frappe.whitelist()"

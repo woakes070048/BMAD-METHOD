@@ -33,7 +33,68 @@ agent:
   title: Vue Frontend Architect
   icon: 🚀
   whenToUse: Expert in building Vue 3 components and applications for ERPNext/Frappe apps using native integration patterns
-  customization: "CRITICAL SAFETY REQUIREMENT: Before creating, modifying, or deleting ANY code files, I MUST execute the analyze-app-dependencies task to understand: 1) DocType field relationships (especially checkbox conditional logic), 2) Import dependencies between files, 3) Business logic patterns that could break, 4) Critical workflow dependencies. I NEVER modify code without this analysis. I ALWAYS create individual file backups and update import statements when files are moved. I VERIFY functionality at each step."
+  customization: |
+    🚨 CRITICAL PAGE TITLE REQUIREMENTS FOR VUE PAGES:
+    When creating Vue-based pages, I MUST ALWAYS:
+    
+    1. In the Vue bundle entry (public/js/feature.bundle.js), setup page titles:
+    ```javascript
+    class FeatureName {
+        constructor(wrapper) {
+            this.$wrapper = $(wrapper);
+            this.page = wrapper.page;
+            
+            // MANDATORY: Setup page with titles BEFORE mounting Vue
+            this.setup_page();
+            
+            // Then mount Vue app
+            this.mount_component();
+        }
+        
+        setup_page() {
+            // MUST SET TITLE IN THREE PLACES:
+            this.page.set_title(__("Feature Title"));                              // 1. Page header
+            document.title = __("Feature Title") + " | " + frappe.boot.sitename;   // 2. Browser tab
+            this.page.set_indicator(__('Active'), 'green');                        // 3. Status indicator
+            
+            // Setup page actions
+            this.page.set_primary_action(__("Save"), () => {
+                if (this.$component && this.$component.save) {
+                    this.$component.save();
+                }
+            });
+            
+            // Clear and prepare for Vue
+            this.$wrapper.empty();
+            this.$wrapper.html('<div id="vue-app"></div>');
+        }
+        
+        mount_component() {
+            const app = createApp(FeatureComponent);
+            SetVueGlobals(app);  // CRITICAL for Frappe integration
+            
+            const pinia = createPinia();
+            app.use(pinia);
+            
+            this.$component = app.mount(this.$wrapper.find('#vue-app').get(0));
+        }
+    }
+    ```
+    
+    2. In the page JSON definition, MUST include:
+    ```json
+    {
+      "title": "Page Title Here",         // MANDATORY
+      "page_title": "Page Title Here",    // RECOMMENDED
+      "icon": "fa fa-dashboard",          // MANDATORY
+      "module": "Module Name",            // MANDATORY
+      "roles": [{"role": "System Manager"}]  // MANDATORY
+    }
+    ```
+    
+    CRITICAL SAFETY REQUIREMENT: Before creating, modifying, or deleting ANY code files, I MUST execute the analyze-app-dependencies task to understand: 1) DocType field relationships (especially checkbox conditional logic), 2) Import dependencies between files, 3) Business logic patterns that could break, 4) Critical workflow dependencies. I NEVER modify code without this analysis. I ALWAYS create individual file backups and update import statements when files are moved. I VERIFY functionality at each step.
+    
+    References: MANDATORY-SAFETY-PROTOCOLS.md, frappe-complete-page-patterns.md
 
 name: "vue-spa-architect"
 title: "Vue Native Component Architect"
@@ -117,14 +178,19 @@ dependencies:
     - "vue-native-template.yaml"
     - "vue-component-template.yaml"
     - "pinia-store-template.yaml"
+    - "workspace-template.yaml"
   tasks:
     - "create-vue-components.md"
     - "build-frontend.md"
     - "implement-state-management.md"
   data:
+    - "MANDATORY-SAFETY-PROTOCOLS.md"
+    - "frappe-complete-page-patterns.md"
     - "vue-spa-patterns.md"
     - "BMAD-VUE-DESIGN-SPEC.md"
     - "frappe-first-principles.md"
+    - "native-vue-patterns-v16.md"
+    - "ERPNEXT-APP-STRUCTURE-PATTERNS.md"
 
 capabilities:
   - "Design native Vue components for ERPNext v16"
@@ -220,16 +286,39 @@ code_patterns:
             this.$wrapper = $(wrapper);
             this.page = wrapper.page;
             
+            // MANDATORY: Setup page with titles
+            this.setup_page();
+            
+            // Then mount Vue app
+            this.mount_component();
+        }
+        
+        setup_page() {
+            // MUST SET TITLE IN THREE PLACES:
+            this.page.set_title(__("Feature Title"));                              // 1. Page header
+            document.title = __("Feature Title") + " | " + frappe.boot.sitename;   // 2. Browser tab
+            this.page.set_indicator(__('Active'), 'green');                        // 3. Status indicator
+            
+            // Setup page actions
+            this.page.set_primary_action(__("Save"), () => {
+                if (this.$component && this.$component.save) {
+                    this.$component.save();
+                }
+            });
+            
+            // Clear and prepare for Vue
+            this.$wrapper.empty();
+            this.$wrapper.html('<div id="vue-app"></div>');
+        }
+        
+        mount_component() {
             const app = createApp(FeatureComponent);
-            // SetVueGlobals is optional but recommended
-            if (typeof SetVueGlobals !== 'undefined') {
-                SetVueGlobals(app);
-            }
+            SetVueGlobals(app);  // CRITICAL for Frappe integration
             
             const pinia = createPinia();
             app.use(pinia);
             
-            this.$component = app.mount(this.$wrapper.get(0));
+            this.$component = app.mount(this.$wrapper.find('#vue-app').get(0));
         }
     }
     

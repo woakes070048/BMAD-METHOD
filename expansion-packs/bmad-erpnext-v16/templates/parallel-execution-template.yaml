@@ -1,0 +1,271 @@
+# Parallel Execution Template
+# Template for tracking parallel agent execution
+
+name: parallel-execution-template
+version: 1.0.0
+description: Template for organizing and tracking parallel agent execution
+
+# EXECUTION METADATA
+execution_metadata:
+  session_id: "${SESSION_ID}"
+  created_at: "${TIMESTAMP}"
+  created_by: "${USER}"
+  execution_mode: "smart_parallel"
+  source_issue: "${GITHUB_ISSUE_NUMBER}"
+  source_epic: "${EPIC_NAME}"
+  
+# OVERALL EXECUTION PLAN
+execution_plan:
+  total_stories: 0
+  total_agents: 0
+  estimated_duration: "0 minutes"
+  parallel_blocks: 0
+  sequential_constraints: 0
+  
+  risk_assessment:
+    level: "medium"  # low/medium/high
+    factors:
+      - complexity
+      - dependencies
+      - agent_experience
+    
+  success_criteria:
+    - all_quality_gates_pass
+    - no_data_corruption
+    - proper_handoff_completion
+    - github_sync_successful
+
+# PARALLEL EXECUTION BLOCKS
+execution_blocks:
+  - block_id: "block_1"
+    name: "Initial Parallel Block"
+    description: "First set of independent tasks"
+    status: "pending"  # pending/in_progress/completed/failed
+    
+    agents:
+      - agent_id: "doctype-designer"
+        task: "Create/modify DocType structures"
+        status: "pending"
+        estimated_duration: "15 minutes"
+        files_targeted:
+          - "custom_app/custom_module/doctype/*/custom_doctype.json"
+          - "custom_app/custom_module/doctype/*/custom_doctype.py"
+        dependencies: []
+        
+      - agent_id: "api-architect"
+        task: "Design API structure"
+        status: "pending"
+        estimated_duration: "20 minutes"
+        files_targeted:
+          - "custom_app/api/*.py"
+          - "custom_app/hooks.py"
+        dependencies: []
+    
+    conflict_analysis:
+      file_conflicts: false
+      dependency_conflicts: false
+      resource_conflicts: false
+      safe_for_parallel: true
+    
+    execution_timeline:
+      started_at: null
+      completed_at: null
+      duration: null
+    
+    quality_gates:
+      required:
+        - structure_validation
+        - import_validation
+        - test_execution
+      results: {}
+
+  - block_id: "block_2"
+    name: "Dependent Integration Block"
+    description: "Tasks that depend on Block 1 completion"
+    status: "pending"
+    
+    agents:
+      - agent_id: "api-developer"
+        task: "Implement API endpoints"
+        status: "pending"
+        estimated_duration: "25 minutes"
+        files_targeted:
+          - "custom_app/api/*.py"
+        dependencies:
+          - "block_1.doctype-designer"
+          - "block_1.api-architect"
+        
+      - agent_id: "vue-spa-architect"
+        task: "Build UI components"
+        status: "pending"
+        estimated_duration: "30 minutes"
+        files_targeted:
+          - "custom_app/public/js/**/*.vue"
+          - "custom_app/public/js/**/*.js"
+        dependencies:
+          - "block_1.api-architect"
+    
+    conflict_analysis:
+      file_conflicts: false
+      dependency_conflicts: false
+      resource_conflicts: false
+      safe_for_parallel: true
+      sequential_constraints:
+        - "requires_block_1_completion"
+    
+    quality_gates:
+      required:
+        - api_validation
+        - frontend_testing
+        - integration_testing
+      results: {}
+
+# EXECUTION MONITORING
+monitoring:
+  real_time_tracking: true
+  conflict_detection: true
+  performance_metrics: true
+  
+  tracked_metrics:
+    - execution_time_per_agent
+    - quality_gate_pass_rate
+    - conflict_detection_accuracy
+    - failure_recovery_time
+    - overall_efficiency_gain
+  
+  alerting:
+    - runtime_conflicts
+    - quality_gate_failures
+    - agent_timeout
+    - dependency_violations
+
+# FAILURE RECOVERY
+failure_recovery:
+  strategies:
+    independent_failure:
+      action: "isolate_and_continue"
+      description: "Continue other agents, fix independently"
+      
+    cascade_failure:
+      action: "pause_dependent_agents"
+      description: "Pause dependents, fix root cause first"
+      
+    critical_failure:
+      action: "emergency_rollback"
+      description: "Stop all, convert to sequential mode"
+  
+  recovery_history: []
+
+# GITHUB INTEGRATION
+github_integration:
+  enabled: true
+  issue_number: "${GITHUB_ISSUE_NUMBER}"
+  sync_frequency: "on_block_completion"
+  comment_template: |
+    ## 🔀 Parallel Execution Progress
+    
+    **Block**: ${block_name}
+    **Status**: ${block_status}
+    **Progress**: ${completed_agents}/${total_agents} agents completed
+    
+    ### Completed Work
+    ${completed_work_summary}
+    
+    ### In Progress
+    ${in_progress_work_summary}
+    
+    ### Quality Gates
+    ${quality_gate_summary}
+    
+    **ETA**: ${estimated_completion}
+
+# QUALITY ASSURANCE
+quality_assurance:
+  gate_enforcement: "mandatory"
+  cross_agent_validation: true
+  integration_testing: true
+  
+  validation_points:
+    - after_each_agent
+    - after_each_block
+    - before_final_merge
+    - after_github_sync
+  
+  rollback_triggers:
+    - quality_gate_failure_rate > 30%
+    - critical_test_failures
+    - data_integrity_issues
+    - security_violations
+
+# PERFORMANCE TRACKING
+performance:
+  baseline_sequential_time: "0 minutes"
+  actual_parallel_time: "0 minutes"
+  efficiency_gain: "0%"
+  
+  agent_performance:
+    doctype-designer:
+      average_time: "15 minutes"
+      success_rate: "95%"
+      quality_score: "high"
+    
+    api-architect:
+      average_time: "20 minutes"
+      success_rate: "90%"
+      quality_score: "high"
+  
+  optimization_opportunities: []
+
+# COMPLETION SUMMARY
+completion_summary:
+  status: "pending"  # pending/completed/failed/partially_completed
+  
+  results:
+    total_time: null
+    blocks_completed: 0
+    agents_successful: 0
+    quality_gates_passed: 0
+    github_syncs: 0
+  
+  deliverables:
+    files_created: []
+    files_modified: []
+    tests_added: []
+    documentation_updated: []
+  
+  lessons_learned: []
+  
+  recommendations:
+    - "Optimize agent ordering for better parallelization"
+    - "Improve conflict detection accuracy"
+    - "Enhance quality gate efficiency"
+
+# TEMPLATE USAGE INSTRUCTIONS
+usage_instructions:
+  - "Copy this template to .bmad-project/executions/execution-${TIMESTAMP}.yaml"
+  - "Update execution_metadata with current session information"
+  - "Define execution_blocks based on parallel analysis"
+  - "Update agent assignments and file targets"
+  - "Monitor progress and update status fields"
+  - "Use for post-execution analysis and optimization"
+
+# INTEGRATION POINTS
+integration_points:
+  workflows:
+    - coordination-workflow
+    - parallel-failure-recovery-workflow
+    - quality-gate-enforcement-workflow
+  
+  agents:
+    - development-coordinator
+    - parallel-analyzer
+    - testing-specialist
+  
+  commands:
+    - "/github:issue-sync"
+    - "/bmadErpNext:agent:development-coordinator *show-parallel-status"
+  
+  data_sources:
+    - parallel-conflict-rules.yaml
+    - execution-mode-rules.yaml
+    - quality-gates-definition.yaml

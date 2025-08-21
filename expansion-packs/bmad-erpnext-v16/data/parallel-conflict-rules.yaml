@@ -1,0 +1,357 @@
+# Parallel Conflict Rules
+# Defines when work can be parallelized and when it must be sequential
+
+name: parallel-conflict-rules
+version: 1.0.0
+description: Comprehensive rules for detecting conflicts in parallel agent execution
+
+# CORE CONFLICT DETECTION RULES
+conflict_detection:
+  
+  # FILE-BASED CONFLICTS
+  file_conflicts:
+    same_file_modification:
+      rule: "NEVER_PARALLEL"
+      description: "Two agents modifying the same file"
+      detection: "exact_file_path_match"
+      resolution: "sequential_execution"
+      examples:
+        - "doctype-designer and api-developer both modifying customer.py"
+        - "Two agents editing same hooks.py"
+    
+    same_directory_different_files:
+      rule: "ANALYZE_SPECIFIC"
+      description: "Agents working in same directory on different files"
+      detection: "directory_path_match_with_different_files"
+      resolution: "conflict_analysis_required"
+      factors:
+        - shared_imports
+        - naming_conflicts
+        - directory_structure_changes
+    
+    different_directories:
+      rule: "SAFE_PARALLEL"
+      description: "Agents working in completely different directories"
+      detection: "no_directory_overlap"
+      resolution: "parallel_execution"
+      
+  # DOCTYPE CONFLICTS
+  doctype_conflicts:
+    same_doctype_modification:
+      rule: "NEVER_PARALLEL"
+      description: "Multiple agents modifying the same DocType"
+      detection: "doctype_name_match"
+      resolution: "sequential_execution"
+      includes:
+        - json_file_changes
+        - controller_changes
+        - field_modifications
+    
+    parent_child_doctype:
+      rule: "SEQUENTIAL_DEPENDENCY"
+      description: "Parent DocType must be created before child"
+      detection: "link_field_dependencies"
+      resolution: "dependency_ordered_execution"
+      examples:
+        - "Customer before Customer Contact"
+        - "Sales Order before Sales Order Item"
+    
+    independent_doctypes:
+      rule: "SAFE_PARALLEL"
+      description: "Completely independent DocTypes"
+      detection: "no_link_field_connections"
+      resolution: "parallel_execution"
+      validation: "check_for_hidden_dependencies"
+  
+  # API CONFLICTS
+  api_conflicts:
+    same_endpoint_path:
+      rule: "NEVER_PARALLEL"
+      description: "Multiple agents creating same API endpoint"
+      detection: "endpoint_path_match"
+      resolution: "sequential_execution"
+    
+    shared_data_models:
+      rule: "ANALYZE_DEPENDENCY"
+      description: "APIs sharing the same underlying data models"
+      detection: "doctype_usage_overlap"
+      resolution: "dependency_analysis"
+      considerations:
+        - read_vs_write_operations
+        - data_integrity_requirements
+        - transaction_boundaries
+    
+    independent_endpoints:
+      rule: "SAFE_PARALLEL"
+      description: "APIs with no shared resources"
+      detection: "no_resource_overlap"
+      resolution: "parallel_execution"
+  
+  # FRONTEND CONFLICTS
+  frontend_conflicts:
+    same_vue_component:
+      rule: "NEVER_PARALLEL"
+      description: "Multiple agents modifying same Vue component"
+      detection: "component_file_path_match"
+      resolution: "sequential_execution"
+    
+    parent_child_components:
+      rule: "SEQUENTIAL_DEPENDENCY"
+      description: "Parent component must exist before child references it"
+      detection: "component_import_dependencies"
+      resolution: "dependency_ordered_execution"
+    
+    shared_global_state:
+      rule: "ANALYZE_STATE_IMPACT"
+      description: "Components sharing global state (Pinia stores)"
+      detection: "store_usage_overlap"
+      resolution: "state_impact_analysis"
+    
+    independent_pages:
+      rule: "SAFE_PARALLEL"
+      description: "Completely separate pages or components"
+      detection: "no_shared_dependencies"
+      resolution: "parallel_execution"
+  
+  # WORKFLOW CONFLICTS
+  workflow_conflicts:
+    same_doctype_workflow:
+      rule: "NEVER_PARALLEL"
+      description: "Multiple workflows for same DocType"
+      detection: "workflow_doctype_match"
+      resolution: "sequential_execution"
+    
+    cascading_workflows:
+      rule: "SEQUENTIAL_DEPENDENCY"
+      description: "Workflows that trigger each other"
+      detection: "workflow_trigger_analysis"
+      resolution: "dependency_ordered_execution"
+    
+    independent_workflows:
+      rule: "SAFE_PARALLEL"
+      description: "Workflows for different DocTypes"
+      detection: "no_doctype_overlap"
+      resolution: "parallel_execution"
+
+# DEPENDENCY ANALYSIS RULES
+dependency_analysis:
+  
+  data_dependencies:
+    direct_link_fields:
+      description: "DocTypes with Link fields to each other"
+      detection_method: "parse_json_for_link_fields"
+      impact: "sequential_required"
+    
+    table_field_dependencies:
+      description: "DocTypes used in Table fields"
+      detection_method: "parse_json_for_table_fields"
+      impact: "parent_before_child"
+    
+    dynamic_link_dependencies:
+      description: "DocTypes used in Dynamic Link fields"
+      detection_method: "parse_json_for_dynamic_links"
+      impact: "analyze_runtime_dependencies"
+  
+  code_dependencies:
+    import_dependencies:
+      description: "Python files importing each other"
+      detection_method: "parse_import_statements"
+      impact: "dependency_ordered_execution"
+    
+    function_call_dependencies:
+      description: "Functions calling each other across files"
+      detection_method: "static_code_analysis"
+      impact: "caller_after_callee"
+    
+    shared_utility_usage:
+      description: "Multiple files using same utility functions"
+      detection_method: "utility_import_analysis"
+      impact: "analyze_modification_impact"
+  
+  business_logic_dependencies:
+    workflow_sequence:
+      description: "Business processes that must happen in order"
+      detection_method: "workflow_state_analysis"
+      impact: "business_sequence_required"
+    
+    data_flow_dependencies:
+      description: "Data flowing from one process to another"
+      detection_method: "data_flow_tracing"
+      impact: "producer_before_consumer"
+
+# CONFLICT RESOLUTION STRATEGIES
+resolution_strategies:
+  
+  sequential_execution:
+    description: "Execute agents one after another"
+    when_to_use:
+      - same_file_conflicts
+      - direct_dependencies
+      - data_integrity_requirements
+    implementation:
+      - order_by_dependencies
+      - wait_for_completion
+      - validate_handoffs
+  
+  parallel_with_locks:
+    description: "Execute in parallel but lock shared resources"
+    when_to_use:
+      - same_directory_different_files
+      - shared_utilities_read_only
+    implementation:
+      - identify_lockable_resources
+      - implement_resource_locking
+      - coordinate_lock_release
+  
+  dependency_ordered_parallel:
+    description: "Parallel execution in dependency order"
+    when_to_use:
+      - complex_dependency_chains
+      - multiple_independent_groups
+    implementation:
+      - create_dependency_graph
+      - identify_parallel_groups
+      - execute_groups_in_sequence
+  
+  conflict_avoidance:
+    description: "Redesign work to avoid conflicts"
+    when_to_use:
+      - artificial_dependencies
+      - poor_task_decomposition
+    implementation:
+      - reanalyze_task_breakdown
+      - split_conflicting_work
+      - create_independent_tasks
+
+# AGENT-SPECIFIC CONFLICT PATTERNS
+agent_conflict_patterns:
+  
+  doctype_designer:
+    typical_conflicts_with:
+      api_developer: "Same DocType controller modifications"
+      data_integration_expert: "Same DocType field changes"
+    safe_parallel_with:
+      vue_spa_architect: "Different concern areas"
+      workflow_specialist: "Independent work streams"
+    conflict_indicators:
+      - doctype_name_overlap
+      - controller_file_modifications
+      - field_definition_changes
+  
+  api_developer:
+    typical_conflicts_with:
+      doctype_designer: "Controller file modifications"
+      api_architect: "Same endpoint definitions"
+    safe_parallel_with:
+      vue_spa_architect: "Frontend vs backend separation"
+      workflow_specialist: "API vs workflow logic"
+    conflict_indicators:
+      - endpoint_path_overlap
+      - shared_model_modifications
+      - authentication_changes
+  
+  vue_spa_architect:
+    typical_conflicts_with:
+      frappe_ui_developer: "Same component modifications"
+      mobile_ui_specialist: "Shared responsive code"
+    safe_parallel_with:
+      doctype_designer: "Frontend vs backend separation"
+      api_developer: "Clear interface boundaries"
+    conflict_indicators:
+      - component_file_overlap
+      - shared_state_modifications
+      - style_definition_conflicts
+  
+  workflow_specialist:
+    typical_conflicts_with:
+      workflow_specialist: "Same DocType workflows"
+    safe_parallel_with:
+      doctype_designer: "Different concern areas"
+      api_developer: "Workflow vs API logic"
+    conflict_indicators:
+      - doctype_workflow_overlap
+      - state_transition_conflicts
+      - approval_role_conflicts
+
+# PARALLEL SAFETY CHECKS
+safety_checks:
+  
+  pre_execution_checks:
+    file_target_analysis:
+      description: "Map which files each agent will modify"
+      implementation: "analyze_agent_work_patterns"
+      validation: "check_for_file_overlaps"
+    
+    dependency_graph_analysis:
+      description: "Build complete dependency graph"
+      implementation: "static_and_dynamic_analysis"
+      validation: "check_for_circular_dependencies"
+    
+    resource_contention_analysis:
+      description: "Identify shared resource usage"
+      implementation: "resource_mapping"
+      validation: "check_for_resource_conflicts"
+  
+  runtime_monitoring:
+    file_modification_tracking:
+      description: "Monitor actual file modifications"
+      implementation: "file_system_watching"
+      action_on_conflict: "immediate_pause_and_resolve"
+    
+    git_conflict_detection:
+      description: "Detect git merge conflicts early"
+      implementation: "git_status_monitoring"
+      action_on_conflict: "conflict_resolution_workflow"
+    
+    data_integrity_monitoring:
+      description: "Monitor for data corruption"
+      implementation: "data_validation_checks"
+      action_on_conflict: "emergency_rollback"
+
+# LEARNING AND ADAPTATION
+learning_system:
+  
+  conflict_pattern_learning:
+    description: "Learn from actual conflicts encountered"
+    implementation:
+      - track_actual_conflicts
+      - analyze_prediction_accuracy
+      - update_conflict_rules
+    
+  agent_behavior_analysis:
+    description: "Learn agent work patterns"
+    implementation:
+      - track_file_modification_patterns
+      - analyze_execution_timings
+      - identify_optimization_opportunities
+    
+  success_pattern_identification:
+    description: "Identify successful parallel combinations"
+    implementation:
+      - track_successful_parallel_executions
+      - analyze_conditions_for_success
+      - promote_successful_patterns
+
+# PERFORMANCE OPTIMIZATION
+optimization_rules:
+  
+  parallel_group_optimization:
+    description: "Optimize grouping for maximum parallelization"
+    strategies:
+      - minimize_sequential_constraints
+      - balance_agent_workloads
+      - maximize_resource_utilization
+  
+  execution_order_optimization:
+    description: "Optimize execution order within constraints"
+    strategies:
+      - critical_path_analysis
+      - resource_availability_optimization
+      - failure_probability_minimization
+  
+  resource_allocation_optimization:
+    description: "Optimize resource allocation across agents"
+    strategies:
+      - agent_capability_matching
+      - workload_balancing
+      - resource_contention_minimization

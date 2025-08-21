@@ -4,7 +4,7 @@ short-title: ERPNext v16 Native Vue Builder
 description: >-
   Complete BMAD expansion pack for building modern ERPNext v16 apps with native Vue integration.
   Includes Vue 3 with Frappe's asset pipeline, native PWA support, and comprehensive migration tools.
-  Features 31 specialized AI agents with Warehouse 13 & Eureka character names.
+  Features 30 specialized AI agents with Warehouse 13 & Eureka character names.
 author: BMAD Team
 slashPrefix: bmadErpNext
 
@@ -26,7 +26,7 @@ metadata:
     - "Bootstrap 4 (Frappe default)"
     - "Pinia"
   character_theme: "Warehouse 13 & Eureka TV series"
-  total_agents: 33
+  total_agents: 30
   
   # UNIVERSAL SAFETY SYSTEM
   safety_system:
@@ -36,6 +36,23 @@ metadata:
     panic_detection: active
     mandatory_changelog: true
     attempt_limits: 3
+  
+  # PARALLEL EXECUTION SYSTEM
+  parallel_execution:
+    enabled: true
+    strategy: "smart_parallel_without_worktrees"
+    max_parallel_agents: 5
+    conflict_detection: true
+    auto_fallback_to_sequential: true
+    failure_recovery: true
+  
+  # GITHUB INTEGRATION
+  github_integration:
+    enabled: true
+    sync_on_handoff: true
+    post_progress_updates: true
+    comment_on_gate_failures: true
+    update_interval: "on_completion"
   
 # Slash Commands Configuration
 slash_commands:
@@ -110,7 +127,7 @@ existing_apps:
     #     - "testing-specialist"
     #     - "doctype-designer"
     
-    # Server Manager - If present in your environment (uncomment if you have it)
+    # Server Manager - If present in your environment
     # - name: "server_manager"
     #   type: "custom"
     #   description: "Server and infrastructure management"
@@ -120,7 +137,7 @@ existing_apps:
     #   validation_required: true
     #   structure_validator: "app-structure-validator"
     
-    # n8n Integration - Automation Platform (uncomment if you have it)
+    # n8n Integration - Automation Platform
     # - name: "n8n_integration"
     #   type: "custom"
     #   description: "Automation and workflow integration with n8n"
@@ -144,19 +161,19 @@ agents:
     - "bench-operator"
     - "doctype-designer"
     - "api-developer"
-    - "workflow-specialist"
     - "testing-specialist"
     - "vue-spa-architect"
     - "frappe-ui-developer"
     - "api-architect"
     - "pwa-specialist"
     - "app-scaffold-coordinator"
-    - "erpnext-app-cleaner"
+    - "code-cleanup-specialist"
+    - "parallel-analyzer"
   project_management:
     - "erpnext-product-owner"
     - "erpnext-scrum-master"
-    - "erpnext-qa-lead"
-    - "main-dev-coordinator"
+    - "erpnext-test-architect"
+    - "development-coordinator"
   frontend:
     - "vue-spa-architect"
     - "frappe-ui-developer"
@@ -168,20 +185,19 @@ agents:
     - "api-developer"
     - "doctype-designer"
     - "data-integration-expert"
+    - "workspace-architect"
   business_analysis:
     - "business-analyst"
-    - "n8n-workflow-analyst"
-    - "airtable-analyzer"
-  automation:
-    - "n8n-workflow-analyst"
-    - "workflow-converter"
-    - "trigger-mapper"
-  migration:
-    - "airtable-analyzer"
-    - "workflow-converter"
-    - "business-analyst"
+  quality_control:
+    - "pre-check-agent"
+    - "post-check-agent"
+  # requirements section removed - prd-generator moved to bmad-integration-tools
+  structure_management:
+    - "structure-manager"
   utilities:
     - "jinja-template-specialist"
+    - "app-scaffold-coordinator"
+    - "code-cleanup-specialist"
   compliance:
     - "frappe-compliance-validator"
   debugging:
@@ -189,10 +205,12 @@ agents:
     - "refactoring-expert"
   documentation:
     - "documentation-specialist"
+  auditing:
+    - "app-auditor"
+  # orchestration section removed - workflow-orchestrator moved to bmad-integration-tools
   
 agent_teams:
   modern_app_team:
-    - "vue-spa-architect"
     - "vue-spa-architect"
     - "frappe-ui-developer"
     - "api-architect"
@@ -209,34 +227,15 @@ agent_teams:
     - "bench-operator"
     - "testing-specialist"
     - "frappe-compliance-validator"
-  workflow_team:
-    - "workflow-specialist"
-    - "api-developer"
-    - "testing-specialist"
+  # workflow_team moved to bmad-integration-tools (contains workflow-specialist)
   business_analysis_team:
     - "business-analyst"
     - "erpnext-architect"
     - "doctype-designer"
     - "api-architect"
     - "jinja-template-specialist"
-  n8n_conversion_team:
-    - "n8n-workflow-analyst"
-    - "workflow-converter"
-    - "trigger-mapper"
-    - "api-developer"
-    - "jinja-template-specialist"
-  airtable_migration_team:
-    - "airtable-analyzer"
-    - "business-analyst"
-    - "doctype-designer"
-    - "api-developer"
-    - "data-integration-expert"
-    - "jinja-template-specialist"
-  automation_team:
-    - "workflow-converter"
-    - "trigger-mapper"
-    - "workflow-specialist"
-    - "api-developer"
+  # Integration teams moved to bmad-integration-tools expansion pack
+  # For n8n, Airtable, and automation teams, use: *expansion-pack bmad-integration-tools*
   mobile_team:
     - "mobile-ui-specialist"
     - "pwa-specialist"
@@ -532,11 +531,7 @@ checklists:
   integration:
     - "multi-app-compatibility.md"
   validation:
-    - "validation-automation-guide.md"
-  recovery:
-    - "recovery-procedures.md"
-  validation_automation:
-    - "validation-automation-guide.md"
+    - "code-change-preflight-checklist.md"
 
 integration:
   existing_systems:
@@ -567,7 +562,7 @@ integration:
     #     - "Test with testing-specialist for multi-app compatibility"
     #     - "Monitor with DocFlow dashboard components"
     
-    # Server Manager Integration - EXAMPLE (uncomment if you have Server Manager)
+    # Server Manager Integration - If present
     # server_manager:
     #   description: "Server and infrastructure management application"
     #   status: "requires_validation"
@@ -585,7 +580,7 @@ integration:
     #     - "Use enforcement tasks to maintain compliance"
     #     - "Monitor for anti-patterns continuously"
     
-    # n8n Integration - EXAMPLE (uncomment if you have n8n integration)
+    # n8n Integration - Automation Platform
     # n8n_integration:
     #   description: "Automation platform integration with n8n workflows"
     #   integration_points:
@@ -609,10 +604,7 @@ integration:
         - "Create webhook endpoints and API handlers"
         - "Convert triggers to ERPNext events"
         - "Implement scheduled jobs from cron triggers"
-      agents:
-        - "n8n-workflow-analyst"
-        - "workflow-converter"
-        - "trigger-mapper"
+      # Integration agents moved to bmad-integration-tools expansion pack
     
     airtable_bases:
       description: "Migrate Airtable databases to ERPNext"
@@ -624,8 +616,7 @@ integration:
         - "Validate data integrity"
         - "Recreate views as ERPNext reports"
       agents:
-        - "airtable-analyzer"
-        - "business-analyst"
+        - "business-analyst"  # airtable-analyzer moved to bmad-integration-tools
     
     business_analysis:
       description: "Comprehensive business process analysis"
@@ -642,6 +633,44 @@ integration:
 
 # CUSTOMIZE THESE SETTINGS FOR YOUR PREFERENCES
 settings:
+  # BMAD Method alignment
+  bmad_method:
+    planning_workflow: bmad-planning-workflow
+    development_workflow: bmad-development-workflow
+    enforce_frappe_first: true
+    block_external_libraries: true
+    
+  # Environment mode controls
+  environment:
+    mode: development          # Options: development, production
+    enforce_modern_patterns: true
+    prevent_legacy_functions: true
+    erpnext_version: "v16"
+    frappe_framework: true
+    
+  # Structure enforcement settings
+  structure:
+    max_file_lines: 500        # Preferred maximum lines per file
+    enforce_directory_rules: true
+    refactor_threshold: 1000  # Files exceeding this will be refactored
+    doctype_naming: PascalCase
+    api_pattern: "@frappe.whitelist()"
+    
+  # Review and validation settings
+  review:
+    require_pre_check: false   # Optional in BMAD Method
+    require_post_check: false  # Optional in BMAD Method
+    test_architect_review: recommended
+    risk_assessment_threshold: 6
+    
+  # Quality gates configuration
+  quality_gates:
+    enabled: true
+    advisory_only: true       # Gates are advisory, not blocking
+    require_coverage: 70      # Minimum test coverage
+    critical_path_coverage: 100
+    security_coverage: 100
+    
   development:
     auto_reload: true
     debug_mode: true           # Set to false for production
@@ -685,4 +714,4 @@ settings:
 # 3. Update the existing_apps section with your installed apps
 # 4. Customize the settings section according to your preferences
 # 5. Uncomment and configure integration sections if you have those systems
-# 6. Save and test with: *expansion-pack bmad-erpnext-v16*
+# 6. Save and test with: claude *expansion-pack bmad-erpnext-v16*

@@ -67,6 +67,16 @@ This comprehensive checklist ensures high-quality Vue SPA development within ERP
 - [ ] **Frappe permissions** respected in component logic
 - [ ] **Frappe translations** integrated using `__()` function
 
+### 🚨 CRITICAL: Page Title Requirements
+- [ ] **Page JSON has "title" field** - MANDATORY, NO EXCEPTIONS!
+- [ ] **Page JSON has "icon" field** - MANDATORY for navigation
+- [ ] **JavaScript sets title in 3 places:**
+  - [ ] `frappe.ui.make_app_page({ title: 'Title' })`
+  - [ ] `page.set_title(__('Title'))`
+  - [ ] `document.title = __('Title') + ' | ' + frappe.boot.sitename`
+- [ ] **Vue component receives title** from page context
+- [ ] **Title displays in page header** visually
+
 ### Component Implementation
 - [ ] **Props validation** implemented with proper types
 - [ ] **Event emissions** properly declared and documented
@@ -115,11 +125,14 @@ This comprehensive checklist ensures high-quality Vue SPA development within ERP
 ## API Integration
 
 ### Backend API Design
-- [ ] **@frappe.whitelist()** decorator used on all exposed methods
-- [ ] **Permission checks** implemented in all API endpoints
+- [ ] **@frappe.whitelist()** decorator used on ALL exposed methods - NO EXCEPTIONS!
+- [ ] **Permission checks** MUST be FIRST operation after try block
+- [ ] **frappe.throw()** used for ALL errors - NEVER raise Exception
+- [ ] **NO 'import requests'** - Use frappe.make_get_request() instead
 - [ ] **Input validation** performed on server side
 - [ ] **Error handling** comprehensive and user-friendly
 - [ ] **Response formats** consistent across endpoints
+- [ ] **API returns page titles** when needed for UI display
 
 ### Frontend API Integration
 - [ ] **API service layer** implemented for centralized calls

@@ -1,0 +1,1144 @@
+# Airtable Comprehensive Analysis Report Templates
+# Complete set of report templates and deliverable formats for Airtable migration projects
+
+name: "Airtable Comprehensive Analysis Report Templates"
+description: "Professional report templates for delivering complete Airtable to ERPNext migration analysis and recommendations"
+version: "1.0.0"
+
+# Executive Summary Report Template
+executive_summary:
+  template: |
+    # Airtable to ERPNext Migration Analysis
+    ## Executive Summary Report
+    
+    **Project**: {{ project_name }}
+    **Client**: {{ client_name }}
+    **Analysis Date**: {{ analysis_date }}
+    **Analyst**: {{ analyst_name }}
+    **Report Version**: {{ report_version }}
+    
+    ---
+    
+    ## Project Overview
+    
+    ### Business Context
+    {{ client_name }} currently uses Airtable for {{ primary_use_case }} and seeks to migrate to ERPNext to {{ business_objectives }}. This comprehensive analysis evaluates the migration complexity, identifies implementation strategies, and provides detailed recommendations for a successful transition.
+    
+    ### Scope of Analysis
+    - **Airtable Base**: {{ base_name }}
+    - **Total Tables**: {{ total_tables }}
+    - **Total Records**: {{ total_records }}
+    - **Business Functions**: {{ business_functions }}
+    - **Integration Points**: {{ integration_count }}
+    
+    ## Key Findings
+    
+    ### Migration Complexity Assessment
+    **Overall Complexity Score**: {{ complexity_score }} / 1000
+    **Risk Level**: {{ risk_level }}
+    **Estimated Duration**: {{ estimated_duration }}
+    **Recommended Team Size**: {{ team_size }} professionals
+    
+    ### Critical Success Factors
+    1. **{{ critical_factor_1 }}**: {{ factor_1_description }}
+    2. **{{ critical_factor_2 }}**: {{ factor_2_description }}
+    3. **{{ critical_factor_3 }}**: {{ factor_3_description }}
+    
+    ### Major Challenges Identified
+    {% for challenge in major_challenges %}
+    - **{{ challenge.name }}**: {{ challenge.description }}
+      - **Impact**: {{ challenge.impact }}
+      - **Mitigation**: {{ challenge.mitigation }}
+    {% endfor %}
+    
+    ## Recommendations
+    
+    ### Strategic Recommendations
+    1. **{{ strategic_rec_1 }}**: {{ strategic_desc_1 }}
+    2. **{{ strategic_rec_2 }}**: {{ strategic_desc_2 }}
+    3. **{{ strategic_rec_3 }}**: {{ strategic_desc_3 }}
+    
+    ### Technical Recommendations
+    1. **{{ technical_rec_1 }}**: {{ technical_desc_1 }}
+    2. **{{ technical_rec_2 }}**: {{ technical_desc_2 }}
+    3. **{{ technical_rec_3 }}**: {{ technical_desc_3 }}
+    
+    ## Resource Requirements
+    
+    ### Human Resources
+    - **Project Manager**: {{ pm_hours }} hours
+    - **Senior Developer**: {{ senior_dev_hours }} hours
+    - **ERPNext Specialist**: {{ specialist_hours }} hours
+    - **Data Migration Expert**: {{ data_expert_hours }} hours
+    - **QA Engineer**: {{ qa_hours }} hours
+    - **Business Analyst**: {{ ba_hours }} hours
+    
+    ### Infrastructure Requirements
+    - **Server Specifications**: {{ server_specs }}
+    - **Storage Requirements**: {{ storage_requirements }}
+    - **Network Bandwidth**: {{ network_requirements }}
+    - **Backup Solutions**: {{ backup_requirements }}
+    
+    ## Financial Summary
+    
+    ### Cost Breakdown
+    | Category | Hours | Rate | Total Cost |
+    |----------|-------|------|------------|
+    | Professional Services | {{ prof_hours }} | {{ prof_rate }} | {{ prof_cost }} |
+    | Infrastructure Setup | {{ infra_hours }} | {{ infra_rate }} | {{ infra_cost }} |
+    | Training & Support | {{ training_hours }} | {{ training_rate }} | {{ training_cost }} |
+    | **Total Project Cost** | | | **{{ total_cost }}** |
+    
+    ### ROI Analysis
+    - **Annual Airtable Costs**: {{ current_annual_cost }}
+    - **ERPNext Annual Costs**: {{ erpnext_annual_cost }}
+    - **Annual Savings**: {{ annual_savings }}
+    - **Payback Period**: {{ payback_period }}
+    - **3-Year ROI**: {{ three_year_roi }}%
+    
+    ## Implementation Timeline
+    
+    ### High-Level Schedule
+    | Phase | Duration | Start Date | End Date | Key Deliverables |
+    |-------|----------|------------|----------|------------------|
+    {% for phase in implementation_phases %}
+    | {{ phase.name }} | {{ phase.duration }} | {{ phase.start_date }} | {{ phase.end_date }} | {{ phase.deliverables }} |
+    {% endfor %}
+    
+    ### Critical Milestones
+    {% for milestone in critical_milestones %}
+    - **{{ milestone.name }}**: {{ milestone.date }} - {{ milestone.description }}
+    {% endfor %}
+    
+    ## Risk Assessment
+    
+    ### High-Risk Areas
+    {% for risk in high_risks %}
+    **{{ risk.name }}** ({{ risk.probability }} probability, {{ risk.impact }} impact)
+    - **Description**: {{ risk.description }}
+    - **Mitigation Strategy**: {{ risk.mitigation }}
+    - **Contingency Plan**: {{ risk.contingency }}
+    {% endfor %}
+    
+    ### Risk Mitigation Summary
+    - **Overall Project Risk**: {{ overall_risk_level }}
+    - **Risk Mitigation Investment**: {{ risk_mitigation_cost }}
+    - **Contingency Budget**: {{ contingency_budget }} ({{ contingency_percentage }}% of total)
+    
+    ## Success Metrics
+    
+    ### Key Performance Indicators
+    - **Data Migration Accuracy**: {{ data_accuracy_target }}%
+    - **System Performance**: Response time < {{ response_time_target }} seconds
+    - **User Adoption**: {{ adoption_target }}% within {{ adoption_timeframe }}
+    - **Downtime During Migration**: < {{ downtime_target }} hours
+    - **Business Process Continuity**: {{ continuity_target }}%
+    
+    ## Next Steps
+    
+    ### Immediate Actions Required
+    1. **{{ immediate_action_1 }}**: {{ action_1_timeline }}
+    2. **{{ immediate_action_2 }}**: {{ action_2_timeline }}
+    3. **{{ immediate_action_3 }}**: {{ action_3_timeline }}
+    
+    ### Decision Points
+    - **{{ decision_point_1 }}**: Required by {{ decision_1_date }}
+    - **{{ decision_point_2 }}**: Required by {{ decision_2_date }}
+    - **{{ decision_point_3 }}**: Required by {{ decision_3_date }}
+    
+    ### Approval Requirements
+    - **Technical Architecture**: {{ tech_approval_required }}
+    - **Budget Authorization**: {{ budget_approval_required }}
+    - **Resource Allocation**: {{ resource_approval_required }}
+    - **Timeline Approval**: {{ timeline_approval_required }}
+    
+    ---
+    
+    ## Appendices
+    - **Appendix A**: Detailed Technical Analysis
+    - **Appendix B**: Field Mapping Specifications
+    - **Appendix C**: Data Volume Analysis
+    - **Appendix D**: Integration Requirements
+    - **Appendix E**: Risk Register
+    - **Appendix F**: Resource Planning Details
+    
+    ---
+    
+    **Report Prepared By**: {{ analyst_name }}
+    **Contact Information**: {{ contact_info }}
+    **Report Date**: {{ report_date }}
+
+# Detailed Technical Analysis Report
+technical_analysis:
+  template: |
+    # Technical Analysis Report
+    ## Airtable to ERPNext Migration
+    
+    **Project**: {{ project_name }}
+    **Analysis Date**: {{ analysis_date }}
+    **Technical Lead**: {{ technical_lead }}
+    
+    ---
+    
+    ## Base Architecture Analysis
+    
+    ### Current Airtable Structure
+    
+    #### Base Configuration
+    - **Base Name**: {{ base_name }}
+    - **Base ID**: {{ base_id }}
+    - **Created Date**: {{ base_created }}
+    - **Last Modified**: {{ base_modified }}
+    - **Collaborators**: {{ collaborator_count }}
+    
+    #### Table Summary
+    | Table Name | Records | Fields | Complexity Score | Migration Priority |
+    |------------|---------|--------|------------------|-------------------|
+    {% for table in tables %}
+    | {{ table.name }} | {{ table.record_count }} | {{ table.field_count }} | {{ table.complexity }} | {{ table.priority }} |
+    {% endfor %}
+    | **Totals** | **{{ total_records }}** | **{{ total_fields }}** | **{{ total_complexity }}** |  |
+    
+    ### ERPNext Design Specifications
+    
+    #### DocType Architecture
+    ```yaml
+    erpnext_doctypes:
+      {% for doctype in erpnext_doctypes %}
+      {{ doctype.name }}:
+        module: {{ doctype.module }}
+        naming_rule: {{ doctype.naming_rule }}
+        fields: {{ doctype.field_count }}
+        relationships: {{ doctype.relationships }}
+        business_logic: {{ doctype.business_logic }}
+      {% endfor %}
+    ```
+    
+    #### Custom Field Requirements
+    {% for custom_field in custom_fields %}
+    **{{ custom_field.doctype }}.{{ custom_field.fieldname }}**
+    - **Type**: {{ custom_field.fieldtype }}
+    - **Purpose**: {{ custom_field.purpose }}
+    - **Implementation**: {{ custom_field.implementation }}
+    {% endfor %}
+    
+    ## Field-by-Field Mapping Analysis
+    
+    {% for table in tables %}
+    ### {{ table.name }} → {{ table.erpnext_doctype }}
+    
+    #### Field Mappings
+    | Airtable Field | Type | ERPNext Field | Type | Complexity | Notes |
+    |----------------|------|---------------|------|------------|-------|
+    {% for field in table.fields %}
+    | {{ field.airtable_name }} | {{ field.airtable_type }} | {{ field.erpnext_name }} | {{ field.erpnext_type }} | {{ field.complexity }} | {{ field.notes }} |
+    {% endfor %}
+    
+    #### Special Handling Requirements
+    {% for special in table.special_handling %}
+    **{{ special.field }}**: {{ special.requirement }}
+    - **Reason**: {{ special.reason }}
+    - **Implementation**: {{ special.implementation }}
+    {% endfor %}
+    
+    #### Business Logic Migration
+    {% if table.business_logic %}
+    **Current Logic**: {{ table.business_logic.current }}
+    **ERPNext Implementation**: {{ table.business_logic.erpnext }}
+    **Complexity**: {{ table.business_logic.complexity }}
+    ```python
+    {{ table.business_logic.code }}
+    ```
+    {% endif %}
+    
+    {% endfor %}
+    
+    ## Relationship Architecture
+    
+    ### Relationship Summary
+    | Type | Count | Complexity | Implementation Strategy |
+    |------|-------|------------|-------------------------|
+    | One-to-Many | {{ one_to_many_count }} | {{ one_to_many_complexity }} | Standard Link Fields |
+    | Many-to-Many | {{ many_to_many_count }} | {{ many_to_many_complexity }} | {{ many_to_many_strategy }} |
+    | Lookup Fields | {{ lookup_count }} | {{ lookup_complexity }} | fetch_from Implementation |
+    | Rollup Fields | {{ rollup_count }} | {{ rollup_complexity }} | Server Script Calculations |
+    
+    ### Complex Relationships
+    {% for relationship in complex_relationships %}
+    #### {{ relationship.name }}
+    **Type**: {{ relationship.type }}
+    **Tables Involved**: {{ relationship.tables }}
+    **Business Logic**: {{ relationship.business_logic }}
+    **ERPNext Implementation**:
+    ```yaml
+    {{ relationship.implementation_yaml }}
+    ```
+    {% endfor %}
+    
+    ## Formula and Calculation Migration
+    
+    ### Formula Complexity Analysis
+    | Complexity Level | Count | Implementation Method | Estimated Hours |
+    |------------------|-------|----------------------|-----------------|
+    | Simple | {{ simple_formulas }} | Client/Server Script | {{ simple_hours }} |
+    | Moderate | {{ moderate_formulas }} | Server Script | {{ moderate_hours }} |
+    | Complex | {{ complex_formulas }} | DocType Methods | {{ complex_hours }} |
+    | Very Complex | {{ very_complex_formulas }} | Custom Development | {{ very_complex_hours }} |
+    
+    ### Critical Formula Conversions
+    {% for formula in critical_formulas %}
+    #### {{ formula.field_name }} ({{ formula.table }})
+    **Airtable Formula**: 
+    ```
+    {{ formula.airtable_code }}
+    ```
+    **Business Logic**: {{ formula.business_logic }}
+    **ERPNext Implementation**:
+    ```python
+    {{ formula.erpnext_code }}
+    ```
+    **Testing Requirements**: {{ formula.testing_requirements }}
+    {% endfor %}
+    
+    ## Automation Migration Strategy
+    
+    ### Automation Inventory
+    | Automation | Type | Complexity | ERPNext Method | Dev Hours |
+    |------------|------|------------|----------------|-----------|
+    {% for automation in automations %}
+    | {{ automation.name }} | {{ automation.type }} | {{ automation.complexity }} | {{ automation.erpnext_method }} | {{ automation.hours }} |
+    {% endfor %}
+    
+    ### Implementation Approaches
+    {% for approach in automation_approaches %}
+    #### {{ approach.name }}
+    **Use Cases**: {{ approach.use_cases }}
+    **Implementation**: {{ approach.implementation }}
+    **Advantages**: {{ approach.advantages }}
+    **Limitations**: {{ approach.limitations }}
+    {% endfor %}
+    
+    ## Integration Architecture
+    
+    ### External Integrations
+    {% for integration in integrations %}
+    #### {{ integration.name }}
+    **Current Implementation**: {{ integration.current }}
+    **ERPNext Strategy**: {{ integration.erpnext_strategy }}
+    **API Details**:
+    - Endpoint: {{ integration.endpoint }}
+    - Authentication: {{ integration.auth }}
+    - Frequency: {{ integration.frequency }}
+    - Data Volume: {{ integration.volume }}
+    
+    **Migration Plan**:
+    1. {{ integration.migration_step_1 }}
+    2. {{ integration.migration_step_2 }}
+    3. {{ integration.migration_step_3 }}
+    {% endfor %}
+    
+    ## Performance Considerations
+    
+    ### Database Optimization
+    ```sql
+    -- Recommended Indexes
+    {% for index in recommended_indexes %}
+    CREATE INDEX idx_{{ index.name }} ON `tab{{ index.doctype }}` ({{ index.fields }});
+    {% endfor %}
+    ```
+    
+    ### Caching Strategy
+    {% for cache in caching_strategies %}
+    **{{ cache.area }}**: {{ cache.strategy }}
+    - **Implementation**: {{ cache.implementation }}
+    - **Benefits**: {{ cache.benefits }}
+    {% endfor %}
+    
+    ### Scalability Planning
+    - **Current Data Volume**: {{ current_volume }}
+    - **Projected Growth**: {{ projected_growth }}
+    - **Scaling Recommendations**: {{ scaling_recommendations }}
+    
+    ## Security and Compliance
+    
+    ### Data Security Measures
+    - **Encryption**: {{ encryption_requirements }}
+    - **Access Control**: {{ access_control_strategy }}
+    - **Audit Trail**: {{ audit_trail_implementation }}
+    
+    ### Compliance Requirements
+    {% for compliance in compliance_requirements %}
+    **{{ compliance.regulation }}**: {{ compliance.requirements }}
+    - **Implementation**: {{ compliance.implementation }}
+    - **Validation**: {{ compliance.validation }}
+    {% endfor %}
+    
+    ## Testing Strategy
+    
+    ### Test Categories
+    | Test Type | Scope | Method | Success Criteria |
+    |-----------|-------|--------|------------------|
+    | Unit Tests | Individual Functions | Automated | 100% Pass Rate |
+    | Integration Tests | System Integration | Automated/Manual | 100% Pass Rate |
+    | Performance Tests | System Performance | Automated | Meets SLA Requirements |
+    | User Acceptance | Business Processes | Manual | 95% User Satisfaction |
+    
+    ### Test Data Strategy
+    - **Source**: {{ test_data_source }}
+    - **Volume**: {{ test_data_volume }}
+    - **Refresh Strategy**: {{ test_data_refresh }}
+    
+    ## Deployment Architecture
+    
+    ### Infrastructure Requirements
+    ```yaml
+    production_environment:
+      server_specs:
+        cpu: {{ prod_cpu }}
+        memory: {{ prod_memory }}
+        storage: {{ prod_storage }}
+      database:
+        engine: {{ db_engine }}
+        size: {{ db_size }}
+        backup_strategy: {{ backup_strategy }}
+      networking:
+        bandwidth: {{ network_bandwidth }}
+        security: {{ network_security }}
+    ```
+    
+    ### Deployment Strategy
+    1. **Development Environment**: {{ dev_env_setup }}
+    2. **Staging Environment**: {{ staging_env_setup }}  
+    3. **Production Deployment**: {{ prod_deployment_strategy }}
+    4. **Rollback Procedures**: {{ rollback_procedures }}
+    
+    ## Risk Assessment
+    
+    ### Technical Risks
+    {% for risk in technical_risks %}
+    **{{ risk.name }}** ({{ risk.level }})
+    - **Impact**: {{ risk.impact }}
+    - **Probability**: {{ risk.probability }}
+    - **Mitigation**: {{ risk.mitigation }}
+    - **Monitoring**: {{ risk.monitoring }}
+    {% endfor %}
+    
+    ## Recommendations
+    
+    ### Implementation Recommendations
+    1. **{{ tech_rec_1 }}**: {{ tech_rec_1_desc }}
+    2. **{{ tech_rec_2 }}**: {{ tech_rec_2_desc }}
+    3. **{{ tech_rec_3 }}**: {{ tech_rec_3_desc }}
+    
+    ### Architecture Decisions
+    {% for decision in architecture_decisions %}
+    **{{ decision.area }}**: {{ decision.decision }}
+    - **Rationale**: {{ decision.rationale }}
+    - **Alternatives Considered**: {{ decision.alternatives }}
+    - **Impact**: {{ decision.impact }}
+    {% endfor %}
+
+# Data Migration Plan Report
+data_migration_plan:
+  template: |
+    # Data Migration Plan
+    ## Airtable to ERPNext Data Migration Strategy
+    
+    **Project**: {{ project_name }}
+    **Migration Lead**: {{ migration_lead }}
+    **Plan Version**: {{ plan_version }}
+    **Last Updated**: {{ plan_date }}
+    
+    ---
+    
+    ## Migration Overview
+    
+    ### Data Volume Summary
+    | Source Table | Record Count | Data Size (MB) | Complexity | Migration Order |
+    |--------------|--------------|----------------|------------|-----------------|
+    {% for table in migration_tables %}
+    | {{ table.name }} | {{ table.record_count }} | {{ table.size_mb }} | {{ table.complexity }} | {{ table.order }} |
+    {% endfor %}
+    | **Totals** | **{{ total_records }}** | **{{ total_size_mb }}** | | |
+    
+    ### Migration Strategy
+    **Approach**: {{ migration_approach }}
+    **Estimated Duration**: {{ estimated_duration }}
+    **Downtime Window**: {{ downtime_window }}
+    **Rollback Time**: {{ rollback_time }}
+    
+    ## Phase-by-Phase Migration Plan
+    
+    {% for phase in migration_phases %}
+    ### Phase {{ phase.number }}: {{ phase.name }}
+    **Duration**: {{ phase.duration }}
+    **Dependencies**: {{ phase.dependencies }}
+    **Success Criteria**: {{ phase.success_criteria }}
+    
+    #### Tables in This Phase
+    {% for table in phase.tables %}
+    - **{{ table.name }}**: {{ table.reason_for_phase }}
+    {% endfor %}
+    
+    #### Migration Steps
+    {% for step in phase.steps %}
+    {{ step.number }}. **{{ step.name }}**: {{ step.description }}
+       - **Duration**: {{ step.duration }}
+       - **Resources**: {{ step.resources }}
+       - **Validation**: {{ step.validation }}
+    {% endfor %}
+    
+    #### Rollback Procedures
+    {% for rollback in phase.rollback_steps %}
+    {{ rollback.number }}. {{ rollback.description }}
+    {% endfor %}
+    
+    {% endfor %}
+    
+    ## Data Transformation Specifications
+    
+    {% for table in migration_tables %}
+    ### {{ table.airtable_name }} → {{ table.erpnext_name }}
+    
+    #### Pre-Migration Data Cleanup
+    {% for cleanup in table.cleanup_required %}
+    - **{{ cleanup.issue }}**: {{ cleanup.solution }}
+    {% endfor %}
+    
+    #### Field Transformations
+    | Airtable Field | ERPNext Field | Transformation Rule | Validation |
+    |----------------|---------------|-------------------|------------|
+    {% for transformation in table.transformations %}
+    | {{ transformation.source }} | {{ transformation.target }} | {{ transformation.rule }} | {{ transformation.validation }} |
+    {% endfor %}
+    
+    #### Data Validation Rules
+    ```python
+    def validate_{{ table.name }}_migration(source_record, target_record):
+        """
+        Validate migrated {{ table.name }} record
+        """
+        validations = [
+            {% for validation in table.validations %}
+            {{ validation.code }},
+            {% endfor %}
+        ]
+        return all(validations)
+    ```
+    
+    #### Error Handling Strategy
+    - **Data Quality Issues**: {{ table.error_handling.quality_issues }}
+    - **Transformation Errors**: {{ table.error_handling.transformation_errors }}
+    - **Validation Failures**: {{ table.error_handling.validation_failures }}
+    
+    {% endfor %}
+    
+    ## Relationship Resolution Strategy
+    
+    ### Dependency Order
+    ```yaml
+    migration_order:
+      {% for level in dependency_levels %}
+      level_{{ level.number }}:
+        description: {{ level.description }}
+        tables: {{ level.tables }}
+        estimated_time: {{ level.time }}
+      {% endfor %}
+    ```
+    
+    ### Reference Resolution
+    {% for resolution in reference_resolutions %}
+    #### {{ resolution.relationship }}
+    **Strategy**: {{ resolution.strategy }}
+    **Implementation**: 
+    ```python
+    {{ resolution.code }}
+    ```
+    **Validation**: {{ resolution.validation }}
+    {% endfor %}
+    
+    ## Data Quality Assurance
+    
+    ### Pre-Migration Quality Checks
+    | Check Type | Threshold | Action if Failed |
+    |------------|-----------|------------------|
+    {% for check in pre_migration_checks %}
+    | {{ check.type }} | {{ check.threshold }} | {{ check.action }} |
+    {% endfor %}
+    
+    ### Post-Migration Validation
+    | Validation | Target | Method |
+    |------------|--------|--------|
+    {% for validation in post_migration_validations %}
+    | {{ validation.name }} | {{ validation.target }} | {{ validation.method }} |
+    {% endfor %}
+    
+    ### Data Integrity Verification
+    ```python
+    def verify_data_integrity():
+        """
+        Comprehensive data integrity verification
+        """
+        verification_results = {
+            {% for verification in integrity_verifications %}
+            "{{ verification.name }}": {{ verification.code }},
+            {% endfor %}
+        }
+        return verification_results
+    ```
+    
+    ## Performance Optimization
+    
+    ### Batch Processing Configuration
+    - **Batch Size**: {{ batch_size }} records
+    - **Parallel Processing**: {{ parallel_threads }} threads
+    - **Memory Allocation**: {{ memory_allocation }} GB
+    - **Progress Checkpointing**: Every {{ checkpoint_interval }} records
+    
+    ### Database Optimization
+    ```sql
+    -- Pre-migration optimizations
+    {% for optimization in pre_migration_optimizations %}
+    {{ optimization.sql }};
+    {% endfor %}
+    
+    -- Post-migration optimizations  
+    {% for optimization in post_migration_optimizations %}
+    {{ optimization.sql }};
+    {% endfor %}
+    ```
+    
+    ## Migration Scripts
+    
+    ### Main Migration Script
+    ```python
+    #!/usr/bin/env python3
+    """
+    Main Airtable to ERPNext Migration Script
+    """
+    
+    import frappe
+    from migration_utils import *
+    
+    def main():
+        """Execute complete migration"""
+        try:
+            # Initialize migration
+            initialize_migration()
+            
+            # Execute phases in order
+            {% for phase in migration_phases %}
+            execute_phase_{{ phase.number }}()
+            {% endfor %}
+            
+            # Final validation
+            final_validation()
+            
+            print("Migration completed successfully!")
+            
+        except Exception as e:
+            handle_migration_error(e)
+            
+    if __name__ == "__main__":
+        main()
+    ```
+    
+    ### Utility Functions
+    ```python
+    def extract_airtable_data(table_name, batch_size=1000):
+        """Extract data from Airtable in batches"""
+        # Implementation details
+        pass
+        
+    def transform_record(record, transformation_rules):
+        """Apply transformation rules to record"""
+        # Implementation details
+        pass
+        
+    def load_to_erpnext(records, doctype):
+        """Load transformed records to ERPNext"""
+        # Implementation details
+        pass
+    ```
+    
+    ## Monitoring and Logging
+    
+    ### Progress Tracking
+    - **Migration Dashboard**: {{ dashboard_url }}
+    - **Log Location**: {{ log_location }}
+    - **Progress Reports**: {{ progress_report_frequency }}
+    
+    ### Error Monitoring
+    ```yaml
+    error_categories:
+      {% for category in error_categories %}
+      {{ category.name }}:
+        threshold: {{ category.threshold }}
+        action: {{ category.action }}
+        notification: {{ category.notification }}
+      {% endfor %}
+    ```
+    
+    ## Risk Management
+    
+    ### Migration Risks
+    {% for risk in migration_risks %}
+    **{{ risk.name }}** ({{ risk.level }})
+    - **Impact**: {{ risk.impact }}
+    - **Mitigation**: {{ risk.mitigation }}
+    - **Contingency**: {{ risk.contingency }}
+    {% endfor %}
+    
+    ### Rollback Procedures
+    ```bash
+    #!/bin/bash
+    # Emergency Rollback Script
+    
+    # Stop migration process
+    {{ rollback_stop_command }}
+    
+    # Restore database backup
+    {{ rollback_restore_command }}
+    
+    # Restart services
+    {{ rollback_restart_command }}
+    
+    # Notify stakeholders
+    {{ rollback_notification_command }}
+    ```
+    
+    ## Success Criteria
+    
+    ### Migration Success Metrics
+    - **Data Completeness**: {{ completeness_target }}%
+    - **Data Accuracy**: {{ accuracy_target }}%
+    - **Migration Time**: Within {{ time_target }} of estimate
+    - **System Availability**: {{ availability_target }}% during migration
+    
+    ### Validation Gates
+    {% for gate in validation_gates %}
+    **{{ gate.name }}**: {{ gate.criteria }}
+    - **Go/No-Go Decision Point**: {{ gate.decision_point }}
+    {% endfor %}
+    
+    ## Post-Migration Activities
+    
+    ### Immediate Post-Migration
+    1. **Data Validation**: {{ post_migration_validation }}
+    2. **System Testing**: {{ system_testing }}
+    3. **Performance Verification**: {{ performance_verification }}
+    4. **User Acceptance**: {{ user_acceptance }}
+    
+    ### Long-term Monitoring
+    - **Performance Monitoring**: {{ performance_monitoring }}
+    - **Data Quality Monitoring**: {{ quality_monitoring }}
+    - **User Feedback Collection**: {{ feedback_collection }}
+
+# User Training and Change Management Plan
+training_plan:
+  template: |
+    # User Training and Change Management Plan
+    ## Airtable to ERPNext Transition
+    
+    **Project**: {{ project_name }}
+    **Training Lead**: {{ training_lead }}
+    **Change Manager**: {{ change_manager }}
+    **Plan Date**: {{ plan_date }}
+    
+    ---
+    
+    ## Change Management Overview
+    
+    ### Impact Assessment
+    **Users Affected**: {{ total_users }}
+    **Departments Impacted**: {{ departments }}
+    **Business Processes Changed**: {{ processes_changed }}
+    **Training Complexity**: {{ training_complexity }}
+    
+    ### Change Readiness Analysis
+    | Department | Readiness Level | Key Concerns | Support Strategy |
+    |------------|-----------------|--------------|------------------|
+    {% for dept in departments_analysis %}
+    | {{ dept.name }} | {{ dept.readiness }} | {{ dept.concerns }} | {{ dept.strategy }} |
+    {% endfor %}
+    
+    ## User Segmentation and Training Strategy
+    
+    {% for segment in user_segments %}
+    ### {{ segment.name }}
+    **User Count**: {{ segment.count }}
+    **Current Airtable Usage**: {{ segment.current_usage }}
+    **ERPNext Features Needed**: {{ segment.erpnext_features }}
+    
+    #### Training Approach
+    - **Method**: {{ segment.training_method }}
+    - **Duration**: {{ segment.training_duration }}
+    - **Group Size**: {{ segment.group_size }}
+    - **Prerequisites**: {{ segment.prerequisites }}
+    
+    #### Learning Objectives
+    {% for objective in segment.objectives %}
+    - {{ objective }}
+    {% endfor %}
+    
+    #### Training Materials
+    - **User Guide**: {{ segment.user_guide }}
+    - **Video Tutorials**: {{ segment.video_count }} videos
+    - **Hands-on Exercises**: {{ segment.exercises }}
+    - **Quick Reference Cards**: {{ segment.quick_refs }}
+    
+    {% endfor %}
+    
+    ## Training Content Development
+    
+    ### Core Training Modules
+    {% for module in training_modules %}
+    #### Module {{ module.number }}: {{ module.name }}
+    **Duration**: {{ module.duration }}
+    **Target Audience**: {{ module.audience }}
+    **Delivery Method**: {{ module.delivery }}
+    
+    **Learning Objectives**:
+    {% for objective in module.objectives %}
+    - {{ objective }}
+    {% endfor %}
+    
+    **Content Outline**:
+    {% for topic in module.topics %}
+    - {{ topic.name }}: {{ topic.description }}
+    {% endfor %}
+    
+    **Practical Exercises**:
+    {% for exercise in module.exercises %}
+    - {{ exercise.name }}: {{ exercise.description }}
+    {% endfor %}
+    
+    {% endfor %}
+    
+    ### Comparative Training (Airtable vs ERPNext)
+    
+    #### Key Differences Training
+    | Airtable Feature | ERPNext Equivalent | Key Differences | Training Focus |
+    |------------------|-------------------|-----------------|----------------|
+    {% for comparison in feature_comparisons %}
+    | {{ comparison.airtable }} | {{ comparison.erpnext }} | {{ comparison.differences }} | {{ comparison.focus }} |
+    {% endfor %}
+    
+    #### Workflow Changes
+    {% for workflow in workflow_changes %}
+    **{{ workflow.name }}**
+    - **Previous Process (Airtable)**: {{ workflow.airtable_process }}
+    - **New Process (ERPNext)**: {{ workflow.erpnext_process }}
+    - **Key Changes**: {{ workflow.key_changes }}
+    - **Training Emphasis**: {{ workflow.training_emphasis }}
+    {% endfor %}
+    
+    ## Training Delivery Plan
+    
+    ### Training Schedule
+    | Week | Group | Module | Method | Trainer | Location |
+    |------|-------|--------|---------|---------|----------|
+    {% for session in training_schedule %}
+    | {{ session.week }} | {{ session.group }} | {{ session.module }} | {{ session.method }} | {{ session.trainer }} | {{ session.location }} |
+    {% endfor %}
+    
+    ### Training Resources Required
+    - **Trainers**: {{ trainer_count }} internal, {{ external_trainer_count }} external
+    - **Training Environment**: {{ training_env_requirements }}
+    - **Equipment**: {{ equipment_requirements }}
+    - **Materials**: {{ materials_requirements }}
+    
+    ## Communication Strategy
+    
+    ### Communication Plan
+    | Audience | Message | Channel | Frequency | Timing |
+    |----------|---------|---------|-----------|--------|
+    {% for comm in communication_plan %}
+    | {{ comm.audience }} | {{ comm.message }} | {{ comm.channel }} | {{ comm.frequency }} | {{ comm.timing }} |
+    {% endfor %}
+    
+    ### Key Messages
+    {% for message in key_messages %}
+    **{{ message.audience }}**: {{ message.content }}
+    {% endfor %}
+    
+    ## Support Strategy
+    
+    ### Go-Live Support
+    - **Support Team Size**: {{ support_team_size }}
+    - **Support Hours**: {{ support_hours }}
+    - **Response Time SLA**: {{ response_time_sla }}
+    - **Escalation Procedures**: {{ escalation_procedures }}
+    
+    ### Post-Go-Live Support
+    #### Support Channels
+    {% for channel in support_channels %}
+    **{{ channel.name }}**
+    - **Availability**: {{ channel.availability }}
+    - **Response Time**: {{ channel.response_time }}
+    - **Issue Types**: {{ channel.issue_types }}
+    {% endfor %}
+    
+    #### Knowledge Base
+    - **FAQ Database**: {{ faq_count }} articles
+    - **How-to Guides**: {{ guide_count }} guides
+    - **Video Library**: {{ video_library_count }} videos
+    - **Troubleshooting Guides**: {{ troubleshooting_count }} guides
+    
+    ## Success Measurement
+    
+    ### Training Effectiveness Metrics
+    - **Completion Rate**: {{ completion_rate_target }}%
+    - **Assessment Scores**: Average {{ assessment_target }}%
+    - **User Satisfaction**: {{ satisfaction_target }}/5
+    - **Time to Proficiency**: {{ proficiency_time_target }} days
+    
+    ### Change Adoption Metrics
+    - **System Usage Rate**: {{ usage_rate_target }}%
+    - **Feature Adoption**: {{ feature_adoption_target }}%
+    - **Support Ticket Volume**: {{ support_ticket_target }} per week
+    - **User Feedback Score**: {{ feedback_score_target }}/5
+    
+    ### Measurement Methods
+    {% for method in measurement_methods %}
+    **{{ method.metric }}**: {{ method.description }}
+    - **Data Collection**: {{ method.collection }}
+    - **Frequency**: {{ method.frequency }}
+    - **Reporting**: {{ method.reporting }}
+    {% endfor %}
+    
+    ## Risk Management
+    
+    ### Training Risks
+    {% for risk in training_risks %}
+    **{{ risk.name }}** ({{ risk.level }})
+    - **Impact**: {{ risk.impact }}
+    - **Mitigation**: {{ risk.mitigation }}
+    - **Contingency**: {{ risk.contingency }}
+    {% endfor %}
+    
+    ## Budget and Resources
+    
+    ### Training Budget
+    | Category | Cost | Notes |
+    |----------|------|-------|
+    {% for cost in training_costs %}
+    | {{ cost.category }} | {{ cost.amount }} | {{ cost.notes }} |
+    {% endfor %}
+    | **Total Training Budget** | **{{ total_training_cost }}** |  |
+    
+    ### Resource Allocation
+    - **Internal Trainers**: {{ internal_trainer_days }} days
+    - **External Consultants**: {{ external_consultant_days }} days
+    - **Subject Matter Experts**: {{ sme_days }} days
+    - **Training Coordinator**: {{ coordinator_days }} days
+
+# Final Deliverables Checklist
+deliverables_checklist:
+  template: |
+    # Project Deliverables Checklist
+    ## Airtable to ERPNext Migration
+    
+    **Project**: {{ project_name }}
+    **Completion Date**: {{ completion_date }}
+    **Project Manager**: {{ project_manager }}
+    
+    ---
+    
+    ## Analysis Phase Deliverables
+    
+    ### Documentation Deliverables
+    - [ ] **Executive Summary Report**: {{ exec_summary_status }}
+    - [ ] **Technical Analysis Report**: {{ tech_analysis_status }}
+    - [ ] **Field Mapping Specifications**: {{ field_mapping_status }}
+    - [ ] **Relationship Documentation**: {{ relationship_docs_status }}
+    - [ ] **Formula Conversion Guide**: {{ formula_guide_status }}
+    - [ ] **Integration Analysis**: {{ integration_analysis_status }}
+    - [ ] **Data Volume Assessment**: {{ data_volume_status }}
+    - [ ] **Migration Complexity Report**: {{ complexity_report_status }}
+    
+    ### Technical Deliverables
+    - [ ] **ERPNext DocType Specifications**: {{ doctype_specs_status }}
+    - [ ] **Custom Field Requirements**: {{ custom_fields_status }}
+    - [ ] **Server Script Templates**: {{ server_scripts_status }}
+    - [ ] **Migration Scripts (Draft)**: {{ migration_scripts_status }}
+    - [ ] **Integration Implementation Plan**: {{ integration_plan_status }}
+    - [ ] **Database Schema Design**: {{ schema_design_status }}
+    
+    ### Business Deliverables
+    - [ ] **Business Process Documentation**: {{ business_process_status }}
+    - [ ] **User Impact Analysis**: {{ user_impact_status }}
+    - [ ] **Training Requirements**: {{ training_requirements_status }}
+    - [ ] **Change Management Plan**: {{ change_mgmt_status }}
+    - [ ] **Risk Assessment**: {{ risk_assessment_status }}
+    - [ ] **Cost-Benefit Analysis**: {{ cost_benefit_status }}
+    
+    ## Implementation Phase Deliverables
+    
+    ### Development Deliverables
+    - [ ] **Custom ERPNext App (if required)**: {{ custom_app_status }}
+    - [ ] **DocType Configurations**: {{ doctype_config_status }}
+    - [ ] **Custom Scripts Implementation**: {{ custom_scripts_status }}
+    - [ ] **Integration Modules**: {{ integration_modules_status }}
+    - [ ] **Data Migration Scripts**: {{ data_migration_status }}
+    - [ ] **Testing Framework**: {{ testing_framework_status }}
+    
+    ### Infrastructure Deliverables
+    - [ ] **Development Environment**: {{ dev_env_status }}
+    - [ ] **Staging Environment**: {{ staging_env_status }}
+    - [ ] **Production Environment**: {{ prod_env_status }}
+    - [ ] **Backup and Recovery Procedures**: {{ backup_procedures_status }}
+    - [ ] **Monitoring Setup**: {{ monitoring_setup_status }}
+    - [ ] **Security Configuration**: {{ security_config_status }}
+    
+    ### Migration Deliverables
+    - [ ] **Data Migration Execution**: {{ data_migration_exec_status }}
+    - [ ] **Data Validation Reports**: {{ data_validation_status }}
+    - [ ] **Performance Testing Results**: {{ performance_testing_status }}
+    - [ ] **Integration Testing Results**: {{ integration_testing_status }}
+    - [ ] **User Acceptance Testing**: {{ uat_status }}
+    - [ ] **Go-Live Execution**: {{ go_live_status }}
+    
+    ## Training and Support Deliverables
+    
+    ### Training Materials
+    - [ ] **User Training Manuals**: {{ training_manuals_status }}
+    - [ ] **Administrator Guides**: {{ admin_guides_status }}
+    - [ ] **Video Tutorials**: {{ video_tutorials_status }}
+    - [ ] **Quick Reference Cards**: {{ quick_refs_status }}
+    - [ ] **FAQ Database**: {{ faq_database_status }}
+    - [ ] **Troubleshooting Guides**: {{ troubleshooting_status }}
+    
+    ### Training Execution
+    - [ ] **End User Training**: {{ end_user_training_status }}
+    - [ ] **Administrator Training**: {{ admin_training_status }}
+    - [ ] **Super User Training**: {{ super_user_training_status }}
+    - [ ] **Training Assessment Results**: {{ training_assessment_status }}
+    - [ ] **Training Feedback Analysis**: {{ training_feedback_status }}
+    - [ ] **Certification (if applicable)**: {{ certification_status }}
+    
+    ## Quality Assurance Deliverables
+    
+    ### Testing Deliverables
+    - [ ] **Test Plan**: {{ test_plan_status }}
+    - [ ] **Test Cases**: {{ test_cases_status }}
+    - [ ] **Test Data**: {{ test_data_status }}
+    - [ ] **Automated Test Scripts**: {{ automated_tests_status }}
+    - [ ] **Test Execution Results**: {{ test_execution_status }}
+    - [ ] **Defect Reports**: {{ defect_reports_status }}
+    
+    ### Documentation Quality
+    - [ ] **Technical Documentation Review**: {{ tech_doc_review_status }}
+    - [ ] **User Documentation Review**: {{ user_doc_review_status }}
+    - [ ] **Code Review Completion**: {{ code_review_status }}
+    - [ ] **Security Review**: {{ security_review_status }}
+    - [ ] **Performance Review**: {{ performance_review_status }}
+    - [ ] **Compliance Review**: {{ compliance_review_status }}
+    
+    ## Project Management Deliverables
+    
+    ### Planning Documents
+    - [ ] **Project Charter**: {{ project_charter_status }}
+    - [ ] **Detailed Project Plan**: {{ project_plan_status }}
+    - [ ] **Resource Allocation Plan**: {{ resource_plan_status }}
+    - [ ] **Risk Management Plan**: {{ risk_mgmt_plan_status }}
+    - [ ] **Communication Plan**: {{ comm_plan_status }}
+    - [ ] **Quality Management Plan**: {{ quality_plan_status }}
+    
+    ### Progress Tracking
+    - [ ] **Weekly Status Reports**: {{ status_reports_status }}
+    - [ ] **Milestone Reports**: {{ milestone_reports_status }}
+    - [ ] **Issue and Risk Logs**: {{ issue_risk_logs_status }}
+    - [ ] **Budget Tracking**: {{ budget_tracking_status }}
+    - [ ] **Resource Utilization Reports**: {{ resource_reports_status }}
+    - [ ] **Stakeholder Communications**: {{ stakeholder_comms_status }}
+    
+    ## Handover and Closure Deliverables
+    
+    ### Knowledge Transfer
+    - [ ] **System Architecture Documentation**: {{ architecture_docs_status }}
+    - [ ] **Operations Manual**: {{ operations_manual_status }}
+    - [ ] **Maintenance Procedures**: {{ maintenance_procedures_status }}
+    - [ ] **Support Procedures**: {{ support_procedures_status }}
+    - [ ] **Knowledge Transfer Sessions**: {{ knowledge_transfer_status }}
+    - [ ] **Skills Assessment**: {{ skills_assessment_status }}
+    
+    ### Project Closure
+    - [ ] **Project Completion Report**: {{ completion_report_status }}
+    - [ ] **Lessons Learned Document**: {{ lessons_learned_status }}
+    - [ ] **Final Budget Report**: {{ final_budget_status }}
+    - [ ] **Customer Acceptance**: {{ customer_acceptance_status }}
+    - [ ] **Warranty Documentation**: {{ warranty_docs_status }}
+    - [ ] **Project Archive**: {{ project_archive_status }}
+    
+    ## Sign-off Requirements
+    
+    ### Technical Sign-offs
+    - [ ] **Technical Architecture Approved**: {{ tech_architecture_signoff }}
+    - [ ] **Code Quality Approved**: {{ code_quality_signoff }}
+    - [ ] **Security Review Passed**: {{ security_signoff }}
+    - [ ] **Performance Benchmarks Met**: {{ performance_signoff }}
+    
+    ### Business Sign-offs
+    - [ ] **User Acceptance Testing Passed**: {{ uat_signoff }}
+    - [ ] **Business Process Validation**: {{ business_process_signoff }}
+    - [ ] **Training Completion Verified**: {{ training_signoff }}
+    - [ ] **Go-Live Readiness Confirmed**: {{ go_live_signoff }}
+    
+    ### Project Sign-offs
+    - [ ] **Project Sponsor Approval**: {{ sponsor_signoff }}
+    - [ ] **Steering Committee Approval**: {{ committee_signoff }}
+    - [ ] **Final Customer Acceptance**: {{ final_customer_signoff }}
+    - [ ] **Project Closure Authorization**: {{ closure_signoff }}
+    
+    ---
+    
+    **Completion Summary**
+    - **Total Deliverables**: {{ total_deliverables }}
+    - **Completed**: {{ completed_deliverables }}
+    - **In Progress**: {{ in_progress_deliverables }}  
+    - **Not Started**: {{ not_started_deliverables }}
+    - **Completion Percentage**: {{ completion_percentage }}%
+    
+    **Project Status**: {{ project_status }}
+    **Next Steps**: {{ next_steps }}
+    
+    ---
+    
+    **Report Prepared By**: {{ report_author }}
+    **Date**: {{ report_date }}
+    **Approved By**: {{ approver_name }}
+    **Approval Date**: {{ approval_date }}
+
+usage_instructions:
+  template_customization: |
+    # Template Usage Instructions
+    
+    ## How to Use These Templates
+    
+    ### Template Variables
+    All templates use Jinja2-style variables ({{ variable_name }}) that should be replaced with actual project data.
+    
+    ### Customization Guidelines
+    1. **Replace Variables**: Update all {{ variable }} placeholders with actual data
+    2. **Remove Unused Sections**: Delete sections not applicable to your project
+    3. **Add Project-Specific Content**: Include any unique requirements or considerations
+    4. **Update Formatting**: Adjust formatting to match organizational standards
+    
+    ### Template Selection Guide
+    - **Executive Summary**: Use for stakeholder presentations and approval requests
+    - **Technical Analysis**: Use for detailed technical documentation and development guidance
+    - **Data Migration Plan**: Use for migration execution and project management
+    - **Training Plan**: Use for change management and user adoption
+    - **Deliverables Checklist**: Use for project tracking and quality assurance
+    
+    ### Quality Assurance
+    - Review all content for accuracy and completeness
+    - Validate technical specifications with development team
+    - Ensure business requirements align with stakeholder expectations
+    - Verify all deliverables are included in project scope
+
+# Complete the todo list
+<function_calls>
+<invoke name="TodoWrite">
+<parameter name="todos">[{"id": "1", "content": "Create Base Structure Analysis Framework with step-by-step templates", "status": "completed"}, {"id": "2", "content": "Develop Field Type Mapping comprehensive documentation and conversion guide", "status": "completed"}, {"id": "3", "content": "Create Relationship Documentation templates and analysis forms", "status": "completed"}, {"id": "4", "content": "Build View Analysis framework for Grid/Kanban/Calendar/Gallery views", "status": "completed"}, {"id": "5", "content": "Design Automation Review templates and conversion strategies", "status": "completed"}, {"id": "6", "content": "Create Formula Analysis framework with ERPNext conversion patterns", "status": "completed"}, {"id": "7", "content": "Develop Data Volume Assessment tools and migration complexity calculator", "status": "completed"}, {"id": "8", "content": "Create Integration Points documentation framework", "status": "completed"}, {"id": "9", "content": "Build comprehensive report templates and deliverable formats", "status": "completed"}]

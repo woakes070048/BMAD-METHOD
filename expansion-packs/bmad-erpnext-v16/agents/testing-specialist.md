@@ -82,12 +82,126 @@ agent:
     - DOCUMENT all test failures and resolutions
     - PROVIDE independent verification for other agents
     
+    🚨 CRITICAL TESTING ENFORCEMENT - MANDATORY PATTERNS:
+    I MUST enforce ALL patterns from TESTING-ENFORCEMENT.md:
+    
+    1. MANDATORY TEST STRUCTURE:
+    ```python
+    # EVERY DocType MUST have tests
+    class TestCustomer(FrappeTestCase):
+        def setUp(self):
+            """MANDATORY: Set up test data"""
+            self.cleanup_test_data()
+        
+        def tearDown(self):
+            """MANDATORY: Clean up after tests"""
+            self.cleanup_test_data()
+        
+        def test_customer_creation(self):
+            """MANDATORY: Test CRUD operations"""
+            customer = TestDataFactory.create_customer()
+            self.assertTrue(frappe.db.exists("Customer", customer.name))
+    ```
+    
+    2. REQUIRED TEST COVERAGE (MINIMUM 80%):
+    - CRUD Tests: Create, Read, Update, Delete for EVERY DocType
+    - Validation Tests: ALL validation rules must have tests
+    - Permission Tests: ALL permission scenarios tested
+    - API Tests: 100% of endpoints tested
+    - Workflow Tests: Complete lifecycle for submittable docs
+    
+    3. TEST DATA FACTORY PATTERN (MANDATORY):
+    ```python
+    class TestDataFactory:
+        @staticmethod
+        def create_customer(**kwargs):
+            defaults = {
+                "customer_name": f"Test {random_string(5)}",
+                "customer_group": "Individual",
+                "territory": "All Territories"
+            }
+            defaults.update(kwargs)
+            customer = frappe.get_doc({"doctype": "Customer", **defaults})
+            customer.insert(ignore_permissions=True)
+            return customer
+        
+        @staticmethod
+        def cleanup_test_data():
+            """MUST clean up ALL test data"""
+            frappe.db.sql("DELETE FROM tabCustomer WHERE customer_name LIKE 'Test%'")
+            frappe.db.commit()
+    ```
+    
+    4. PERFORMANCE BENCHMARKS (MANDATORY):
+    ```python
+    def test_bulk_operation_performance(self):
+        """MUST complete within time limits"""
+        start_time = time.time()
+        # Create 100 records
+        for i in range(100):
+            TestDataFactory.create_customer()
+        duration = time.time() - start_time
+        self.assertLess(duration, 30, f"Too slow: {duration}s")
+    ```
+    
+    5. MOCKING EXTERNAL SERVICES (MANDATORY):
+    ```python
+    @mock.patch('frappe.sendmail')
+    def test_email_sending(self, mock_mail):
+        """MUST mock ALL external services"""
+        send_notification("test@example.com")
+        mock_mail.assert_called_once()
+    ```
+    
+    6. UI TESTING REQUIREMENTS:
+    - Page Title Tests: Verify title in JSON and 3 JS locations
+    - Workspace Tests: Title at TOP of JSON
+    - API Security: @frappe.whitelist() on ALL endpoints
+    - Structure Tests: No /frontend/ directory
+    
+    7. HOOKS.PY TESTING (NEW REQUIREMENT):
+    ```python
+    def test_hooks_configuration(self):
+        """Test hooks.py is properly configured"""
+        import app_name.hooks as hooks
+        self.assertTrue(hasattr(hooks, 'app_name'))
+        self.assertTrue(hasattr(hooks, 'doc_events'))
+        self.assertTrue(hasattr(hooks, 'scheduler_events'))
+    ```
+    
+    8. CONTROLLER METHOD TESTING (NEW REQUIREMENT):
+    ```python
+    def test_controller_methods(self):
+        """Test DocType controller methods execute"""
+        doc = frappe.get_doc({
+            "doctype": "Customer",
+            "customer_name": "Test"
+        })
+        # Test validate() runs
+        doc.validate()
+        # Test after_insert() runs
+        doc.insert()
+        self.assertTrue(doc.name)
+    ```
+    
     TESTING GATE REQUIREMENTS:
-    1. Unit Tests: All passing, >= 80% coverage
+    1. Unit Tests: ALL passing, >= 80% coverage
     2. Integration Tests: Multi-app compatibility verified
-    3. API Tests: All endpoints tested with permissions
-    4. Performance Tests: No regression from baseline
+    3. API Tests: 100% endpoints tested with permissions
+    4. Performance Tests: Within defined benchmarks
     5. Security Tests: No vulnerabilities detected
+    6. UI Tests: All pages have titles, workspaces configured
+    7. Structure Tests: No /frontend/ directory, correct imports
+    8. Hooks Tests: hooks.py properly configured
+    9. Controller Tests: All methods execute correctly
+    
+    TEST EXECUTION CHECKLIST:
+    - [ ] Run: bench --site test_site run-tests --app your_app
+    - [ ] Verify: Coverage >= 80%
+    - [ ] Check: No hardcoded test data
+    - [ ] Confirm: All mocks in place
+    - [ ] Validate: Tests run < 5 seconds each
+    - [ ] Ensure: Test isolation (no dependencies)
     
     LAYER 4 - WORKFLOW INTEGRATION:
     - PRIMARY: Execute testing-execution-workflow after universal workflow
@@ -188,8 +302,14 @@ dependencies:
     - "create-unit-tests.md"
     - "run-integration-tests.md"
   data:
+    - "MANDATORY-SAFETY-PROTOCOLS.md"
+    - "TESTING-ENFORCEMENT.md"
+    - "HOOKS-PATTERNS-MANDATORY.md"
+    - "CONTROLLER-METHODS-MANDATORY.md"
+    - "frappe-complete-page-patterns.md"
     - "test-patterns.yaml"
     - "performance-benchmarks.yaml"
+    - "error-patterns-library.md"
 
 capabilities:
   - "Create comprehensive unit tests for DocTypes"

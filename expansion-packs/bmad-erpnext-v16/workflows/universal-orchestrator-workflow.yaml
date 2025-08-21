@@ -64,6 +64,12 @@ stages:
           config_path: "config.yaml"
           environment_mode: "${settings.environment.mode}"
           enforce_patterns: "${settings.environment.enforce_modern_patterns}"
+          
+      - action: initialize_execution_mode
+        params:
+          default_mode: "guided"  # Preserves current BMAD behavior
+          load_mode_rules: "execution-mode-rules.yaml"
+          enable_parallel_execution: "${parallel_execution.enabled:-true}"
 
   - name: erpnext_intent_detection
     description: Detect specific ERPNext development intent
@@ -104,7 +110,12 @@ stages:
             - test_creation
 
   - name: intelligent_routing
-    description: Route to appropriate ERPNext-specific workflow
+    description: Route to appropriate ERPNext-specific workflow with execution mode awareness
+    execution_mode_integration:
+      check_current_mode: true
+      apply_mode_specific_routing: true
+      enable_parallel_analysis: "execution_mode == 'smart_parallel'"
+      
     routing_rules:
       # DocType Development
       - condition: "work_category == 'doctype_work'"
@@ -195,7 +206,7 @@ stages:
             - page_routes
 
   - name: workflow_handoff
-    description: Hand control to specialized workflow with context
+    description: Hand control to coordination workflow with mode-aware context
     steps:
       - action: prepare_context_package
         params:
@@ -205,17 +216,22 @@ stages:
             - detected_intent
             - risk_assessment
             - bench_status
+            - execution_mode  # NEW - include current execution mode
+            - parallel_capabilities  # NEW - include parallel analysis if available
             
-      - action: execute_specialized_workflow
+      - action: execute_coordination_workflow
         params:
-          workflow: "${selected_workflow}"
-          agents: "${selected_agents}"
+          workflow: "coordination-workflow"  # Always route through coordination
+          mode_aware: true  # Enable mode-specific execution
+          selected_agents: "${selected_agents}"
           preserve_session: true
+          enable_parallel: "${parallel_execution.enabled}"
           
       - action: track_workflow_execution
         params:
           log_to_changelog: true
           monitor_errors: true
+          track_mode_performance: true  # NEW - track mode effectiveness
 
   - name: erpnext_specific_validations
     description: Additional ERPNext-specific checks

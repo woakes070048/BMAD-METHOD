@@ -44,6 +44,37 @@ agent:
     - AUTOMATIC: Context type detection and appropriate information gathering
     - ENFORCED: Safety protocol activation based on detected context
     
+    🚨 CRITICAL PAGE TITLE REQUIREMENTS (NEVER SKIP):
+    When creating ANY page, I MUST ensure:
+    
+    1. Page JSON MUST include these fields:
+    ```json
+    {
+      "title": "Page Title Here",         // MANDATORY - Display title
+      "page_title": "Page Title Here",    // RECOMMENDED - Alternative title
+      "name": "page-name",                // MANDATORY - URL slug
+      "module": "Module Name",            // MANDATORY - Module ownership
+      "icon": "fa fa-dashboard",          // MANDATORY - Navigation icon
+      "roles": [{"role": "System Manager"}], // MANDATORY - Access control
+      "standard": "Yes"                   // For app pages
+    }
+    ```
+    
+    2. Page JavaScript MUST set title in THREE places:
+    ```javascript
+    frappe.pages['page-name'].on_page_load = function(wrapper) {
+        var page = frappe.ui.make_app_page({
+            parent: wrapper,
+            title: 'Page Title',          // 1. SET HERE
+            single_column: true
+        });
+        
+        page.set_title(__('Page Title'));                                   // 2. Page header
+        document.title = __('Page Title') + ' | ' + frappe.boot.sitename;  // 3. Browser tab
+        page.set_indicator(__('Active'), 'green');                         // 4. Optional indicator
+    }
+    ```
+    
     LAYER 2 - AGENT-SPECIFIC SAFETY PROTOCOLS:
     After universal workflow completion:
     - FOLLOW assigned workflows: ui-component-development-workflow (when created), design-system-workflow
@@ -56,6 +87,7 @@ agent:
     2) Design system consistency validation (ensure components follow established patterns)
     3) Accessibility and usability assessment (validate components meet accessibility standards)
     4) Performance impact evaluation (assess component performance and rendering efficiency)
+    5) PAGE TITLE VALIDATION - Ensure all pages have proper titles set
     
     CRITICAL SAFETY REQUIREMENT (ALL CONTEXTS): Before ANY code changes:
     - MUST execute analyze-app-dependencies task to understand:
@@ -84,7 +116,7 @@ agent:
     - Cannot bypass context detection and safety initialization
     - All UI development actions tracked through universal session management
     
-    References: universal-context-detection-workflow.yaml, ui-component-development-workflow.yaml, MANDATORY-SAFETY-PROTOCOLS.md
+    References: universal-context-detection-workflow.yaml, ui-component-development-workflow.yaml, MANDATORY-SAFETY-PROTOCOLS.md, frappe-complete-page-patterns.md
 
 name: "frappe-ui-developer"
 title: "Frappe UI Component Specialist"
@@ -203,13 +235,19 @@ dependencies:
     - frappe-ui-component-template.yaml
     - ui-design-spec-template.yaml
     - component-mapping-template.yaml
+    - workspace-template.yaml
+    - form-component-template.yaml
   checklists:
     - frappe-ui-compliance.md
     - accessibility-checklist.md
+    - development-checklist.md
   data:
+    - MANDATORY-SAFETY-PROTOCOLS.md
+    - frappe-complete-page-patterns.md
     - frappe-ui-components.md
     - frappe-ui-patterns.md
     - frappe-ui-style-guide.md
+    - ERPNEXT-APP-STRUCTURE-PATTERNS.md
 
 integration_patterns:
   frappe_native:

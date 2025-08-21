@@ -4,6 +4,36 @@ template_type: "vue_form_component"
 version: "1.0.0"
 description: "Template for creating reusable Vue 3 form components with native Frappe integration"
 
+# 🚨 CRITICAL: Page Integration Requirements
+page_integration_requirements:
+  mandatory_page_json: |
+    {
+      "title": "Form Page Title",        // MANDATORY - Never skip!
+      "page_title": "Form Page",         // RECOMMENDED
+      "name": "form-page",
+      "module": "Module Name",
+      "icon": "fa fa-edit",              // MANDATORY
+      "roles": [{"role": "System Manager"}]
+    }
+  
+  mandatory_page_setup: |
+    // EVERY form page MUST set title in 3 places:
+    frappe.pages['form-page'].on_page_load = function(wrapper) {
+        var page = frappe.ui.make_app_page({
+            parent: wrapper,
+            title: 'Form Page Title',     // 1. SET HERE
+            single_column: true
+        });
+        
+        page.set_title(__('Form Page Title'));                                  // 2. Page header
+        document.title = __('Form Page Title') + ' | ' + frappe.boot.sitename; // 3. Browser tab
+        
+        // Then mount the Vue form component
+        frappe.require('form.bundle.js').then(() => {
+            new FormComponent(wrapper);
+        });
+    }
+
 # Form component structure
 form_component_structure:
   basic_form: |

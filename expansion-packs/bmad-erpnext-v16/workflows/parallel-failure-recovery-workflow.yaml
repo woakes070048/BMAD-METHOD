@@ -1,0 +1,258 @@
+# Parallel Failure Recovery Workflow
+# Handles quality gate failures during parallel execution
+
+name: parallel-failure-recovery-workflow
+description: Intelligent recovery from quality gate failures during parallel agent execution
+version: 1.0.0
+triggers:
+  - quality_gate_failure_in_parallel_block
+  - agent_execution_failure
+  - dependency_chain_break
+
+agent_assignments:
+  primary: parallel-analyzer
+  support: [development-coordinator]
+  escalation: erpnext-product-owner
+
+stages:
+  # STAGE 1: FAILURE ASSESSMENT
+  - name: failure_assessment
+    description: "Analyze the failure and its impact on parallel execution"
+    mandatory: true
+    
+    substages:
+      - name: identify_failure_context
+        description: "Determine what failed and where"
+        actions:
+          - identify_failed_agent: "Which agent failed quality gates"
+          - identify_failed_gates: "Which specific gates failed"
+          - capture_failure_details: "Error messages and validation results"
+          - determine_execution_block: "Which parallel block contains failure"
+      
+      - name: dependency_impact_analysis
+        description: "Assess impact on other agents"
+        actions:
+          - map_agent_dependencies: "Find agents depending on failed work"
+          - identify_independent_agents: "Find agents that can continue"
+          - calculate_cascade_impact: "Determine full failure impact"
+          - assess_data_integrity: "Check if partial work is valid"
+      
+      - name: recovery_cost_analysis
+        description: "Calculate cost of different recovery options"
+        actions:
+          - rollback_cost: "Time/effort to rollback and restart"
+          - fix_in_place_cost: "Time/effort to fix without stopping"
+          - reassignment_cost: "Time/effort to reassign to another agent"
+          - sequential_conversion_cost: "Time/effort to go sequential"
+    
+    outputs:
+      - failed_agent
+      - failed_gates
+      - dependent_agents
+      - independent_agents
+      - recommended_strategy
+
+  # STAGE 2: RECOVERY STRATEGY SELECTION
+  - name: recovery_strategy_selection
+    description: "Choose optimal recovery strategy based on failure type"
+    
+    decision_tree:
+      - condition: "no_dependent_agents"
+        strategy: "isolate_and_continue"
+        description: "Failed agent works alone, others continue"
+        
+      - condition: "minor_fix_required AND dependent_agents < 3"
+        strategy: "fix_in_place"
+        description: "Quick fix while pausing minimal agents"
+        
+      - condition: "major_fix_required AND dependent_agents >= 3"
+        strategy: "partial_rollback"
+        description: "Rollback affected block only"
+        
+      - condition: "critical_failure OR data_corruption"
+        strategy: "full_rollback"
+        description: "Stop everything and go sequential"
+        
+      - condition: "agent_unavailable"
+        strategy: "reassign_work"
+        description: "Transfer work to another capable agent"
+
+  # STAGE 3: RECOVERY EXECUTION
+  - name: recovery_execution
+    description: "Execute chosen recovery strategy"
+    
+    strategy_implementations:
+      isolate_and_continue:
+        description: "Isolate failure, continue others"
+        steps:
+          - mark_agent_as_failed: "Flag agent work as incomplete"
+          - continue_independent_agents: "Let others proceed"
+          - create_fix_task: "Queue fix for later"
+          - plan_integration: "Plan how to merge fixed work"
+        
+      fix_in_place:
+        description: "Fix immediately with minimal disruption"
+        steps:
+          - pause_dependent_agents: "Hold only affected agents"
+          - assist_failed_agent: "Provide fix guidance"
+          - rerun_quality_gates: "Validate fix"
+          - resume_dependent_agents: "Continue if fixed"
+        
+      partial_rollback:
+        description: "Rollback affected execution block"
+        steps:
+          - stop_affected_block: "Halt agents in failed block"
+          - preserve_independent_work: "Save unaffected work"
+          - rollback_affected_changes: "Undo failed block work"
+          - convert_to_sequential: "Process block sequentially"
+        
+      full_rollback:
+        description: "Complete rollback to sequential"
+        steps:
+          - emergency_stop_all: "Halt all parallel agents"
+          - checkpoint_current_state: "Save current progress"
+          - rollback_all_changes: "Undo all parallel work"
+          - switch_to_sequential_mode: "Process everything serially"
+        
+      reassign_work:
+        description: "Transfer to another agent"
+        steps:
+          - identify_capable_agent: "Find alternative agent"
+          - transfer_context: "Move work context to new agent"
+          - brief_new_agent: "Provide failure context"
+          - monitor_new_execution: "Track reassigned work"
+
+  # STAGE 4: GATE RE-EXECUTION
+  - name: gate_re_execution
+    description: "Re-run quality gates after recovery"
+    
+    substages:
+      - name: prepare_for_retest
+        actions:
+          - verify_fixes_complete: "Ensure all fixes applied"
+          - reset_gate_status: "Clear previous failure flags"
+          - prepare_test_environment: "Setup for re-validation"
+      
+      - name: execute_gates
+        actions:
+          - run_failed_gates: "Re-run only failed gates first"
+          - run_dependent_gates: "Run gates that depend on fixes"
+          - run_integration_gates: "Verify system integration"
+      
+      - name: validate_recovery
+        actions:
+          - verify_all_gates_pass: "Confirm all gates now pass"
+          - check_data_consistency: "Verify data integrity"
+          - validate_agent_handoffs: "Ensure clean handoffs"
+
+  # STAGE 5: EXECUTION RESUMPTION
+  - name: execution_resumption
+    description: "Resume parallel execution after recovery"
+    
+    substages:
+      - name: restore_parallel_state
+        actions:
+          - update_execution_plan: "Adjust plan based on recovery"
+          - recalculate_dependencies: "Update dependency graph"
+          - optimize_remaining_work: "Re-optimize parallel blocks"
+      
+      - name: resume_agents
+        sequence:
+          - resume_independent_first: "Start independent agents"
+          - resume_fixed_agent: "Start recovered agent"
+          - resume_dependent_agents: "Start dependent agents"
+          - monitor_resumption: "Track resume success"
+      
+      - name: continuous_monitoring
+        actions:
+          - track_agent_progress: "Monitor all resumed agents"
+          - watch_for_new_failures: "Early failure detection"
+          - adjust_strategy_if_needed: "Dynamic strategy updates"
+
+  # STAGE 6: RECOVERY DOCUMENTATION
+  - name: recovery_documentation
+    description: "Document failure and recovery for learning"
+    
+    substages:
+      - name: failure_analysis_report
+        actions:
+          - document_root_cause: "What caused the failure"
+          - document_impact: "What was affected"
+          - document_recovery_choice: "Why strategy was chosen"
+      
+      - name: lessons_learned
+        actions:
+          - identify_prevention_measures: "How to prevent recurrence"
+          - update_conflict_rules: "Refine parallel rules"
+          - improve_gate_criteria: "Enhance quality gates"
+      
+      - name: update_knowledge_base
+        actions:
+          - update_parallel_rules: "Refine parallel-conflict-rules.yaml"
+          - update_agent_capabilities: "Note agent limitations"
+          - share_with_coordinator: "Inform development-coordinator"
+
+# RECOVERY DECISION MATRIX
+recovery_decision_matrix:
+  failure_severity:
+    low:
+      impact: "Single agent, no dependencies"
+      strategy: "isolate_and_continue"
+      max_recovery_time: "5 minutes"
+    
+    medium:
+      impact: "2-3 dependent agents"
+      strategy: "fix_in_place or partial_rollback"
+      max_recovery_time: "15 minutes"
+    
+    high:
+      impact: "Multiple blocks affected"
+      strategy: "partial_rollback"
+      max_recovery_time: "30 minutes"
+    
+    critical:
+      impact: "Data integrity compromised"
+      strategy: "full_rollback"
+      max_recovery_time: "No limit - ensure correctness"
+
+# ESCALATION TRIGGERS
+escalation_triggers:
+  - repeated_failure: "Same agent fails 3 times"
+  - cascade_failure: "Failure spreads to 5+ agents"
+  - data_corruption: "Data integrity compromised"
+  - timeout: "Recovery exceeds max time"
+  - manual_intervention_required: "Automated recovery impossible"
+
+# SUCCESS CRITERIA
+success_criteria:
+  - all_quality_gates_pass: true
+  - dependent_agents_resumed: true
+  - no_data_corruption: true
+  - execution_plan_viable: true
+  - performance_acceptable: true
+
+# INTEGRATION POINTS
+integration:
+  coordinates_with:
+    - coordination-workflow
+    - quality-gate-enforcement-workflow
+    - universal-orchestrator-workflow
+  
+  notifies:
+    - development-coordinator
+    - affected_agents
+    - erpnext-product-owner (on escalation)
+
+# METRICS
+metrics:
+  track:
+    - failure_frequency_by_agent
+    - recovery_strategy_success_rate
+    - mean_time_to_recovery
+    - gates_most_likely_to_fail
+    - parallel_block_success_rate
+  
+  optimize_for:
+    - minimal_disruption
+    - fastest_recovery
+    - highest_success_rate

@@ -143,12 +143,55 @@ agent:
     4) Change management strategy (plan for safe implementation and user adoption)
     5) Frappe-first compliance verification (ensure all requirements use Frappe built-in features)
     
+    🚨 CRITICAL QUALITY GATE REQUIREMENTS:
+    As Product Owner, I MUST enforce these quality gates for ALL deliverables:
+    
+    1. PAGE CREATION QUALITY GATES:
+    - ✅ All pages MUST have "title" field in JSON
+    - ✅ All page JavaScript MUST set title in 3 places
+    - ✅ Vue pages MUST call setup_page() before mounting
+    - ✅ Mobile pages MUST include viewport meta tags
+    - ❌ REJECT: Any page missing title field
+    
+    2. WORKSPACE QUALITY GATES:
+    - ✅ All workspaces MUST have "title" field at TOP of JSON
+    - ✅ Icons MUST be valid Frappe icons (NOT FontAwesome)
+    - ✅ Links MUST NOT point to child tables (_ct suffix)
+    - ❌ REJECT: Workspaces without titles or with invalid icons
+    
+    3. API SECURITY GATES:
+    - ✅ ALL API endpoints MUST have @frappe.whitelist()
+    - ✅ Permission checks MUST be first line of API methods
+    - ✅ MUST use frappe.throw() for errors
+    - ❌ REJECT: Any API without whitelist decorator
+    
+    4. STRUCTURE COMPLIANCE GATES:
+    - ✅ NO /frontend/ directory creation allowed
+    - ✅ Vue components MUST be in public/js/
+    - ✅ Child tables MUST use _ct suffix
+    - ✅ Imports MUST use package layer (not triple nesting)
+    - ❌ REJECT: Any violation of 3-layer architecture
+    
+    5. ACCEPTANCE CRITERIA MUST INCLUDE:
+    ```
+    GIVEN a new page is created
+    WHEN the page JSON is reviewed
+    THEN it MUST contain a "title" field
+    AND the JavaScript MUST set title in make_app_page(), set_title(), and document.title
+    
+    GIVEN an API endpoint is created
+    WHEN the code is reviewed
+    THEN it MUST have @frappe.whitelist() decorator
+    AND it MUST check permissions first
+    ```
+    
     CRITICAL ROLE: Guardian of ERPNext Quality & Completeness:
     - Ensure all ERPNext artifacts are comprehensive and consistent
     - Validate technical decisions against ERPNext best practices
     - Maintain Frappe-first development principles
     - Oversee cross-verification of all agent work
     - Enforce Frappe-first requirements in all stories and epics
+    - ENFORCE quality gates on ALL deliverables
     
     LAYER 3 - WORKFLOW INTEGRATION:
     - PRIMARY: Execute product-ownership-workflow after universal workflow
@@ -260,6 +303,11 @@ dependencies:
     - erpnext-story-template.yaml
     - erpnext-epic-template.yaml
     - erpnext-prd-template.yaml
+  data:
+    - MANDATORY-SAFETY-PROTOCOLS.md
+    - frappe-complete-page-patterns.md
+    - ERPNEXT-APP-STRUCTURE-PATTERNS.md
+    - quality-gates-definition.yaml
   checklists:
     - erpnext-po-master-checklist.md
     - erpnext-change-checklist.md

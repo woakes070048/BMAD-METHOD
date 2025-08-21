@@ -1,0 +1,836 @@
+# Airtable Integration Points Analysis Framework
+# Comprehensive guide for analyzing external integrations and API usage
+
+name: "Airtable Integration Points Analysis Framework"
+description: "Complete framework for analyzing Airtable external integrations and planning ERPNext equivalents"
+version: "1.0.0"
+
+# Integration Categories and Analysis
+integration_categories:
+  
+  api_integrations:
+    third_party_apis:
+      description: "External APIs called from Airtable automations or scripts"
+      common_examples:
+        - "Payment processors (Stripe, PayPal)"
+        - "Communication platforms (Slack, Microsoft Teams)"
+        - "Email services (Mailchimp, SendGrid)"
+        - "CRM systems (Salesforce, HubSpot)"
+        - "Accounting software (QuickBooks, Xero)"
+        - "Project management (Asana, Trello)"
+        - "Document storage (Google Drive, Dropbox)"
+        
+      analysis_framework:
+        api_inventory:
+          template: |
+            ## Third-Party API Integration: {{ api_name }}
+            
+            ### Basic Information
+            **Service Provider**: {{ provider_name }}
+            **API Type**: {{ api_type }} (REST/GraphQL/SOAP)
+            **Authentication**: {{ auth_type }}
+            **Current Usage**: {{ usage_description }}
+            
+            ### Technical Details
+            **Endpoints Used**:
+            {% for endpoint in endpoints %}
+            - {{ endpoint.method }} {{ endpoint.url }}
+              Purpose: {{ endpoint.purpose }}
+              Frequency: {{ endpoint.frequency }}
+            {% endfor %}
+            
+            **Data Exchanged**:
+            - **Sent to API**: {{ data_sent }}
+            - **Received from API**: {{ data_received }}
+            - **Data Volume**: {{ data_volume }}
+            
+            ### Business Impact
+            **Business Function**: {{ business_function }}
+            **Criticality**: {{ criticality_level }}
+            **Automation Dependency**: {{ automation_dependency }}
+            **User Impact**: {{ user_impact }}
+            
+            ### ERPNext Integration Strategy
+            **Recommended Approach**: {{ recommended_approach }}
+            **Implementation Complexity**: {{ implementation_complexity }}
+            **Alternative Solutions**: {{ alternatives }}
+            
+            ### Migration Considerations
+            - **API Key Management**: {{ api_key_management }}
+            - **Rate Limiting**: {{ rate_limiting }}
+            - **Error Handling**: {{ error_handling }}
+            - **Data Synchronization**: {{ sync_strategy }}
+            
+    webhook_integrations:
+      description: "Incoming webhooks from external services to Airtable"
+      analysis_areas:
+        webhook_sources:
+          - "Form submissions (Typeform, Google Forms)"
+          - "E-commerce events (Shopify, WooCommerce)" 
+          - "Support tickets (Zendesk, Intercom)"
+          - "Survey responses (SurveyMonkey)"
+          - "Social media mentions"
+          
+        webhook_analysis:
+          template: |
+            ## Webhook Integration: {{ webhook_name }}
+            
+            ### Source Information
+            **Source Service**: {{ source_service }}
+            **Webhook URL**: {{ webhook_url }}
+            **Event Types**: {{ event_types }}
+            **Payload Format**: {{ payload_format }}
+            
+            ### Data Processing
+            **Fields Mapped**: 
+            {% for mapping in field_mappings %}
+            - {{ mapping.source_field }} → {{ mapping.airtable_field }}
+            {% endfor %}
+            
+            **Data Transformations**:
+            {% for transformation in transformations %}
+            - {{ transformation.description }}
+            {% endfor %}
+            
+            **Trigger Actions**:
+            {% for action in trigger_actions %}
+            - {{ action.type }}: {{ action.description }}
+            {% endfor %}
+            
+            ### ERPNext Implementation
+            **ERPNext Webhook Endpoint**: {{ erpnext_endpoint }}
+            **Request Handler**: {{ request_handler }}
+            **Authentication Strategy**: {{ auth_strategy }}
+            
+            ### Implementation Code
+            ```python
+            # ERPNext Webhook Handler
+            @frappe.whitelist(allow_guest=True)
+            def handle_{{ webhook_name }}_webhook():
+                try:
+                    # Parse incoming payload
+                    payload = frappe.local.form_dict
+                    
+                    # Validate webhook signature if required
+                    if not validate_webhook_signature(payload):
+                        frappe.throw("Invalid webhook signature")
+                    
+                    # Process data
+                    {% for processing_step in processing_steps %}
+                    {{ processing_step.code }}
+                    {% endfor %}
+                    
+                    # Create/update records
+                    {{ record_creation_code }}
+                    
+                    return {"status": "success"}
+                    
+                except Exception as e:
+                    frappe.log_error(f"Webhook processing error: {str(e)}")
+                    return {"status": "error", "message": str(e)}
+            ```
+
+  data_synchronization:
+    bidirectional_sync:
+      description: "Two-way data synchronization between Airtable and external systems"
+      common_scenarios:
+        - "CRM contact synchronization"
+        - "Inventory level updates" 
+        - "Project status synchronization"
+        - "Customer information updates"
+        
+      sync_patterns:
+        real_time_sync:
+          description: "Immediate synchronization on data changes"
+          implementation: "Webhook-based triggers"
+          complexity: "High"
+          erpnext_approach: "Real-time event handlers with external API calls"
+          
+        scheduled_sync:
+          description: "Periodic synchronization at regular intervals"
+          implementation: "Scheduled automations or scripts"
+          complexity: "Medium"
+          erpnext_approach: "Scheduled jobs with API integration"
+          
+        batch_sync:
+          description: "Bulk synchronization of data sets"
+          implementation: "Manual or time-triggered bulk operations"
+          complexity: "Medium"
+          erpnext_approach: "Background jobs with batch processing"
+          
+    unidirectional_sync:
+      description: "One-way data flow from or to Airtable"
+      scenarios:
+        outbound_sync:
+          examples: ["Sending order data to fulfillment system", "Updating external dashboards"]
+          erpnext_implementation: "Document event hooks with API calls"
+          
+        inbound_sync:
+          examples: ["Importing product data from suppliers", "Receiving payment confirmations"]
+          erpnext_implementation: "Scheduled import jobs or webhook handlers"
+
+  authentication_and_security:
+    authentication_methods:
+      api_keys:
+        description: "Static API key authentication"
+        security_level: "Medium"
+        erpnext_storage: "System Settings or custom DocType with encryption"
+        best_practices:
+          - "Store keys in encrypted fields"
+          - "Implement key rotation policies"
+          - "Use environment variables in production"
+          - "Audit API key usage"
+          
+      oauth2:
+        description: "OAuth 2.0 token-based authentication"
+        security_level: "High"
+        erpnext_implementation: "Custom OAuth integration module"
+        considerations:
+          - "Token refresh handling"
+          - "Secure token storage"
+          - "User consent management"
+          - "Scope management"
+          
+      webhook_signatures:
+        description: "HMAC signatures for webhook verification"
+        security_level: "High"
+        implementation: |
+          import hmac
+          import hashlib
+          
+          def validate_webhook_signature(payload, signature, secret):
+              expected_signature = hmac.new(
+                  secret.encode('utf-8'),
+                  payload.encode('utf-8'),
+                  hashlib.sha256
+              ).hexdigest()
+              return hmac.compare_digest(signature, expected_signature)
+
+  data_flow_patterns:
+    event_driven:
+      description: "Integrations triggered by specific events or changes"
+      trigger_types:
+        - "Record creation/update/deletion"
+        - "Field value changes"
+        - "Status transitions"
+        - "Time-based events"
+        
+      erpnext_implementation:
+        document_events: "Use DocType hooks for record-level events"
+        field_changes: "Server scripts to detect field changes"
+        workflows: "Workflow state transitions for status changes"
+        scheduled: "Scheduled jobs for time-based events"
+        
+    request_response:
+      description: "Synchronous API calls for immediate data exchange"
+      use_cases:
+        - "Real-time validation"
+        - "Address lookup services"
+        - "Payment processing"
+        - "Inventory checks"
+        
+      implementation_pattern: |
+        def make_api_request(endpoint, data, headers=None):
+            """
+            Standard API request pattern with error handling
+            """
+            import requests
+            import json
+            
+            try:
+                response = requests.post(
+                    endpoint,
+                    json=data,
+                    headers=headers or {},
+                    timeout=30
+                )
+                
+                response.raise_for_status()
+                return {
+                    "success": True,
+                    "data": response.json()
+                }
+                
+            except requests.exceptions.Timeout:
+                return {
+                    "success": False,
+                    "error": "Request timeout"
+                }
+            except requests.exceptions.RequestException as e:
+                return {
+                    "success": False,
+                    "error": str(e)
+                }
+
+# Integration Discovery and Analysis Workflow
+discovery_workflow:
+  
+  integration_inventory:
+    step_1_identification:
+      description: "Identify all external integrations in the Airtable base"
+      discovery_methods:
+        automation_review: "Review all automations for external API calls"
+        script_analysis: "Analyze custom scripts for integration code"
+        webhook_audit: "Identify all webhook configurations"
+        extension_inventory: "List all installed Airtable extensions"
+        
+      inventory_template: |
+        # Integration Inventory for {{ base_name }}
+        
+        ## API Integrations
+        | Integration | Type | Purpose | Frequency | Criticality |
+        |-------------|------|---------|-----------|-------------|
+        {% for integration in api_integrations %}
+        | {{ integration.name }} | {{ integration.type }} | {{ integration.purpose }} | {{ integration.frequency }} | {{ integration.criticality }} |
+        {% endfor %}
+        
+        ## Webhook Endpoints
+        | Source | Endpoint | Events | Processing |
+        |--------|----------|---------|------------|
+        {% for webhook in webhooks %}
+        | {{ webhook.source }} | {{ webhook.endpoint }} | {{ webhook.events }} | {{ webhook.processing }} |
+        {% endfor %}
+        
+        ## Data Synchronization
+        | System | Direction | Method | Frequency |
+        |--------|-----------|---------|-----------|
+        {% for sync in sync_integrations %}
+        | {{ sync.system }} | {{ sync.direction }} | {{ sync.method }} | {{ sync.frequency }} |
+        {% endfor %}
+        
+        ## Extensions and Add-ons
+        | Extension | Purpose | Impact on Migration |
+        |-----------|---------|-------------------|
+        {% for extension in extensions %}
+        | {{ extension.name }} | {{ extension.purpose }} | {{ extension.impact }} |
+        {% endfor %}
+        
+    step_2_detailed_analysis:
+      description: "Analyze each integration in detail"
+      analysis_areas:
+        technical_specifications:
+          - "API documentation and endpoints used"
+          - "Authentication methods and credentials"
+          - "Data formats and transformation requirements"
+          - "Error handling and retry mechanisms"
+          
+        business_impact:
+          - "Business processes dependent on integration"
+          - "Data criticality and timeliness requirements"
+          - "User workflows affected"
+          - "Compliance and audit requirements"
+          
+        migration_complexity:
+          - "ERPNext equivalent capabilities"
+          - "Custom development requirements"
+          - "Third-party modules availability"
+          - "Integration testing needs"
+
+  integration_mapping:
+    airtable_to_erpnext_mapping:
+      template: |
+        # Integration Mapping: {{ integration_name }}
+        
+        ## Current Airtable Implementation
+        **Integration Type**: {{ current_type }}
+        **Implementation Method**: {{ current_method }}
+        **Data Flow**: {{ current_data_flow }}
+        **Frequency**: {{ current_frequency }}
+        
+        ### Current Configuration
+        ```yaml
+        airtable_config:
+          api_endpoint: "{{ api_endpoint }}"
+          authentication: "{{ auth_method }}"
+          data_mapping:
+            {% for mapping in current_mappings %}
+            - source: "{{ mapping.source }}"
+              target: "{{ mapping.target }}"
+              transformation: "{{ mapping.transformation }}"
+            {% endfor %}
+          error_handling: "{{ error_handling }}"
+        ```
+        
+        ## Proposed ERPNext Implementation
+        **Implementation Approach**: {{ erpnext_approach }}
+        **Technical Method**: {{ erpnext_method }}
+        **Development Complexity**: {{ development_complexity }}
+        
+        ### ERPNext Configuration
+        ```python
+        # ERPNext Implementation
+        class {{ integration_class }}:
+            def __init__(self):
+                self.api_endpoint = "{{ api_endpoint }}"
+                self.credentials = self.get_credentials()
+                
+            def sync_data(self, data):
+                """
+                Sync data with external system
+                """
+                try:
+                    # Data transformation
+                    transformed_data = self.transform_data(data)
+                    
+                    # API call
+                    response = self.make_api_call(transformed_data)
+                    
+                    # Handle response
+                    return self.process_response(response)
+                    
+                except Exception as e:
+                    frappe.log_error(f"Integration error: {str(e)}")
+                    return {"success": False, "error": str(e)}
+        ```
+        
+        ## Migration Strategy
+        **Migration Approach**: {{ migration_approach }}
+        **Testing Strategy**: {{ testing_strategy }}
+        **Rollback Plan**: {{ rollback_plan }}
+        **Go-Live Plan**: {{ go_live_plan }}
+        
+        ### Migration Steps
+        1. {{ migration_step_1 }}
+        2. {{ migration_step_2 }}
+        3. {{ migration_step_3 }}
+        4. {{ migration_step_4 }}
+        
+        ### Validation Criteria
+        - {{ validation_criterion_1 }}
+        - {{ validation_criterion_2 }}
+        - {{ validation_criterion_3 }}
+
+# ERPNext Integration Implementation Patterns
+implementation_patterns:
+  
+  server_script_integrations:
+    pattern_description: "Using ERPNext Server Scripts for simple integrations"
+    use_cases:
+      - "Webhook handlers"
+      - "Simple API calls on document events"
+      - "Data transformations"
+      
+    implementation_template: |
+      # Server Script: {{ integration_name }}
+      # Event: {{ trigger_event }}
+      # DocType: {{ doctype_name }}
+      
+      import requests
+      import json
+      
+      def handle_integration():
+          """
+          Handle external integration
+          """
+          try:
+              # Prepare data
+              integration_data = {
+                  {% for field in data_fields %}
+                  "{{ field.external_name }}": doc.get("{{ field.internal_name }}"),
+                  {% endfor %}
+              }
+              
+              # Make API call
+              headers = {
+                  "Authorization": f"Bearer {get_api_token()}",
+                  "Content-Type": "application/json"
+              }
+              
+              response = requests.post(
+                  "{{ api_endpoint }}",
+                  json=integration_data,
+                  headers=headers,
+                  timeout=30
+              )
+              
+              if response.status_code == 200:
+                  # Handle success
+                  result = response.json()
+                  doc.db_set("{{ status_field }}", "Synced")
+                  frappe.db.commit()
+              else:
+                  # Handle error
+                  frappe.log_error(
+                      message=f"Integration failed: {response.text}",
+                      title="{{ integration_name }} Error"
+                  )
+                  
+          except Exception as e:
+              frappe.log_error(
+                  message=f"Integration error: {str(e)}",
+                  title="{{ integration_name }} Exception"
+              )
+      
+      # Execute integration
+      handle_integration()
+      
+  custom_app_integrations:
+    pattern_description: "Custom Frappe/ERPNext app for complex integrations"
+    use_cases:
+      - "Complex OAuth flows"
+      - "Multiple related integrations"
+      - "Custom user interfaces"
+      - "Advanced error handling and retry logic"
+      
+    app_structure: |
+      {{ app_name }}/
+      ├── {{ app_name }}/
+      │   ├── __init__.py
+      │   ├── hooks.py
+      │   ├── modules.txt
+      │   ├── integrations/
+      │   │   ├── __init__.py
+      │   │   ├── doctype/
+      │   │   │   ├── integration_log/
+      │   │   │   └── api_credentials/
+      │   │   └── api_client.py
+      │   └── public/
+      └── setup.py
+      
+    implementation_example: |
+      # integrations/api_client.py
+      
+      class {{ integration_class }}APIClient:
+          def __init__(self, credentials=None):
+              self.credentials = credentials or self.get_credentials()
+              self.base_url = "{{ api_base_url }}"
+              
+          def get_credentials(self):
+              """Get API credentials from settings"""
+              settings = frappe.get_single("{{ integration_name }} Settings")
+              return {
+                  "api_key": settings.api_key,
+                  "secret": settings.api_secret
+              }
+              
+          def make_request(self, method, endpoint, data=None, params=None):
+              """Make authenticated API request"""
+              import requests
+              
+              url = f"{self.base_url}/{endpoint}"
+              headers = self.get_auth_headers()
+              
+              try:
+                  response = requests.request(
+                      method=method,
+                      url=url,
+                      json=data,
+                      params=params,
+                      headers=headers,
+                      timeout=30
+                  )
+                  
+                  # Log request/response
+                  self.log_request(method, url, data, response)
+                  
+                  response.raise_for_status()
+                  return response.json()
+                  
+              except requests.exceptions.RequestException as e:
+                  self.log_error(str(e))
+                  raise
+                  
+          def sync_{{ entity_name }}(self, doc):
+              """Sync specific entity with external system"""
+              try:
+                  # Transform data
+                  payload = self.transform_{{ entity_name }}(doc)
+                  
+                  # Make API call
+                  result = self.make_request("POST", "{{ entity_endpoint }}", payload)
+                  
+                  # Update document with external ID
+                  doc.db_set("external_id", result.get("id"))
+                  doc.db_set("sync_status", "Synced")
+                  
+                  return True
+                  
+              except Exception as e:
+                  doc.db_set("sync_status", "Failed")
+                  doc.db_set("sync_error", str(e))
+                  return False
+                  
+          def log_request(self, method, url, data, response):
+              """Log API request for debugging"""
+              frappe.get_doc({
+                  "doctype": "Integration Log",
+                  "integration_type": "{{ integration_name }}",
+                  "method": method,
+                  "url": url,
+                  "request_data": json.dumps(data) if data else "",
+                  "response_code": response.status_code,
+                  "response_data": response.text[:1000],  # Truncate long responses
+                  "timestamp": frappe.utils.now()
+              }).insert(ignore_permissions=True)
+
+  webhook_handlers:
+    pattern_description: "Handling incoming webhooks from external systems"
+    implementation_template: |
+      # Webhook Handler
+      
+      @frappe.whitelist(allow_guest=True)
+      def {{ webhook_name }}_handler():
+          """
+          Handle incoming webhook from {{ external_system }}
+          """
+          try:
+              # Get request data
+              if frappe.request.method != "POST":
+                  frappe.throw("Only POST requests allowed")
+                  
+              payload = frappe.local.form_dict
+              headers = frappe.local.request.headers
+              
+              # Validate webhook signature
+              if not validate_webhook_signature(payload, headers):
+                  frappe.throw("Invalid webhook signature", frappe.AuthenticationError)
+                  
+              # Process webhook data
+              event_type = payload.get("event_type")
+              event_data = payload.get("data", {})
+              
+              if event_type == "{{ event_type_1 }}":
+                  handle_{{ event_type_1 }}(event_data)
+              elif event_type == "{{ event_type_2 }}":
+                  handle_{{ event_type_2 }}(event_data)
+              else:
+                  frappe.log_error(f"Unknown event type: {event_type}")
+                  
+              return {"status": "success", "message": "Webhook processed"}
+              
+          except Exception as e:
+              frappe.log_error(
+                  message=f"Webhook processing error: {str(e)}",
+                  title="{{ webhook_name }} Error"
+              )
+              return {"status": "error", "message": "Processing failed"}
+              
+      def validate_webhook_signature(payload, headers):
+          """Validate webhook signature for security"""
+          signature = headers.get("X-{{ external_system }}-Signature")
+          if not signature:
+              return False
+              
+          secret = frappe.get_conf().get("{{ webhook_secret_key }}")
+          expected_signature = generate_signature(payload, secret)
+          
+          return hmac.compare_digest(signature, expected_signature)
+          
+      def handle_{{ event_type_1 }}(data):
+          """Handle specific event type"""
+          # Event-specific processing logic
+          {{ event_processing_code }}
+
+# Migration Strategy and Planning
+migration_strategy:
+  
+  integration_migration_phases:
+    phase_1_assessment:
+      description: "Complete integration discovery and analysis"
+      deliverables:
+        - "Integration inventory"
+        - "Technical specifications for each integration"
+        - "Business impact assessment"
+        - "ERPNext implementation strategy"
+        
+    phase_2_development:
+      description: "Develop ERPNext integration solutions"
+      activities:
+        - "Custom app development (if needed)"
+        - "Server script implementation"
+        - "Webhook handler creation"
+        - "Authentication setup"
+        
+    phase_3_testing:
+      description: "Test all integrations thoroughly"
+      testing_areas:
+        - "Functional testing of each integration"
+        - "Error handling and recovery testing"
+        - "Performance and load testing"
+        - "Security testing"
+        
+    phase_4_deployment:
+      description: "Deploy and cutover integrations"
+      deployment_strategy:
+        - "Staged deployment by integration criticality"
+        - "Parallel running where possible"
+        - "Monitoring and alerting setup"
+        - "Documentation and training"
+
+  risk_mitigation:
+    common_risks:
+      integration_downtime:
+        risk: "Loss of integration functionality during migration"
+        mitigation: "Implement parallel running and gradual cutover"
+        contingency: "Rollback procedures and manual processes"
+        
+      data_sync_issues:
+        risk: "Data inconsistency between systems during migration"
+        mitigation: "Comprehensive testing and validation procedures"
+        contingency: "Data reconciliation scripts and procedures"
+        
+      authentication_failures:
+        risk: "Loss of API access due to credential migration issues"
+        mitigation: "Test credentials thoroughly before cutover"
+        contingency: "Backup credential storage and recovery procedures"
+        
+      performance_degradation:
+        risk: "Slower integration performance in ERPNext"
+        mitigation: "Performance testing and optimization"
+        contingency: "Fallback to external integration services if needed"
+
+# Quality Assurance and Testing
+testing_framework:
+  
+  integration_testing:
+    functional_testing:
+      test_areas:
+        - "Data transformation accuracy"
+        - "API call success rates"
+        - "Error handling behavior"
+        - "Authentication mechanisms"
+        
+      test_template: |
+        # Integration Test: {{ integration_name }}
+        
+        def test_{{ integration_name }}_sync():
+            """Test {{ integration_name }} data synchronization"""
+            
+            # Setup test data
+            test_doc = create_test_document()
+            
+            # Execute integration
+            result = sync_with_{{ external_system }}(test_doc)
+            
+            # Verify results
+            assert result["success"] == True
+            assert test_doc.external_id is not None
+            assert test_doc.sync_status == "Synced"
+            
+        def test_{{ integration_name }}_error_handling():
+            """Test error handling in {{ integration_name }}"""
+            
+            # Setup test scenario with invalid data
+            invalid_doc = create_invalid_test_document()
+            
+            # Execute integration (should fail gracefully)
+            result = sync_with_{{ external_system }}(invalid_doc)
+            
+            # Verify error handling
+            assert result["success"] == False
+            assert invalid_doc.sync_status == "Failed"
+            assert invalid_doc.sync_error is not None
+            
+    performance_testing:
+      metrics:
+        - "Integration response time"
+        - "Throughput (records per minute)"
+        - "Error rate under load"
+        - "Resource utilization"
+        
+      performance_benchmarks:
+        response_time: "< 5 seconds for standard API calls"
+        batch_processing: "> 100 records per minute"
+        error_rate: "< 1% under normal load"
+        availability: "> 99.5% uptime"
+
+# Success Criteria and Monitoring
+success_criteria:
+  
+  migration_success_metrics:
+    functionality: "100% of critical integrations working correctly"
+    data_integrity: "No data loss or corruption in integrated systems"
+    performance: "Integration performance within acceptable parameters"
+    reliability: "> 99% success rate for integration operations"
+    
+  ongoing_monitoring:
+    monitoring_areas:
+      - "Integration success/failure rates"
+      - "API response times"
+      - "Error logs and patterns"
+      - "Data synchronization accuracy"
+      
+    alerting_setup:
+      critical_alerts:
+        - "Integration failures > 5% error rate"
+        - "API response time > 10 seconds"
+        - "Authentication failures"
+        - "Data synchronization delays > 1 hour"
+        
+    monitoring_dashboard:
+      metrics_displayed:
+        - "Integration health status"
+        - "Recent error counts by integration"
+        - "Average response times"
+        - "Data sync lag indicators"
+
+# Documentation Templates
+documentation_templates:
+  
+  integration_specification:
+    template: |
+      # Integration Specification: {{ integration_name }}
+      
+      ## Overview
+      **External System**: {{ external_system }}
+      **Integration Type**: {{ integration_type }}
+      **Business Purpose**: {{ business_purpose }}
+      **Criticality**: {{ criticality_level }}
+      
+      ## Technical Details
+      **API Endpoint**: {{ api_endpoint }}
+      **Authentication**: {{ authentication_method }}
+      **Data Format**: {{ data_format }}
+      **Frequency**: {{ sync_frequency }}
+      
+      ## Data Mapping
+      | ERPNext Field | External Field | Transformation |
+      |---------------|----------------|----------------|
+      {% for mapping in field_mappings %}
+      | {{ mapping.erpnext_field }} | {{ mapping.external_field }} | {{ mapping.transformation }} |
+      {% endfor %}
+      
+      ## Implementation
+      **Method**: {{ implementation_method }}
+      **Code Location**: {{ code_location }}
+      **Dependencies**: {{ dependencies }}
+      
+      ## Error Handling
+      **Error Scenarios**: {{ error_scenarios }}
+      **Retry Logic**: {{ retry_logic }}
+      **Fallback Procedures**: {{ fallback_procedures }}
+      
+      ## Testing
+      **Test Cases**: {{ test_cases }}
+      **Performance Benchmarks**: {{ performance_benchmarks }}
+      **Monitoring Requirements**: {{ monitoring_requirements }}
+      
+  integration_runbook:
+    template: |
+      # Integration Runbook: {{ integration_name }}
+      
+      ## Quick Reference
+      **Status Check**: {{ status_check_procedure }}
+      **Common Issues**: {{ common_issues }}
+      **Emergency Contacts**: {{ emergency_contacts }}
+      
+      ## Troubleshooting
+      ### Issue: {{ common_issue_1 }}
+      **Symptoms**: {{ symptoms_1 }}
+      **Diagnosis**: {{ diagnosis_1 }}
+      **Resolution**: {{ resolution_1 }}
+      
+      ### Issue: {{ common_issue_2 }}
+      **Symptoms**: {{ symptoms_2 }}
+      **Diagnosis**: {{ diagnosis_2 }}
+      **Resolution**: {{ resolution_2 }}
+      
+      ## Monitoring and Alerts
+      **Key Metrics**: {{ key_metrics }}
+      **Alert Thresholds**: {{ alert_thresholds }}
+      **Dashboard Location**: {{ dashboard_url }}
+      
+      ## Maintenance Procedures
+      **Regular Tasks**: {{ maintenance_tasks }}
+      **Credential Rotation**: {{ credential_rotation }}
+      **Performance Optimization**: {{ optimization_procedures }}

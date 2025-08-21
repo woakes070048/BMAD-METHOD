@@ -58,9 +58,63 @@ stages:
     decision_gate:
       condition: "context_gathered AND appropriate_info_collected"
       fail_action: "RETURN_TO_CONTEXT_GATHERING"
-      success_action: "PROCEED_TO_ANALYSIS"
+      success_action: "PROCEED_TO_MODE_SELECTION"
 
-  # STAGE 2: MANDATORY AGENT ANALYSIS (Cannot Skip)
+  # STAGE 2: EXECUTION MODE SELECTION (Cannot Skip)
+  - name: execution_mode_selection
+    description: "Determine optimal execution mode for the work"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: analyze_work_characteristics
+        description: "Analyze work to determine best execution mode"
+        actions:
+          - count_stories: "Determine number of stories/tasks to execute"
+          - analyze_complexity: "Assess complexity level of work"
+          - check_dependencies: "Map dependencies between stories"
+          - assess_risk_level: "Evaluate risk level of changes"
+          - check_user_preference: "Consider user mode preference"
+      
+      - name: mode_recommendation
+        description: "Recommend execution mode based on analysis"
+        decision_logic:
+          single_story:
+            condition: "story_count == 1"
+            recommended_mode: "guided"
+            reason: "Single story benefits from careful attention"
+          
+          multiple_simple:
+            condition: "story_count > 1 AND complexity == 'low' AND dependencies < 30%"
+            recommended_mode: "sequential"
+            reason: "Multiple simple stories can be automated"
+          
+          large_independent:
+            condition: "story_count > 3 AND dependencies < 30% AND risk_level != 'high'"
+            recommended_mode: "smart_parallel"
+            reason: "Independent work benefits from parallelization"
+          
+          high_risk:
+            condition: "risk_level == 'high'"
+            recommended_mode: "guided"
+            reason: "High-risk work requires careful supervision"
+      
+      - name: mode_confirmation
+        description: "Confirm execution mode with user"
+        actions:
+          - present_recommendation: "Show recommended mode with reasoning"
+          - allow_override: "User can override recommendation"
+          - set_execution_mode: "Finalize mode for this session"
+          - log_mode_choice: "Record mode selection reasoning"
+          - update_github_context: "Update execution mode in GitHub context"
+          - sync_mode_selection: "Post mode selection to GitHub if enabled"
+
+    decision_gate:
+      condition: "execution_mode_selected"
+      fail_action: "RETURN_TO_MODE_ANALYSIS"
+      success_action: "PROCEED_TO_AGENT_ANALYSIS"
+
+  # STAGE 3: MANDATORY AGENT ANALYSIS (Cannot Skip)
   - name: agent_analysis
     description: "Analyze available agents and coordination requirements"
     mandatory: true
@@ -119,8 +173,40 @@ stages:
           - design_workflows: "create agent coordination workflows"
           - plan_handoffs: "design information transfer between agents"
       
+      - name: parallel_execution_analysis
+        description: "Analyze if work can be parallelized (for smart_parallel mode)"
+        conditional: "execution_mode == 'smart_parallel'"
+        actions:
+          - engage_parallel_analyzer: "Use parallel-analyzer agent"
+          - map_file_targets: "Identify which files each agent will modify"
+          - detect_conflicts: "Check for file or dependency conflicts"
+          - create_execution_blocks: "Group non-conflicting work"
+          - plan_failure_recovery: "Prepare parallel failure strategies"
+      
       - name: coordination_strategy_design
-        description: "Design overall coordination approach"
+        description: "Design overall coordination approach based on mode"
+        mode_specific_planning:
+          guided:
+            approach: "interactive_step_by_step"
+            strategy:
+              - plan_interactive_approvals: "Plan user approval points"
+              - design_detailed_feedback: "Plan progress reporting"
+              - prepare_learning_opportunities: "Prepare educational moments"
+          
+          sequential:
+            approach: "automated_sequential"
+            strategy:
+              - plan_story_queue: "Order stories for sequential processing"
+              - design_automatic_handoffs: "Plan agent-to-agent transitions"
+              - prepare_batch_reporting: "Plan progress summaries"
+          
+          smart_parallel:
+            approach: "intelligent_parallel_with_fallback"
+            strategy:
+              - implement_parallel_blocks: "Execute parallel execution plan"
+              - design_conflict_monitoring: "Monitor for runtime conflicts"
+              - prepare_failure_recovery: "Ready fallback strategies"
+        
         context_branches:
           TROUBLESHOOTING:
             - plan_fixes: "coordination repair strategy and conflict resolution"
@@ -167,20 +253,55 @@ stages:
           - load_quality_gates: "initialize quality-gates-definition.yaml"
           - prepare_gate_checklist: "setup quality-gate-checklist.md tracking"
       
-      - name: coordination_execution_with_gates
-        description: "Execute planned agent coordination with quality gates"
-        safety_checks:
-          - one_handoff_at_time: true
-          - validate_each_handoff: true
-          - quality_gates_before_handoff: true
-          - document_coordination: true
+      - name: mode_specific_execution
+        description: "Execute coordination using selected mode"
+        mode_branches:
+          guided:
+            description: "Interactive execution with user approval at each step"
+            execution_pattern:
+              - present_next_step: "Show user what agent will do"
+              - request_approval: "Get user approval before proceeding"
+              - execute_single_agent: "Run one agent at a time"
+              - show_results: "Display agent results for review"
+              - run_quality_gates: "Execute quality gates with user review"
+              - get_next_approval: "Request approval for next step"
+            
+          sequential:
+            description: "Automated sequential execution of multiple stories"
+            execution_pattern:
+              - load_story_queue: "Load all stories to process"
+              - show_execution_plan: "Display planned sequence to user"
+              - get_initial_approval: "Get approval to start batch"
+              - process_stories_sequentially: "Execute stories one by one"
+              - run_quality_gates_automatic: "Run gates with auto-retry"
+              - report_batch_progress: "Periodic progress updates"
+              - handle_failures_automatically: "Auto-retry then escalate"
+            
+          smart_parallel:
+            description: "Intelligent parallel execution with conflict detection"
+            execution_pattern:
+              - execute_parallel_blocks: "Run execution blocks in parallel"
+              - monitor_parallel_progress: "Track all parallel agents"
+              - detect_runtime_conflicts: "Watch for unexpected conflicts"
+              - run_quality_gates_per_block: "Gates after each parallel block"
+              - handle_parallel_failures: "Execute parallel-failure-recovery-workflow"
+              - consolidate_parallel_results: "Merge parallel work"
         
-        actions:
-          - initiate_agent_assignments: "start assigned agents on their tasks"
-          - monitor_coordination: "track agent progress and coordination"
-          - enforce_quality_gates: "run quality-gate-enforcement-workflow before handoffs"
-          - manage_handoffs: "facilitate information transfer ONLY after gates pass"
-          - handle_conflicts: "resolve agent conflicts and coordination issues"
+        safety_checks:
+          guided:
+            - user_approval_required: true
+            - detailed_progress_tracking: true
+            - immediate_failure_escalation: true
+          
+          sequential:
+            - automatic_retry_on_failure: true
+            - batch_progress_monitoring: true
+            - escalation_after_3_failures: true
+          
+          smart_parallel:
+            - parallel_conflict_monitoring: true
+            - intelligent_failure_recovery: true
+            - dynamic_strategy_adjustment: true
         
         quality_gate_process:
           before_handoff:
@@ -188,17 +309,21 @@ stages:
             - validate_structure: "Eva Thorne compliance check"
             - run_tests: "testing-specialist verification"
             - check_documentation: "verify docs updated"
+            - report_to_github: "report-quality-gate-to-github.md for each gate"
           
           handoff_criteria:
             - all_gates_passed: true
             - tests_passing: true
             - structure_compliant: true
             - documentation_complete: true
+            - github_sync_successful: true
           
           failure_handling:
             - block_handoff: "prevent handoff if gates fail"
             - return_to_agent: "send work back with specific issues"
             - document_failures: "log gate failures in changelog"
+            - report_github_failure: "report-quality-gate-to-github.md with failure details"
+            - trigger_mode_specific_recovery: "execute mode-appropriate recovery strategy"
       
       - name: coordination_monitoring
         description: "Monitor ongoing coordination effectiveness"

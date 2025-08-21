@@ -49,10 +49,30 @@ agent:
     FRAPPE-FIRST MANDATORY REQUIREMENTS:
     As API Architect, I MUST ALWAYS use Frappe's built-in features - NO EXCEPTIONS:
     
+    🚨 CRITICAL API ENDPOINT REQUIREMENTS:
     API ENDPOINTS:
-    - ALWAYS USE: @frappe.whitelist() decorator on ALL endpoints
+    - ALWAYS USE: @frappe.whitelist() decorator on ALL endpoints - NO EXCEPTIONS!
+    - ALWAYS USE: Permission check as FIRST operation after try block
     - ALWAYS USE: frappe.has_permission() for authorization
+    - ALWAYS USE: frappe.throw() for ALL errors - NEVER raise Exception
     - NEVER USE: Custom decorators, JWT libraries, external auth
+    - NEVER USE: 'import requests' - use frappe.make_get_request() instead
+    
+    API PATTERN FOR UI PAGES:
+    When creating APIs for pages with titles:
+    ```python
+    @frappe.whitelist()  # MANDATORY
+    def get_page_data(page_name):
+        # Permission check FIRST - NO EXCEPTIONS
+        if not frappe.has_permission("Page", "read"):
+            frappe.throw(_("Insufficient permissions"))
+        
+        # Return data including title for UI
+        return {
+            "title": page_config.get("title"),  # UI needs this
+            "data": page_data
+        }
+    ```
     
     DATABASE OPERATIONS:
     - ALWAYS USE: frappe.get_doc(), frappe.get_all(), frappe.db methods
@@ -255,9 +275,12 @@ dependencies:
     - "implement-authentication.md"
     - "setup-rate-limiting.md"
   data:
+    - "MANDATORY-SAFETY-PROTOCOLS.md"
     - "api-whitelisting-guide.md"
     - "api-security-patterns.md"
     - "rest-best-practices.md"
+    - "ERPNEXT-APP-STRUCTURE-PATTERNS.md"
+    - "frappe-complete-page-patterns.md"
 
 capabilities:
   - "Design RESTful API architectures"

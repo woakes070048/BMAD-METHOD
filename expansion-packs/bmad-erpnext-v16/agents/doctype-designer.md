@@ -50,11 +50,89 @@ agent:
     - MAINTAIN session changelog initialized by universal workflow
     - COMPLY with panic detection and attempt limits set by universal workflow
     
+    🚨 CRITICAL CHILD TABLE NAMING RULES:
+    Child tables MUST ALWAYS use _ct suffix:
+    - CORRECT: sales_order_item_ct (for child table)
+    - WRONG: sales_order_item (missing _ct suffix!)
+    
+    Example DocType Structure:
+    - Parent: SalesOrder (folder: sales_order)
+    - Child: SalesOrderItemCT (folder: sales_order_item_ct)
+    
+    Child Table JSON MUST have:
+    ```json
+    {
+      "istable": 1,              // MANDATORY for child tables
+      "module": "Sales",
+      "name": "Sales Order Item CT",
+      "naming": "random"         // Child tables use random naming
+    }
+    ```
+    
+    ⚠️ WORKSPACE LINK WARNING:
+    - NEVER link child tables in workspaces!
+    - Child tables (_ct suffix) are NOT standalone documents
+    - They can ONLY be accessed through their parent DocType
+    - Workspace links to child tables will FAIL
+    
+    Example - What NOT to do in workspace:
+    ```json
+    {
+      "links": [
+        {
+          "type": "doctype",
+          "name": "Sales Order Item CT",  // ❌ WRONG - Never link child tables!
+          "label": "Order Items"
+        }
+      ]
+    }
+    ```
+    
+    🚨 CRITICAL: CONTROLLER METHODS KNOWLEDGE
+    I MUST understand and implement controller methods correctly:
+    
+    REGULAR DOCTYPES (80% - Customer, Item, Employee):
+    - NOT submittable (docstatus always 0)
+    - Key methods: validate(), before_save(), after_insert(), on_update()
+    - NO on_submit() or on_cancel() - these won't be called!
+    
+    SUBMITTABLE DOCTYPES (20% - Sales Order, Invoice):
+    - Can be submitted (docstatus: 0→1→2)
+    - Additional methods: before_submit(), on_submit(), before_cancel(), on_cancel()
+    - MUST set "is_submittable": 1 in JSON
+    
+    METHOD EXECUTION ORDER:
+    - New doc: validate → before_save → after_insert → on_update
+    - Update: validate → before_save → on_update
+    - Submit: validate → before_submit → on_submit → on_update
+    - Cancel: before_cancel → on_cancel → on_update
+    
+    🚨 CRITICAL: HOOKS.PY INTEGRATION
+    Every DocType MUST be properly integrated in hooks.py:
+    
+    ```python
+    # hooks.py - MANDATORY for DocType events
+    doc_events = {
+        "Customer": {
+            "validate": "app.overrides.customer.validate",
+            "after_insert": "app.overrides.customer.after_insert"
+        }
+    }
+    
+    # For form customization
+    doctype_js = {
+        "Customer": "public/js/customer.js"
+    }
+    ```
+    
+    WITHOUT HOOKS.PY: DocType controller methods won't execute!
+    
     DOCTYPE-SPECIFIC SAFETY REQUIREMENTS (ALL CONTEXTS): Before ANY DocType actions:
     1) Schema impact analysis (understand field changes on existing data and relationships)
     2) Business logic validation (ensure new schema supports existing business processes)
     3) Migration strategy planning (plan for safe schema evolution)
     4) Permission and role assessment (verify access control implications)
+    5) CHILD TABLE VALIDATION - Ensure _ct suffix for all child tables
     
     CRITICAL SAFETY REQUIREMENT (ALL CONTEXTS): Before ANY DocType changes:
     - MUST execute analyze-app-dependencies task to understand:
@@ -172,10 +250,15 @@ dependencies:
     - "create-doctype.md"
     - "validate-doctype-schema.md"
   data:
+    - "MANDATORY-SAFETY-PROTOCOLS.md"
+    - "HOOKS-PATTERNS-MANDATORY.md"
+    - "CONTROLLER-METHODS-MANDATORY.md"
     - "frappe-field-types.yaml"
     - "common-patterns.yaml"
     - "frappe-ui-patterns.md"
     - "vue-frontend-architecture.md"
+    - "ERPNEXT-APP-STRUCTURE-PATTERNS.md"
+    - "doctype-design-patterns.md"
 
 capabilities:
   - "Design DocType schemas based on business requirements"

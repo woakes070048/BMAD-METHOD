@@ -84,6 +84,7 @@ This checklist ensures full compliance with Frappe UI design system standards an
 
 ### Semantic HTML
 - [ ] **Proper HTML elements** used for semantic meaning
+- [ ] **Page title in h1** matches JSON title field
 - [ ] **Heading hierarchy** (h1-h6) properly structured
 - [ ] **Form associations** (labels, fieldsets) correctly implemented
 - [ ] **List structures** (ul, ol, dl) used appropriately
@@ -157,6 +158,17 @@ This checklist ensures full compliance with Frappe UI design system standards an
 - [ ] **Report integration** uses ERPNext reporting framework
 - [ ] **Workspace integration** follows ERPNext workspace standards
 - [ ] **Custom app integration** maintains ERPNext compatibility
+
+### 🚨 CRITICAL: Page & Workspace Requirements
+- [ ] **Page JSON contains "title" field** - MANDATORY!
+- [ ] **Page JSON contains "icon" field** - MANDATORY!
+- [ ] **JavaScript sets title in 3 places:**
+  - [ ] `frappe.ui.make_app_page({ title: 'Title' })`
+  - [ ] `page.set_title(__('Title'))`  
+  - [ ] `document.title = __('Title') + ' | ' + sitename`
+- [ ] **Workspace JSON has "title" at TOP** - MANDATORY!
+- [ ] **Workspace does NOT link child tables** (_ct suffix)
+- [ ] **Workspace uses valid Frappe icons only**
 
 ### Browser Support
 - [ ] **Modern browser support** (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
@@ -240,6 +252,8 @@ This checklist ensures full compliance with Frappe UI design system standards an
 
 ### Design Review
 - [ ] **Design system compliance** verified by design team
+- [ ] **Page title requirements** verified - all 3 locations set
+- [ ] **Workspace configuration** verified - no child table links
 - [ ] **Brand guidelines** adherence confirmed
 - [ ] **Accessibility standards** reviewed by accessibility expert
 - [ ] **Performance benchmarks** met or exceeded

@@ -42,6 +42,7 @@ parameters:
 templates:
   workspace_json: |
     {
+      "title": "{{workspace_label}}",  // MANDATORY - Must be first!
       "app": "{{app_name}}",
       "category": "Modules",
       "charts": [
@@ -263,8 +264,7 @@ templates:
           "link_to": "{{workspace_label}} Dashboard",
           "type": "Page"
         }
-      ],
-      "title": "{{workspace_label}}"
+      ]
     }
 
   workspace_structure: |
@@ -369,6 +369,11 @@ instructions:
 validation_checklist: |
   ## Workspace Validation Checklist
   
+  ### 🚨 CRITICAL - Title Field
+  - [ ] **"title" field is present at the TOP of JSON** (MANDATORY!)
+  - [ ] Title field contains proper display name
+  - [ ] Title matches workspace_label parameter
+  
   ### Structure
   - [ ] Workspace JSON is valid and properly formatted
   - [ ] File is in correct directory: {{module_name}}/workspace/{{workspace_name}}/
@@ -401,8 +406,10 @@ validation_checklist: |
 common_issues: |
   ## Common Issues and Solutions
   
-  ### Issue: Workspace not appearing
+  ### Issue: Workspace not appearing (MOST COMMON!)
   **Solution**: 
+  - **CHECK IF "title" FIELD EXISTS IN JSON** (often missing!)
+  - Ensure "title" is at the top of the JSON
   - Run `bench --site [site] migrate`
   - Clear cache: `bench --site [site] clear-cache`
   - Check if module is hidden in Module Def

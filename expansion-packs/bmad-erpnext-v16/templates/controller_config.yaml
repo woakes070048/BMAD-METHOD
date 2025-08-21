@@ -1,0 +1,126 @@
+# Controller Configuration Template
+# This template defines the structure for DocType controller configurations
+
+controller_config:
+  doctype: "{{ doctype_name }}"
+  module: "{{ module_name }}"
+  
+  controller_methods:
+    validation:
+      validate:
+        enabled: "{{ validate_enabled | default(true) }}"
+        description: "Main validation before save"
+        
+      validate_required_fields:
+        enabled: "{{ validate_required | default(true) }}"
+        custom_logic: "{{ custom_validation_logic }}"
+    
+    lifecycle_hooks:
+      before_insert:
+        enabled: "{{ before_insert_enabled | default(false) }}"
+        actions:
+          - "{{ before_insert_action }}"
+      
+      after_insert:
+        enabled: "{{ after_insert_enabled | default(false) }}"
+        actions:
+          - "{{ after_insert_action }}"
+      
+      before_save:
+        enabled: "{{ before_save_enabled | default(true) }}"
+        actions:
+          - "{{ before_save_action }}"
+      
+      after_save:
+        enabled: "{{ after_save_enabled | default(false) }}"
+        actions:
+          - "{{ after_save_action }}"
+      
+      before_submit:
+        enabled: "{{ before_submit_enabled | default(false) }}"
+        actions:
+          - "{{ before_submit_action }}"
+      
+      on_submit:
+        enabled: "{{ on_submit_enabled | default(false) }}"
+        actions:
+          - "{{ on_submit_action }}"
+      
+      before_cancel:
+        enabled: "{{ before_cancel_enabled | default(false) }}"
+        actions:
+          - "{{ before_cancel_action }}"
+      
+      on_cancel:
+        enabled: "{{ on_cancel_enabled | default(false) }}"
+        actions:
+          - "{{ on_cancel_action }}"
+      
+      on_trash:
+        enabled: "{{ on_trash_enabled | default(false) }}"
+        actions:
+          - "{{ on_trash_action }}"
+      
+      on_update_after_submit:
+        enabled: "{{ update_after_submit_enabled | default(false) }}"
+        allowed_fields:
+          - "{{ allowed_field }}"
+  
+  computed_fields:
+    - field_name: "{{ computed_field_name }}"
+      computation: "{{ computation_logic }}"
+      triggers:
+        - "{{ trigger_field }}"
+  
+  child_table_handlers:
+    - child_table: "{{ child_table_name }}"
+      validate_child_rows: "{{ validate_children | default(true) }}"
+      aggregate_calculations:
+        - field: "{{ aggregate_field }}"
+          operation: "{{ operation }}"  # sum, avg, count, min, max
+  
+  permissions:
+    custom_permissions:
+      - role: "{{ role_name }}"
+        condition: "{{ permission_condition }}"
+        level: "{{ permission_level | default(0) }}"
+  
+  background_jobs:
+    - method: "{{ job_method }}"
+      trigger: "{{ job_trigger }}"  # on_submit, on_update, scheduled
+      queue: "{{ queue_name | default('default') }}"
+      timeout: "{{ job_timeout | default(300) }}"
+  
+  integrations:
+    webhooks:
+      - event: "{{ webhook_event }}"
+        url: "{{ webhook_url }}"
+        headers: "{{ webhook_headers }}"
+    
+    email_alerts:
+      - trigger: "{{ email_trigger }}"
+        recipients: "{{ email_recipients }}"
+        template: "{{ email_template }}"
+  
+  business_rules:
+    - rule_name: "{{ rule_name }}"
+      condition: "{{ rule_condition }}"
+      action: "{{ rule_action }}"
+      error_message: "{{ rule_error_message }}"
+  
+  auto_naming:
+    naming_series: "{{ naming_series }}"
+    naming_rule: "{{ naming_rule | default('Autoincrement') }}"
+    custom_naming: "{{ custom_naming_logic }}"
+  
+  search_fields: 
+    - "{{ search_field }}"
+  
+  sort_field: "{{ sort_field | default('modified') }}"
+  sort_order: "{{ sort_order | default('DESC') }}"
+  
+  dashboard:
+    charts:
+      - "{{ chart_name }}"
+    number_cards:
+      - "{{ number_card }}"

@@ -1,0 +1,382 @@
+# ERPNext Story Execution Mode Template
+# Template for creating execution mode-aware ERPNext user stories
+
+name: story-execution-mode-template
+version: 1.0.0
+description: Template for creating ERPNext stories with parallel execution metadata
+
+# STORY IDENTIFICATION
+story_metadata:
+  title: "${STORY_TITLE}"
+  epic: "${EPIC_NAME}"
+  priority: "medium"  # low/medium/high/critical
+  story_points: 0
+  created_by: "${SCRUM_MASTER}"
+  created_at: "${TIMESTAMP}"
+  
+  # GitHub Integration
+  github_issue: "${GITHUB_ISSUE_NUMBER}"
+  labels:
+    - "erpnext"
+    - "user-story"
+    - "${EXECUTION_MODE}"
+    - "${COMPLEXITY_LEVEL}"
+
+# USER STORY
+user_story:
+  as_a: "${USER_ROLE}"
+  i_want: "${DESIRED_FUNCTIONALITY}"
+  so_that: "${BUSINESS_VALUE}"
+  
+  context: |
+    ${ADDITIONAL_CONTEXT}
+
+# ACCEPTANCE CRITERIA
+acceptance_criteria:
+  - criterion: "${ACCEPTANCE_CRITERION_1}"
+    testable: true
+    priority: "must_have"
+  - criterion: "${ACCEPTANCE_CRITERION_2}"
+    testable: true
+    priority: "should_have"
+  - criterion: "${ACCEPTANCE_CRITERION_3}"
+    testable: true
+    priority: "could_have"
+
+# TECHNICAL REQUIREMENTS
+technical_requirements:
+  doctype_changes:
+    required: false
+    doctypes: []
+    new_fields: []
+    relationships: []
+    
+  api_endpoints:
+    required: false
+    endpoints: []
+    authentication: true
+    rate_limiting: false
+    
+  frontend_changes:
+    required: false
+    components: []
+    pages: []
+    mobile_responsive: true
+    
+  workflow_changes:
+    required: false
+    workflows: []
+    approval_steps: []
+    notifications: []
+
+# EXECUTION MODE ANALYSIS
+execution_mode:
+  recommended_mode: "guided"  # guided/sequential/smart_parallel
+  complexity_assessment: "medium"  # low/medium/high/critical
+  
+  # Mode Recommendations
+  guided_mode:
+    suitable: true
+    reason: "Interactive review ensures quality"
+    user_interaction_required: true
+    estimated_duration: "30 minutes"
+    
+  sequential_mode:
+    suitable: true
+    reason: "Can be automated with clear requirements"
+    dependencies: []
+    estimated_duration: "25 minutes"
+    
+  smart_parallel_mode:
+    suitable: false
+    reason: "No parallelizable components identified"
+    parallelizable_tasks: []
+    estimated_duration: "N/A"
+
+# PARALLEL EXECUTION METADATA
+parallel_execution:
+  analysis_completed: false
+  parallel_potential: false
+  
+  # Task Breakdown for Parallel Execution
+  task_breakdown:
+    backend_tasks:
+      - task: "Create/modify DocType"
+        agent: "doctype-designer"
+        estimated_duration: "10 minutes"
+        dependencies: []
+        parallelizable: true
+        
+    frontend_tasks:
+      - task: "Create Vue components"
+        agent: "vue-spa-architect"
+        estimated_duration: "15 minutes"
+        dependencies: ["backend_tasks"]
+        parallelizable: false
+        
+    api_tasks:
+      - task: "Create API endpoints"
+        agent: "api-developer"
+        estimated_duration: "12 minutes"
+        dependencies: ["backend_tasks"]
+        parallelizable: true
+        
+    integration_tasks:
+      - task: "Workflow integration"
+        agent: "workflow-specialist"
+        estimated_duration: "8 minutes"
+        dependencies: ["backend_tasks", "api_tasks"]
+        parallelizable: false
+  
+  # Conflict Analysis
+  conflict_analysis:
+    file_conflicts: []
+    dependency_conflicts: []
+    resource_conflicts: []
+    
+    # Parallel Safety Assessment
+    parallel_safety:
+      safe_for_parallel: false
+      blocking_factors: []
+      required_sequence: []
+    
+    # Risk Assessment
+    risk_assessment:
+      level: "low"  # low/medium/high
+      factors:
+        - "Standard ERPNext patterns"
+        - "Well-defined requirements"
+      mitigation_strategies: []
+
+# ERPNEXT CONTEXT
+erpnext_context:
+  module: "${ERPNEXT_MODULE}"
+  doctypes_involved: []
+  
+  # Framework Requirements
+  frappe_patterns:
+    - "Use @frappe.whitelist() for API endpoints"
+    - "Implement proper permission checks"
+    - "Follow Frappe naming conventions"
+    - "Use frappe.db for database operations"
+    
+  # Integration Points
+  integration_requirements:
+    existing_doctypes: []
+    workflow_integration: false
+    n8n_automation: false
+    mobile_compatibility: true
+    pwa_features: false
+
+# STORY RELATIONSHIPS
+relationships:
+  epic_relationship:
+    epic_name: "${EPIC_NAME}"
+    position_in_epic: 1
+    
+  dependencies:
+    blocks: []
+    blocked_by: []
+    related_stories: []
+    
+  impact_analysis:
+    affects_existing_features: false
+    requires_data_migration: false
+    breaking_changes: false
+
+# QUALITY GATES
+quality_gates:
+  required_gates:
+    - name: "structure_validation"
+      description: "Validate DocType and file structure"
+      mandatory: true
+      
+    - name: "api_validation"
+      description: "Test API endpoints and security"
+      mandatory: true
+      
+    - name: "frontend_testing"
+      description: "UI/UX testing and responsiveness"
+      mandatory: true
+      
+    - name: "integration_testing"
+      description: "Full workflow integration testing"
+      mandatory: true
+      
+  success_criteria:
+    - "All tests pass"
+    - "No console errors"
+    - "Mobile responsive"
+    - "Performance benchmarks met"
+
+# DOCUMENTATION REQUIREMENTS
+documentation:
+  required_docs:
+    - "API endpoint documentation"
+    - "User guide updates"
+    - "Technical implementation notes"
+    
+  documentation_locations:
+    api_docs: "${APP_NAME}/docs/api/"
+    user_guides: "${APP_NAME}/docs/user/"
+    technical_notes: ".bmad-project/implementation-notes/"
+
+# TESTING STRATEGY
+testing_strategy:
+  unit_tests:
+    required: true
+    coverage_target: 80
+    test_files: []
+    
+  integration_tests:
+    required: true
+    test_scenarios: []
+    
+  user_acceptance_testing:
+    required: true
+    test_cases: []
+    stakeholders: []
+
+# EXECUTION WORKFLOW
+execution_workflow:
+  pre_execution:
+    - "Review story requirements"
+    - "Confirm execution mode selection"
+    - "Validate dependencies"
+    - "Initialize GitHub context"
+    
+  execution_phases:
+    - phase: "Analysis and Planning"
+      duration: "5 minutes"
+      activities:
+        - "Detailed requirement analysis"
+        - "Technical architecture review"
+        - "Conflict detection"
+        
+    - phase: "Implementation"
+      duration: "variable"
+      activities:
+        - "Execute based on selected mode"
+        - "Monitor quality gates"
+        - "Handle failures gracefully"
+        
+    - phase: "Validation and Handoff"
+      duration: "10 minutes"
+      activities:
+        - "Run comprehensive tests"
+        - "Update documentation"
+        - "Complete GitHub sync"
+  
+  post_execution:
+    - "Update story status"
+    - "Record lessons learned"
+    - "Archive execution logs"
+
+# EXECUTION MODE SPECIFIC CONFIGURATIONS
+
+guided_mode_config:
+  interaction_points:
+    - "Story requirement confirmation"
+    - "Technical approach approval"
+    - "Implementation review"
+    - "Final acceptance testing"
+    
+  user_prompts:
+    - "Review the proposed DocType structure"
+    - "Approve the API endpoint design"
+    - "Validate the UI components"
+    - "Confirm the workflow integration"
+
+sequential_mode_config:
+  batch_processing:
+    enabled: true
+    batch_size: 3
+    
+  automation_level: "high"
+  
+  checkpoint_frequency: "after_each_major_task"
+  
+  failure_handling: "pause_and_report"
+
+smart_parallel_config:
+  parallel_blocks:
+    - block_name: "Foundation Block"
+      agents: ["doctype-designer", "api-architect"]
+      estimated_duration: "15 minutes"
+      
+    - block_name: "Implementation Block"
+      agents: ["api-developer", "vue-spa-architect"]
+      dependencies: ["Foundation Block"]
+      estimated_duration: "20 minutes"
+  
+  conflict_monitoring: "real_time"
+  
+  failure_recovery: "isolate_and_continue"
+
+# GITHUB INTEGRATION
+github_integration:
+  enabled: true
+  
+  issue_management:
+    create_sub_issues: false
+    sync_progress: true
+    comment_on_completion: true
+    
+  progress_reporting:
+    frequency: "on_quality_gate_completion"
+    include_metrics: true
+    include_screenshots: false
+    
+  failure_reporting:
+    auto_comment: true
+    include_logs: true
+    assign_for_review: true
+
+# METRICS AND TRACKING
+metrics:
+  execution_metrics:
+    start_time: null
+    end_time: null
+    actual_duration: null
+    mode_used: null
+    
+  quality_metrics:
+    gates_passed: 0
+    gates_failed: 0
+    retry_count: 0
+    
+  efficiency_metrics:
+    planned_vs_actual_duration: null
+    mode_efficiency_rating: null
+    parallel_efficiency_gain: null
+
+# TEMPLATE USAGE INSTRUCTIONS
+usage_instructions:
+  - "Copy this template for each new ERPNext story"
+  - "Replace all ${VARIABLE} placeholders with actual values"
+  - "Complete execution_mode analysis before implementation"
+  - "Update parallel_execution metadata based on technical requirements"
+  - "Use mode-specific configurations during execution"
+  - "Track metrics for continuous improvement"
+
+# INTEGRATION POINTS
+integration_points:
+  workflows:
+    - coordination-workflow
+    - universal-context-detection-workflow
+    - quality-gate-enforcement-workflow
+    
+  agents:
+    - erpnext-scrum-master
+    - development-coordinator
+    - parallel-analyzer
+    
+  commands:
+    - "/bmadErpNext:agent:erpnext-scrum-master *mode-aware-draft"
+    - "/bmadErpNext:agent:development-coordinator *select-execution-mode"
+    - "/github:issue-sync"
+    
+  data_sources:
+    - parallel-conflict-rules.yaml
+    - execution-mode-rules.yaml
+    - erpnext-technical-preferences.md

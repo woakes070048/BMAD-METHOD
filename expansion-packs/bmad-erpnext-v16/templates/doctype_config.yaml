@@ -1,0 +1,160 @@
+# DocType Configuration Template
+# This template defines the complete structure for ERPNext DocType configurations
+
+doctype_config:
+  basic_info:
+    name: "{{ doctype_name }}"
+    module: "{{ module_name }}"
+    naming: "{{ naming_rule | default('Autoincrement') }}"
+    
+    documentation:
+      description: "{{ doctype_description }}"
+      documentation: "{{ detailed_documentation }}"
+    
+    tracking:
+      track_changes: "{{ track_changes | default(1) }}"
+      track_seen: "{{ track_seen | default(0) }}"
+      track_views: "{{ track_views | default(0) }}"
+  
+  document_type:
+    is_tree: "{{ is_tree | default(0) }}"
+    is_submittable: "{{ is_submittable | default(0) }}"
+    is_virtual: "{{ is_virtual | default(0) }}"
+    issingle: "{{ issingle | default(0) }}"
+    istable: "{{ istable | default(0) }}"  # For child tables
+    editable_grid: "{{ editable_grid | default(1) }}"
+  
+  fields:
+    - fieldname: "{{ field_name }}"
+      label: "{{ field_label }}"
+      fieldtype: "{{ field_type }}"  # Data, Link, Select, Date, etc.
+      options: "{{ field_options }}"  # For Link/Select fields
+      reqd: "{{ field_required | default(0) }}"
+      unique: "{{ field_unique | default(0) }}"
+      hidden: "{{ field_hidden | default(0) }}"
+      read_only: "{{ field_readonly | default(0) }}"
+      default: "{{ field_default }}"
+      description: "{{ field_description }}"
+      
+      # Conditional display
+      depends_on: "{{ depends_on_condition }}"
+      mandatory_depends_on: "{{ mandatory_condition }}"
+      read_only_depends_on: "{{ readonly_condition }}"
+      
+      # Validation
+      validation: "{{ validation_pattern }}"
+      length: "{{ max_length }}"
+      
+      # For numeric fields
+      precision: "{{ decimal_precision }}"
+      non_negative: "{{ non_negative | default(0) }}"
+      
+      # For Link fields
+      ignore_user_permissions: "{{ ignore_permissions | default(0) }}"
+      link_filters: "{{ link_filters_json }}"
+      
+      # For Table fields (child tables)
+      allow_bulk_edit: "{{ allow_bulk_edit | default(0) }}"
+      
+      # Display
+      in_list_view: "{{ in_list_view | default(0) }}"
+      in_standard_filter: "{{ in_standard_filter | default(0) }}"
+      in_global_search: "{{ in_global_search | default(0) }}"
+      bold: "{{ bold | default(0) }}"
+      
+      # Position
+      insert_after: "{{ insert_after_field }}"
+      
+  permissions:
+    - role: "{{ role_name }}"
+      level: "{{ permission_level | default(0) }}"
+      read: "{{ can_read | default(1) }}"
+      write: "{{ can_write | default(1) }}"
+      create: "{{ can_create | default(1) }}"
+      delete: "{{ can_delete | default(1) }}"
+      submit: "{{ can_submit | default(0) }}"
+      cancel: "{{ can_cancel | default(0) }}"
+      amend: "{{ can_amend | default(0) }}"
+      print: "{{ can_print | default(1) }}"
+      email: "{{ can_email | default(1) }}"
+      report: "{{ can_report | default(1) }}"
+      import: "{{ can_import | default(0) }}"
+      export: "{{ can_export | default(1) }}"
+      share: "{{ can_share | default(1) }}"
+      if_owner: "{{ if_owner | default(0) }}"
+      
+  links:
+    - link_doctype: "{{ linked_doctype }}"
+      link_fieldname: "{{ link_field }}"
+      group: "{{ link_group }}"
+  
+  actions:
+    - label: "{{ action_label }}"
+      action_type: "{{ action_type }}"  # Server Action, Route, etc.
+      action: "{{ action_method }}"
+      group: "{{ action_group }}"
+  
+  dashboard:
+    transactions:
+      - label: "{{ transaction_label }}"
+        items:
+          - "{{ related_doctype }}"
+    
+    non_standard_fieldnames:
+      "{{ doctype }}": "{{ custom_fieldname }}"
+    
+    number_cards:
+      - label: "{{ card_label }}"
+        function: "{{ card_function }}"  # Count, Sum, Average, etc.
+        aggregate_function_based_on: "{{ aggregate_field }}"
+        doctype: "{{ card_doctype }}"
+        filters_json: "{{ card_filters }}"
+    
+    charts:
+      - name: "{{ chart_name }}"
+        label: "{{ chart_label }}"
+        chart_type: "{{ chart_type }}"  # Line, Bar, Pie, etc.
+        doctype: "{{ chart_doctype }}"
+        based_on: "{{ chart_based_on }}"
+        value_based_on: "{{ chart_value_field }}"
+        time_interval: "{{ time_interval }}"
+        filters_json: "{{ chart_filters }}"
+  
+  web_view:
+    has_web_view: "{{ has_web_view | default(0) }}"
+    allow_guest_to_view: "{{ allow_guest | default(0) }}"
+    route: "{{ web_route }}"
+    is_published_field: "{{ published_field }}"
+    website_image_field: "{{ image_field }}"
+  
+  email:
+    email_append_to: "{{ email_append_to | default(0) }}"
+    sender_field: "{{ sender_field }}"
+    subject_field: "{{ subject_field }}"
+  
+  queue_configuration:
+    queue_in_background: "{{ queue_in_background | default(0) }}"
+    
+  print:
+    allow_print: "{{ allow_print | default(1) }}"
+    max_attachments: "{{ max_attachments | default(10) }}"
+  
+  search:
+    search_fields: "{{ search_fields }}"
+    title_field: "{{ title_field }}"
+    image_field: "{{ image_field }}"
+    
+  workflow:
+    workflows:
+      - "{{ workflow_name }}"
+    
+  autoname:
+    autoname: "{{ autoname_pattern }}"
+    naming_rule: "{{ naming_rule }}"
+    
+  data_migration:
+    migration_hash: "{{ migration_hash }}"
+    
+  custom_settings:
+    custom_js: "{{ custom_js_path }}"
+    custom_css: "{{ custom_css_path }}"

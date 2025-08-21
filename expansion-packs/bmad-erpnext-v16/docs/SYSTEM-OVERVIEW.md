@@ -46,14 +46,16 @@ Templates: .bmad-erpnext-v16/templates/
 Workflows: .bmad-erpnext-v16/workflows/
 ```
 
-## 👥 Agent System (29 Specialized Agents)
+## 👥 Agent System (33 Specialized Agents)
 
 ### Critical Agents
 1. **erpnext-architect** - Creates PRDs and architecture
-2. **development-coordinator** - Routes tasks to specialists
+2. **development-coordinator** - Routes tasks to specialists with THREE execution modes
 3. **erpnext-product-owner** - Manages backlog and stories
-4. **testing-specialist** - Ensures quality
-5. **frappe-compliance-validator** - Enforces Frappe-first principles
+4. **erpnext-scrum-master** - Creates mode-aware stories with parallel execution analysis
+5. **testing-specialist** - Ensures quality
+6. **frappe-compliance-validator** - Enforces Frappe-first principles
+7. **parallel-analyzer** - Intelligent parallel execution and conflict detection
 
 ### Agent Capabilities
 All agents now have `folder_knowledge` sections that specify:
@@ -77,8 +79,15 @@ All agents now have `folder_knowledge` sections that specify:
 ### Core Workflows
 1. **universal-context-detection-workflow** - MANDATORY first step
 2. **bmad-planning-workflow** - Requirements to architecture
-3. **bmad-development-workflow** - Architecture to code
-4. **quality-gate-enforcement-workflow** - Validates all handoffs
+3. **bmad-development-workflow** - Architecture to code with THREE execution modes
+4. **coordination-workflow** - Smart execution mode selection and routing
+5. **parallel-failure-recovery-workflow** - Handles quality gate failures in parallel execution
+6. **quality-gate-enforcement-workflow** - Validates all handoffs
+
+### THREE Execution Modes
+1. **Guided Mode** (Default) - Interactive, one story at a time with user guidance
+2. **Sequential Mode** - Automated batch processing of multiple stories
+3. **Smart Parallel Mode** - Intelligent parallel execution without Git worktrees
 
 ### Workflow Execution
 - All work starts with universal context detection
@@ -125,12 +134,20 @@ cd apps/customer_portal
 *design-architecture
 ```
 
-### Step 3: Development
+### Step 3: Development with Execution Mode Selection
 ```bash
 # Activate coordinator
 /bmadErpNext:agent:development-coordinator
 
-# Coordinator routes to specialists automatically
+# Select execution mode
+*select-execution-mode
+
+# Options:
+# - guided: Interactive one-by-one (default, preserves current BMAD behavior)
+# - sequential: Automated batch processing
+# - smart_parallel: Intelligent parallel execution
+
+# Coordinator routes to specialists based on selected mode
 ```
 
 ## 📋 Critical Rules
@@ -150,17 +167,22 @@ cd apps/customer_portal
 
 ## 🛠️ Key Components
 
-### Templates (58 total)
+### Templates (60 total)
 - doctype-template.yaml
 - handoff-template.yaml
 - project-structure-template.yaml
 - agent-folder-knowledge-template.yaml
+- parallel-execution-template.yaml
+- story-execution-mode-template.yaml
 - And 54 more...
 
-### Tasks (68 total)
+### Tasks (71 total)
 - create-doctype.md
 - create-api-endpoint.md
 - scaffold-complete-app.md
+- create-erpnext-story-with-execution-mode.md
+- create-parallel-execution-story.md
+- analyze-story-conflicts.md
 - And 65 more...
 
 ### Checklists (30 total)
@@ -169,22 +191,29 @@ cd apps/customer_portal
 - frappe-ui-compliance.md
 - And 27 more...
 
-### Workflows (28 total)
+### Workflows (30 total)
 - universal-context-detection-workflow.yaml
 - quality-gate-enforcement-workflow.yaml
 - bmad-planning-workflow.yaml
+- coordination-workflow.yaml
+- parallel-failure-recovery-workflow.yaml
 - And 25 more...
 
 ## 📊 System Status
 
 ### Current Implementation
-- ✅ All 29 agents have folder_knowledge
+- ✅ All 33 agents have folder_knowledge
 - ✅ Universal folder structure defined
 - ✅ File reference system implemented
 - ✅ PROJECT-INIT-STRUCTURE.sh created
 - ✅ Quality gates system active
-- ⏳ Workflow file discovery updates in progress
-- ⏳ Task path awareness updates pending
+- ✅ THREE execution modes implemented (guided/sequential/smart_parallel)
+- ✅ Parallel execution system with conflict detection
+- ✅ GitHub Issues integration for project management
+- ✅ Mode-aware story generation with parallel analysis
+- ✅ Quality gate failure recovery for parallel execution
+- ⏳ Documentation updates completed
+- ⏳ Agent testing and validation pending
 
 ## 🔍 Troubleshooting
 

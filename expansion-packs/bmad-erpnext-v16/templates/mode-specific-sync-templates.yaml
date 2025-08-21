@@ -1,0 +1,599 @@
+# Mode-Specific Sync Templates
+# Templates for GitHub progress updates based on execution mode
+
+name: mode-specific-sync-templates
+version: 1.0.0
+description: GitHub comment templates customized for each execution mode
+
+# GUIDED MODE TEMPLATES
+guided_mode:
+  
+  # Interactive Progress Update
+  interactive_progress:
+    name: "Guided Mode Progress Update"
+    trigger: "user_approval_checkpoint"
+    template: |
+      ## 🎯 Guided Development Progress
+      
+      **Session**: ${SESSION_ID}
+      **Story**: ${STORY_TITLE}
+      **Step**: ${CURRENT_STEP} of ${TOTAL_STEPS}
+      **Timestamp**: ${TIMESTAMP}
+      
+      ### Current Activity
+      **Agent**: ${CURRENT_AGENT}
+      **Task**: ${CURRENT_TASK}
+      **Status**: ${TASK_STATUS}
+      
+      ### User Interaction
+      **Approval Point**: ${APPROVAL_POINT}
+      **User Decision**: ${USER_DECISION}
+      **Reasoning**: ${USER_REASONING}
+      
+      ### Progress Summary
+      ${PROGRESS_DETAILS}
+      
+      ### Quality Assurance
+      ${QUALITY_GATE_RESULTS}
+      
+      ### Next Steps
+      ${NEXT_STEPS}
+      
+      ### Learning Notes
+      ${LEARNING_INSIGHTS}
+      
+      ---
+      *Interactive development with BMAD ERPNext v16 • [Claude Code](https://claude.ai/code)*
+    
+  # Quality Gate Review
+  quality_gate_review:
+    name: "Guided Mode Quality Gate"
+    trigger: "quality_gate_completion"
+    template: |
+      ## ✅ Quality Gate Review (Guided Mode)
+      
+      **Gate**: ${GATE_NAME}
+      **Agent**: ${AGENT_ID}
+      **Result**: ${GATE_RESULT}
+      **Reviewed At**: ${TIMESTAMP}
+      
+      ### Gate Details
+      ${GATE_DETAILS}
+      
+      ### User Review Process
+      **User Involvement**: ${USER_INVOLVEMENT}
+      **Review Duration**: ${REVIEW_DURATION}
+      **Questions Asked**: ${QUESTIONS_COUNT}
+      
+      ### Findings
+      ${FINDINGS_SUMMARY}
+      
+      ### User Decision
+      **Approved**: ${USER_APPROVAL}
+      **Conditions**: ${APPROVAL_CONDITIONS}
+      
+      ### Next Actions
+      ${NEXT_ACTIONS}
+      
+      ---
+      *Quality assurance with user oversight • BMAD ERPNext v16*
+  
+  # Completion Summary
+  completion_summary:
+    name: "Guided Mode Completion"
+    trigger: "story_completion"
+    template: |
+      ## 🎉 Story Completed (Guided Mode)
+      
+      **Story**: ${STORY_TITLE}
+      **Duration**: ${TOTAL_DURATION}
+      **User Interaction Time**: ${USER_TIME}
+      **Completed At**: ${TIMESTAMP}
+      
+      ### Implementation Summary
+      ${IMPLEMENTATION_SUMMARY}
+      
+      ### Quality Metrics
+      - **Quality Gates Passed**: ${GATES_PASSED}/${TOTAL_GATES}
+      - **User Approvals**: ${APPROVALS_GIVEN}
+      - **Learning Insights**: ${INSIGHTS_COUNT}
+      - **Code Quality Score**: ${QUALITY_SCORE}
+      
+      ### Files Modified
+      ${FILES_MODIFIED}
+      
+      ### User Experience
+      **Satisfaction Rating**: ${USER_SATISFACTION}
+      **Learning Value**: ${LEARNING_VALUE}
+      **Recommendations**: ${USER_RECOMMENDATIONS}
+      
+      ### Documentation Updated
+      ${DOCUMENTATION_UPDATES}
+      
+      Ready for review and deployment! 🚀
+      
+      ---
+      *Completed with user guidance • BMAD ERPNext v16 • [Claude Code](https://claude.ai/code)*
+
+# SEQUENTIAL MODE TEMPLATES
+sequential_mode:
+  
+  # Batch Progress Update
+  batch_progress:
+    name: "Sequential Mode Batch Progress"
+    trigger: "batch_progress_checkpoint"
+    template: |
+      ## ⚡ Sequential Batch Progress
+      
+      **Session**: ${SESSION_ID}
+      **Batch**: ${BATCH_NUMBER} of ${TOTAL_BATCHES}
+      **Progress**: ${COMPLETED_STORIES}/${TOTAL_STORIES} stories
+      **Timestamp**: ${TIMESTAMP}
+      
+      ### Batch Status
+      **Current Batch Size**: ${BATCH_SIZE}
+      **Estimated Completion**: ${ETA}
+      **Processing Speed**: ${STORIES_PER_HOUR} stories/hour
+      
+      ### Completed Stories
+      ${COMPLETED_STORIES_LIST}
+      
+      ### In Progress
+      **Current Story**: ${CURRENT_STORY}
+      **Current Agent**: ${CURRENT_AGENT}
+      **Estimated Time Remaining**: ${TIME_REMAINING}
+      
+      ### Quality Metrics
+      **Automated Tests**: ${TESTS_PASSED}/${TESTS_TOTAL}
+      **Quality Gates**: ${GATES_PASSED}/${GATES_TOTAL}
+      **Auto-Recoveries**: ${AUTO_RECOVERIES}
+      
+      ### Efficiency Metrics
+      **Time Saved vs Guided**: ${TIME_SAVINGS}
+      **Automation Rate**: ${AUTOMATION_RATE}%
+      
+      ---
+      *Automated sequential processing • BMAD ERPNext v16 • [Claude Code](https://claude.ai/code)*
+  
+  # Batch Completion
+  batch_completion:
+    name: "Sequential Mode Batch Complete"
+    trigger: "batch_completion"
+    template: |
+      ## ✅ Batch Processing Complete
+      
+      **Batch**: ${BATCH_NUMBER} of ${TOTAL_BATCHES}
+      **Stories Completed**: ${STORIES_COMPLETED}
+      **Duration**: ${BATCH_DURATION}
+      **Completed At**: ${TIMESTAMP}
+      
+      ### Batch Results
+      ${BATCH_RESULTS_SUMMARY}
+      
+      ### Success Metrics
+      - **Stories Completed**: ${STORIES_COMPLETED}/${STORIES_ATTEMPTED}
+      - **Quality Gates Passed**: ${GATES_PASSED}/${GATES_TOTAL}
+      - **Automation Success Rate**: ${AUTOMATION_SUCCESS_RATE}%
+      - **Average Story Time**: ${AVERAGE_STORY_TIME}
+      
+      ### Quality Assurance
+      **Automated Testing**: ${AUTOMATED_TESTS_SUMMARY}
+      **Manual Interventions**: ${MANUAL_INTERVENTIONS}
+      **Issues Detected**: ${ISSUES_DETECTED}
+      
+      ### Files Modified
+      ${FILES_MODIFIED_SUMMARY}
+      
+      ### Next Batch
+      ${NEXT_BATCH_INFO}
+      
+      ---
+      *Efficient sequential automation • BMAD ERPNext v16 • [Claude Code](https://claude.ai/code)*
+  
+  # Final Summary
+  sequential_completion:
+    name: "Sequential Mode Final Summary"
+    trigger: "all_batches_completion"
+    template: |
+      ## 🎯 Sequential Processing Complete
+      
+      **Total Stories**: ${TOTAL_STORIES}
+      **Total Batches**: ${TOTAL_BATCHES}
+      **Total Duration**: ${TOTAL_DURATION}
+      **Completed At**: ${TIMESTAMP}
+      
+      ### Final Results
+      ${FINAL_RESULTS_SUMMARY}
+      
+      ### Performance Metrics
+      - **Stories Completed**: ${STORIES_COMPLETED}
+      - **Success Rate**: ${SUCCESS_RATE}%
+      - **Average Processing Time**: ${AVERAGE_TIME_PER_STORY}
+      - **Efficiency vs Guided Mode**: ${EFFICIENCY_GAIN}%
+      
+      ### Quality Summary
+      **Total Quality Gates**: ${TOTAL_GATES}
+      **Gates Passed**: ${GATES_PASSED}
+      **Gate Success Rate**: ${GATE_SUCCESS_RATE}%
+      **Defects Detected**: ${DEFECTS_DETECTED}
+      
+      ### Automation Insights
+      **Automation Rate**: ${AUTOMATION_RATE}%
+      **Manual Interventions**: ${MANUAL_INTERVENTIONS}
+      **Recovery Actions**: ${RECOVERY_ACTIONS}
+      
+      ### Deliverables
+      ${DELIVERABLES_SUMMARY}
+      
+      All stories processed successfully! Ready for final review. ✨
+      
+      ---
+      *Sequential automation complete • BMAD ERPNext v16 • [Claude Code](https://claude.ai/code)*
+
+# SMART PARALLEL MODE TEMPLATES
+smart_parallel_mode:
+  
+  # Parallel Block Progress
+  parallel_block_progress:
+    name: "Smart Parallel Block Progress"
+    trigger: "parallel_block_update"
+    template: |
+      ## 🔀 Parallel Execution Progress
+      
+      **Session**: ${SESSION_ID}
+      **Block**: ${BLOCK_NAME} (${BLOCK_NUMBER}/${TOTAL_BLOCKS})
+      **Status**: ${BLOCK_STATUS}
+      **Progress**: ${COMPLETED_AGENTS}/${TOTAL_AGENTS} agents
+      **Timestamp**: ${TIMESTAMP}
+      
+      ### Current Parallel Work
+      ${PARALLEL_AGENTS_STATUS}
+      
+      ### Block Performance
+      **Estimated Duration**: ${ESTIMATED_DURATION}
+      **Actual Duration**: ${ACTUAL_DURATION}
+      **Efficiency Gain**: ${EFFICIENCY_GAIN}%
+      **Agent Utilization**: ${AGENT_UTILIZATION}%
+      
+      ### Conflict Monitoring
+      **Conflicts Detected**: ${CONFLICTS_DETECTED}
+      **Conflicts Resolved**: ${CONFLICTS_RESOLVED}
+      **Active Conflicts**: ${ACTIVE_CONFLICTS}
+      **Conflict Resolution Time**: ${CONFLICT_RESOLUTION_TIME}
+      
+      ### Quality Gates (Parallel)
+      ${PARALLEL_QUALITY_GATES}
+      
+      ### Resource Utilization
+      **Concurrent Agents**: ${CONCURRENT_AGENTS}
+      **Memory Usage**: ${MEMORY_USAGE}
+      **Processing Load**: ${PROCESSING_LOAD}
+      
+      ### Dependencies
+      **Completed Dependencies**: ${COMPLETED_DEPENDENCIES}
+      **Pending Dependencies**: ${PENDING_DEPENDENCIES}
+      **Blocked Work**: ${BLOCKED_WORK}
+      
+      **ETA for Block Completion**: ${BLOCK_ETA}
+      
+      ---
+      *Intelligent parallel execution • BMAD ERPNext v16 • [Claude Code](https://claude.ai/code)*
+  
+  # Conflict Detection Alert
+  conflict_alert:
+    name: "Parallel Execution Conflict Alert"
+    trigger: "conflict_detection"
+    template: |
+      ## ⚠️ Parallel Execution Conflict Detected
+      
+      **Conflict Type**: ${CONFLICT_TYPE}
+      **Severity**: ${CONFLICT_SEVERITY}
+      **Detected At**: ${TIMESTAMP}
+      **Block**: ${AFFECTED_BLOCK}
+      
+      ### Conflict Details
+      **Conflicting Agents**: ${CONFLICTING_AGENTS}
+      **Resource**: ${CONFLICTED_RESOURCE}
+      **Conflict Description**: ${CONFLICT_DESCRIPTION}
+      
+      ### Impact Assessment
+      **Affected Work**: ${AFFECTED_WORK}
+      **Potential Data Loss**: ${DATA_LOSS_RISK}
+      **Performance Impact**: ${PERFORMANCE_IMPACT}
+      
+      ### Automatic Resolution
+      **Resolution Strategy**: ${RESOLUTION_STRATEGY}
+      **Action Taken**: ${ACTION_TAKEN}
+      **Resolution Time**: ${RESOLUTION_TIME}
+      
+      ### Recovery Status
+      ${RECOVERY_STATUS}
+      
+      ### Fallback Plan
+      ${FALLBACK_PLAN}
+      
+      ${MANUAL_INTERVENTION_REQUIRED}
+      
+      ---
+      *Conflict detection and recovery • BMAD ERPNext v16 • [Claude Code](https://claude.ai/code)*
+  
+  # Parallel Completion
+  parallel_completion:
+    name: "Smart Parallel Execution Complete"
+    trigger: "parallel_execution_completion"
+    template: |
+      ## 🚀 Parallel Execution Complete
+      
+      **Total Blocks**: ${TOTAL_BLOCKS}
+      **Total Stories**: ${TOTAL_STORIES}
+      **Parallel Duration**: ${PARALLEL_DURATION}
+      **Sequential Estimate**: ${SEQUENTIAL_ESTIMATE}
+      **Completed At**: ${TIMESTAMP}
+      
+      ### Performance Achievement
+      **Time Savings**: ${TIME_SAVINGS} (${EFFICIENCY_PERCENTAGE}% faster)
+      **Agent Utilization**: ${AVERAGE_AGENT_UTILIZATION}%
+      **Parallel Efficiency**: ${PARALLEL_EFFICIENCY}%
+      **Resource Optimization**: ${RESOURCE_OPTIMIZATION}%
+      
+      ### Parallel Execution Summary
+      ${PARALLEL_EXECUTION_SUMMARY}
+      
+      ### Conflict Management
+      **Total Conflicts**: ${TOTAL_CONFLICTS}
+      **Automatic Resolutions**: ${AUTOMATIC_RESOLUTIONS}
+      **Manual Interventions**: ${MANUAL_INTERVENTIONS}
+      **Conflict Rate**: ${CONFLICT_RATE}%
+      **Resolution Success Rate**: ${RESOLUTION_SUCCESS_RATE}%
+      
+      ### Quality Assurance
+      **Parallel Quality Gates**: ${PARALLEL_GATES_PASSED}/${PARALLEL_GATES_TOTAL}
+      **Cross-Agent Validation**: ${CROSS_AGENT_VALIDATIONS}
+      **Integration Tests**: ${INTEGRATION_TESTS_PASSED}/${INTEGRATION_TESTS_TOTAL}
+      
+      ### Technical Metrics
+      **Concurrent Peak**: ${MAX_CONCURRENT_AGENTS} agents
+      **Memory Peak**: ${PEAK_MEMORY_USAGE}
+      **Processing Peak**: ${PEAK_PROCESSING_LOAD}
+      
+      ### Deliverables
+      ${DELIVERABLES_SUMMARY}
+      
+      ### Lessons Learned
+      ${LESSONS_LEARNED}
+      
+      ### Future Optimization
+      ${OPTIMIZATION_RECOMMENDATIONS}
+      
+      Parallel execution completed with exceptional efficiency! 🎉
+      
+      ---
+      *Smart parallel execution • BMAD ERPNext v16 • [Claude Code](https://claude.ai/code)*
+
+# QUALITY GATE SPECIFIC TEMPLATES
+quality_gate_templates:
+  
+  # Gate Success (All Modes)
+  gate_success:
+    name: "Quality Gate Success"
+    trigger: "quality_gate_passed"
+    template: |
+      ## ✅ Quality Gate Passed
+      
+      **Gate**: ${GATE_NAME}
+      **Story**: ${STORY_ID}
+      **Agent**: ${AGENT_ID}
+      **Mode**: ${EXECUTION_MODE}
+      **Passed At**: ${TIMESTAMP}
+      
+      ### Gate Results
+      ${GATE_RESULTS}
+      
+      ### Validation Details
+      ${VALIDATION_DETAILS}
+      
+      ### Next Steps
+      ${NEXT_STEPS}
+      
+      ---
+      *Quality assurance • BMAD ERPNext v16*
+  
+  # Gate Failure (All Modes)
+  gate_failure:
+    name: "Quality Gate Failure"
+    trigger: "quality_gate_failed"
+    template: |
+      ## ❌ Quality Gate Failed
+      
+      **Gate**: ${GATE_NAME}
+      **Story**: ${STORY_ID}
+      **Agent**: ${AGENT_ID}
+      **Mode**: ${EXECUTION_MODE}
+      **Failed At**: ${TIMESTAMP}
+      
+      ### Failure Details
+      ${FAILURE_DETAILS}
+      
+      ### Impact Assessment
+      ${IMPACT_ASSESSMENT}
+      
+      ### Recovery Plan
+      ${RECOVERY_PLAN}
+      
+      ### Manual Intervention Required
+      ${MANUAL_INTERVENTION}
+      
+      ---
+      *Quality gate monitoring • BMAD ERPNext v16*
+
+# ERROR AND ESCALATION TEMPLATES
+error_templates:
+  
+  # General Error
+  general_error:
+    name: "General Error Alert"
+    trigger: "error_occurred"
+    template: |
+      ## 🚨 Development Error
+      
+      **Error Type**: ${ERROR_TYPE}
+      **Severity**: ${ERROR_SEVERITY}
+      **Occurred At**: ${TIMESTAMP}
+      **Mode**: ${EXECUTION_MODE}
+      
+      ### Error Details
+      ${ERROR_DETAILS}
+      
+      ### Context
+      **Story**: ${STORY_ID}
+      **Agent**: ${AGENT_ID}
+      **Operation**: ${OPERATION}
+      
+      ### Recovery Action
+      ${RECOVERY_ACTION}
+      
+      ### Status
+      ${CURRENT_STATUS}
+      
+      ---
+      *Error handling • BMAD ERPNext v16*
+  
+  # Escalation Required
+  escalation_required:
+    name: "Escalation Required"
+    trigger: "escalation_needed"
+    template: |
+      ## 🆘 Escalation Required
+      
+      **Escalation Level**: ${ESCALATION_LEVEL}
+      **Reason**: ${ESCALATION_REASON}
+      **Triggered At**: ${TIMESTAMP}
+      
+      ### Situation Summary
+      ${SITUATION_SUMMARY}
+      
+      ### Attempted Resolutions
+      ${ATTEMPTED_RESOLUTIONS}
+      
+      ### Required Action
+      ${REQUIRED_ACTION}
+      
+      ### Urgency
+      ${URGENCY_LEVEL}
+      
+      ---
+      *Escalation alert • BMAD ERPNext v16*
+
+# COMPLETION AND SUMMARY TEMPLATES
+completion_templates:
+  
+  # Session Summary
+  session_summary:
+    name: "Session Summary"
+    trigger: "session_completion"
+    template: |
+      ## 📊 BMAD Development Session Summary
+      
+      **Session**: ${SESSION_ID}
+      **Mode**: ${EXECUTION_MODE}
+      **Duration**: ${SESSION_DURATION}
+      **Completed At**: ${TIMESTAMP}
+      
+      ### Work Completed
+      **Stories**: ${STORIES_COMPLETED}/${STORIES_TOTAL}
+      **Agents Executed**: ${AGENTS_EXECUTED}
+      **Quality Gates**: ${GATES_PASSED}/${GATES_TOTAL}
+      
+      ### Performance Metrics
+      ${PERFORMANCE_SUMMARY}
+      
+      ### Quality Metrics
+      ${QUALITY_SUMMARY}
+      
+      ### Deliverables
+      ${DELIVERABLES_LIST}
+      
+      ### Session Insights
+      ${SESSION_INSIGHTS}
+      
+      ### Recommendations
+      ${RECOMMENDATIONS}
+      
+      Thank you for using BMAD ERPNext v16! 🎉
+      
+      ---
+      *Session complete • BMAD ERPNext v16 • [Claude Code](https://claude.ai/code)*
+
+# TEMPLATE USAGE CONFIGURATION
+template_configuration:
+  
+  # Mode-specific template mapping
+  mode_templates:
+    guided:
+      progress: "guided_mode.interactive_progress"
+      quality_gate: "guided_mode.quality_gate_review"
+      completion: "guided_mode.completion_summary"
+      
+    sequential:
+      progress: "sequential_mode.batch_progress"
+      batch_complete: "sequential_mode.batch_completion"
+      completion: "sequential_mode.sequential_completion"
+      
+    smart_parallel:
+      progress: "smart_parallel_mode.parallel_block_progress"
+      conflict: "smart_parallel_mode.conflict_alert"
+      completion: "smart_parallel_mode.parallel_completion"
+  
+  # Common templates (all modes)
+  common_templates:
+    quality_gate_success: "quality_gate_templates.gate_success"
+    quality_gate_failure: "quality_gate_templates.gate_failure"
+    error: "error_templates.general_error"
+    escalation: "error_templates.escalation_required"
+    session_summary: "completion_templates.session_summary"
+  
+  # Template variables
+  variable_substitution:
+    global_variables:
+      - SESSION_ID
+      - TIMESTAMP
+      - EXECUTION_MODE
+      - STORY_ID
+      - STORY_TITLE
+      - AGENT_ID
+      - USER
+      
+    mode_specific_variables:
+      guided:
+        - USER_DECISION
+        - USER_REASONING
+        - APPROVAL_POINT
+        - LEARNING_INSIGHTS
+        - USER_SATISFACTION
+        
+      sequential:
+        - BATCH_NUMBER
+        - BATCH_SIZE
+        - STORIES_PER_HOUR
+        - AUTOMATION_RATE
+        - TIME_SAVINGS
+        
+      smart_parallel:
+        - BLOCK_NAME
+        - BLOCK_NUMBER
+        - CONFLICTS_DETECTED
+        - EFFICIENCY_GAIN
+        - AGENT_UTILIZATION
+  
+  # Formatting rules
+  formatting:
+    timestamp_format: "ISO_8601"
+    duration_format: "human_readable"
+    percentage_format: "one_decimal"
+    links_format: "markdown"
+    
+  # Rate limiting
+  rate_limiting:
+    max_comments_per_hour: 30
+    min_interval_between_comments: 2  # minutes
+    priority_comments: ["escalation", "conflict", "gate_failure"]

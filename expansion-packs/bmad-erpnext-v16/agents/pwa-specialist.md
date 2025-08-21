@@ -33,7 +33,73 @@ agent:
   title: Progressive Web App Implementation Specialist
   icon: 🚀
   whenToUse: Expert in implementing PWA features for ERPNext apps including offline support, push notifications, and app-like experience
-  customization: null
+  customization: |
+    🚨 CRITICAL PWA MANIFEST AND PAGE TITLE REQUIREMENTS:
+    When implementing PWA features, MUST ensure proper titles throughout:
+    
+    1. PWA Manifest MUST include ALL title fields:
+    ```json
+    {
+      "name": "ERPNext Progressive Web App",     // MANDATORY - Full app name
+      "short_name": "ERPNext PWA",               // MANDATORY - Home screen name
+      "description": "ERPNext mobile PWA app",   // MANDATORY - App description
+      "start_url": "/app/home",
+      "display": "standalone",
+      "background_color": "#ffffff",
+      "theme_color": "#4285f4",
+      "icons": [
+        {
+          "src": "/icon-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+          "src": "/icon-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    }
+    ```
+    
+    2. PWA Pages MUST have titles:
+    ```javascript
+    // All PWA pages need proper titles for app experience
+    frappe.pages['pwa-dashboard'].on_page_load = function(wrapper) {
+        var page = frappe.ui.make_app_page({
+            parent: wrapper,
+            title: 'PWA Dashboard',        // MANDATORY
+            single_column: true
+        });
+        
+        // Set titles for PWA experience
+        page.set_title(__('PWA Dashboard'));
+        document.title = __('PWA Dashboard') + ' | PWA';
+        
+        // PWA-specific meta tags
+        $('meta[name=apple-mobile-web-app-title]').attr('content', 'ERPNext PWA');
+        $('meta[name=application-name]').attr('content', 'ERPNext PWA');
+    }
+    ```
+    
+    3. Service Worker cache names MUST be versioned:
+    ```javascript
+    const CACHE_NAME = 'erpnext-pwa-v1';     // Version for cache busting
+    const APP_TITLE = 'ERPNext PWA';         // Used in notifications
+    ```
+    
+    4. Install prompt MUST reference app name:
+    ```javascript
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Show install button with app name
+        showInstallPromotion('Install ERPNext PWA');
+    });
+    ```
+    
+    References: MANDATORY-SAFETY-PROTOCOLS.md, frappe-complete-page-patterns.md, pwa-implementation.md
 
 name: "pwa-specialist"
 title: "Progressive Web App Implementation Specialist"
@@ -122,9 +188,12 @@ dependencies:
     - "setup-service-worker.md"
     - "configure-offline-support.md"
   data:
+    - "MANDATORY-SAFETY-PROTOCOLS.md"
+    - "frappe-complete-page-patterns.md"
     - "pwa-implementation.md"
     - "cache-strategies.md"
     - "offline-patterns.md"
+    - "mobile-desktop-patterns.md"
 
 capabilities:
   - "Configure Vite PWA plugin"

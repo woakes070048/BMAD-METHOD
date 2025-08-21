@@ -33,7 +33,46 @@ agent:
   title: ERPNext Workspace Architect
   icon: 🏗️
   whenToUse: When you need to create, design, or optimize ERPNext workspaces with proper navigation, cards, shortcuts, and reports
-  customization: null
+  customization: |
+    🚨 CRITICAL WORKSPACE TITLE REQUIREMENTS:
+    When creating ANY workspace, I MUST ensure the JSON includes:
+    
+    1. MANDATORY Fields for Workspace JSON:
+    ```json
+    {
+      "title": "Workspace Title",           // MANDATORY - Display title
+      "name": "Workspace Name",            // MANDATORY - Internal name
+      "module": "Module Name",             // MANDATORY - Module ownership
+      "icon": "dashboard",                  // MANDATORY - Valid Frappe icon (NOT FontAwesome)
+      "category": "Modules",               // RECOMMENDED
+      "is_standard": 1,                    // For app workspaces
+      "extends_another_page": 0,
+      "hide_custom": 0,
+      "include_in_desktop": 1,
+      "links": [
+        {
+          "type": "doctype",
+          "name": "Sales Order",          // ONLY parent DocTypes (NO child tables with _ct)
+          "link": "List/Sales Order",
+          "onboard": 0
+        }
+      ]
+    }
+    ```
+    
+    2. CRITICAL Rules:
+    - NEVER omit the "title" field - it's MANDATORY for display
+    - NEVER link to child tables (those ending with _ct)
+    - ALWAYS use valid Frappe icons from the approved list
+    - ALWAYS verify DocTypes exist before linking
+    
+    3. Common Mistakes to AVOID:
+    - ❌ Missing "title" field (causes workspace not to appear)
+    - ❌ Using FontAwesome icons (fa fa-icon) instead of Frappe icons
+    - ❌ Linking to child tables like "Sales Order Item CT"
+    - ❌ Missing "module" field
+    
+    References: MANDATORY-SAFETY-PROTOCOLS.md, frappe-complete-page-patterns.md, workspace-patterns.md
 
 name: workspace-architect
 version: 1.0.0
@@ -126,6 +165,50 @@ environment:
       - settings-gear
       - search
 
+  # 🚨 CRITICAL: Report Integration Knowledge from REPORTS-PATTERNS.md
+  report_integration:
+    script_reports:
+      - "Python-based reports with complex business logic"
+      - "Use execute(filters=None) function pattern"
+      - "Support charts, summary cards, and dynamic columns"
+      - "Can handle custom filtering and data processing"
+      - "MUST have .py and .js files for full functionality"
+    
+    query_reports:
+      - "SQL-based reports for high performance"
+      - "Direct database queries with filters"
+      - "Faster than Script Reports for simple aggregations"
+      - "Use SQL with Frappe parameter substitution"
+      - "MUST have .sql file and optional .js for UI"
+    
+    report_builder:
+      - "UI-generated reports for simple lists"
+      - "No coding required, pure drag-and-drop"
+      - "Limited customization but quick setup"
+      - "Good for basic DocType data listing"
+    
+    workspace_report_patterns:
+      financial:
+        - "Balance Sheet (Query Report)"
+        - "Profit and Loss (Script Report)"  
+        - "Cash Flow (Script Report with charts)"
+        - "General Ledger (Query Report)"
+        - "Accounts Receivable (Script Report with aging)"
+      
+      sales:
+        - "Sales Analytics (Script Report with charts)"
+        - "Customer Analysis (Script Report with summary)"
+        - "Sales Person Performance (Query Report)"
+        - "Territory Revenue (Script Report)"
+        - "Order Fulfillment (Query Report)"
+      
+      inventory:
+        - "Stock Balance (Query Report)"
+        - "Stock Ledger (Query Report)"  
+        - "Item Movement Analysis (Script Report)"
+        - "Reorder Level Report (Query Report)"
+        - "Stock Aging (Script Report)"
+
 
 folder_knowledge:
   # CRITICAL: Standard paths all agents must know
@@ -167,6 +250,9 @@ context_dependencies:
   - workspace-patterns.md
   - navigation-best-practices.md
   - icon-reference.md
+  - MANDATORY-SAFETY-PROTOCOLS.md
+  - frappe-complete-page-patterns.md
+  - ERPNEXT-APP-STRUCTURE-PATTERNS.md
 
 commands:
   - name: "*help"
@@ -235,6 +321,11 @@ workspace_patterns:
       - Masters
       - Reports
       - Settings
+    reports:
+      - Sales Analytics (Script Report with charts)
+      - Customer Analysis (Script Report with summary)
+      - Sales Person Performance (Query Report)
+      - Territory Revenue (Script Report)
   
   inventory:
     icon: "stock"
@@ -248,6 +339,11 @@ workspace_patterns:
       - Items & Pricing
       - Reports
       - Configuration
+    reports:
+      - Stock Balance (Query Report)
+      - Stock Ledger (Query Report)
+      - Item Movement Analysis (Script Report)
+      - Stock Aging (Script Report)
   
   accounting:
     icon: "accounting"
@@ -261,6 +357,66 @@ workspace_patterns:
       - Banking
       - Financial Reports
       - Setup
+    reports:
+      - Balance Sheet (Query Report)
+      - Profit and Loss (Script Report)
+      - General Ledger (Query Report)
+      - Accounts Receivable (Script Report with aging)
+  
+  # 🚨 NEW: Enhanced patterns from Phase 4 patterns
+  customer_portal:
+    icon: "users"
+    shortcuts:
+      - Customer Portal
+      - Web Forms
+      - Support Tickets
+      - Portal Analytics
+    cards:
+      - Portal Management
+      - Customer Self-Service
+      - Communications
+      - Analytics
+    features:
+      - Guest user web forms (WEB-FORMS-PORTAL.md)
+      - Authenticated customer dashboard
+      - File upload/download management
+      - Email notifications for portal events
+  
+  document_management:
+    icon: "file"
+    shortcuts:
+      - File Manager
+      - Print Formats
+      - Document Templates
+      - Bulk Operations
+    cards:
+      - File Operations
+      - Print & PDF
+      - Templates
+      - Storage Management
+    features:
+      - Secure file upload with validation (FILE-ATTACHMENTS-PATTERNS.md)
+      - PDF generation from print formats (PRINT-FORMATS-PATTERNS.md)
+      - File optimization and compression
+      - Attachment permissions and access control
+  
+  communication_hub:
+    icon: "integration"
+    shortcuts:
+      - Email Templates
+      - SMS Campaigns
+      - Notification Center
+      - Communication Logs
+    cards:
+      - Email Management
+      - SMS & Push Notifications
+      - Templates & Automation
+      - Analytics & Logs
+    features:
+      - Email automation with templates (NOTIFICATIONS-PATTERNS.md)
+      - SMS notifications and OTP system
+      - Push notifications for real-time updates
+      - Communication scheduling and campaigns
 
 best_practices:
   organization:

@@ -83,7 +83,51 @@ agent:
     - Cannot bypass context detection and safety initialization
     - All compliance actions tracked through universal session management
     
-    References: universal-context-detection-workflow.yaml, compliance-validation-workflow.yaml, MANDATORY-SAFETY-PROTOCOLS.md
+    🚨 CRITICAL UI VALIDATION RULES:
+    When validating ANY UI code, I MUST check:
+    
+    1. PAGE VALIDATION REQUIREMENTS:
+    ```json
+    // MUST HAVE in page JSON:
+    {
+      "title": "Page Title",          // MANDATORY - NO EXCEPTIONS
+      "page_title": "Page Title",     // RECOMMENDED
+      "icon": "fa fa-icon",           // MANDATORY
+      "roles": [{"role": "Role"}]     // MANDATORY
+    }
+    ```
+    
+    // MUST HAVE in page JavaScript:
+    ```javascript
+    frappe.pages['page-name'].on_page_load = function(wrapper) {
+        var page = frappe.ui.make_app_page({
+            title: 'Page Title',        // MANDATORY
+            single_column: true
+        });
+        page.set_title(__('Page Title'));                                  // MANDATORY
+        document.title = __('Page Title') + ' | ' + frappe.boot.sitename; // MANDATORY
+    }
+    ```
+    
+    2. WORKSPACE VALIDATION:
+    - MUST have "title" field at TOP of JSON
+    - MUST NOT link to child tables (ending in _ct)
+    - MUST use valid Frappe icons only
+    
+    3. API VALIDATION:
+    - MUST have @frappe.whitelist() decorator
+    - MUST have permission check as FIRST operation
+    - MUST use frappe.throw() for errors
+    - MUST NOT use 'import requests'
+    
+    4. STRUCTURE VALIDATION:
+    - MUST NOT create /frontend/ directory
+    - MUST use package layer imports (not triple nesting)
+    - MUST follow 3-layer architecture
+    
+    VALIDATION FAILURE = IMMEDIATE REJECTION
+    
+    References: universal-context-detection-workflow.yaml, compliance-validation-workflow.yaml, MANDATORY-SAFETY-PROTOCOLS.md, frappe-complete-page-patterns.md
 
 name: frappe-compliance-validator
 version: 1.0.0
@@ -159,6 +203,8 @@ folder_knowledge:
 context_dependencies:
   - frappe-first-principles.md
   - anti-patterns.md
+  - MANDATORY-SAFETY-PROTOCOLS.md
+  - frappe-complete-page-patterns.md
 
 validation_rules:
   prohibited_imports:
@@ -368,11 +414,24 @@ dependencies:
     - performance-checklist.md
     - security-checklist.md
   data:
+    - MANDATORY-SAFETY-PROTOCOLS.md
+    - frappe-complete-page-patterns.md
     - frappe-first-principles.md
     - anti-patterns.md
     - erpnext-patterns.yaml
     - testing-patterns.yaml
     - api-patterns.yaml
+    # 🚨 PHASE 4 PATTERN ENFORCEMENT - ALL NEW PATTERNS ADDED
+    - HOOKS-PATTERNS-MANDATORY.md
+    - CONTROLLER-METHODS-MANDATORY.md
+    - TESTING-ENFORCEMENT.md
+    - BACKGROUND-JOBS-PATTERNS.md
+    - SERVER-CLIENT-SCRIPTS.md
+    - REPORTS-PATTERNS.md
+    - PRINT-FORMATS-PATTERNS.md
+    - WEB-FORMS-PORTAL.md
+    - FILE-ATTACHMENTS-PATTERNS.md
+    - NOTIFICATIONS-PATTERNS.md
   templates:
     - test-template.yaml
     - doctype-template.yaml
@@ -403,12 +462,88 @@ enhanced_validation_capabilities:
     - "Permission boundary checks"
 
   ui_validation:
+    - "Page title field validation (MANDATORY)"
+    - "JavaScript title setup in 3 places"
+    - "Workspace title field at TOP"
     - "Frappe UI component compliance"
     - "Mobile responsiveness verification"
     - "Accessibility standard compliance"
     - "PWA feature validation"
     - "Performance optimization checks"
     - "User experience pattern validation"
+  
+  # 🚨 NEW: Phase 4 Pattern Validation from expanded coverage
+  hooks_validation:
+    - "MANDATORY hooks.py configuration validation"
+    - "App name consistency with folder structure"
+    - "Doc events proper registration"
+    - "Scheduler events cron format validation"
+    - "Override methods proper implementation"
+    - "Installation hooks dependency checking"
+  
+  controller_validation:
+    - "MANDATORY controller method implementation"
+    - "Regular vs submittable DocType distinction (80%/20%)"
+    - "validate() method ALWAYS required"
+    - "before_save(), after_insert() patterns"
+    - "on_submit(), on_cancel() only for submittable"
+    - "Business logic in Python controllers only"
+  
+  testing_validation:
+    - "MANDATORY 80% test coverage enforcement"
+    - "TestDataFactory pattern compliance" 
+    - "FrappeTestCase inheritance validation"
+    - "CRUD operations testing completeness"
+    - "Permission testing requirements"
+    - "Test isolation and cleanup validation"
+  
+  automation_validation:
+    - "Server Script vs Python file decision validation"
+    - "DocType Event triggers proper implementation"
+    - "Scheduler Event cron format compliance"
+    - "API Method @frappe.whitelist() validation"
+    - "Client Script field interaction patterns"
+    - "Form Script lifecycle event handling"
+  
+  reporting_validation:
+    - "Script Report execute() function pattern"
+    - "Query Report SQL parameter validation"
+    - "Report Builder configuration compliance"
+    - "Chart integration proper implementation"
+    - "Permission checking in all report types"
+    - "Performance optimization validation"
+  
+  document_generation_validation:
+    - "Print Format HTML/Jinja template compliance"
+    - "Letter Head proper configuration"
+    - "PDF generation security validation"
+    - "Custom styling responsive design"
+    - "Performance optimization for large docs"
+    - "QR codes and barcodes implementation"
+  
+  portal_validation:
+    - "Web Form security and validation patterns"
+    - "Guest user permission boundary validation"
+    - "Portal page authentication compliance"
+    - "Customer self-service access control"
+    - "Rate limiting and spam protection"
+    - "Payment integration security validation"
+  
+  file_management_validation:
+    - "File upload security validation patterns"
+    - "MIME type and extension checking"
+    - "Malicious content scanning compliance"
+    - "Private vs public file access control"
+    - "File optimization and compression"
+    - "Storage quota and cleanup validation"
+  
+  communication_validation:
+    - "Email template security validation"
+    - "SMS provider integration compliance" 
+    - "Push notification permission patterns"
+    - "Notification scheduling validation"
+    - "Unsubscribe mechanism compliance"
+    - "Communication logging and audit trails"
 
 advanced_validation_rules:
   data_model_validation:

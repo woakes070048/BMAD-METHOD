@@ -1,0 +1,298 @@
+# Execution Mode Rules
+# Defines rules for selecting and operating execution modes
+
+name: execution-mode-rules
+version: 1.0.0
+description: Rules for development coordinator execution mode selection and operation
+
+# EXECUTION MODES DEFINITION
+execution_modes:
+  guided:
+    name: "Guided Mode"
+    description: "Interactive, one story at a time with user guidance"
+    default: true
+    characteristics:
+      user_interaction: required
+      approval_needed: each_step
+      automation_level: minimal
+      learning_friendly: true
+      risk_level: lowest
+      speed: slowest
+    suitable_for:
+      - "Learning BMAD system"
+      - "Debugging complex issues"
+      - "Careful exploration"
+      - "High-risk changes"
+      - "First-time tasks"
+    
+  sequential:
+    name: "Sequential Mode" 
+    description: "Automated sequential processing of multiple stories"
+    characteristics:
+      user_interaction: minimal
+      approval_needed: start_only
+      automation_level: high
+      learning_friendly: false
+      risk_level: medium
+      speed: medium
+    suitable_for:
+      - "Known workflows"
+      - "Stable requirements"
+      - "Batch processing"
+      - "Maintenance tasks"
+      - "Routine updates"
+    
+  smart_parallel:
+    name: "Smart Parallel Mode"
+    description: "Intelligent parallel execution with conflict detection"
+    characteristics:
+      user_interaction: on_conflicts
+      approval_needed: on_failures
+      automation_level: highest
+      learning_friendly: false
+      risk_level: highest
+      speed: fastest
+    suitable_for:
+      - "Large epics"
+      - "Independent stories"
+      - "Time-critical delivery"
+      - "Well-understood work"
+      - "Scalable development"
+
+# MODE SELECTION LOGIC
+mode_selection:
+  auto_suggest_rules:
+    # Story count based suggestions
+    single_story:
+      condition: "story_count == 1"
+      suggested_mode: "guided"
+      reason: "Single story benefits from careful attention"
+    
+    multiple_stories_simple:
+      condition: "story_count > 1 AND story_count <= 5 AND complexity == 'low'"
+      suggested_mode: "sequential"
+      reason: "Multiple simple stories can be automated"
+    
+    multiple_stories_complex:
+      condition: "story_count > 1 AND complexity == 'high'"
+      suggested_mode: "guided"
+      reason: "Complex stories need careful review"
+    
+    large_epic:
+      condition: "story_count > 5 AND dependency_ratio < 0.3"
+      suggested_mode: "smart_parallel"
+      reason: "Large epic with low dependencies benefits from parallelization"
+    
+    # Complexity based suggestions
+    high_risk:
+      condition: "risk_level == 'high'"
+      suggested_mode: "guided"
+      reason: "High-risk work requires careful supervision"
+    
+    routine_work:
+      condition: "risk_level == 'low' AND pattern_match == 'known'"
+      suggested_mode: "sequential"
+      reason: "Routine work can be automated safely"
+    
+    independent_work:
+      condition: "independence_score > 0.8"
+      suggested_mode: "smart_parallel"
+      reason: "Independent work can be parallelized safely"
+  
+  user_override:
+    allowed: true
+    warning_conditions:
+      guided_for_large_epic:
+        condition: "story_count > 10 AND selected_mode == 'guided'"
+        warning: "Guided mode for large epic will be very slow. Consider sequential or parallel."
+      
+      parallel_for_dependent_work:
+        condition: "dependency_ratio > 0.7 AND selected_mode == 'smart_parallel'"
+        warning: "High dependency work may not benefit from parallelization."
+      
+      sequential_for_single_story:
+        condition: "story_count == 1 AND selected_mode == 'sequential'"
+        warning: "Sequential mode overhead not needed for single story."
+
+# MODE OPERATION RULES
+mode_operations:
+  guided:
+    workflow_steps:
+      - present_analysis: "Show task analysis to user"
+      - request_approval: "Get user approval for each step"
+      - execute_single_step: "Execute one agent at a time"
+      - show_results: "Display results for review"
+      - request_next_approval: "Get approval for next step"
+    
+    quality_gates:
+      frequency: "after_each_agent"
+      user_review: required
+      auto_proceed: false
+      failure_handling: "interactive_decision"
+    
+    user_interaction:
+      decision_points: all
+      progress_updates: detailed
+      error_handling: interactive
+      learning_mode: enabled
+  
+  sequential:
+    workflow_steps:
+      - load_story_queue: "Load all stories to process"
+      - show_execution_plan: "Display planned sequence"
+      - get_initial_approval: "Get approval to start"
+      - process_stories_automatically: "Execute stories in order"
+      - report_completion: "Report final results"
+    
+    quality_gates:
+      frequency: "after_each_story"
+      user_review: on_failure_only
+      auto_proceed: true
+      failure_handling: "automatic_retry_then_pause"
+    
+    user_interaction:
+      decision_points: start_and_failures
+      progress_updates: periodic
+      error_handling: "automatic_with_escalation"
+      learning_mode: disabled
+  
+  smart_parallel:
+    workflow_steps:
+      - analyze_parallel_potential: "Check for parallelization opportunities"
+      - create_execution_blocks: "Group non-conflicting work"
+      - show_parallel_plan: "Display parallel execution strategy"
+      - execute_parallel_blocks: "Run agents in parallel"
+      - handle_dynamic_conflicts: "Manage conflicts as they arise"
+      - consolidate_results: "Merge parallel work"
+    
+    quality_gates:
+      frequency: "after_each_block"
+      user_review: on_failure_only
+      auto_proceed: true
+      failure_handling: "automatic_recovery_with_fallback"
+    
+    user_interaction:
+      decision_points: conflicts_and_failures
+      progress_updates: real_time
+      error_handling: "automatic_with_intelligent_recovery"
+      learning_mode: disabled
+
+# PERFORMANCE CHARACTERISTICS
+performance_profiles:
+  guided:
+    typical_throughput: "1 story per session"
+    time_per_story: "high_variance"
+    user_time_required: "high"
+    automation_efficiency: "low"
+    learning_value: "highest"
+    error_prevention: "highest"
+  
+  sequential:
+    typical_throughput: "3-7 stories per session"
+    time_per_story: "predictable"
+    user_time_required: "low"
+    automation_efficiency: "high"
+    learning_value: "medium"
+    error_prevention: "high"
+  
+  smart_parallel:
+    typical_throughput: "5-15 stories per session"
+    time_per_story: "lowest"
+    user_time_required: "minimal"
+    automation_efficiency: "highest"
+    learning_value: "low"
+    error_prevention: "medium"
+
+# MODE TRANSITION RULES
+mode_transitions:
+  allowed_transitions:
+    - from: "guided"
+      to: ["sequential", "smart_parallel"]
+      condition: "anytime"
+    
+    - from: "sequential"
+      to: ["guided", "smart_parallel"]
+      condition: "between_stories"
+    
+    - from: "smart_parallel"
+      to: ["guided", "sequential"]
+      condition: "on_failure_or_between_blocks"
+  
+  automatic_transitions:
+    parallel_to_sequential:
+      trigger: "repeated_parallel_failures"
+      threshold: "3_failures_in_block"
+      action: "auto_switch_to_sequential"
+    
+    sequential_to_guided:
+      trigger: "complex_failure_pattern"
+      threshold: "2_consecutive_story_failures"
+      action: "suggest_guided_mode"
+    
+    any_to_guided:
+      trigger: "user_confusion_detected"
+      threshold: "3_override_warnings_ignored"
+      action: "recommend_guided_mode"
+
+# QUALITY GATE INTEGRATION
+quality_gate_behavior:
+  guided:
+    run_gates: "after_each_agent"
+    show_results: "detailed"
+    user_decision: "required_on_failure"
+    auto_retry: false
+    escalation: "immediate"
+  
+  sequential:
+    run_gates: "after_each_story"
+    show_results: "summary"
+    user_decision: "on_repeated_failure"
+    auto_retry: true
+    escalation: "after_3_failures"
+  
+  smart_parallel:
+    run_gates: "after_each_block"
+    show_results: "exceptions_only"
+    user_decision: "on_unrecoverable_failure"
+    auto_retry: true
+    escalation: "intelligent_recovery_first"
+
+# FAILURE HANDLING BY MODE
+failure_handling:
+  guided:
+    strategy: "interactive_problem_solving"
+    user_involvement: "high"
+    learning_opportunity: true
+    retry_mechanism: "manual_with_guidance"
+  
+  sequential:
+    strategy: "automatic_retry_with_fallback"
+    user_involvement: "minimal"
+    learning_opportunity: false
+    retry_mechanism: "automated_with_escalation"
+  
+  smart_parallel:
+    strategy: "intelligent_recovery_and_adaptation"
+    user_involvement: "exceptional_cases_only"
+    learning_opportunity: false
+    retry_mechanism: "dynamic_strategy_adjustment"
+
+# RESOURCE UTILIZATION
+resource_usage:
+  guided:
+    agent_concurrency: 1
+    memory_usage: "low"
+    processing_intensity: "low"
+    human_attention: "high"
+  
+  sequential:
+    agent_concurrency: 1
+    memory_usage: "medium"
+    processing_intensity: "medium"
+    human_attention: "low"
+  
+  smart_parallel:
+    agent_concurrency: "3-8"
+    memory_usage: "high"
+    processing_intensity: "high"
+    human_attention: "minimal"

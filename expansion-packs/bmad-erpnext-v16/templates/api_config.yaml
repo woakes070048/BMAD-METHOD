@@ -1,0 +1,50 @@
+# API Configuration Template
+# This template defines the structure for API endpoint configurations
+
+api_config:
+  endpoint_name: "{{ endpoint_name }}"
+  method: "{{ method }}"  # GET, POST, PUT, DELETE, PATCH
+  path: "{{ api_path }}"
+  
+  authentication:
+    required: "{{ auth_required | default(true) }}"
+    type: "{{ auth_type | default('token') }}"  # token, session, oauth
+  
+  permissions:
+    roles: 
+      - "{{ required_role | default('System Manager') }}"
+    doctype: "{{ doctype_permission }}"
+    perm_type: "{{ permission_type | default('read') }}"  # read, write, create, delete
+  
+  parameters:
+    query:
+      - name: "{{ param_name }}"
+        type: "{{ param_type }}"  # string, integer, boolean, array, object
+        required: "{{ param_required | default(false) }}"
+        description: "{{ param_description }}"
+    
+    body:
+      content_type: "{{ content_type | default('application/json') }}"
+      schema: "{{ body_schema }}"
+  
+  response:
+    success:
+      status_code: "{{ success_code | default(200) }}"
+      content_type: "{{ response_type | default('application/json') }}"
+      schema: "{{ response_schema }}"
+    
+    error:
+      status_code: "{{ error_code | default(400) }}"
+      format: "{{ error_format }}"
+  
+  rate_limiting:
+    enabled: "{{ rate_limit_enabled | default(false) }}"
+    requests_per_minute: "{{ rate_limit | default(60) }}"
+  
+  caching:
+    enabled: "{{ cache_enabled | default(false) }}"
+    ttl_seconds: "{{ cache_ttl | default(300) }}"
+  
+  validation:
+    input_validation: "{{ validate_input | default(true) }}"
+    output_sanitization: "{{ sanitize_output | default(true) }}"

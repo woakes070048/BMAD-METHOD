@@ -1,0 +1,497 @@
+# GitHub Sync Configuration
+# Centralized configuration for GitHub integration and synchronization behavior
+
+name: github-sync-configuration
+version: 1.0.0
+description: Configuration rules for GitHub integration, sync frequency, and comment behavior
+
+# GITHUB INTEGRATION SETTINGS
+github_integration:
+  enabled: true
+  auto_setup: true
+  required_tools:
+    - gh_cli
+    - git
+    - jq
+  
+  # Authentication requirements
+  authentication:
+    method: "gh_cli"
+    required_scopes:
+      - "repo"
+      - "issues"
+      - "pull_requests"
+    verification_command: "gh auth status"
+  
+  # Repository configuration
+  repository:
+    auto_detect: true
+    fallback_detection:
+      - git_remote_origin
+      - current_directory
+      - config_yaml_setting
+    validation_required: true
+
+# SYNC BEHAVIOR CONFIGURATION
+sync_behavior:
+  # Global sync settings
+  global:
+    enabled: true
+    default_mode: "guided"
+    rate_limiting:
+      enabled: true
+      max_requests_per_hour: 30
+      min_interval_seconds: 120
+      burst_allowance: 5
+    
+    # Error handling
+    error_handling:
+      max_retries: 3
+      retry_delay_seconds: 30
+      exponential_backoff: true
+      fail_gracefully: true
+    
+    # Content filtering
+    content_filtering:
+      max_comment_length: 65536
+      sanitize_paths: true
+      remove_sensitive_data: true
+      allowed_markdown: true
+  
+  # Mode-specific sync configurations
+  mode_specific:
+    guided:
+      sync_frequency: "on_user_approval"
+      comment_detail_level: "high"
+      user_interaction_required: true
+      automatic_sync: false
+      
+      sync_triggers:
+        - user_approval_checkpoint
+        - quality_gate_completion
+        - agent_handoff
+        - story_completion
+        - error_escalation
+      
+      rate_limiting:
+        min_interval_seconds: 300  # 5 minutes
+        max_per_session: 20
+      
+      content_rules:
+        include_user_decisions: true
+        include_learning_notes: true
+        include_detailed_explanations: true
+        include_approval_reasoning: true
+    
+    sequential:
+      sync_frequency: "on_batch_completion"
+      comment_detail_level: "medium"
+      user_interaction_required: false
+      automatic_sync: true
+      
+      sync_triggers:
+        - batch_start
+        - batch_progress_milestone
+        - batch_completion
+        - critical_error
+        - quality_gate_failure
+      
+      rate_limiting:
+        min_interval_seconds: 900  # 15 minutes
+        max_per_session: 10
+      
+      content_rules:
+        include_batch_metrics: true
+        include_automation_stats: true
+        include_efficiency_data: true
+        summarize_individual_stories: true
+    
+    smart_parallel:
+      sync_frequency: "on_block_completion"
+      comment_detail_level: "high_with_metrics"
+      user_interaction_required: false
+      automatic_sync: true
+      
+      sync_triggers:
+        - parallel_block_start
+        - parallel_block_completion
+        - conflict_detection
+        - conflict_resolution
+        - performance_milestone
+        - parallel_execution_complete
+      
+      rate_limiting:
+        min_interval_seconds: 120  # 2 minutes
+        max_per_session: 25
+      
+      content_rules:
+        include_parallel_metrics: true
+        include_conflict_analysis: true
+        include_performance_data: true
+        include_efficiency_calculations: true
+        include_resource_utilization: true
+
+# COMMENT TEMPLATES AND FORMATTING
+comment_formatting:
+  # Template selection rules
+  template_selection:
+    guided_mode:
+      progress_update: "guided_mode.interactive_progress"
+      quality_gate_success: "quality_gate_templates.gate_success"
+      quality_gate_failure: "quality_gate_templates.gate_failure"
+      completion: "guided_mode.completion_summary"
+      error: "error_templates.general_error"
+    
+    sequential_mode:
+      progress_update: "sequential_mode.batch_progress"
+      batch_completion: "sequential_mode.batch_completion"
+      quality_gate_failure: "quality_gate_templates.gate_failure"
+      completion: "sequential_mode.sequential_completion"
+      error: "error_templates.general_error"
+    
+    smart_parallel_mode:
+      progress_update: "smart_parallel_mode.parallel_block_progress"
+      conflict_alert: "smart_parallel_mode.conflict_alert"
+      quality_gate_failure: "quality_gate_templates.gate_failure"
+      completion: "smart_parallel_mode.parallel_completion"
+      error: "error_templates.general_error"
+  
+  # Content formatting rules
+  content_formatting:
+    markdown_enabled: true
+    emoji_usage: "moderate"  # none/minimal/moderate/extensive
+    code_blocks: true
+    tables: true
+    links: true
+    
+    # Special formatting
+    timestamp_format: "ISO_8601"
+    duration_format: "human_readable"
+    percentage_format: "one_decimal"
+    file_paths: "relative_with_context"
+    
+    # Content organization
+    sections:
+      summary_first: true
+      details_collapsible: false
+      metrics_in_tables: true
+      next_steps_highlighted: true
+    
+    # Length management
+    auto_truncate: true
+    max_section_length: 2000
+    truncation_message: "... (content truncated, see logs for full details)"
+
+# PROGRESS TRACKING INTEGRATION
+progress_tracking:
+  # Integration with BMAD progress system
+  bmad_integration:
+    enabled: true
+    track_story_progress: true
+    track_agent_execution: true
+    track_quality_gates: true
+    track_mode_changes: true
+  
+  # Milestone definitions
+  milestones:
+    story_milestones:
+      - story_created
+      - story_started
+      - story_50_percent_complete
+      - story_quality_gates_passed
+      - story_completed
+    
+    session_milestones:
+      - session_started
+      - first_agent_complete
+      - halfway_point
+      - all_quality_gates_passed
+      - session_completed
+    
+    mode_milestones:
+      guided:
+        - first_user_approval
+        - learning_milestone_reached
+        - user_satisfaction_checkpoint
+      
+      sequential:
+        - first_batch_complete
+        - automation_efficiency_target
+        - batch_processing_complete
+      
+      smart_parallel:
+        - first_parallel_block_complete
+        - conflict_free_execution
+        - efficiency_target_achieved
+        - parallel_execution_complete
+  
+  # Progress calculation
+  progress_calculation:
+    story_weight_by_complexity:
+      low: 1
+      medium: 2
+      high: 3
+      critical: 5
+    
+    quality_gate_weight: 0.2
+    completion_weight: 0.8
+    
+    parallel_efficiency_bonus: 0.1
+    conflict_resolution_penalty: 0.05
+
+# QUALITY GATE REPORTING
+quality_gate_reporting:
+  enabled: true
+  report_all_gates: true
+  
+  # Gate-specific reporting rules
+  gate_reporting_rules:
+    critical_gates:
+      - structure_validation
+      - security_validation
+      - data_integrity_check
+      report_immediately: true
+      require_github_sync: true
+    
+    standard_gates:
+      - test_execution
+      - api_validation
+      - integration_testing
+      report_on_completion: true
+      batch_with_other_gates: false
+    
+    advisory_gates:
+      - documentation_check
+      - style_validation
+      - performance_check
+      report_on_failure_only: false
+      batch_with_other_gates: true
+  
+  # Failure handling
+  failure_reporting:
+    immediate_notification: true
+    include_recovery_plan: true
+    include_impact_assessment: true
+    escalation_rules:
+      critical_failure:
+        notify_immediately: true
+        add_critical_label: true
+        assign_to_user: true
+      
+      multiple_failures:
+        threshold: 3
+        action: "escalate_to_manual_review"
+      
+      recurring_failures:
+        same_gate_threshold: 2
+        action: "pause_and_investigate"
+
+# CONFLICT DETECTION AND REPORTING
+conflict_reporting:
+  enabled: true
+  real_time_reporting: true
+  
+  # Conflict types and reporting rules
+  conflict_types:
+    file_conflicts:
+      severity: "high"
+      immediate_report: true
+      include_affected_agents: true
+      include_resolution_strategy: true
+    
+    dependency_conflicts:
+      severity: "medium"
+      immediate_report: true
+      include_dependency_chain: true
+      include_reorder_suggestion: true
+    
+    resource_conflicts:
+      severity: "low"
+      batch_report: true
+      include_resource_usage: true
+      include_optimization_tips: true
+  
+  # Resolution tracking
+  resolution_tracking:
+    track_resolution_time: true
+    track_resolution_method: true
+    report_resolution_success: true
+    learn_from_patterns: true
+
+# PERFORMANCE METRICS REPORTING
+performance_reporting:
+  enabled: true
+  include_efficiency_metrics: true
+  
+  # Metrics to track and report
+  tracked_metrics:
+    execution_metrics:
+      - total_execution_time
+      - agent_utilization_rate
+      - story_completion_rate
+      - quality_gate_pass_rate
+    
+    efficiency_metrics:
+      - time_savings_vs_sequential
+      - parallel_efficiency_gain
+      - automation_effectiveness
+      - user_interaction_efficiency
+    
+    quality_metrics:
+      - defect_detection_rate
+      - quality_gate_effectiveness
+      - user_satisfaction_score
+      - learning_value_rating
+  
+  # Reporting thresholds
+  reporting_thresholds:
+    efficiency_gain_minimum: 10  # percent
+    quality_score_minimum: 80    # percent
+    user_satisfaction_minimum: 7 # out of 10
+  
+  # Comparison baselines
+  baselines:
+    sequential_mode: "previous_sequential_execution"
+    guided_mode: "average_guided_session"
+    parallel_mode: "theoretical_parallel_maximum"
+
+# ERROR HANDLING AND ESCALATION
+error_handling:
+  # Error classification
+  error_classification:
+    github_api_errors:
+      rate_limit_exceeded:
+        severity: "medium"
+        action: "delay_and_retry"
+        escalation_threshold: 3
+      
+      authentication_failed:
+        severity: "high"
+        action: "escalate_immediately"
+        escalation_threshold: 1
+      
+      network_timeout:
+        severity: "low"
+        action: "retry_with_backoff"
+        escalation_threshold: 5
+    
+    content_errors:
+      template_not_found:
+        severity: "medium"
+        action: "use_fallback_template"
+        escalation_threshold: 1
+      
+      variable_substitution_failed:
+        severity: "low"
+        action: "use_placeholder_values"
+        escalation_threshold: 3
+    
+    system_errors:
+      context_file_corrupted:
+        severity: "high"
+        action: "attempt_recovery"
+        escalation_threshold: 1
+      
+      monitoring_failure:
+        severity: "medium"
+        action: "restart_monitoring"
+        escalation_threshold: 2
+  
+  # Escalation procedures
+  escalation_procedures:
+    automatic_escalation:
+      enabled: true
+      escalation_levels:
+        level_1: "local_recovery_attempt"
+        level_2: "fallback_to_basic_sync"
+        level_3: "disable_github_sync"
+        level_4: "notify_user_of_failure"
+    
+    manual_escalation:
+      user_notification: true
+      include_troubleshooting_steps: true
+      include_recovery_options: true
+
+# PRIVACY AND SECURITY
+privacy_security:
+  # Data filtering
+  sensitive_data_filtering:
+    enabled: true
+    filter_patterns:
+      - api_keys
+      - passwords
+      - tokens
+      - file_paths_outside_project
+      - user_personal_information
+    
+    replacement_strategy: "redacted"
+    log_filtering_actions: true
+  
+  # Content sanitization
+  content_sanitization:
+    enabled: true
+    sanitization_rules:
+      - remove_absolute_paths
+      - anonymize_user_data
+      - filter_environment_variables
+      - remove_sensitive_comments
+    
+    whitelist_patterns:
+      - project_relative_paths
+      - public_repository_references
+      - standard_error_messages
+  
+  # Access control
+  access_control:
+    verify_repository_access: true
+    check_issue_permissions: true
+    validate_comment_permissions: true
+    respect_private_repositories: true
+
+# MONITORING AND ANALYTICS
+monitoring_analytics:
+  # Usage tracking
+  usage_tracking:
+    enabled: true
+    track_sync_frequency: true
+    track_template_usage: true
+    track_error_patterns: true
+    track_user_preferences: true
+  
+  # Performance monitoring
+  performance_monitoring:
+    enabled: true
+    track_sync_duration: true
+    track_api_response_times: true
+    track_template_generation_time: true
+    track_content_size: true
+  
+  # Analytics reporting
+  analytics_reporting:
+    generate_usage_reports: true
+    report_frequency: "weekly"
+    include_optimization_suggestions: true
+    include_trend_analysis: true
+
+# CUSTOMIZATION OPTIONS
+customization:
+  # User preferences
+  user_preferences:
+    sync_frequency_override: true
+    template_customization: true
+    content_detail_override: true
+    notification_preferences: true
+  
+  # Project-specific settings
+  project_settings:
+    custom_templates: true
+    project_specific_rules: true
+    team_preferences: true
+    workflow_integration: true
+  
+  # Advanced configuration
+  advanced_configuration:
+    custom_sync_triggers: true
+    webhook_integration: true
+    external_tool_integration: true
+    api_customization: true

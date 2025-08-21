@@ -1,0 +1,740 @@
+# Airtable Relationship Analysis and Documentation Framework
+# Comprehensive guide for mapping Airtable relationships to ERPNext
+
+name: "Airtable Relationship Analysis Framework"
+description: "Complete framework for analyzing and documenting Airtable relationships and their ERPNext implementations"
+version: "1.0.0"
+
+# Relationship Types and Patterns
+relationship_types:
+  
+  one_to_many:
+    definition: "One parent record relates to multiple child records"
+    airtable_implementation:
+      structure: "Link field in child table pointing to parent"
+      display: "Parent shows list of linked children"
+      behavior: "Bidirectional relationship"
+      
+    examples:
+      customer_orders:
+        parent_table: "Customers"
+        child_table: "Orders"
+        link_field: "customer"
+        description: "One customer can have many orders"
+        
+      project_tasks:
+        parent_table: "Projects" 
+        child_table: "Tasks"
+        link_field: "project"
+        description: "One project can have many tasks"
+        
+    erpnext_mapping:
+      primary_approach: "Link field in child DocType"
+      implementation:
+        child_doctype:
+          field_properties:
+            fieldtype: "Link"
+            options: "Parent DocType"
+            reqd: "Usually required"
+            
+        parent_doctype:
+          optional_field:
+            fieldtype: "Table MultiSelect"
+            options: "Child DocType"
+            purpose: "Quick access to children"
+            
+    analysis_template: |
+      ## One-to-Many Relationship Analysis
+      
+      ### Relationship: {{ parent_table }} → {{ child_table }}
+      
+      **Parent Table**: {{ parent_table }}
+      **Child Table**: {{ child_table }}
+      **Link Field**: {{ link_field }}
+      **Business Rule**: {{ business_rule }}
+      
+      #### Airtable Configuration
+      - **Parent Primary Field**: {{ parent_primary_field }}
+      - **Child Display**: {{ child_display_method }}
+      - **Cascading Delete**: {{ cascading_delete }}
+      - **Required Relationship**: {{ required_relationship }}
+      
+      #### ERPNext Implementation
+      ```json
+      {
+        "fieldname": "{{ link_field }}",
+        "fieldtype": "Link", 
+        "label": "{{ field_label }}",
+        "options": "{{ parent_doctype }}",
+        "reqd": {{ required }},
+        "in_list_view": 1
+      }
+      ```
+      
+      #### Migration Considerations
+      - **Dependency Order**: Migrate {{ parent_table }} before {{ child_table }}
+      - **Reference Resolution**: Map Airtable IDs to ERPNext names
+      - **Orphaned Records**: {{ orphaned_record_strategy }}
+      
+      #### Validation Rules
+      - {{ validation_rule_1 }}
+      - {{ validation_rule_2 }}
+
+  many_to_many:
+    definition: "Multiple records in table A relate to multiple records in table B"
+    airtable_implementation:
+      structure: "Link fields in both tables pointing to each other"
+      display: "Both tables show lists of linked records"
+      behavior: "True bidirectional many-to-many"
+      
+    examples:
+      students_courses:
+        table_a: "Students"
+        table_b: "Courses"  
+        description: "Students can enroll in multiple courses, courses have multiple students"
+        
+      employees_skills:
+        table_a: "Employees"
+        table_b: "Skills"
+        description: "Employees have multiple skills, skills are possessed by multiple employees"
+        
+    erpnext_mapping:
+      approach_1:
+        name: "Child Table in Primary DocType"
+        structure:
+          primary_doctype: "Table A"
+          child_table_field:
+            fieldtype: "Table"
+            options: "Child DocType"
+          child_doctype_structure:
+            - fieldname: "linked_record"
+              fieldtype: "Link"
+              options: "Table B DocType"
+              
+      approach_2:
+        name: "Junction DocType"
+        structure:
+          junction_doctype: "Table A Table B"
+          fields:
+            - fieldname: "table_a_reference"
+              fieldtype: "Link"
+              options: "Table A DocType"
+            - fieldname: "table_b_reference" 
+              fieldtype: "Link"
+              options: "Table B DocType"
+              
+    analysis_template: |
+      ## Many-to-Many Relationship Analysis
+      
+      ### Relationship: {{ table_a }} ↔ {{ table_b }}
+      
+      **Table A**: {{ table_a }}
+      **Table B**: {{ table_b }}
+      **Business Context**: {{ business_context }}
+      
+      #### Airtable Configuration
+      - **Table A Link Field**: {{ table_a_link_field }}
+      - **Table B Link Field**: {{ table_b_link_field }}
+      - **Relationship Attributes**: {{ relationship_attributes }}
+      
+      #### ERPNext Implementation Strategy
+      
+      **Recommended Approach**: {{ recommended_approach }}
+      
+      {% if recommended_approach == "child_table" %}
+      **Primary DocType**: {{ primary_doctype }}
+      **Child Table Structure**:
+      ```json
+      {
+        "fieldname": "{{ child_table_fieldname }}",
+        "fieldtype": "Table",
+        "label": "{{ child_table_label }}",
+        "options": "{{ child_doctype_name }}"
+      }
+      ```
+      
+      **Child DocType Fields**:
+      ```json
+      [
+        {
+          "fieldname": "{{ linked_field }}",
+          "fieldtype": "Link",
+          "label": "{{ linked_label }}",
+          "options": "{{ linked_doctype }}",
+          "in_list_view": 1
+        }
+      ]
+      ```
+      {% else %}
+      **Junction DocType**: {{ junction_doctype }}
+      **Junction Fields**:
+      ```json
+      [
+        {
+          "fieldname": "{{ table_a_field }}",
+          "fieldtype": "Link", 
+          "options": "{{ table_a_doctype }}",
+          "reqd": 1
+        },
+        {
+          "fieldname": "{{ table_b_field }}",
+          "fieldtype": "Link",
+          "options": "{{ table_b_doctype }}",
+          "reqd": 1
+        }
+      ]
+      ```
+      {% endif %}
+      
+      #### Migration Strategy
+      1. **Create DocTypes**: {{ migration_step_1 }}
+      2. **Migrate Core Data**: {{ migration_step_2 }}
+      3. **Create Relationships**: {{ migration_step_3 }}
+      4. **Validate Relationships**: {{ migration_step_4 }}
+
+  lookup_relationships:
+    definition: "Display field values from linked records"
+    airtable_implementation:
+      mechanism: "Lookup field shows data from linked record"
+      behavior: "Read-only, auto-updates when source changes"
+      performance: "Efficient, no additional queries needed"
+      
+    examples:
+      order_customer_details:
+        source_table: "Orders"
+        lookup_field: "customer_email"
+        linked_table: "Customers" 
+        linked_field: "email"
+        description: "Show customer email in order record"
+        
+      task_project_manager:
+        source_table: "Tasks"
+        lookup_field: "project_manager"
+        linked_table: "Projects"
+        linked_field: "manager"
+        description: "Show project manager in task record"
+        
+    erpnext_mapping:
+      implementation: "fetch_from property on Read Only field"
+      field_properties:
+        fieldtype: "Read Only"
+        fetch_from: "link_field.source_field"
+        depends_on: "link_field"
+        
+    analysis_template: |
+      ## Lookup Relationship Analysis
+      
+      ### Lookup: {{ source_table }}.{{ lookup_field }}
+      
+      **Source Table**: {{ source_table }}
+      **Lookup Field**: {{ lookup_field }}
+      **Linked Table**: {{ linked_table }}
+      **Source Field**: {{ source_field }}
+      
+      #### Business Purpose
+      {{ business_purpose }}
+      
+      #### Airtable Configuration
+      - **Lookup Source**: {{ linked_table }}.{{ source_field }}
+      - **Display Format**: {{ display_format }}
+      - **Update Behavior**: {{ update_behavior }}
+      
+      #### ERPNext Implementation
+      ```json
+      {
+        "fieldname": "{{ lookup_field }}",
+        "fieldtype": "Read Only",
+        "label": "{{ field_label }}",
+        "fetch_from": "{{ link_field }}.{{ source_field }}",
+        "depends_on": "{{ link_field }}"
+      }
+      ```
+      
+      #### Dependencies
+      - **Required Link Field**: {{ link_field }}
+      - **Target DocType**: {{ target_doctype }}
+      - **Target Field**: {{ target_field }}
+      
+      #### Migration Notes
+      - Ensure link field is migrated first
+      - Verify target field exists in target DocType
+      - Test automatic updates after migration
+
+  rollup_relationships:
+    definition: "Aggregate calculations from multiple linked records"
+    airtable_implementation:
+      functions: ["SUM", "COUNT", "AVERAGE", "MAX", "MIN", "AND", "OR", "XOR"]
+      behavior: "Auto-calculated, updates when source data changes"
+      performance: "Efficient for reporting and analytics"
+      
+    examples:
+      customer_total_orders:
+        source_table: "Customers"
+        rollup_field: "total_order_value"
+        linked_table: "Orders"
+        aggregation: "SUM"
+        source_field: "order_amount"
+        description: "Sum of all order amounts for customer"
+        
+      project_task_count:
+        source_table: "Projects"
+        rollup_field: "total_tasks"
+        linked_table: "Tasks"
+        aggregation: "COUNT"
+        source_field: "task_id"
+        description: "Count of tasks in project"
+        
+    erpnext_mapping:
+      implementation: "Server script calculation"
+      approaches:
+        real_time: "Calculate on every save"
+        scheduled: "Calculate via scheduled job"
+        on_demand: "Calculate when requested"
+        
+    analysis_template: |
+      ## Rollup Relationship Analysis
+      
+      ### Rollup: {{ source_table }}.{{ rollup_field }}
+      
+      **Source Table**: {{ source_table }}
+      **Rollup Field**: {{ rollup_field }}
+      **Linked Table**: {{ linked_table }}
+      **Aggregation Function**: {{ aggregation_function }}
+      **Source Field**: {{ source_field }}
+      
+      #### Business Logic
+      {{ business_logic }}
+      
+      #### Airtable Configuration  
+      - **Aggregation**: {{ aggregation_function }}({{ source_field }})
+      - **Filter Conditions**: {{ filter_conditions }}
+      - **Update Frequency**: {{ update_frequency }}
+      
+      #### ERPNext Implementation Strategy
+      
+      **Recommended Approach**: {{ recommended_approach }}
+      
+      **Server Script Implementation**:
+      ```python
+      def calculate_{{ rollup_field }}(self):
+          # {{ aggregation_function }} calculation
+          {% if aggregation_function == "SUM" %}
+          total = 0
+          linked_records = frappe.get_all("{{ linked_doctype }}", 
+              filters={"{{ link_field }}": self.name},
+              fields=["{{ source_field }}"])
+          for record in linked_records:
+              total += record.get("{{ source_field }}") or 0
+          self.{{ rollup_field }} = total
+          {% elif aggregation_function == "COUNT" %}
+          count = frappe.db.count("{{ linked_doctype }}", 
+              filters={"{{ link_field }}": self.name})
+          self.{{ rollup_field }} = count
+          {% elif aggregation_function == "AVERAGE" %}
+          records = frappe.get_all("{{ linked_doctype }}",
+              filters={"{{ link_field }}": self.name},
+              fields=["{{ source_field }}"])
+          if records:
+              values = [r.get("{{ source_field }}") for r in records if r.get("{{ source_field }}")]
+              self.{{ rollup_field }} = sum(values) / len(values) if values else 0
+          else:
+              self.{{ rollup_field }} = 0
+          {% endif %}
+      ```
+      
+      **Field Configuration**:
+      ```json
+      {
+        "fieldname": "{{ rollup_field }}",
+        "fieldtype": "{{ field_type }}",
+        "label": "{{ field_label }}",
+        "read_only": 1,
+        "description": "Calculated field: {{ calculation_description }}"
+      }
+      ```
+      
+      #### Performance Considerations
+      - **Calculation Frequency**: {{ calculation_frequency }}
+      - **Data Volume Impact**: {{ data_volume_impact }}
+      - **Optimization Strategy**: {{ optimization_strategy }}
+
+# Relationship Analysis Workflows
+analysis_workflows:
+  
+  discovery_process:
+    step_1:
+      name: "Relationship Inventory"
+      description: "Identify all link fields across all tables"
+      template: |
+        # Relationship Discovery Worksheet
+        
+        ## Table: {{ table_name }}
+        
+        ### Link Fields Found
+        | Field Name | Target Table | Relationship Type | Required | Notes |
+        |------------|--------------|-------------------|----------|-------|
+        {% for field in link_fields %}
+        | {{ field.name }} | {{ field.target }} | {{ field.type }} | {{ field.required }} | {{ field.notes }} |
+        {% endfor %}
+        
+        ### Lookup Fields Found  
+        | Field Name | Source Link | Source Field | Purpose |
+        |------------|-------------|--------------|---------|
+        {% for field in lookup_fields %}
+        | {{ field.name }} | {{ field.source_link }} | {{ field.source_field }} | {{ field.purpose }} |
+        {% endfor %}
+        
+        ### Rollup Fields Found
+        | Field Name | Source Link | Aggregation | Source Field | Business Rule |
+        |------------|-------------|-------------|--------------|---------------|
+        {% for field in rollup_fields %}
+        | {{ field.name }} | {{ field.source_link }} | {{ field.aggregation }} | {{ field.source_field }} | {{ field.business_rule }} |
+        {% endfor %}
+        
+    step_2:
+      name: "Relationship Mapping"
+      description: "Map each relationship to ERPNext implementation"
+      template: |
+        # Relationship Mapping Analysis
+        
+        ## Relationship: {{ source_table }} → {{ target_table }}
+        
+        ### Relationship Properties
+        - **Type**: {{ relationship_type }}
+        - **Cardinality**: {{ cardinality }}
+        - **Business Rule**: {{ business_rule }}
+        - **Cascade Behavior**: {{ cascade_behavior }}
+        
+        ### ERPNext Implementation
+        - **Primary Approach**: {{ primary_approach }}
+        - **Alternative Approach**: {{ alternative_approach }}
+        - **Complexity Level**: {{ complexity_level }}
+        
+        ### Migration Requirements
+        - **Dependency Order**: {{ dependency_order }}
+        - **Special Handling**: {{ special_handling }}
+        - **Validation Needs**: {{ validation_needs }}
+        
+    step_3:
+      name: "Dependency Analysis"  
+      description: "Determine migration order based on dependencies"
+      template: |
+        # Dependency Analysis
+        
+        ## Migration Order Planning
+        
+        ### Independent Tables (No Dependencies)
+        {% for table in independent_tables %}
+        - {{ table.name }}: {{ table.description }}
+        {% endfor %}
+        
+        ### Level 1 Dependencies
+        {% for table in level_1_dependencies %}
+        - {{ table.name }} depends on: {{ table.dependencies }}
+        {% endfor %}
+        
+        ### Level 2 Dependencies  
+        {% for table in level_2_dependencies %}
+        - {{ table.name }} depends on: {{ table.dependencies }}
+        {% endfor %}
+        
+        ### Circular Dependencies (Require Special Handling)
+        {% for dependency in circular_dependencies %}
+        - {{ dependency.tables }}: {{ dependency.resolution_strategy }}
+        {% endfor %}
+        
+        ### Recommended Migration Order
+        1. {{ migration_order }}
+
+  validation_procedures:
+    pre_migration:
+      relationship_integrity:
+        description: "Verify all relationships are properly documented"
+        checklist:
+          - "All link fields identified and mapped"
+          - "Lookup fields have valid source paths"
+          - "Rollup calculations documented"
+          - "Circular dependencies resolved"
+          - "Migration order established"
+          
+      data_consistency:
+        description: "Check for data consistency issues"
+        checks:
+          orphaned_records: "Records with invalid link references"
+          missing_references: "Required links that are empty"
+          circular_references: "Self-referencing or circular links"
+          invalid_lookups: "Lookup fields with missing source data"
+          
+    post_migration:
+      relationship_validation:
+        description: "Verify relationships work correctly in ERPNext"
+        tests:
+          link_integrity: "All links point to valid records"
+          lookup_updates: "Lookup fields update when source changes"
+          rollup_accuracy: "Rollup calculations produce correct results" 
+          cascade_behavior: "Cascade deletes/updates work as expected"
+
+# Migration Implementation Patterns
+implementation_patterns:
+  
+  simple_link_migration:
+    use_case: "Standard one-to-many relationships"
+    complexity: "Low"
+    implementation: |
+      def migrate_simple_links(airtable_data, link_mappings):
+          """
+          Migrate simple link relationships
+          """
+          for record in airtable_data:
+              erpnext_doc = {}
+              
+              # Process regular fields first
+              for field_name, field_value in record['fields'].items():
+                  if field_name not in link_mappings:
+                      erpnext_doc[field_name] = field_value
+              
+              # Process link fields
+              for airtable_field, erpnext_field in link_mappings.items():
+                  if airtable_field in record['fields']:
+                      airtable_ids = record['fields'][airtable_field]
+                      if isinstance(airtable_ids, list) and airtable_ids:
+                          # Get ERPNext name from mapping table
+                          erpnext_name = get_erpnext_name(airtable_ids[0])
+                          erpnext_doc[erpnext_field] = erpnext_name
+              
+              # Create ERPNext document
+              doc = frappe.get_doc(erpnext_doc)
+              doc.insert()
+  
+  many_to_many_migration:
+    use_case: "Complex many-to-many relationships"
+    complexity: "High"
+    implementation: |
+      def migrate_many_to_many(table_a_data, table_b_data, relationship_data):
+          """
+          Migrate many-to-many relationships using junction table approach
+          """
+          # Step 1: Migrate core data without relationships
+          table_a_mapping = migrate_core_data(table_a_data, 'DocType_A')
+          table_b_mapping = migrate_core_data(table_b_data, 'DocType_B')
+          
+          # Step 2: Create junction table records
+          for a_id, a_name in table_a_mapping.items():
+              airtable_record = get_airtable_record(table_a_data, a_id)
+              linked_b_ids = airtable_record.get('fields', {}).get('linked_field', [])
+              
+              for b_id in linked_b_ids:
+                  if b_id in table_b_mapping:
+                      junction_doc = frappe.get_doc({
+                          'doctype': 'Junction_DocType',
+                          'table_a_reference': a_name,
+                          'table_b_reference': table_b_mapping[b_id]
+                      })
+                      junction_doc.insert()
+  
+  rollup_calculation_setup:
+    use_case: "Aggregated calculations from related records"
+    complexity: "Medium to High"
+    implementation: |
+      def setup_rollup_calculations(doctype_name, rollup_configs):
+          """
+          Set up server scripts for rollup calculations
+          """
+          for config in rollup_configs:
+              server_script = f"""
+              def calculate_{config['field_name']}(self):
+                  if self.name:
+                      result = 0
+                      linked_docs = frappe.get_all("{config['source_doctype']}", 
+                          filters={{"{config['link_field']}": self.name}}, 
+                          fields=["{config['source_field']}"])
+                      
+                      values = [doc.{config['source_field']} for doc in linked_docs 
+                               if doc.{config['source_field']}]
+                      
+                      if config['aggregation'] == 'SUM':
+                          result = sum(values)
+                      elif config['aggregation'] == 'COUNT':  
+                          result = len(values)
+                      elif config['aggregation'] == 'AVERAGE':
+                          result = sum(values) / len(values) if values else 0
+                      elif config['aggregation'] == 'MAX':
+                          result = max(values) if values else 0
+                      elif config['aggregation'] == 'MIN':
+                          result = min(values) if values else 0
+                      
+                      self.{config['field_name']} = result
+              
+              # Add to document save event
+              def on_update(doc, method):
+                  doc.calculate_{config['field_name']}()
+              """
+              
+              create_server_script(doctype_name, server_script, config)
+
+# Troubleshooting Guide
+troubleshooting:
+  
+  common_issues:
+    orphaned_relationships:
+      description: "Records reference non-existent linked records"
+      causes:
+        - "Incomplete data export from Airtable"
+        - "Records deleted after relationship created"
+        - "Export filtering excluded referenced records"
+      solutions:
+        - "Export complete dataset including all referenced records"
+        - "Identify and handle orphaned references during migration"
+        - "Create placeholder records for missing references"
+        - "Update business processes to handle missing references"
+        
+    circular_dependencies:
+      description: "Tables reference each other creating circular dependencies"
+      causes:
+        - "Bidirectional relationships"
+        - "Complex business logic requirements"
+        - "Poor initial data model design"
+      solutions:
+        - "Break circular dependencies with nullable fields"
+        - "Use post-migration update scripts"
+        - "Redesign relationships to be unidirectional where possible"
+        - "Use junction tables to break complex relationships"
+        
+    performance_issues:
+      description: "Slow performance during relationship migration"
+      causes:
+        - "Large datasets with complex relationships"
+        - "Inefficient migration scripts"
+        - "Missing database indexes"
+        - "Too many rollup calculations"
+      solutions:
+        - "Implement batch processing"
+        - "Add appropriate database indexes"
+        - "Optimize rollup calculation frequency"
+        - "Use background jobs for heavy calculations"
+        
+    data_integrity_problems:
+      description: "Relationships not working correctly after migration"
+      causes:
+        - "Incorrect field mappings"
+        - "Missing validation rules"
+        - "Incomplete relationship resolution"
+      solutions:
+        - "Implement comprehensive validation"
+        - "Test relationships thoroughly"
+        - "Create data integrity reports"
+        - "Implement monitoring and alerting"
+
+  validation_scripts:
+    relationship_integrity_check: |
+      def validate_relationship_integrity(doctype_configs):
+          """
+          Validate all relationships are properly established
+          """
+          validation_results = {}
+          
+          for config in doctype_configs:
+              doctype = config['name']
+              results = {
+                  'total_records': frappe.db.count(doctype),
+                  'orphaned_links': 0,
+                  'invalid_lookups': 0,
+                  'failed_rollups': 0
+              }
+              
+              # Check link fields
+              for link_field in config.get('link_fields', []):
+                  orphaned = frappe.db.sql(f"""
+                      SELECT COUNT(*) as count FROM `tab{doctype}` d
+                      LEFT JOIN `tab{link_field['target']}` t ON d.{link_field['field']} = t.name
+                      WHERE d.{link_field['field']} IS NOT NULL 
+                      AND t.name IS NULL
+                  """)[0][0]
+                  results['orphaned_links'] += orphaned
+              
+              # Check lookup fields
+              for lookup_field in config.get('lookup_fields', []):
+                  # Validate lookup field values match source
+                  pass
+              
+              # Check rollup calculations
+              for rollup_field in config.get('rollup_fields', []):
+                  # Validate rollup calculations are correct
+                  pass
+                  
+              validation_results[doctype] = results
+              
+          return validation_results
+
+# Success Metrics and KPIs
+success_metrics:
+  relationship_migration:
+    completeness:
+      metric: "Percentage of relationships successfully migrated"
+      target: "100%"
+      measurement: "Count of successful vs total relationships"
+      
+    accuracy:
+      metric: "Relationship data integrity score"
+      target: ">99%"
+      measurement: "Valid relationships / total relationships"
+      
+    performance:
+      metric: "Relationship query response time"
+      target: "<2 seconds for standard queries"
+      measurement: "Average response time for relationship queries"
+      
+  user_acceptance:
+    functionality:
+      metric: "Users can complete relationship-dependent tasks"
+      target: "100% of critical workflows"
+      measurement: "Successful task completion rate"
+      
+    usability:
+      metric: "User satisfaction with relationship navigation"
+      target: ">80% satisfaction score"
+      measurement: "User feedback surveys"
+
+# Documentation Templates
+documentation_templates:
+  relationship_specification: |
+    # {{ relationship_name }} Relationship Specification
+    
+    ## Overview
+    **Source Table**: {{ source_table }}
+    **Target Table**: {{ target_table }}  
+    **Relationship Type**: {{ relationship_type }}
+    **Business Purpose**: {{ business_purpose }}
+    
+    ## Airtable Configuration
+    - **Link Field**: {{ airtable_link_field }}
+    - **Display Method**: {{ display_method }}
+    - **Required**: {{ required_relationship }}
+    - **Cascade Delete**: {{ cascade_delete }}
+    
+    ## ERPNext Implementation
+    ### Primary Implementation
+    ```json
+    {{ erpnext_field_config }}
+    ```
+    
+    ### Business Logic
+    ```python
+    {{ business_logic_code }}
+    ```
+    
+    ## Migration Strategy
+    1. {{ migration_step_1 }}
+    2. {{ migration_step_2 }}
+    3. {{ migration_step_3 }}
+    
+    ## Validation Rules
+    - {{ validation_rule_1 }}
+    - {{ validation_rule_2 }}
+    
+    ## Testing Checklist
+    - [ ] Relationship creates correctly
+    - [ ] Lookup fields update automatically
+    - [ ] Rollup calculations are accurate
+    - [ ] Cascade operations work properly
+    - [ ] Performance is acceptable

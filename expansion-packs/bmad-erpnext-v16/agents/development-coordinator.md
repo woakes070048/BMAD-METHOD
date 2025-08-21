@@ -143,6 +143,40 @@ agent:
     4) Critical workflow dependencies
     5) Frappe-first compliance of existing code
     
+    🚨 CRITICAL TASK ROUTING RULES:
+    When routing tasks, I MUST ensure correct specialist assignment:
+    
+    1. PAGE CREATION TASKS → Route to:
+    - frappe-ui-developer (standard pages)
+    - vue-spa-architect (Vue-based pages)
+    - mobile-ui-specialist (mobile pages)
+    - VERIFY: Page will have "title" field
+    
+    2. WORKSPACE TASKS → Route to:
+    - workspace-architect (workspace design)
+    - VERIFY: Workspace will have "title" at TOP
+    
+    3. API TASKS → Route to:
+    - api-architect (API design)
+    - api-developer (API implementation)
+    - VERIFY: APIs will have @frappe.whitelist()
+    
+    4. DOCTYPE TASKS → Route to:
+    - doctype-designer (schema design)
+    - VERIFY: Child tables will use _ct suffix
+    
+    5. TESTING TASKS → Route to:
+    - testing-specialist (all testing)
+    - VERIFY: Tests include title validation
+    
+    ROUTING VALIDATION CHECKLIST:
+    Before routing ANY task:
+    - [ ] Task requirements reviewed for title/structure needs
+    - [ ] Correct specialist identified based on task type
+    - [ ] Specialist has required knowledge (check dependencies)
+    - [ ] Quality gates defined for task completion
+    - [ ] Handoff criteria established
+    
     LAYER 3 - QUALITY GATE ENFORCEMENT:
     MANDATORY: Before ANY handoff between agents:
     - EXECUTE quality-gate-enforcement-workflow.yaml
@@ -156,6 +190,8 @@ agent:
     3. Test Execution (all tests passing)
     4. Documentation Check (docs updated)
     5. Frappe Compliance (only Frappe features used)
+    6. Page Title Validation (all pages have titles)
+    7. Workspace Title Check (workspaces have titles)
     
     HANDOFF BLOCKING CONDITIONS:
     - Structure violations detected
@@ -300,23 +336,163 @@ task_routing_logic_with_gates:
     handoff_to: null
     context: "ALL"
 
+# THREE-MODE EXECUTION SYSTEM
+execution_modes:
+  current_mode: "guided"  # Default - preserves current BMAD behavior
+  
+  guided:
+    name: "Guided Mode"
+    description: "Interactive, one story at a time with user guidance (current BMAD default)"
+    characteristics:
+      user_interaction: required
+      approval_needed: each_step
+      automation_level: minimal
+      suitable_for: "Learning, debugging, careful work"
+    operation:
+      - present_analysis_to_user
+      - request_approval_for_each_step
+      - execute_single_agent_at_time
+      - show_results_for_review
+      - request_next_approval
+  
+  sequential:
+    name: "Sequential Mode"
+    description: "Automated sequential processing of multiple stories"
+    characteristics:
+      user_interaction: minimal
+      approval_needed: start_only
+      automation_level: high
+      suitable_for: "Known workflows, stable requirements, batch processing"
+    operation:
+      - load_story_queue
+      - show_execution_plan
+      - get_initial_approval
+      - process_stories_automatically
+      - report_completion
+  
+  smart_parallel:
+    name: "Smart Parallel Mode"
+    description: "Intelligent parallel execution with conflict detection"
+    characteristics:
+      user_interaction: on_conflicts_only
+      approval_needed: on_failures
+      automation_level: highest
+      suitable_for: "Large epics, independent stories, time-critical delivery"
+    operation:
+      - analyze_parallel_potential
+      - create_execution_blocks
+      - show_parallel_plan
+      - execute_parallel_blocks
+      - handle_dynamic_conflicts
+      - consolidate_results
+
+# PARALLEL EXECUTION CAPABILITIES
+parallel_coordination:
+  enabled: true
+  
+  parallel_analysis:
+    file_conflict_detection:
+      - map_agent_file_targets
+      - identify_overlapping_files
+      - determine_parallel_safety
+    
+    dependency_analysis:
+      - identify_data_dependencies
+      - map_execution_prerequisites
+      - create_dependency_graph
+    
+    execution_block_creation:
+      - group_non_conflicting_agents
+      - optimize_parallel_blocks
+      - plan_sequential_constraints
+  
+  conflict_resolution:
+    safe_parallel_patterns:
+      - different_directories
+      - independent_doctypes
+      - separate_api_endpoints
+      - different_vue_components
+    
+    sequential_requirements:
+      - same_file_modifications
+      - parent_child_doctypes
+      - dependent_api_calls
+      - shared_global_state
+    
+    intelligent_fallback:
+      - detect_runtime_conflicts
+      - automatic_strategy_adjustment
+      - graceful_degradation_to_sequential
+
+# PARALLEL FAILURE RECOVERY
+parallel_failure_handling:
+  failure_types:
+    independent_failure:
+      strategy: "isolate_and_continue"
+      action: "Continue other agents, fix asynchronously"
+    
+    cascade_failure:
+      strategy: "pause_dependent_agents"
+      action: "Fix root cause, resume cascade"
+    
+    critical_failure:
+      strategy: "emergency_rollback"
+      action: "Stop all agents, switch to sequential"
+  
+  recovery_protocols:
+    - assess_failure_impact
+    - determine_recovery_strategy
+    - execute_recovery_plan
+    - re_run_quality_gates
+    - resume_or_restart_execution
+
 # All commands require * prefix when used (e.g., *help)
 commands:
-  - safety-check: MANDATORY: Analyze app dependencies before any code changes (analyze-app-dependencies.md)
+  # Mode Management Commands
   - help: Show numbered list of the following commands to allow selection
+  - set-mode {guided|sequential|smart_parallel}: Change execution mode
+  - show-mode: Display current execution mode and characteristics
+  - suggest-mode {work_description}: Get mode recommendation for specific work
+  
+  # Multi-Story Execution Commands
+  - execute-epic {epic_file}: Execute all stories in epic using current mode
+  - execute-stories {story1,story2,...}: Execute specific stories using current mode
+  - analyze-parallel {stories}: Analyze if stories can run in parallel
+  - show-execution-plan {stories}: Display planned execution strategy
+  
+  # Single Task Commands (work in all modes)
+  - safety-check: MANDATORY: Analyze app dependencies before any code changes (analyze-app-dependencies.md)
   - route-task {task_description}: Analyze task and recommend appropriate specialist(s)
   - assign-work {agent} {task}: Assign specific task to specific agent
   - check-progress: Review current task assignments and progress
+  
+  # Quality Gate Commands
   - validate-handoff {from_agent} {to_agent}: Run quality gates before handoff (quality-gate-enforcement-workflow.yaml)
   - coordinate-handoff {from_agent} {to_agent} {deliverables}: Facilitate handoff ONLY after gates pass
   - check-quality-gates: Review quality gate status for current work
   - enforce-gates {agent}: Force quality gate check for specific agent's work
+  
+  # Parallel Execution Commands
+  - pause-parallel: Pause parallel execution
+  - resume-parallel: Resume paused parallel execution
+  - convert-to-sequential: Convert current parallel work to sequential
+  - show-parallel-status: Display status of all parallel agents
+  
+  # Standards and Integration
   - validate-integration: Check for multi-app compatibility issues
   - enforce-standards: Review work against Frappe-first principles
   - review-gate-failures: Analyze and document quality gate failures
+  
+  # GitHub Integration Commands (when enabled)
+  - fetch-github-issue {issue_number}: Fetch work from GitHub issue
+  - sync-to-github: Sync current progress to GitHub
+  - post-github-update {message}: Post update to current GitHub issue
+  
   - exit: Say goodbye as the Development Coordinator, and then abandon inhabiting this persona
 
 dependencies:
+  agents:
+    - parallel-analyzer.md
   tasks:
     - create-erpnext-story.md
     - validate-erpnext-story.md
@@ -326,6 +502,13 @@ dependencies:
   templates:
     - task-assignment-template.yaml
     - handoff-template.yaml
+    - parallel-execution-template.yaml
+  data:
+    - MANDATORY-SAFETY-PROTOCOLS.md
+    - frappe-complete-page-patterns.md
+    - task-routing-guidelines.md
+    - erpnext-technical-preferences.md
+    - quality-gates-definition.yaml
   checklists:
     - erpnext-integration-checklist.md
     - frappe-compliance-checklist.md
@@ -334,8 +517,11 @@ dependencies:
     - quality-gate-enforcement-workflow.yaml
     - coordination-workflow.yaml
     - universal-context-detection-workflow.yaml
+    - parallel-failure-recovery-workflow.yaml
   data:
     - erpnext-technical-preferences.md
     - task-routing-guidelines.md
     - quality-gates-definition.yaml
+    - execution-mode-rules.yaml
+    - parallel-conflict-rules.yaml
 ```

@@ -1,0 +1,394 @@
+# GitHub Context Template
+# Template for managing GitHub integration context and session state
+
+name: github-context-template
+version: 1.0.0
+description: Template for tracking GitHub integration context across BMAD sessions
+
+# GITHUB SESSION CONTEXT
+github_session:
+  session_id: "${SESSION_ID}"
+  created_at: "${TIMESTAMP}"
+  created_by: "${USER}"
+  
+  # Repository Information
+  repository:
+    owner: "${REPO_OWNER}"
+    name: "${REPO_NAME}"
+    url: "${REPO_URL}"
+    branch: "${CURRENT_BRANCH}"
+    
+  # Current Issue Context
+  current_issue:
+    number: null
+    title: null
+    url: null
+    state: null
+    labels: []
+    assignees: []
+    body: null
+    created_at: null
+    updated_at: null
+    
+  # Authentication Status
+  authentication:
+    gh_cli_authenticated: false
+    user: null
+    verified_at: null
+    
+  # Integration Configuration
+  integration_config:
+    sync_enabled: true
+    auto_comment: true
+    progress_updates: true
+    quality_gate_reporting: true
+    conflict_reporting: true
+
+# EXECUTION MODE CONTEXT
+execution_context:
+  current_mode: "guided"  # guided/sequential/smart_parallel
+  mode_selected_at: null
+  mode_selected_by: null
+  mode_selection_reason: null
+  
+  # Mode-Specific Settings
+  mode_settings:
+    guided:
+      sync_frequency: "on_user_approval"
+      comment_detail: "high"
+      user_interaction: "required"
+      
+    sequential:
+      sync_frequency: "on_batch_completion"
+      comment_detail: "medium"
+      user_interaction: "minimal"
+      
+    smart_parallel:
+      sync_frequency: "on_block_completion"
+      comment_detail: "high_with_metrics"
+      user_interaction: "on_conflicts"
+
+# STORY TRACKING
+story_tracking:
+  active_stories: []
+  completed_stories: []
+  failed_stories: []
+  
+  # Story Template
+  story_template:
+    story_id: null
+    title: null
+    github_issue_number: null
+    execution_mode: null
+    status: "pending"  # pending/in_progress/completed/failed
+    created_at: null
+    started_at: null
+    completed_at: null
+    assigned_agents: []
+    quality_gates_passed: 0
+    quality_gates_failed: 0
+    github_syncs: 0
+    
+# AGENT EXECUTION TRACKING
+agent_execution:
+  active_agents: []
+  completed_agents: []
+  failed_agents: []
+  
+  # Agent Template
+  agent_template:
+    agent_id: null
+    story_id: null
+    task: null
+    status: "pending"  # pending/in_progress/completed/failed
+    started_at: null
+    completed_at: null
+    duration: null
+    files_modified: []
+    quality_gates_passed: []
+    quality_gates_failed: []
+    github_updates_posted: 0
+
+# PARALLEL EXECUTION CONTEXT
+parallel_execution:
+  enabled: false
+  current_block: null
+  total_blocks: 0
+  completed_blocks: 0
+  
+  # Parallel Block Template
+  block_template:
+    block_id: null
+    name: null
+    status: "pending"  # pending/in_progress/completed/failed
+    agents: []
+    dependencies: []
+    started_at: null
+    completed_at: null
+    estimated_duration: null
+    actual_duration: null
+    conflicts_detected: 0
+    conflicts_resolved: 0
+    fallback_triggered: false
+    
+  # Conflict Tracking
+  conflict_tracking:
+    total_conflicts: 0
+    resolved_conflicts: 0
+    active_conflicts: []
+    conflict_history: []
+    
+  # Performance Metrics
+  performance_metrics:
+    sequential_time_estimate: null
+    parallel_time_estimate: null
+    actual_execution_time: null
+    efficiency_gain: null
+    agent_utilization: null
+
+# QUALITY GATE TRACKING
+quality_gates:
+  total_gates_run: 0
+  gates_passed: 0
+  gates_failed: 0
+  
+  # Gate Results Template
+  gate_result_template:
+    gate_name: null
+    story_id: null
+    agent_id: null
+    status: null  # passed/failed
+    executed_at: null
+    details: null
+    github_reported: false
+    
+  # Failed Gate Tracking
+  failed_gates:
+    total_failures: 0
+    recovery_attempts: 0
+    successful_recoveries: 0
+    escalations: 0
+
+# GITHUB SYNC STATUS
+sync_status:
+  last_sync_time: null
+  total_syncs: 0
+  successful_syncs: 0
+  failed_syncs: 0
+  
+  # Sync History Template
+  sync_history_template:
+    sync_id: null
+    type: null  # progress_update/quality_gate/conflict/completion
+    executed_at: null
+    status: null  # success/failed
+    github_response: null
+    comment_id: null
+    error_message: null
+    
+  # Rate Limiting
+  rate_limiting:
+    requests_made: 0
+    requests_remaining: null
+    reset_time: null
+    last_rate_limit_check: null
+
+# PROGRESS TRACKING
+progress_tracking:
+  session_started_at: null
+  last_activity_at: null
+  total_work_time: null
+  
+  # Progress Milestones
+  milestones:
+    stories_created: 0
+    agents_executed: 0
+    quality_gates_passed: 0
+    github_syncs_completed: 0
+    conflicts_resolved: 0
+    
+  # Session Statistics
+  session_stats:
+    stories_per_hour: null
+    average_story_duration: null
+    quality_gate_pass_rate: null
+    github_sync_success_rate: null
+    parallel_efficiency_gain: null
+
+# ERROR TRACKING
+error_tracking:
+  total_errors: 0
+  github_errors: 0
+  quality_gate_errors: 0
+  parallel_execution_errors: 0
+  
+  # Error Template
+  error_template:
+    error_id: null
+    type: null  # github/quality_gate/parallel/agent
+    severity: null  # low/medium/high/critical
+    occurred_at: null
+    story_id: null
+    agent_id: null
+    error_message: null
+    stack_trace: null
+    resolution_attempted: false
+    resolved: false
+    
+  # Recovery Tracking
+  recovery_tracking:
+    automatic_recoveries: 0
+    manual_interventions: 0
+    session_resets: 0
+    mode_fallbacks: 0
+
+# CONFIGURATION OVERRIDES
+configuration:
+  # Override default sync settings
+  sync_overrides:
+    disable_auto_comment: false
+    custom_sync_frequency: null
+    custom_comment_format: null
+    
+  # Override quality gate settings
+  quality_gate_overrides:
+    skip_github_reporting: false
+    custom_failure_threshold: null
+    custom_recovery_strategy: null
+    
+  # Override parallel execution settings
+  parallel_overrides:
+    max_parallel_agents: null
+    conflict_detection_sensitivity: null
+    fallback_threshold: null
+
+# SESSION RECOVERY
+session_recovery:
+  recovery_enabled: true
+  
+  # Recovery Data
+  recovery_data:
+    checkpoint_frequency: "after_each_story"
+    last_checkpoint: null
+    recoverable_state: null
+    
+  # Recovery Actions
+  recovery_actions:
+    auto_resume_on_restart: true
+    preserve_github_context: true
+    restore_execution_mode: true
+    continue_parallel_execution: false
+
+# METRICS AND ANALYTICS
+metrics:
+  # Performance Metrics
+  performance:
+    stories_completed: 0
+    average_story_time: null
+    total_execution_time: null
+    efficiency_rating: null
+    
+  # Quality Metrics
+  quality:
+    quality_gate_pass_rate: null
+    defect_rate: null
+    user_satisfaction: null
+    
+  # GitHub Integration Metrics
+  github_integration:
+    sync_success_rate: null
+    comment_engagement: null
+    issue_closure_rate: null
+    
+  # Parallel Execution Metrics
+  parallel_execution:
+    parallelization_success_rate: null
+    conflict_rate: null
+    efficiency_gain: null
+    agent_utilization: null
+
+# TEMPLATE USAGE INSTRUCTIONS
+usage_instructions:
+  initialization:
+    - "Copy template to .bmad-project/github-context.json"
+    - "Update repository and user information"
+    - "Initialize session with current timestamp"
+    - "Set default execution mode"
+    
+  during_execution:
+    - "Update story tracking as work progresses"
+    - "Record agent execution details"
+    - "Track quality gate results"
+    - "Maintain sync status"
+    
+  session_completion:
+    - "Finalize metrics and statistics"
+    - "Archive session data"
+    - "Prepare for session recovery if needed"
+    
+  troubleshooting:
+    - "Check error_tracking for issues"
+    - "Review sync_status for GitHub problems"
+    - "Examine parallel_execution for conflicts"
+
+# INTEGRATION POINTS
+integration_points:
+  workflows:
+    - coordination-workflow
+    - quality-gate-enforcement-workflow
+    - parallel-failure-recovery-workflow
+    
+  agents:
+    - development-coordinator
+    - erpnext-scrum-master
+    - parallel-analyzer
+    
+  commands:
+    - /github:issue-fetch
+    - /github:issue-sync
+    - /github:issue-comment
+    
+  templates:
+    - story-execution-mode-template
+    - parallel-execution-template
+    - quality-gate-template
+
+# EXAMPLE POPULATED CONTEXT
+example_context:
+  github_session:
+    session_id: "bmad-20241220-143052"
+    repository:
+      owner: "automazeio"
+      name: "customer-portal"
+      url: "https://github.com/automazeio/customer-portal"
+    current_issue:
+      number: 1234
+      title: "Add customer dashboard with order tracking"
+      state: "open"
+      labels: ["erpnext", "enhancement", "smart_parallel"]
+      
+  execution_context:
+    current_mode: "smart_parallel"
+    mode_selected_at: "2024-12-20T14:31:15Z"
+    mode_selection_reason: "Large feature with independent components"
+    
+  story_tracking:
+    active_stories:
+      - story_id: "story-1234"
+        title: "Customer dashboard implementation"
+        github_issue_number: 1234
+        execution_mode: "smart_parallel"
+        status: "in_progress"
+        assigned_agents: ["doctype-designer", "api-architect", "vue-spa-architect"]
+        
+  parallel_execution:
+    enabled: true
+    current_block: "block_1"
+    total_blocks: 3
+    completed_blocks: 0
+    
+  sync_status:
+    last_sync_time: "2024-12-20T14:35:22Z"
+    total_syncs: 3
+    successful_syncs: 3
+    failed_syncs: 0

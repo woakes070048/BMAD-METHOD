@@ -1,0 +1,652 @@
+# Airtable Automation Analysis and ERPNext Conversion Framework
+# Comprehensive guide for analyzing Airtable automations and implementing ERPNext equivalents
+
+name: "Airtable Automation Analysis Framework" 
+description: "Complete framework for analyzing Airtable automations and designing equivalent ERPNext workflows and scripts"
+version: "1.0.0"
+
+# Airtable Automation Types and ERPNext Mappings
+automation_types:
+  
+  trigger_based_automations:
+    record_created:
+      description: "Automation runs when a new record is added to a table"
+      airtable_implementation:
+        trigger: "Record is created in [Table]"
+        conditions: "Optional conditions on field values"
+        timing: "Immediately after record creation"
+        
+      erpnext_mapping:
+        primary_approach: "DocType Hook - after_insert"
+        implementation_methods:
+          document_hook:
+            description: "Python method in DocType class"
+            trigger_event: "after_insert"
+            code_location: "DocType Python file"
+            
+          server_script:
+            description: "Server Script with Document event"
+            trigger_event: "After Insert"
+            code_location: "Server Script DocType"
+            
+      analysis_template: |
+        ## Record Created Automation Analysis
+        
+        ### Automation: {{ automation_name }}
+        **Target Table**: {{ target_table }}
+        **Trigger**: Record created in {{ target_table }}
+        
+        #### Trigger Conditions
+        {% for condition in trigger_conditions %}
+        - {{ condition.field }} {{ condition.operator }} {{ condition.value }}
+        {% endfor %}
+        
+        #### Actions Performed
+        {% for action in actions %}
+        **{{ action.type }}**: {{ action.description }}
+        - Details: {{ action.details }}
+        - Target: {{ action.target }}
+        {% endfor %}
+        
+        #### ERPNext Implementation
+        **Recommended Method**: {{ recommended_method }}
+        
+        ```python
+        # {{ recommended_method }} Implementation
+        {% if recommended_method == "document_hook" %}
+        def after_insert(self):
+            # Automation logic converted from Airtable
+            {% for action in converted_actions %}
+            {{ action.code }}
+            {% endfor %}
+        {% else %}
+        # Server Script - After Insert
+        {% for action in converted_actions %}
+        {{ action.code }}
+        {% endfor %}
+        {% endif %}
+        ```
+        
+        #### Migration Complexity: {{ complexity_level }}
+        #### Testing Requirements: {{ testing_requirements }}
+
+    record_updated:
+      description: "Automation runs when an existing record is modified"
+      airtable_implementation:
+        trigger: "Record is updated in [Table]"
+        field_specific: "Can trigger on specific field changes"
+        conditions: "Optional conditions on old/new values"
+        
+      erpnext_mapping:
+        primary_approach: "DocType Hook - on_update or validate"
+        implementation_methods:
+          on_update_hook:
+            description: "Runs after successful update"
+            use_case: "Actions that don't affect current save"
+            
+          validate_hook:
+            description: "Runs during validation before save"
+            use_case: "Calculations that affect current record"
+            
+          before_save_hook:
+            description: "Runs before save operation"
+            use_case: "Data manipulation before storage"
+
+    record_deleted:
+      description: "Automation runs when a record is deleted"
+      airtable_implementation:
+        trigger: "Record is deleted from [Table]"
+        timing: "Before actual deletion"
+        data_access: "Access to record data before deletion"
+        
+      erpnext_mapping:
+        primary_approach: "DocType Hook - before_delete or on_trash"
+        considerations:
+          data_availability: "Record data still available in hooks"
+          cascade_operations: "Handle related record cleanup"
+          logging: "Maintain audit trail of deletions"
+
+  conditional_automations:
+    field_value_conditions:
+      description: "Automation runs when field matches specific conditions"
+      airtable_implementation:
+        trigger: "When record matches conditions"
+        operators: ["equals", "does not equal", "contains", "is empty", "is not empty"]
+        multiple_conditions: "AND/OR logic supported"
+        
+      erpnext_mapping:
+        implementation_approaches:
+          validation_based:
+            description: "Check conditions in validate method"
+            trigger_timing: "Before save"
+            
+          update_based:
+            description: "Check conditions in on_update method"
+            trigger_timing: "After save"
+            
+          workflow_based:
+            description: "Use ERPNext Workflow states"
+            trigger_timing: "State transitions"
+
+    date_time_conditions:
+      description: "Automation runs based on date/time conditions"
+      airtable_implementation:
+        triggers:
+          - "At scheduled time"
+          - "When date field reaches specific value"
+          - "X days before/after date field"
+        scheduling: "Recurring or one-time"
+        
+      erpnext_mapping:
+        implementation_methods:
+          scheduled_job:
+            description: "Frappe scheduled job"
+            timing: "Cron-based scheduling"
+            
+          workflow_timer:
+            description: "Workflow with timer events"
+            timing: "Date-based state transitions"
+            
+          notification_system:
+            description: "ERPNext notification system"
+            timing: "Date-based alerts"
+
+# Automation Actions and ERPNext Equivalents
+automation_actions:
+  
+  record_operations:
+    create_record:
+      description: "Create new record in same or different table"
+      airtable_implementation:
+        target: "Any table in same base"
+        field_mapping: "Map fields from trigger record"
+        static_values: "Set static field values"
+        
+      erpnext_mapping:
+        implementation: "frappe.get_doc().insert()"
+        code_pattern: |
+          # Create new record
+          new_doc = frappe.get_doc({
+              "doctype": "{{ target_doctype }}",
+              "{{ field_1 }}": self.{{ source_field_1 }},
+              "{{ field_2 }}": "{{ static_value }}",
+              # Additional field mappings
+          })
+          new_doc.insert()
+          
+    update_record:
+      description: "Update existing record in same or different table"
+      airtable_implementation:
+        target: "Current record or linked records"
+        field_updates: "Set specific field values"
+        conditional_updates: "Update based on conditions"
+        
+      erpnext_mapping:
+        implementation: "Document property updates or frappe.db.set_value"
+        code_patterns:
+          current_record: |
+            # Update current record
+            self.{{ field_name }} = {{ new_value }}
+            
+          linked_record: |
+            # Update linked record
+            if self.{{ link_field }}:
+                linked_doc = frappe.get_doc("{{ target_doctype }}", self.{{ link_field }})
+                linked_doc.{{ field_name }} = {{ new_value }}
+                linked_doc.save()
+                
+          bulk_update: |
+            # Bulk update multiple records
+            frappe.db.set_value("{{ doctype }}", 
+                {"{{ filter_field }}": self.name}, 
+                "{{ update_field }}", {{ new_value }})
+
+    delete_record:
+      description: "Delete current or related records"
+      airtable_implementation:
+        target: "Current record or linked records"
+        cascade: "Optional cascade deletion"
+        
+      erpnext_mapping:
+        implementation: "Document.delete() or frappe.delete_doc()"
+        considerations:
+          permissions: "Check delete permissions"
+          references: "Handle linked document references"
+          audit_trail: "Maintain deletion logs"
+
+  notification_actions:
+    send_email:
+      description: "Send email to specified recipients"
+      airtable_implementation:
+        recipients: "Static emails or field values"
+        template: "Custom email template"
+        attachments: "Optional file attachments"
+        
+      erpnext_mapping:
+        implementation: "frappe.sendmail() or Email Queue"
+        code_pattern: |
+          # Send email notification
+          frappe.sendmail(
+              recipients="{{ recipient_emails }}",
+              subject="{{ email_subject }}",
+              message="{{ email_message }}",
+              reference_doctype=self.doctype,
+              reference_name=self.name
+          )
+          
+    send_notification:
+      description: "Send in-app notification"
+      airtable_implementation:
+        recipients: "Collaborators or specific users"
+        message: "Custom notification message"
+        
+      erpnext_mapping:
+        implementation: "frappe.publish_realtime or Notification DocType"
+        approaches:
+          realtime_notification:
+            description: "Immediate browser notification"
+            code: |
+              frappe.publish_realtime(
+                  "notification",
+                  {"message": "{{ notification_message }}"},
+                  user="{{ target_user }}"
+              )
+              
+          notification_log:
+            description: "Persistent notification record"
+            code: |
+              frappe.get_doc({
+                  "doctype": "Notification Log",
+                  "subject": "{{ notification_subject }}",
+                  "for_user": "{{ target_user }}",
+                  "type": "Alert"
+              }).insert()
+
+  integration_actions:
+    webhook_call:
+      description: "Make HTTP request to external service"
+      airtable_implementation:
+        method: "GET, POST, PUT, DELETE"
+        url: "External service endpoint"
+        payload: "JSON data from record fields"
+        
+      erpnext_mapping:
+        implementation: "Python requests library"
+        code_pattern: |
+          import requests
+          
+          # Webhook call
+          response = requests.post(
+              "{{ webhook_url }}",
+              json={
+                  "{{ field_1 }}": self.{{ source_field_1 }},
+                  "{{ field_2 }}": self.{{ source_field_2 }},
+              },
+              headers={"Authorization": "Bearer {{ api_key }}"}
+          )
+          
+    api_integration:
+      description: "Integration with external APIs"
+      airtable_implementation:
+        service: "Various third-party services"
+        authentication: "API keys or OAuth"
+        data_sync: "Bi-directional data synchronization"
+        
+      erpnext_mapping:
+        implementation: "Custom integration modules"
+        considerations:
+          authentication: "Secure credential storage"
+          error_handling: "Robust error handling"
+          rate_limiting: "API rate limit compliance"
+
+# Automation Analysis Workflow
+analysis_workflow:
+  
+  discovery_phase:
+    automation_inventory:
+      description: "Catalog all automations in Airtable base"
+      template: |
+        # Automation Inventory for {{ base_name }}
+        
+        | Automation Name | Trigger | Table | Actions | Complexity | Priority |
+        |-----------------|---------|-------|---------|------------|----------|
+        {% for automation in automations %}
+        | {{ automation.name }} | {{ automation.trigger }} | {{ automation.table }} | {{ automation.action_count }} | {{ automation.complexity }} | {{ automation.priority }} |
+        {% endfor %}
+        
+        ## Summary Statistics
+        - Total Automations: {{ total_count }}
+        - Simple Automations: {{ simple_count }}
+        - Complex Automations: {{ complex_count }}
+        - High Priority: {{ high_priority_count }}
+        
+    detailed_analysis:
+      description: "Analyze each automation in detail"
+      template: |
+        # Detailed Automation Analysis
+        
+        ## Automation: {{ automation_name }}
+        
+        ### Basic Information
+        **Status**: {{ status }}
+        **Table**: {{ target_table }}
+        **Created By**: {{ creator }}
+        **Last Modified**: {{ last_modified }}
+        
+        ### Trigger Configuration
+        **Trigger Type**: {{ trigger_type }}
+        **Trigger Conditions**:
+        {% for condition in conditions %}
+        - {{ condition.field }} {{ condition.operator }} {{ condition.value }}
+        {% endfor %}
+        
+        ### Actions Configuration
+        {% for action in actions %}
+        **Action {{ loop.index }}**: {{ action.type }}
+        - Description: {{ action.description }}
+        - Configuration: {{ action.config }}
+        - Dependencies: {{ action.dependencies }}
+        {% endfor %}
+        
+        ### Business Logic Analysis
+        **Purpose**: {{ business_purpose }}
+        **Business Rules**: {{ business_rules }}
+        **Error Handling**: {{ error_handling }}
+        
+        ### ERPNext Mapping Strategy
+        **Recommended Implementation**: {{ recommended_implementation }}
+        **Alternative Approaches**: {{ alternative_approaches }}
+        **Implementation Complexity**: {{ implementation_complexity }}
+        
+        ### Migration Considerations
+        - **Dependencies**: {{ migration_dependencies }}
+        - **Testing Requirements**: {{ testing_requirements }}
+        - **Rollback Strategy**: {{ rollback_strategy }}
+
+  implementation_planning:
+    conversion_strategy:
+      description: "Plan conversion approach for each automation"
+      decision_matrix:
+        simple_automations:
+          characteristics:
+            - "Single trigger condition"
+            - "Basic actions (create, update, email)"
+            - "Single table operations"
+          approach: "Direct conversion to DocType hooks"
+          effort: "Low"
+          
+        moderate_automations:
+          characteristics:
+            - "Multiple conditions with AND/OR logic"
+            - "Cross-table operations"
+            - "Email with custom templates"
+          approach: "Server scripts with custom logic"
+          effort: "Medium"
+          
+        complex_automations:
+          characteristics:
+            - "Complex business logic"
+            - "External API integrations"
+            - "Multiple dependent actions"
+          approach: "Custom modules or applications"
+          effort: "High"
+
+# Implementation Patterns
+implementation_patterns:
+  
+  doctype_hooks:
+    pattern_description: "Standard ERPNext document lifecycle hooks"
+    use_cases:
+      - "Simple field updates"
+      - "Record creation/updates"
+      - "Basic validations"
+      
+    implementation_template: |
+      # DocType Hooks Implementation
+      
+      class {{ DocTypeName }}(Document):
+          def validate(self):
+              # Before save validations and calculations
+              {% for validation in validations %}
+              {{ validation.code }}
+              {% endfor %}
+              
+          def before_save(self):
+              # Data manipulation before save
+              {% for manipulation in manipulations %}
+              {{ manipulation.code }}
+              {% endfor %}
+              
+          def after_insert(self):
+              # Actions after record creation
+              {% for action in insert_actions %}
+              {{ action.code }}
+              {% endfor %}
+              
+          def on_update(self):
+              # Actions after record update
+              {% for action in update_actions %}
+              {{ action.code }}
+              {% endfor %}
+              
+          def before_delete(self):
+              # Cleanup before deletion
+              {% for cleanup in cleanup_actions %}
+              {{ cleanup.code }}
+              {% endfor %}
+              
+  server_scripts:
+    pattern_description: "Flexible server-side scripting for complex logic"
+    use_cases:
+      - "Cross-DocType operations"
+      - "Complex business rules"
+      - "Integration logic"
+      
+    implementation_template: |
+      # Server Script Implementation
+      # Script Type: DocType Event
+      # DocType: {{ doctype_name }}
+      # Event: {{ event_type }}
+      
+      # Converted Airtable Automation: {{ automation_name }}
+      
+      {% for action in actions %}
+      # {{ action.description }}
+      try:
+          {{ action.code }}
+      except Exception as e:
+          frappe.log_error(f"Automation error: {str(e)}", "{{ automation_name }}")
+          # Handle error appropriately
+      {% endfor %}
+      
+  workflow_integration:
+    pattern_description: "ERPNext Workflow system for state-based automations"
+    use_cases:
+      - "Approval processes"
+      - "State-based triggers"
+      - "Complex business processes"
+      
+    implementation_template: |
+      # Workflow Configuration
+      workflow_config = {
+          "name": "{{ workflow_name }}",
+          "document_type": "{{ doctype_name }}",
+          "workflow_state_field": "{{ state_field }}",
+          "states": [
+              {% for state in states %}
+              {
+                  "state": "{{ state.name }}",
+                  "style": "{{ state.style }}",
+                  "doc_status": {{ state.doc_status }}
+              },
+              {% endfor %}
+          ],
+          "transitions": [
+              {% for transition in transitions %}
+              {
+                  "state": "{{ transition.from_state }}",
+                  "action": "{{ transition.action }}",
+                  "next_state": "{{ transition.to_state }}",
+                  "allowed": "{{ transition.allowed_roles }}",
+                  "condition": "{{ transition.condition }}"
+              },
+              {% endfor %}
+          ]
+      }
+      
+      # Workflow Action Script
+      def on_workflow_action(doc, action):
+          if action == "{{ specific_action }}":
+              # Execute automation logic
+              {{ action_code }}
+
+# Migration Execution Framework
+migration_framework:
+  
+  preparation_phase:
+    automation_backup:
+      description: "Export and document existing automations"
+      steps:
+        - "Export automation configurations from Airtable"
+        - "Document business logic and dependencies"
+        - "Create test cases for each automation"
+        - "Identify critical vs non-critical automations"
+        
+    dependency_mapping:
+      description: "Map automation dependencies"
+      considerations:
+        - "Table migration order affects automation migration"
+        - "Field availability impacts automation logic"
+        - "User and permission setup required"
+        - "External service configurations needed"
+        
+  implementation_phase:
+    development_workflow:
+      step_1: "Create ERPNext development environment"
+      step_2: "Implement high-priority automations first"
+      step_3: "Test automation logic with sample data"
+      step_4: "Implement error handling and logging"
+      step_5: "Create monitoring and alerting"
+      
+    testing_strategy:
+      unit_testing:
+        description: "Test individual automation components"
+        approach: "Isolated testing of automation logic"
+        
+      integration_testing:
+        description: "Test automation interactions"
+        approach: "End-to-end workflow testing"
+        
+      user_acceptance_testing:
+        description: "Validate business process automation"
+        approach: "Business user validation of results"
+        
+  deployment_phase:
+    gradual_rollout:
+      description: "Phased automation deployment"
+      phases:
+        phase_1: "Critical business process automations"
+        phase_2: "Standard operational automations" 
+        phase_3: "Nice-to-have and enhancement automations"
+        
+    monitoring_setup:
+      description: "Monitor automation performance and errors"
+      components:
+        error_logging: "Comprehensive error tracking"
+        performance_monitoring: "Automation execution time tracking"
+        business_impact_tracking: "Success metrics and KPIs"
+
+# Quality Assurance and Testing
+testing_framework:
+  
+  automation_testing:
+    functional_testing:
+      trigger_testing:
+        - "Verify triggers activate correctly"
+        - "Test condition logic accuracy"
+        - "Validate timing of trigger execution"
+        
+      action_testing:
+        - "Confirm all actions execute properly"
+        - "Validate data modifications are correct"
+        - "Test error handling for failed actions"
+        
+    performance_testing:
+      load_testing:
+        - "Test automation performance under load"
+        - "Validate concurrent execution handling"
+        - "Monitor system resource usage"
+        
+      scalability_testing:
+        - "Test with large data volumes"
+        - "Validate performance with multiple automations"
+        - "Test system limits and thresholds"
+        
+  error_handling:
+    error_scenarios:
+      data_issues:
+        - "Missing or invalid field data"
+        - "Referenced records not found"
+        - "Data type conversion errors"
+        
+      system_issues:
+        - "Network connectivity problems"
+        - "External service unavailable"
+        - "Database transaction failures"
+        
+      business_logic_errors:
+        - "Invalid business rule conditions"
+        - "Circular dependency issues"
+        - "Permission and access errors"
+
+# Success Metrics and KPIs
+success_criteria:
+  
+  functional_completeness:
+    automation_coverage: "100% of critical automations migrated"
+    accuracy: "Automation results match Airtable behavior"
+    reliability: "99.9% successful automation execution"
+    
+  performance_metrics:
+    execution_time: "Automations complete within acceptable timeframes"
+    system_impact: "Minimal impact on overall system performance"
+    scalability: "Performance maintained with data growth"
+    
+  business_impact:
+    process_efficiency: "Business processes run as smoothly as before"
+    error_reduction: "Reduced manual errors through automation"
+    user_productivity: "Users can focus on higher-value tasks"
+    
+  technical_quality:
+    code_maintainability: "Automation code follows ERPNext best practices"
+    error_handling: "Robust error handling and recovery"
+    monitoring: "Comprehensive logging and alerting"
+
+# Documentation and Knowledge Transfer
+documentation_requirements:
+  
+  technical_documentation:
+    automation_specifications:
+      - "Detailed automation logic documentation"
+      - "Code comments and inline documentation"
+      - "API integration specifications"
+      - "Error handling procedures"
+      
+    deployment_guides:
+      - "Installation and configuration procedures"
+      - "Environment setup requirements"
+      - "Troubleshooting guides"
+      - "Rollback procedures"
+      
+  user_documentation:
+    process_changes:
+      - "Updated business process documentation"
+      - "User workflow changes"
+      - "New automation capabilities"
+      - "Troubleshooting guides for users"
+      
+    training_materials:
+      - "Automation overview and benefits"
+      - "How to monitor automation results"
+      - "When to contact support"
+      - "Best practices for data entry"

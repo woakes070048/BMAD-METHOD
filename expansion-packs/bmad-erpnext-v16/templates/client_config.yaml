@@ -1,0 +1,71 @@
+# Client Configuration Template
+# This template defines the structure for client-side configurations
+
+client_config:
+  app_name: "{{ app_name }}"
+  module: "{{ module_name }}"
+  
+  frontend:
+    framework: "{{ frontend_framework | default('Vue 3') }}"
+    entry_point: "{{ entry_point | default('public/js/app.bundle.js') }}"
+    
+    build_config:
+      bundler: "{{ bundler | default('esbuild') }}"  # Using Frappe's built-in esbuild
+      source_maps: "{{ source_maps | default(true) }}"
+      minify: "{{ minify | default(false) }}"  # false for development, true for production
+    
+    components:
+      path: "{{ components_path | default('public/js/components/') }}"
+      style_lang: "{{ style_lang | default('css') }}"  # css, scss, sass
+      
+    state_management:
+      library: "{{ state_library | default('Pinia') }}"
+      stores_path: "{{ stores_path | default('public/js/stores/') }}"
+    
+    routing:
+      type: "{{ routing_type | default('frappe-pages') }}"  # frappe-pages (NO Vue Router)
+      pages_path: "{{ pages_path }}"
+  
+  api_integration:
+    base_url: "{{ api_base_url | default('/api') }}"
+    timeout: "{{ api_timeout | default(30000) }}"
+    
+    headers:
+      content_type: "{{ content_type | default('application/json') }}"
+      custom_headers: "{{ custom_headers }}"
+    
+    authentication:
+      method: "{{ auth_method | default('frappe.session') }}"
+      token_storage: "{{ token_storage | default('cookie') }}"
+  
+  ui_config:
+    theme: "{{ theme | default('frappe-default') }}"
+    css_framework: "{{ css_framework | default('Bootstrap 4') }}"  # Frappe default
+    
+    responsive:
+      mobile_first: "{{ mobile_first | default(true) }}"
+      breakpoints: "{{ breakpoints | default('frappe-standard') }}"
+    
+    components_library: "{{ ui_library | default('frappe-ui') }}"
+  
+  performance:
+    lazy_loading: "{{ lazy_loading | default(true) }}"
+    code_splitting: "{{ code_splitting | default(true) }}"
+    prefetch: "{{ prefetch | default(true) }}"
+    
+    caching:
+      strategy: "{{ cache_strategy | default('network-first') }}"
+      max_age: "{{ cache_max_age | default(3600) }}"
+  
+  pwa_config:
+    enabled: "{{ pwa_enabled | default(false) }}"
+    manifest_path: "{{ manifest_path | default('public/manifest.json') }}"
+    service_worker: "{{ sw_path | default('public/sw.js') }}"
+    
+    offline_mode: "{{ offline_enabled | default(false) }}"
+    push_notifications: "{{ push_enabled | default(false) }}"
+  
+  development:
+    hot_reload: "{{ hot_reload | default(true) }}"
+    debug_mode: "{{ debug | default(true) }}"
+    verbose_logging: "{{ verbose | default(false) }}"

@@ -1,0 +1,699 @@
+# Airtable View Analysis and ERPNext Conversion Framework
+# Comprehensive guide for analyzing Airtable views and implementing ERPNext equivalents
+
+name: "Airtable View Analysis Framework"
+description: "Complete framework for analyzing Airtable views and designing equivalent ERPNext interfaces and reports"
+version: "1.0.0"
+
+# Airtable View Types and ERPNext Mappings
+view_types:
+  
+  grid_view:
+    description: "Traditional spreadsheet-like table view with rows and columns"
+    airtable_features:
+      display: "Tabular format with customizable columns"
+      sorting: "Multiple field sorting with priority"
+      filtering: "Complex multi-field filters with conditions"
+      grouping: "Group by field values with collapsible sections"
+      formatting: "Conditional formatting and field-specific display"
+      editing: "Inline editing capabilities"
+      
+    erpnext_mapping:
+      primary_equivalent: "List View"
+      implementation_options:
+        standard_list_view:
+          description: "ERPNext default list interface"
+          capabilities:
+            - "Column selection and ordering"
+            - "Sorting by multiple fields"
+            - "Filter sidebar with various conditions"
+            - "Search functionality"
+            - "Bulk operations"
+            
+        custom_list_view:
+          description: "Customized list view with additional features"
+          enhancements:
+            - "Custom column formatting"
+            - "Color coding based on conditions"
+            - "Custom buttons and actions"
+            - "Advanced filter options"
+            
+        report_view:
+          description: "Custom report for complex requirements"
+          use_cases:
+            - "Complex calculations"
+            - "Advanced grouping"
+            - "Charts and visualizations"
+            
+    analysis_template: |
+      ## Grid View Analysis: {{ view_name }}
+      
+      ### View Configuration
+      **Base Table**: {{ base_table }}
+      **View Name**: {{ view_name }}
+      **Purpose**: {{ view_purpose }}
+      **Primary Users**: {{ primary_users }}
+      
+      ### Display Settings
+      **Visible Fields**: {{ visible_fields }}
+      **Hidden Fields**: {{ hidden_fields }}
+      **Field Order**: {{ field_order }}
+      **Row Height**: {{ row_height }}
+      
+      ### Sorting Configuration
+      | Priority | Field | Direction | Notes |
+      |----------|-------|-----------|-------|
+      {% for sort in sorting_rules %}
+      | {{ sort.priority }} | {{ sort.field }} | {{ sort.direction }} | {{ sort.notes }} |
+      {% endfor %}
+      
+      ### Filter Configuration
+      {% for filter in filter_rules %}
+      **{{ filter.name }}**:
+      - Field: {{ filter.field }}
+      - Condition: {{ filter.condition }}
+      - Value: {{ filter.value }}
+      - Logic: {{ filter.logic }}
+      {% endfor %}
+      
+      ### Grouping Configuration
+      {% if grouping_enabled %}
+      **Group By**: {{ group_field }}
+      **Collapse**: {{ collapse_groups }}
+      **Summary**: {{ group_summary }}
+      {% else %}
+      No grouping configured
+      {% endif %}
+      
+      ### ERPNext Implementation Plan
+      **Recommended Approach**: {{ recommended_approach }}
+      
+      {% if recommended_approach == "standard_list_view" %}
+      **List View Configuration**:
+      ```python
+      # List View Settings
+      list_view_settings = {
+          "fields": {{ visible_fields }},
+          "filters": {{ default_filters }},
+          "order_by": "{{ primary_sort_field }} {{ sort_direction }}",
+          "page_length": {{ page_length }}
+      }
+      ```
+      {% elif recommended_approach == "custom_report" %}
+      **Custom Report Specification**:
+      ```python
+      # Report Configuration
+      report_config = {
+          "name": "{{ report_name }}",
+          "doctype": "{{ source_doctype }}",
+          "is_standard": "Yes",
+          "columns": {{ report_columns }},
+          "filters": {{ report_filters }},
+          "formatter": {{ custom_formatting }}
+      }
+      ```
+      {% endif %}
+      
+      ### Migration Considerations
+      - **Complexity**: {{ migration_complexity }}
+      - **Custom Development**: {{ custom_development_needed }}
+      - **User Training**: {{ user_training_needs }}
+
+  kanban_view:
+    description: "Card-based view with columns representing different status values"
+    airtable_features:
+      display: "Cards organized in columns by status field"
+      customization: "Custom card layouts with selected fields"
+      drag_drop: "Drag and drop to change status"
+      filtering: "Filter cards within columns"
+      grouping: "Additional grouping within columns"
+      
+    erpnext_mapping:
+      primary_equivalent: "Kanban Board"
+      implementation_approach:
+        kanban_board:
+          description: "Native ERPNext Kanban Board"
+          configuration:
+            column_field: "Status field for columns"
+            title_field: "Primary display field"
+            card_fields: "Additional fields to show on cards"
+            
+        custom_dashboard:
+          description: "Custom dashboard with Kanban-style cards"
+          use_cases:
+            - "Complex card layouts"
+            - "Multiple grouping levels"
+            - "Custom actions on cards"
+            
+    analysis_template: |
+      ## Kanban View Analysis: {{ view_name }}
+      
+      ### View Configuration
+      **Base Table**: {{ base_table }}
+      **Status Field**: {{ status_field }}
+      **Card Title**: {{ card_title_field }}
+      **Card Subtitle**: {{ card_subtitle_field }}
+      
+      ### Column Configuration
+      | Column | Status Value | Color | Card Count | Notes |
+      |--------|--------------|-------|------------|-------|
+      {% for column in columns %}
+      | {{ column.name }} | {{ column.status }} | {{ column.color }} | {{ column.count }} | {{ column.notes }} |
+      {% endfor %}
+      
+      ### Card Layout
+      **Primary Field**: {{ primary_field }}
+      **Secondary Fields**: 
+      {% for field in card_fields %}
+      - {{ field.name }}: {{ field.display_type }}
+      {% endfor %}
+      
+      ### Filters Applied
+      {% for filter in filters %}
+      - {{ filter.field }} {{ filter.condition }} {{ filter.value }}
+      {% endfor %}
+      
+      ### ERPNext Kanban Implementation
+      ```javascript
+      frappe.views.KanbanView.extend({
+          setup: function() {
+              this.kanban = new frappe.views.Kanban({
+                  doctype: "{{ doctype_name }}",
+                  board_field: "{{ status_field }}",
+                  title_field: "{{ title_field }}",
+                  quick_filters: {{ quick_filters }},
+                  fields: {{ display_fields }},
+                  card_meta: {
+                      color_field: "{{ color_field }}",
+                      progress_field: "{{ progress_field }}"
+                  }
+              });
+          }
+      });
+      ```
+      
+      ### Custom Actions Required
+      {% for action in custom_actions %}
+      **{{ action.name }}**: {{ action.description }}
+      Implementation: {{ action.implementation }}
+      {% endfor %}
+
+  calendar_view:
+    description: "Calendar interface showing records as events on specific dates"
+    airtable_features:
+      display: "Month, week, or day view with records as events"
+      date_fields: "Start date and optional end date"
+      event_display: "Title and color coding for events"
+      filtering: "Filter events by various criteria"
+      
+    erpnext_mapping:
+      primary_equivalent: "Calendar View"
+      implementation_approach:
+        native_calendar:
+          description: "ERPNext built-in calendar view"
+          requirements:
+            - "Date/Datetime field for start"
+            - "Optional end date field"
+            - "Title field for display"
+            
+        custom_calendar:
+          description: "Custom calendar implementation"
+          use_cases:
+            - "Complex event display requirements"
+            - "Multiple date field support" 
+            - "Advanced filtering and grouping"
+            
+    analysis_template: |
+      ## Calendar View Analysis: {{ view_name }}
+      
+      ### View Configuration
+      **Base Table**: {{ base_table }}
+      **Start Date Field**: {{ start_date_field }}
+      **End Date Field**: {{ end_date_field }}
+      **Title Field**: {{ title_field }}
+      **Color Field**: {{ color_field }}
+      
+      ### Display Settings
+      **Default View**: {{ default_view }} (Month/Week/Day)
+      **Time Display**: {{ time_display }}
+      **All Day Events**: {{ all_day_events }}
+      
+      ### Event Configuration
+      **Event Title**: {{ event_title_template }}
+      **Event Color**: Based on {{ color_logic }}
+      **Event Details**: {{ event_details_fields }}
+      
+      ### Filters Applied
+      {% for filter in calendar_filters %}
+      - {{ filter.field }} {{ filter.condition }} {{ filter.value }}
+      {% endfor %}
+      
+      ### ERPNext Calendar Implementation
+      ```python
+      # Calendar View Configuration
+      calendar_config = {
+          "doctype": "{{ doctype_name }}",
+          "subject_field": "{{ title_field }}",
+          "start_date_field": "{{ start_date_field }}",
+          {% if end_date_field %}
+          "end_date_field": "{{ end_date_field }}",
+          {% endif %}
+          "color_field": "{{ color_field }}",
+          "all_day": {{ all_day_setting }},
+          "filters": {{ default_filters }}
+      }
+      ```
+      
+      ### Custom Enhancements Needed
+      {% for enhancement in enhancements %}
+      **{{ enhancement.name }}**: {{ enhancement.description }}
+      {% endfor %}
+
+  gallery_view:
+    description: "Visual grid showing records as image cards or thumbnails"
+    airtable_features:
+      display: "Grid of cards with primary image/attachment"
+      card_layout: "Image with title and selected fields"
+      sizing: "Adjustable card size"
+      filtering: "Filter cards by criteria"
+      
+    erpnext_mapping:
+      primary_equivalent: "Image View / Custom Gallery"
+      implementation_approach:
+        image_view:
+          description: "ERPNext Image View for attachment fields"
+          limitations:
+            - "Limited to single attachment field"
+            - "Basic layout options"
+            - "Simple filtering"
+            
+        custom_gallery:
+          description: "Custom web page or dashboard"
+          capabilities:
+            - "Complex layouts"
+            - "Multiple image sources"
+            - "Advanced filtering"
+            - "Custom interactions"
+            
+    analysis_template: |
+      ## Gallery View Analysis: {{ view_name }}
+      
+      ### View Configuration
+      **Base Table**: {{ base_table }}
+      **Primary Image Field**: {{ image_field }}
+      **Card Title**: {{ card_title }}
+      **Card Subtitle**: {{ card_subtitle }}
+      
+      ### Layout Settings
+      **Card Size**: {{ card_size }}
+      **Cards Per Row**: {{ cards_per_row }}
+      **Image Aspect Ratio**: {{ aspect_ratio }}
+      
+      ### Card Content
+      **Image Source**: {{ image_source }}
+      **Overlay Text**: 
+      {% for field in overlay_fields %}
+      - {{ field.name }}: {{ field.position }}
+      {% endfor %}
+      
+      ### Filters Applied
+      {% for filter in gallery_filters %}
+      - {{ filter.field }} {{ filter.condition }} {{ filter.value }}
+      {% endfor %}
+      
+      ### ERPNext Implementation Strategy
+      **Recommended Approach**: {{ recommended_approach }}
+      
+      {% if recommended_approach == "custom_gallery" %}
+      **Custom Page Implementation**:
+      ```html
+      <!-- Gallery Template -->
+      <div class="gallery-container">
+          {% for record in records %}
+          <div class="gallery-card">
+              <div class="card-image">
+                  <img src="{{ record.image_url }}" alt="{{ record.title }}">
+              </div>
+              <div class="card-content">
+                  <h3>{{ record.title }}</h3>
+                  <p>{{ record.subtitle }}</p>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+      ```
+      
+      **JavaScript Component**:
+      ```javascript
+      class GalleryView {
+          constructor(options) {
+              this.doctype = options.doctype;
+              this.image_field = options.image_field;
+              this.title_field = options.title_field;
+          }
+          
+          render() {
+              // Gallery rendering logic
+          }
+          
+          apply_filters(filters) {
+              // Filter implementation
+          }
+      }
+      ```
+      {% endif %}
+
+  form_view:
+    description: "Detailed single-record view for data entry and display"
+    airtable_features:
+      layout: "Automatic field layout with sections"
+      field_types: "All field types with appropriate widgets"
+      validation: "Real-time validation and error display"
+      related_records: "Display of linked record information"
+      
+    erpnext_mapping:
+      primary_equivalent: "Form View"
+      implementation_approach:
+        standard_form:
+          description: "ERPNext DocType Form"
+          features:
+            - "Automatic field rendering"
+            - "Section breaks and column breaks"
+            - "Tab organization"
+            - "Field dependencies and permissions"
+            
+        custom_form:
+          description: "Custom form with enhanced UX"
+          enhancements:
+            - "Custom field arrangements"
+            - "Enhanced validation"
+            - "Custom buttons and actions"
+            - "Advanced field interactions"
+
+# View Migration Strategies
+migration_strategies:
+  
+  complexity_assessment:
+    simple_views:
+      characteristics:
+        - "Standard field display"
+        - "Basic sorting and filtering" 
+        - "No custom formatting"
+        - "Single table data"
+      migration_approach: "Direct ERPNext equivalent"
+      development_effort: "Low"
+      
+    moderate_views:
+      characteristics:
+        - "Custom field arrangements"
+        - "Multiple sorting/grouping"
+        - "Color coding and formatting"
+        - "Calculated fields display"
+      migration_approach: "ERPNext with customizations"
+      development_effort: "Medium"
+      
+    complex_views:
+      characteristics:
+        - "Advanced filtering logic"
+        - "Multiple data sources"
+        - "Complex calculations"
+        - "Custom interactions"
+      migration_approach: "Custom development required"
+      development_effort: "High"
+      
+  implementation_patterns:
+    standard_configuration:
+      description: "Use ERPNext standard views with configuration"
+      steps:
+        - "Configure List View settings"
+        - "Set up standard filters"
+        - "Define default sorting"
+        - "Configure field display"
+        
+    customization_approach:
+      description: "Extend ERPNext views with customizations"
+      steps:
+        - "Create custom List View"
+        - "Add custom formatting"
+        - "Implement custom filters"
+        - "Add custom actions"
+        
+    custom_development:
+      description: "Build completely custom views"
+      steps:
+        - "Design custom interface"
+        - "Implement data queries"
+        - "Build interactive features"
+        - "Integrate with ERPNext"
+
+# View Analysis Workflow
+analysis_workflow:
+  
+  discovery_phase:
+    step_1:
+      name: "View Inventory"
+      description: "Catalog all views in each Airtable table"
+      template: |
+        # View Inventory for {{ table_name }}
+        
+        | View Name | Type | Purpose | Users | Complexity |
+        |-----------|------|---------|-------|------------|
+        {% for view in views %}
+        | {{ view.name }} | {{ view.type }} | {{ view.purpose }} | {{ view.users }} | {{ view.complexity }} |
+        {% endfor %}
+        
+    step_2:
+      name: "View Configuration Analysis"
+      description: "Document detailed configuration for each view"
+      template: |
+        # Detailed View Analysis
+        
+        ## View: {{ view_name }}
+        
+        ### Basic Configuration
+        - **Type**: {{ view_type }}
+        - **Base Table**: {{ table_name }}
+        - **Primary Purpose**: {{ purpose }}
+        - **Key Users**: {{ key_users }}
+        
+        ### Display Configuration
+        {{ display_config }}
+        
+        ### Business Logic
+        {{ business_logic }}
+        
+        ### ERPNext Mapping
+        {{ erpnext_mapping }}
+        
+    step_3:
+      name: "Implementation Planning" 
+      description: "Plan ERPNext implementation for each view"
+      template: |
+        # Implementation Plan for {{ view_name }}
+        
+        ## Implementation Strategy
+        **Approach**: {{ implementation_approach }}
+        **Complexity**: {{ complexity_level }}
+        **Development Effort**: {{ effort_estimate }}
+        
+        ## Technical Specifications
+        {{ technical_specs }}
+        
+        ## Migration Steps
+        1. {{ step_1 }}
+        2. {{ step_2 }}
+        3. {{ step_3 }}
+        
+        ## Testing Plan
+        {{ testing_plan }}
+
+# Custom View Development Patterns
+development_patterns:
+  
+  custom_list_view:
+    use_case: "Enhanced list functionality beyond standard ERPNext"
+    implementation: |
+      # Custom List View Implementation
+      
+      class CustomListView(frappe.views.ListView):
+          def get_list_row_html(self, row_data):
+              # Custom row rendering
+              html = super().get_list_row_html(row_data)
+              
+              # Add custom styling based on conditions
+              if row_data.get('status') == 'Urgent':
+                  html = f'<div class="urgent-row">{html}</div>'
+                  
+              return html
+              
+          def get_formatted_value(self, fieldname, value, field_type):
+              # Custom field formatting
+              if fieldname == 'priority':
+                  return self.format_priority(value)
+              return super().get_formatted_value(fieldname, value, field_type)
+              
+      # Register custom view
+      frappe.views.ListView = CustomListView
+      
+  custom_dashboard:
+    use_case: "Complex dashboard with multiple visualizations"
+    implementation: |
+      # Custom Dashboard Implementation
+      
+      frappe.pages['custom-dashboard'].on_page_load = function(wrapper) {
+          new CustomDashboard(wrapper);
+      }
+      
+      class CustomDashboard {
+          constructor(wrapper) {
+              this.page = frappe.ui.make_app_page({
+                  parent: wrapper,
+                  title: 'Custom Dashboard',
+                  single_column: true
+              });
+              
+              this.make_dashboard();
+          }
+          
+          make_dashboard() {
+              // Create dashboard components
+              this.make_filters();
+              this.make_charts();
+              this.make_data_tables();
+          }
+          
+          make_filters() {
+              // Custom filter implementation
+          }
+          
+          make_charts() {
+              // Chart implementation
+          }
+          
+          make_data_tables() {
+              // Data table implementation
+          }
+      }
+      
+  report_integration:
+    use_case: "Integration with ERPNext reporting system"
+    implementation: |
+      # Custom Report for View Equivalent
+      
+      def execute(filters=None):
+          columns = get_columns()
+          data = get_data(filters)
+          charts = get_charts(data)
+          
+          return columns, data, None, charts
+          
+      def get_columns():
+          return [
+              {"fieldname": "name", "label": "Name", "fieldtype": "Link", "options": "DocType"},
+              {"fieldname": "status", "label": "Status", "fieldtype": "Data"},
+              {"fieldname": "amount", "label": "Amount", "fieldtype": "Currency"}
+          ]
+          
+      def get_data(filters):
+          # Data query implementation
+          pass
+          
+      def get_charts(data):
+          # Chart configuration
+          return [
+              {
+                  "data": {
+                      "labels": ["Label1", "Label2"],
+                      "datasets": [{"values": [10, 20]}]
+                  },
+                  "type": "bar"
+              }
+          ]
+
+# Performance Considerations
+performance_optimization:
+  
+  large_datasets:
+    strategies:
+      pagination:
+        description: "Implement proper pagination for large views"
+        implementation: "Use ERPNext's built-in pagination with optimized queries"
+        
+      indexing:
+        description: "Add database indexes for frequently filtered fields"
+        implementation: "Create custom indexes on filter and sort fields"
+        
+      caching:
+        description: "Cache frequently accessed view data"
+        implementation: "Use Redis caching for expensive calculations"
+        
+  complex_calculations:
+    strategies:
+      background_processing:
+        description: "Move heavy calculations to background jobs"
+        implementation: "Use Frappe's job queue for complex aggregations"
+        
+      materialized_views:
+        description: "Pre-calculate and store complex view data"
+        implementation: "Create summary tables updated via triggers"
+        
+  user_experience:
+    strategies:
+      progressive_loading:
+        description: "Load essential data first, then enhance progressively"
+        implementation: "Async loading of secondary data"
+        
+      client_side_filtering:
+        description: "Implement client-side filtering for better responsiveness"
+        implementation: "JavaScript-based filtering on loaded data"
+
+# Quality Assurance and Testing
+testing_framework:
+  
+  functional_testing:
+    view_rendering:
+      - "All fields display correctly"
+      - "Sorting works as expected"
+      - "Filtering produces correct results"
+      - "Actions and buttons function properly"
+      
+    data_accuracy:
+      - "View shows same data as Airtable"
+      - "Calculations are correct"
+      - "Relationships display properly"
+      - "Real-time updates work"
+      
+  performance_testing:
+    load_testing:
+      - "View loads within acceptable time"
+      - "Performance with large datasets"
+      - "Concurrent user performance"
+      - "Memory usage optimization"
+      
+  user_acceptance_testing:
+    usability:
+      - "Users can complete tasks efficiently"
+      - "Interface is intuitive"
+      - "All required functionality available"
+      - "Training requirements minimal"
+
+# Success Metrics
+success_criteria:
+  
+  functionality:
+    completeness: "All critical views migrated successfully"
+    accuracy: "Views show correct data matching Airtable"
+    performance: "Views load within 3 seconds"
+    usability: "Users can complete tasks without training"
+    
+  user_satisfaction:
+    adoption_rate: ">90% of users actively use new views"
+    satisfaction_score: ">80% user satisfaction"
+    task_completion: "100% of critical tasks possible"
+    error_rate: "<5% user errors"
+    
+  technical_quality:
+    code_quality: "All custom code follows ERPNext standards"
+    maintainability: "Views can be maintained by standard team"
+    scalability: "Performance maintained with growth"
+    security: "All security requirements met"

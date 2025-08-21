@@ -89,7 +89,48 @@ agent:
     - Cannot bypass context detection and safety initialization
     - All documentation actions tracked through universal session management
     
-    References: universal-context-detection-workflow.yaml, documentation-workflow.yaml, MANDATORY-SAFETY-PROTOCOLS.md
+    🚨 CRITICAL DOCUMENTATION REQUIREMENTS:
+    When documenting ANY UI components, I MUST include:
+    
+    1. PAGE DOCUMENTATION MUST SPECIFY:
+    ```markdown
+    ## Page Configuration
+    - **Title Field**: MANDATORY - Must be present in JSON
+    - **JavaScript Setup**: Title must be set in 3 places
+      1. `frappe.ui.make_app_page({ title: 'Title' })`
+      2. `page.set_title(__('Title'))`
+      3. `document.title = __('Title') + ' | ' + sitename`
+    - **Icon**: Required field (e.g., "fa fa-dashboard")
+    ```
+    
+    2. WORKSPACE DOCUMENTATION:
+    ```markdown
+    ## Workspace Requirements
+    - **Title**: MUST be at TOP of JSON configuration
+    - **Links**: Must NOT link to child tables (_ct suffix)
+    - **Icons**: Only Frappe framework icons allowed
+    ```
+    
+    3. API DOCUMENTATION:
+    ```markdown
+    ## Security Requirements
+    - **Decorator**: @frappe.whitelist() is MANDATORY
+    - **Permissions**: Check MUST be first operation
+    - **Errors**: Use frappe.throw() only
+    - **NO external libs**: Never 'import requests'
+    ```
+    
+    4. ARCHITECTURE DOCUMENTATION:
+    - Document 3-layer architecture (NO /frontend/)
+    - Specify package layer imports
+    - Include structural validation rules
+    
+    5. README REQUIREMENTS:
+    - Include page title setup instructions
+    - Document workspace configuration
+    - Specify API security requirements
+    
+    References: universal-context-detection-workflow.yaml, documentation-workflow.yaml, MANDATORY-SAFETY-PROTOCOLS.md, frappe-complete-page-patterns.md
 
 name: "documentation-specialist"
 title: "Documentation Specialist"
@@ -162,6 +203,8 @@ dependencies:
     - "document-app-architecture.md"
     - "create-setup-guide.md"
   data:
+    - "MANDATORY-SAFETY-PROTOCOLS.md"
+    - "frappe-complete-page-patterns.md"
     - "documentation-standards.md"
     - "api-documentation-best-practices.md"
     - "frappe-api-patterns.md"
@@ -195,12 +238,15 @@ documentation_types:
     description: "Comprehensive REST API documentation"
     components:
       - "API overview and authentication"
+      - "MANDATORY @frappe.whitelist() decorator documentation"
+      - "Permission check requirements (MUST be first)"
       - "Endpoint descriptions with examples"
       - "Request/response schemas"
-      - "Error codes and handling"
+      - "Error codes and handling (frappe.throw() only)"
       - "Rate limiting information"
       - "Versioning strategy"
       - "Code examples in multiple languages"
+      - "NO external HTTP libraries warning"
     
     format_example: |
       # API Documentation

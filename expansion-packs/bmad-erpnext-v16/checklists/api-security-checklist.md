@@ -3,18 +3,22 @@
 ## 🔴 CRITICAL - Must Pass All
 
 ### Whitelisting & Exposure
-- [ ] **All API methods have @frappe.whitelist() decorator**
+- [ ] **All API methods have @frappe.whitelist() decorator - NO EXCEPTIONS!**
 - [ ] **No Python methods exposed without whitelisting**
 - [ ] **Guest access (`allow_guest=True`) used only when absolutely necessary**
 - [ ] **No sensitive operations available to guest users**
 - [ ] **Internal methods are NOT whitelisted**
+- [ ] **NEVER use 'import requests' - Use frappe.make_get_request() instead**
 
 ### Authentication & Authorization
-- [ ] **Permission checks implemented for all operations**
+- [ ] **Permission checks MUST be FIRST operation after try block**
+- [ ] **Permission checks implemented for ALL operations**
   ```python
+  # 🚨 CRITICAL: Permission check MUST be FIRST!
   if not frappe.has_permission(doctype, "read"):
-      frappe.throw(_("Insufficient permissions"))
+      frappe.throw(_("Insufficient permissions"))  # Use frappe.throw()
   ```
+- [ ] **ALWAYS use frappe.throw() for errors - NEVER raise Exception**
 - [ ] **Document-level permissions verified**
 - [ ] **Field-level permissions respected**
 - [ ] **Role-based access control enforced**

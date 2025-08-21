@@ -53,8 +53,16 @@ parameters:
     required: false
     description: "Rate limit per minute (optional)"
 
+# 🚨 CRITICAL API REQUIREMENTS
+critical_requirements:
+  mandatory_decorator: "@frappe.whitelist() is MANDATORY on ALL API endpoints - NO EXCEPTIONS!"
+  permission_check: "Permission check MUST be the FIRST thing after try block"
+  error_handling: "MUST use frappe.throw() for errors - NEVER raise Exception"
+  no_external_libs: "NEVER use 'import requests' - use frappe.make_get_request() instead"
+
 templates:
   api_endpoint: |
+    # 🚨 CRITICAL: This endpoint MUST have @frappe.whitelist() decorator!
     import frappe
     from frappe import _
     {% if needs_utils %}
@@ -67,7 +75,9 @@ templates:
     from frappe.permissions import has_permission
     {% endif %}
     {% if needs_requests %}
-    import requests
+    # NEVER use 'import requests'! Use Frappe's built-in methods:
+    # frappe.make_get_request(url, headers=None)
+    # frappe.make_post_request(url, headers=None, data=None)
     {% endif %}
     import json
     
@@ -104,10 +114,14 @@ templates:
             {% endif %}
             
             {% if permission_checks %}
-            # Permission checks
+            # 🚨 CRITICAL: Permission checks MUST come FIRST after authentication!
             {% for perm_check in permission_checks %}
             {{ perm_check | indent(12) }}
             {% endfor %}
+            {% else %}
+            # 🚨 DEFAULT PERMISSION CHECK (add specific checks as needed)
+            if not frappe.has_permission("{{ doctype | default('DocType') }}", "read"):
+                frappe.throw(_("Insufficient permissions"), frappe.PermissionError)
             {% endif %}
             
             {% if validation_rules %}

@@ -1,0 +1,634 @@
+# Airtable Base Structure Analysis Framework
+# Comprehensive template for systematic base structure documentation
+
+name: "Airtable Base Structure Analysis Framework"
+description: "Step-by-step framework for analyzing Airtable base structure and preparing ERPNext migration plan"
+version: "1.0.0"
+
+# Phase 1: Base Overview Collection
+base_overview:
+  collection_template: |
+    # Base Information Collection Form
+    
+    ## Basic Information
+    **Base Name**: _______________
+    **Base ID**: _______________
+    **Owner/Organization**: _______________
+    **Created Date**: _______________
+    **Primary Use Case**: _______________
+    
+    ## Access Information
+    **API Key Available**: [ ] Yes [ ] No
+    **Permission Level**: [ ] Owner [ ] Creator [ ] Editor [ ] Commenter [ ] Read-only
+    **Shared With**: _______________
+    
+    ## Business Context
+    **Primary Business Process**: _______________
+    **Key Stakeholders**: _______________
+    **Critical Business Rules**: _______________
+    **Current Pain Points**: _______________
+    **Migration Goals**: _______________
+
+  analysis_checklist:
+    - "Verify API access and permissions"
+    - "Document business context and objectives"
+    - "Identify key stakeholders and decision makers"
+    - "Understand current pain points with Airtable"
+    - "Define success criteria for ERPNext migration"
+    - "Establish timeline and resource constraints"
+
+# Phase 2: Table Structure Discovery
+table_inventory:
+  discovery_template: |
+    # Table Inventory Worksheet
+    
+    ## Complete Table List
+    
+    ### Table: _______________
+    **Purpose/Description**: _______________
+    **Record Count (Estimate)**: _______________
+    **Primary Use**: [ ] Master Data [ ] Transactional [ ] Reference [ ] Temporary
+    **Business Importance**: [ ] Critical [ ] Important [ ] Nice-to-have
+    **Update Frequency**: [ ] Real-time [ ] Daily [ ] Weekly [ ] Monthly [ ] Rarely
+    **Data Entry Method**: [ ] Manual [ ] Import [ ] API [ ] Forms [ ] Automation
+    
+    ## Dependencies
+    **Depends On (Parent Tables)**: _______________
+    **Depended By (Child Tables)**: _______________
+    **External Data Sources**: _______________
+    
+    ## Business Logic
+    **Key Business Rules**: _______________
+    **Validation Requirements**: _______________
+    **Workflow Triggers**: _______________
+
+  table_categorization:
+    master_data:
+      description: "Core business entities (Customers, Products, Employees)"
+      migration_priority: 1
+      characteristics:
+        - "Referenced by multiple tables"
+        - "Relatively stable data"
+        - "Forms foundation of business"
+      
+    transactional_data:
+      description: "Business transactions and events (Orders, Invoices, Tasks)"
+      migration_priority: 2
+      characteristics:
+        - "Links to master data"
+        - "Time-bound records"
+        - "Business process driven"
+      
+    reference_data:
+      description: "Lookup and configuration data (Status options, Categories)"
+      migration_priority: 1
+      characteristics:
+        - "Small volume"
+        - "Shared across tables"
+        - "Minimal changes"
+      
+    analytical_data:
+      description: "Reports and dashboards (Summaries, KPIs)"
+      migration_priority: 3
+      characteristics:
+        - "Derived from other data"
+        - "Can be recreated"
+        - "View-based"
+
+# Phase 3: Field Analysis Framework
+field_analysis:
+  field_inventory_template: |
+    # Field Analysis Worksheet
+    
+    ## Table: _______________
+    
+    ### Field: _______________
+    **Airtable Type**: _______________
+    **ERPNext Equivalent**: _______________
+    **Required**: [ ] Yes [ ] No
+    **Unique**: [ ] Yes [ ] No
+    **Primary Key**: [ ] Yes [ ] No
+    
+    ## Field Properties
+    **Default Value**: _______________
+    **Validation Rules**: _______________
+    **Help Text**: _______________
+    **Field Description**: _______________
+    
+    ## Data Characteristics
+    **Sample Values**: _______________
+    **Value Range/Options**: _______________
+    **Null Percentage**: ___%
+    **Data Quality Issues**: _______________
+    
+    ## Business Context
+    **Business Purpose**: _______________
+    **Used In Views**: _______________
+    **Used In Formulas**: _______________
+    **Used In Automations**: _______________
+
+  field_type_analysis:
+    text_fields:
+      single_line_text:
+        airtable_properties:
+          - max_length: "Not enforced"
+          - validation: "None by default"
+          - use_cases: ["Names", "Identifiers", "Short descriptions"]
+        erpnext_mapping:
+          primary: "Data"
+          considerations:
+            - "Set appropriate character limit"
+            - "Add validation if needed"
+            - "Consider internationalization"
+        migration_complexity: "Low"
+        
+      long_text:
+        airtable_properties:
+          - rich_text: "Basic formatting"
+          - max_length: "Large (100k+ chars)"
+          - use_cases: ["Descriptions", "Notes", "Comments"]
+        erpnext_mapping:
+          primary: "Text Editor"
+          alternatives: ["Small Text", "Text"]
+          considerations:
+            - "Preserve formatting if important"
+            - "Consider mobile display"
+            - "Full-text search implications"
+        migration_complexity: "Low"
+        
+      email:
+        airtable_properties:
+          - validation: "Email format"
+          - use_cases: ["Contact emails", "User identification"]
+        erpnext_mapping:
+          primary: "Data"
+          validation: "Email"
+          considerations:
+            - "Maintain email validation"
+            - "Consider duplicate checking"
+            - "Link to User if applicable"
+        migration_complexity: "Low"
+        
+      url:
+        airtable_properties:
+          - validation: "URL format"
+          - clickable: "Yes"
+          - use_cases: ["Website links", "Document links"]
+        erpnext_mapping:
+          primary: "Data"
+          validation: "URL"
+          considerations:
+            - "Maintain URL validation"
+            - "Consider link safety"
+            - "Mobile compatibility"
+        migration_complexity: "Low"
+        
+      phone:
+        airtable_properties:
+          - formatting: "Various international formats"
+          - validation: "Phone format"
+          - use_cases: ["Contact numbers"]
+        erpnext_mapping:
+          primary: "Phone"
+          alternatives: ["Data with phone validation"]
+          considerations:
+            - "International format support"
+            - "Validation consistency"
+            - "Click-to-call functionality"
+        migration_complexity: "Low"
+
+    selection_fields:
+      single_select:
+        airtable_properties:
+          - options: "Predefined list"
+          - colors: "Visual coding"
+          - use_cases: ["Status", "Category", "Priority"]
+        erpnext_mapping:
+          primary: "Select"
+          considerations:
+            - "Preserve all option values"
+            - "Consider option ordering"
+            - "Handle color coding with CSS"
+            - "Set appropriate default"
+        migration_complexity: "Low"
+        
+      multiple_select:
+        airtable_properties:
+          - options: "Multiple from predefined list"
+          - colors: "Visual coding"
+          - use_cases: ["Tags", "Skills", "Features"]
+        erpnext_mapping:
+          primary: "Multiselect"
+          alternatives: ["Table MultiSelect (Child Table)"]
+          considerations:
+            - "ERPNext multiselect limitations"
+            - "Consider child table for complex relations"
+            - "Preserve all selections"
+        migration_complexity: "Medium"
+        
+      checkbox:
+        airtable_properties:
+          - values: "True/False"
+          - display: "Checkmark"
+          - use_cases: ["Flags", "Yes/No questions"]
+        erpnext_mapping:
+          primary: "Check"
+          considerations:
+            - "Default value handling"
+            - "Null vs False distinction"
+        migration_complexity: "Low"
+
+    number_fields:
+      number:
+        airtable_properties:
+          - precision: "Variable"
+          - format: "Various (integer, decimal)"
+          - use_cases: ["Quantities", "Scores", "IDs"]
+        erpnext_mapping:
+          primary: "Float"
+          alternatives: ["Int", "Currency"]
+          considerations:
+            - "Choose appropriate precision"
+            - "Consider negative values"
+            - "Validation ranges"
+        migration_complexity: "Low"
+        
+      currency:
+        airtable_properties:
+          - precision: "2 decimal places"
+          - symbol: "Currency symbol display"
+          - use_cases: ["Prices", "Costs", "Revenue"]
+        erpnext_mapping:
+          primary: "Currency"
+          considerations:
+            - "Currency field reference"
+            - "Multi-currency support"
+            - "Precision requirements"
+        migration_complexity: "Medium"
+        
+      percent:
+        airtable_properties:
+          - display: "Percentage format"
+          - storage: "Decimal (0.5 = 50%)"
+          - use_cases: ["Completion", "Discounts", "Rates"]
+        erpnext_mapping:
+          primary: "Percent"
+          considerations:
+            - "Storage format consistency"
+            - "Display formatting"
+            - "Validation ranges (0-100)"
+        migration_complexity: "Low"
+
+    date_time_fields:
+      date:
+        airtable_properties:
+          - format: "Various date formats"
+          - timezone: "Not timezone aware"
+          - use_cases: ["Deadlines", "Birth dates", "Event dates"]
+        erpnext_mapping:
+          primary: "Date"
+          considerations:
+            - "Date format standardization"
+            - "Null date handling"
+            - "Validation ranges"
+        migration_complexity: "Low"
+        
+      datetime:
+        airtable_properties:
+          - format: "Date + time"
+          - timezone: "User timezone display"
+          - use_cases: ["Timestamps", "Appointments", "Logs"]
+        erpnext_mapping:
+          primary: "Datetime"
+          considerations:
+            - "Timezone conversion"
+            - "UTC storage"
+            - "Display format preferences"
+        migration_complexity: "Medium"
+
+    relationship_fields:
+      linked_record:
+        airtable_properties:
+          - type: "Foreign key reference"
+          - display: "Primary field of linked record"
+          - bidirectional: "Creates reverse link"
+          - use_cases: ["Parent-child relations", "References"]
+        erpnext_mapping:
+          primary: "Link"
+          considerations:
+            - "Target DocType identification"
+            - "Cascading behavior"
+            - "Bidirectional relationship handling"
+        migration_complexity: "High"
+        
+      lookup:
+        airtable_properties:
+          - source: "Field from linked record"
+          - read_only: "Cannot be edited directly"
+          - use_cases: ["Display related data"]
+        erpnext_mapping:
+          primary: "Read Only"
+          implementation: "fetch_from property"
+          considerations:
+            - "Source field identification"
+            - "Update triggers"
+            - "Performance implications"
+        migration_complexity: "Medium"
+        
+      rollup:
+        airtable_properties:
+          - aggregation: "SUM, COUNT, AVG, etc."
+          - source: "Multiple linked records"
+          - use_cases: ["Totals", "Counts", "Averages"]
+        erpnext_mapping:
+          primary: "Read Only"
+          implementation: "Server script calculation"
+          considerations:
+            - "Aggregation function identification"
+            - "Performance with large datasets"
+            - "Update frequency requirements"
+        migration_complexity: "High"
+
+    special_fields:
+      formula:
+        airtable_properties:
+          - language: "Airtable formula syntax"
+          - triggers: "Auto-calculation"
+          - complexity: "Can be very complex"
+          - use_cases: ["Calculated fields", "Conditional logic"]
+        erpnext_mapping:
+          primary: "Read Only"
+          implementation: "Server script or client script"
+          considerations:
+            - "Formula complexity assessment"
+            - "Performance implications"
+            - "Function availability in Python/JS"
+            - "Trigger frequency"
+        migration_complexity: "Very High"
+        
+      attachment:
+        airtable_properties:
+          - multiple: "Can store multiple files"
+          - types: "Images, documents, etc."
+          - preview: "Built-in preview"
+          - use_cases: ["Documents", "Images", "Files"]
+        erpnext_mapping:
+          primary: "Attach"
+          alternatives: ["Attach Image"]
+          considerations:
+            - "File size limitations"
+            - "File type restrictions"
+            - "Storage location"
+            - "Multiple file handling"
+        migration_complexity: "Medium"
+        
+      barcode:
+        airtable_properties:
+          - display: "Barcode visualization"
+          - formats: "Various barcode formats"
+          - use_cases: ["Product codes", "Asset tracking"]
+        erpnext_mapping:
+          primary: "Data"
+          additional: "Custom barcode generation"
+          considerations:
+            - "Barcode format preservation"
+            - "Scanner integration"
+            - "Duplicate prevention"
+        migration_complexity: "Medium"
+
+# Phase 4: Data Quality Assessment
+data_quality:
+  assessment_template: |
+    # Data Quality Assessment
+    
+    ## Table: _______________
+    
+    ### Completeness Analysis
+    **Total Records**: _______________
+    **Records with Missing Data**: _______________
+    **Completeness Percentage**: ___%
+    
+    ### Field-Level Quality
+    | Field Name | Null Count | Null % | Data Issues | Quality Score |
+    |------------|------------|---------|-------------|---------------|
+    |            |            |         |             |               |
+    
+    ### Data Consistency
+    **Inconsistent Formats**: _______________
+    **Duplicate Records**: _______________
+    **Invalid Values**: _______________
+    **Orphaned References**: _______________
+    
+    ### Data Freshness
+    **Last Updated Records**: ___%
+    **Stale Data (>6 months)**: ___%
+    **Active vs Inactive**: ___%
+
+  quality_metrics:
+    completeness:
+      excellent: ">95% complete"
+      good: "90-95% complete"
+      fair: "80-90% complete"
+      poor: "<80% complete"
+      
+    consistency:
+      excellent: "<1% inconsistencies"
+      good: "1-5% inconsistencies"
+      fair: "5-10% inconsistencies"
+      poor: ">10% inconsistencies"
+      
+    accuracy:
+      excellent: "<1% invalid data"
+      good: "1-3% invalid data"
+      fair: "3-5% invalid data"
+      poor: ">5% invalid data"
+
+# Phase 5: Business Logic Documentation
+business_logic:
+  documentation_template: |
+    # Business Logic Documentation
+    
+    ## Table: _______________
+    
+    ### Business Rules
+    1. **Rule Name**: _______________
+       **Description**: _______________
+       **Implementation**: [ ] Field Validation [ ] Formula [ ] Automation [ ] Manual Process
+       **ERPNext Implementation**: _______________
+    
+    ### Validation Rules
+    **Field-Level Validations**:
+    - Field: _______________
+      Rule: _______________
+      ERPNext Implementation: _______________
+    
+    **Record-Level Validations**:
+    - Description: _______________
+      Trigger: _______________
+      ERPNext Implementation: _______________
+    
+    ### Calculated Fields Logic
+    **Formula Field**: _______________
+    **Airtable Formula**: _______________
+    **Business Logic**: _______________
+    **ERPNext Implementation Strategy**: _______________
+
+  implementation_strategies:
+    field_validation:
+      erpnext_methods:
+        - "Field-level validation scripts"
+        - "DocType validation methods"
+        - "Custom field properties"
+      complexity: "Low to Medium"
+      
+    business_rules:
+      erpnext_methods:
+        - "Server scripts (before_save, validate)"
+        - "Workflow state transitions"
+        - "Custom DocType methods"
+      complexity: "Medium to High"
+      
+    calculations:
+      erpnext_methods:
+        - "Client scripts for immediate feedback"
+        - "Server scripts for persistent calculations"
+        - "Custom fields with fetch_from"
+      complexity: "Medium to High"
+
+# Phase 6: Migration Strategy Planning
+migration_strategy:
+  planning_template: |
+    # Migration Strategy Planning
+    
+    ## Overall Approach
+    **Migration Type**: [ ] Big Bang [ ] Phased [ ] Parallel Run
+    **Timeline**: _______________
+    **Resources Required**: _______________
+    **Risk Level**: [ ] Low [ ] Medium [ ] High
+    
+    ## Dependency Mapping
+    **Migration Order**:
+    1. _______________
+    2. _______________
+    3. _______________
+    
+    **Dependencies**:
+    - Table A depends on: _______________
+    - Table B depends on: _______________
+    
+    ## Data Volume Planning
+    | Table | Record Count | Est. Migration Time | Batch Size |
+    |-------|--------------|-------------------|------------|
+    |       |              |                   |            |
+    
+    ## Risk Assessment
+    **High Risk Areas**: _______________
+    **Mitigation Strategies**: _______________
+    **Rollback Plan**: _______________
+
+  migration_phases:
+    phase_1_setup:
+      duration: "1-2 weeks"
+      activities:
+        - "ERPNext environment setup"
+        - "DocType creation"
+        - "Custom field development"
+        - "Relationship configuration"
+        - "Permission setup"
+      deliverables:
+        - "Configured ERPNext system"
+        - "Test data migration scripts"
+        - "Validation procedures"
+      
+    phase_2_master_data:
+      duration: "1 week"
+      activities:
+        - "Reference data migration"
+        - "Master data migration"
+        - "Relationship establishment"
+        - "Data validation"
+      deliverables:
+        - "Migrated master data"
+        - "Validation reports"
+        - "Issue resolution log"
+      
+    phase_3_transactional_data:
+      duration: "2-3 weeks"
+      activities:
+        - "Historical data migration"
+        - "Business logic implementation"
+        - "Formula conversion"
+        - "Automation setup"
+      deliverables:
+        - "Complete data migration"
+        - "Functional business logic"
+        - "Converted automations"
+      
+    phase_4_validation:
+      duration: "1 week"
+      activities:
+        - "Data integrity validation"
+        - "Business process testing"
+        - "User acceptance testing"
+        - "Performance testing"
+      deliverables:
+        - "Validation reports"
+        - "Test results"
+        - "Performance metrics"
+
+# Output Templates
+analysis_report:
+  structure: |
+    # Airtable to ERPNext Migration Analysis Report
+    
+    ## Executive Summary
+    - Base overview and business context
+    - Migration complexity assessment
+    - Recommended approach and timeline
+    - Resource requirements
+    - Risk assessment and mitigation
+    
+    ## Base Analysis
+    - Table inventory and categorization
+    - Field analysis and mapping
+    - Relationship documentation
+    - Data quality assessment
+    - Business logic documentation
+    
+    ## ERPNext Design
+    - DocType specifications
+    - Field mapping details
+    - Relationship implementation
+    - Custom logic requirements
+    - Workflow design
+    
+    ## Migration Plan
+    - Phase breakdown
+    - Timeline and milestones
+    - Resource allocation
+    - Risk management
+    - Success metrics
+    
+    ## Appendices
+    - Detailed field mappings
+    - Formula conversion examples
+    - Data samples
+    - Technical specifications
+
+success_criteria:
+  analysis_completeness:
+    - "All tables documented with business context"
+    - "Complete field inventory with ERPNext mappings"
+    - "All relationships identified and mapped"
+    - "Data quality issues identified and solutions proposed"
+    - "Business logic documented with implementation strategy"
+    - "Migration complexity assessed with accurate estimates"
+    - "Stakeholder review completed and approved"
+    
+  technical_accuracy:
+    - "Field type mappings validated"
+    - "Relationship implementations feasible"
+    - "Formula conversions documented"
+    - "Automation strategies defined"
+    - "Performance implications considered"
+    - "Security and permission requirements addressed"
