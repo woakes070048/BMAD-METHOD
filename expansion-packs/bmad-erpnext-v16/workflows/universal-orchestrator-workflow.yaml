@@ -1,0 +1,284 @@
+name: universal-orchestrator-workflow
+description: ERPNext-optimized orchestration layer that intelligently routes to specialized workflows
+version: 2.0.0
+purpose: |
+  Single entry point for all ERPNext development work that:
+  - Initializes session ONCE per conversation
+  - Detects ERPNext-specific context (DocType, API, Workflow, Frontend)
+  - Routes to appropriate specialized workflow
+  - Maintains ERPNext bench context throughout
+
+erpnext_context_detection:
+  doctype_patterns:
+    - "create.*doctype"
+    - "add.*field"
+    - "modify.*doctype"
+    - "link.*doctype"
+  
+  api_patterns:
+    - "create.*api"
+    - "whitelist"
+    - "endpoint"
+    - "rest.*api"
+    
+  workflow_patterns:
+    - "workflow"
+    - "approval"
+    - "state.*transition"
+    
+  frontend_patterns:
+    - "vue.*component"
+    - "page"
+    - "workspace"
+    - "dashboard"
+    - "report"
+
+stages:
+  - name: session_initialization
+    run_once: true  # Only executes once per session
+    description: Initialize ERPNext development session
+    steps:
+      - action: detect_bench_environment
+        params:
+          bench_path: "${BENCH_PATH:-/home/frappe/frappe-bench}"
+          site: "${SITE_NAME}"
+          apps: ["frappe", "erpnext", "${CUSTOM_APPS}"]
+          
+      - action: initialize_session_context
+        params:
+          session_id: "generated"
+          timestamp: "current"
+          user: "${frappe.session.user}"
+          
+      - action: create_development_changelog
+        params:
+          format: "erpnext_standard"
+          track:
+            - doctypes_modified
+            - apis_created
+            - workflows_updated
+            - frontend_components
+            
+      - action: load_erpnext_configuration
+        params:
+          config_path: "config.yaml"
+          environment_mode: "${settings.environment.mode}"
+          enforce_patterns: "${settings.environment.enforce_modern_patterns}"
+
+  - name: erpnext_intent_detection
+    description: Detect specific ERPNext development intent
+    steps:
+      - action: analyze_request
+        params:
+          check_for:
+            - doctype_operations
+            - api_development
+            - workflow_configuration
+            - frontend_development
+            - migration_tasks
+            - debugging_issues
+            
+      - action: classify_erpnext_work
+        outputs:
+          work_category:
+            - doctype_work: ["create", "modify", "delete", "migrate"]
+            - api_work: ["whitelist", "endpoint", "webhook", "rest"]
+            - workflow_work: ["approval", "transition", "automation"]
+            - frontend_work: ["vue", "page", "report", "dashboard"]
+            - bench_work: ["install", "migrate", "build", "deploy"]
+            
+      - action: assess_risk_level
+        params:
+          high_risk:
+            - production_deployment
+            - doctype_deletion
+            - permission_changes
+            - workflow_modifications
+          medium_risk:
+            - api_creation
+            - frontend_changes
+            - report_modifications
+          low_risk:
+            - documentation
+            - ui_tweaks
+            - test_creation
+
+  - name: intelligent_routing
+    description: Route to appropriate ERPNext-specific workflow
+    routing_rules:
+      # DocType Development
+      - condition: "work_category == 'doctype_work'"
+        routes:
+          - new_doctype: 
+              workflow: doctype-creation-workflow
+              agents: ["doctype-designer", "api-developer"]
+          - modify_doctype:
+              workflow: pre-check-workflow
+              then: doctype-modification-workflow
+              
+      # API Development
+      - condition: "work_category == 'api_work'"
+        routes:
+          - new_api:
+              workflow: pre-check-workflow
+              then: api-development-workflow
+              agents: ["api-architect", "api-developer"]
+          - modify_api:
+              workflow: pre-check-workflow
+              validate_whitelist: true
+              
+      # Workflow Configuration
+      - condition: "work_category == 'workflow_work'"
+        routes:
+          - workflow_setup:
+              workflow: workflow-configuration-workflow
+              agents: ["workflow-specialist"]
+              validate_states: true
+              
+      # Frontend Development
+      - condition: "work_category == 'frontend_work'"
+        routes:
+          - vue_component:
+              workflow: vue-development-workflow
+              agents: ["vue-spa-architect"]
+              use_patterns: "otto-checkrun-vue-patterns"
+          - page_creation:
+              workflow: page-creation-workflow
+              
+      # Bench Operations
+      - condition: "work_category == 'bench_work'"
+        routes:
+          - bench_operation:
+              workflow: bench-operation-workflow
+              agents: ["bench-operator"]
+              require_site: true
+              
+      # Testing & Validation
+      - condition: "request_contains(['test', 'validate', 'check'])"
+        routes:
+          - validation:
+              workflow: post-check-workflow
+              agents: ["testing-specialist"]
+              
+      # Debugging
+      - condition: "request_contains(['error', 'debug', 'fix', 'issue'])"
+        routes:
+          - debugging:
+              workflow: diagnostic-workflow
+              agents: ["diagnostic-specialist"]
+
+  - name: pre_execution_checks
+    description: ERPNext-specific validation before routing
+    conditional: true  # Only runs if high_risk or medium_risk
+    steps:
+      - action: check_bench_status
+        params:
+          verify:
+            - bench_running
+            - site_accessible
+            - redis_connected
+            - database_connected
+            
+      - action: validate_app_compatibility
+        params:
+          check:
+            - frappe_version
+            - erpnext_version
+            - custom_app_dependencies
+            
+      - action: check_existing_resources
+        params:
+          prevent_duplicates:
+            - doctype_names
+            - api_endpoints
+            - workflow_names
+            - page_routes
+
+  - name: workflow_handoff
+    description: Hand control to specialized workflow with context
+    steps:
+      - action: prepare_context_package
+        params:
+          include:
+            - session_context
+            - erpnext_environment
+            - detected_intent
+            - risk_assessment
+            - bench_status
+            
+      - action: execute_specialized_workflow
+        params:
+          workflow: "${selected_workflow}"
+          agents: "${selected_agents}"
+          preserve_session: true
+          
+      - action: track_workflow_execution
+        params:
+          log_to_changelog: true
+          monitor_errors: true
+
+  - name: erpnext_specific_validations
+    description: Additional ERPNext-specific checks
+    conditional: true  # Runs based on work type
+    validations:
+      doctype_validations:
+        - naming_series_check
+        - field_type_compatibility
+        - permission_structure
+        - controller_methods
+        
+      api_validations:
+        - whitelist_decorator_present
+        - permission_checks
+        - input_sanitization
+        - response_format
+        
+      workflow_validations:
+        - state_transitions_valid
+        - role_assignments
+        - action_permissions
+        - email_alerts_configured
+        
+      frontend_validations:
+        - bundle_structure_correct
+        - frappe_globals_set
+        - translation_keys_used
+        - responsive_design_checked
+
+outputs:
+  - session_id
+  - detected_intent
+  - selected_workflow
+  - risk_level
+  - erpnext_context
+  - validation_results
+  - execution_path
+
+error_handling:
+  - on_bench_not_running: 
+      action: alert_user
+      message: "Bench is not running. Run 'bench start' first"
+      
+  - on_version_mismatch:
+      action: warn_user
+      message: "Version compatibility issue detected"
+      
+  - on_duplicate_resource:
+      action: suggest_alternatives
+      use_agent: "pre-check-agent"
+      
+  - on_high_risk_operation:
+      action: require_confirmation
+      escalate_to: "erpnext-architect"
+
+integration_points:
+  config_file: "config.yaml"
+  patterns_file: "otto-checkrun-vue-patterns.md"
+  pre_check: "pre-check-workflow.yaml"
+  post_check: "post-check-workflow.yaml"
+  
+performance_optimizations:
+  - cache_session_context: true
+  - reuse_bench_connection: true
+  - lazy_load_patterns: true
+  - parallel_validation: true

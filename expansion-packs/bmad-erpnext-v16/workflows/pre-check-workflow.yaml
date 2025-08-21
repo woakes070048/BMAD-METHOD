@@ -1,0 +1,177 @@
+name: pre-check-workflow
+description: Pre-execution validation workflow to prevent issues before code changes
+version: 1.0.0
+activation_triggers:
+  - before_code_creation
+  - before_code_modification
+  - before_api_creation
+  - before_doctype_creation
+  - before_deployment
+
+stages:
+  # Context already gathered by universal-orchestrator-workflow
+  # Jump straight to ERPNext-specific validation
+  
+  - name: erpnext_duplication_check
+    description: Check for existing functionality that could be reused
+    steps:
+      - action: search_existing_code
+        params:
+          search_patterns:
+            - function_names
+            - class_names
+            - api_endpoints
+            - doctype_fields
+      
+      - action: check_frappe_utilities
+        params:
+          categories:
+            - database_operations
+            - caching
+            - email
+            - permissions
+            - utils
+      
+      - action: identify_reusable_components
+        output: list_of_existing_components
+
+  - name: pattern_validation
+    description: Validate against ERPNext and Frappe patterns
+    steps:
+      - action: check_frappe_first_principles
+        params:
+          validate:
+            - using_frappe_db
+            - proper_decorators
+            - permission_checks
+            - error_handling
+      
+      - action: validate_erpnext_patterns
+        params:
+          check:
+            - doctype_naming
+            - field_conventions
+            - controller_methods
+            - hooks_configuration
+      
+      - action: verify_directory_structure
+        params:
+          ensure:
+            - correct_file_placement
+            - module_organization
+            - public_asset_location
+
+  - name: security_review
+    description: Security validation before implementation
+    steps:
+      - action: check_authentication
+        params:
+          verify:
+            - whitelist_decorators
+            - permission_checks
+            - role_validation
+      
+      - action: validate_input_handling
+        params:
+          ensure:
+            - input_sanitization
+            - sql_injection_prevention
+            - xss_protection
+      
+      - action: review_data_exposure
+        params:
+          check:
+            - sensitive_field_handling
+            - api_response_filtering
+            - error_message_sanitization
+
+  - name: performance_assessment
+    description: Assess potential performance impact
+    steps:
+      - action: analyze_database_operations
+        params:
+          check:
+            - query_efficiency
+            - index_usage
+            - n_plus_one_prevention
+      
+      - action: evaluate_caching_strategy
+        params:
+          consider:
+            - cache_usage
+            - cache_invalidation
+            - memory_impact
+      
+      - action: assess_scalability
+        params:
+          evaluate:
+            - concurrent_user_impact
+            - data_volume_handling
+            - background_job_usage
+
+  - name: alternative_suggestions
+    description: Suggest better implementation approaches
+    steps:
+      - action: identify_anti_patterns
+        params:
+          detect:
+            - code_smells
+            - complex_solutions
+            - maintenance_issues
+      
+      - action: propose_alternatives
+        params:
+          suggest:
+            - simpler_approaches
+            - existing_utilities
+            - better_patterns
+      
+      - action: provide_examples
+        params:
+          show:
+            - similar_implementations
+            - best_practice_code
+            - recommended_patterns
+
+  - name: approval_decision
+    description: Make approval decision based on validation
+    steps:
+      - action: compile_issues
+        params:
+          categorize:
+            - blocker_issues
+            - warnings
+            - suggestions
+      
+      - action: generate_report
+        params:
+          include:
+            - validation_results
+            - identified_issues
+            - recommended_changes
+      
+      - action: make_decision
+        params:
+          outcomes:
+            - approved_with_no_issues
+            - approved_with_warnings
+            - rejected_needs_changes
+            - rejected_wrong_approach
+
+outputs:
+  - validation_report
+  - issue_list
+  - alternative_suggestions
+  - approval_status
+  - next_steps
+
+error_handling:
+  - on_validation_failure: stop_execution
+  - on_security_issue: escalate_immediately
+  - on_performance_concern: require_justification
+
+integration_points:
+  - pre_check_agent: Primary executor
+  - frappe_compliance_validator: Pattern validation
+  - testing_specialist: Test requirement definition
+  - erpnext_architect: Architecture validation

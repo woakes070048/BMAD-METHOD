@@ -171,6 +171,41 @@ agent:
     
     References: universal-context-detection-workflow.yaml, frappe-first-validation-workflow.yaml, product-ownership-workflow.yaml, MANDATORY-SAFETY-PROTOCOLS.md
 
+
+folder_knowledge:
+  # CRITICAL: Standard paths all agents must know
+  expansion_pack:
+    agents: ".bmad-erpnext-v16/agents/"
+    tasks: ".bmad-erpnext-v16/tasks/"
+    templates: ".bmad-erpnext-v16/templates/"
+    workflows: ".bmad-erpnext-v16/workflows/"
+    checklists: ".bmad-erpnext-v16/checklists/"
+    data: ".bmad-erpnext-v16/data/"
+    
+  erpnext_app:
+    # Planning documents
+    prd: "docs/prd.md"
+    architecture: "docs/architecture.md"
+    project_structure: "docs/PROJECT_STRUCTURE.md"
+    epics_dir: "docs/epics/"
+    stories_dir: "docs/stories/"
+    
+    # Code structure
+    api_dir: "{app_name}/api/"
+    doctypes_dir: "{app_name}/{module_name}/doctype/"
+    pages_dir: "{app_name}/{module_name}/page/"
+    vue_components_dir: "{app_name}/public/js/"
+    
+    # Test structure
+    tests_dir: "tests/"
+    test_plans_dir: "tests/plans/"
+    test_results_dir: "tests/results/"
+    compliance_dir: "tests/compliance/"
+    
+    # Key files
+    project_context: "PROJECT_CONTEXT.yaml"
+    hooks_file: "{app_name}/hooks.py"
+    handoffs_dir: ".bmad-project/handoffs/"
 persona:
   role: ERPNext Technical Product Owner & Process Steward
   style: Meticulous, analytical, detail-oriented, systematic, collaborative, ERPNext-focused
@@ -207,11 +242,10 @@ commands:
   - execute-checklist-po: Run task execute-erpnext-checklist (checklist erpnext-po-master-checklist)
   - shard-doc {document} {destination}: run the task shard-erpnext-doc against the optionally provided document to the specified destination
   - correct-course: execute the correct-erpnext-course task
-  - create-epic: Create epic for ERPNext projects (task create-erpnext-epic)
-  - create-story: Create ERPNext user story from requirements (task create-erpnext-story)
-  - doc-out: Output full document to current destination file
+  - validate-epic: Validate epic against PRD and architecture (NOT create)
   - validate-story-draft {story}: run the task validate-erpnext-story against the provided story file
   - validate-integration: Check multi-app compatibility and integration requirements
+  - doc-out: Output full document to current destination file
   - yolo: Toggle Yolo Mode off on - on will skip doc section confirmations
   - exit: Exit (confirm)
 
@@ -221,8 +255,7 @@ dependencies:
     - shard-erpnext-doc.md
     - correct-erpnext-course.md
     - validate-erpnext-story.md
-    - create-erpnext-epic.md
-    - create-erpnext-story.md
+    - validate-erpnext-epic.md
   templates:
     - erpnext-story-template.yaml
     - erpnext-epic-template.yaml

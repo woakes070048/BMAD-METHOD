@@ -1,0 +1,213 @@
+id: bmad-planning-workflow
+name: BMAD Method ERPNext Planning Workflow
+type: workflow
+description: Complete planning workflow for ERPNext projects following BMAD Method
+version: 1.0.0
+
+metadata:
+  priority: primary
+  category: planning
+  execution_mode: sequential
+  target_agents:
+    - business-analyst
+    - erpnext-architect
+    - vue-spa-architect
+    - erpnext-test-architect
+    - erpnext-product-owner
+  when_to_use: "Use for initial project planning and requirements gathering"
+
+phases:
+  - id: optional_research
+    name: Optional Business Research
+    optional: true
+    steps:
+      - agent: business-analyst
+        task: brainstorm-erpnext-features
+        optional: true
+        description: "Brainstorm potential ERPNext features and modules"
+      
+      - agent: business-analyst
+        task: analyze-erpnext-modules
+        optional: true
+        description: "Research existing ERPNext module capabilities"
+      
+      - agent: business-analyst
+        task: analyze-integration-needs
+        optional: true
+        description: "Analyze integration requirements with external systems"
+      
+      - agent: business-analyst
+        task: create-project-brief
+        condition: "if_research_conducted"
+        description: "Create comprehensive project brief from research"
+
+  - id: requirements_definition
+    name: Requirements and PRD Creation
+    steps:
+      - decision: project_brief_available
+        true_path:
+          agent: erpnext-architect
+          task: generate-prd
+          mode: fast_track
+          description: "Generate PRD from existing project brief"
+        false_path:
+          agent: erpnext-architect
+          task: generate-prd
+          mode: interactive
+          description: "Create PRD through interactive requirements gathering"
+      
+      - checkpoint: prd_created
+        validation:
+          - "PRD contains functional requirements"
+          - "PRD contains non-functional requirements"
+          - "PRD includes DocType definitions"
+          - "PRD specifies API requirements"
+          - "Frappe-first principles enforced"
+
+  - id: frontend_design
+    name: Frontend Architecture (Optional)
+    optional: true
+    condition: "vue_spa_required"
+    steps:
+      - agent: vue-spa-architect
+        task: create-frontend-spec
+        description: "Design Vue 3 SPA architecture with Frappe integration"
+      
+      - agent: vue-spa-architect
+        task: design-component-structure
+        description: "Define component hierarchy and state management"
+      
+      - checkpoint: frontend_spec_complete
+        validation:
+          - "Uses native Vue patterns (no /frontend/ directory)"
+          - "Defines bundle.js entry points"
+          - "Includes Pinia state management"
+          - "Specifies Frappe UI components"
+
+  - id: technical_architecture
+    name: Technical Architecture Design
+    steps:
+      - condition: frontend_spec_exists
+        true_path:
+          agent: erpnext-architect
+          task: design-architecture
+          input: "PRD + Frontend Spec"
+          description: "Create architecture including Vue integration"
+        false_path:
+          agent: erpnext-architect
+          task: design-architecture
+          input: "PRD only"
+          description: "Create backend-focused architecture"
+      
+      - checkpoint: architecture_complete
+        validation:
+          - "DocType schemas defined"
+          - "API endpoints specified"
+          - "Integration patterns documented"
+          - "Frappe-first approach verified"
+          - "No external libraries when Frappe provides equivalent"
+
+  - id: early_test_strategy
+    name: Early Test Strategy (Optional)
+    optional: true
+    recommended: true
+    steps:
+      - agent: erpnext-test-architect
+        task: risk-profile
+        description: "Identify high-risk areas requiring early attention"
+      
+      - agent: erpnext-test-architect
+        task: test-design
+        description: "Create preliminary test strategy for critical paths"
+      
+      - checkpoint: test_strategy_defined
+        validation:
+          - "Risk areas identified"
+          - "Test approach documented"
+          - "Critical paths covered"
+
+  - id: alignment_validation
+    name: Document Alignment and Validation
+    steps:
+      - agent: erpnext-product-owner
+        task: execute-checklist-po
+        description: "Run master checklist to ensure all documents align"
+      
+      - decision: documents_aligned
+        true_path:
+          continue: true
+        false_path:
+          - agent: erpnext-product-owner
+            task: validate-epic
+            description: "Update epics to align with PRD/Architecture"
+          
+          - agent: erpnext-architect
+            task: update-prd
+            condition: "if_prd_needs_update"
+            description: "Update PRD based on validation feedback"
+          
+          - agent: erpnext-architect
+            task: update-architecture
+            condition: "if_architecture_needs_update"
+            description: "Update architecture based on validation"
+          
+          - loop_back_to: alignment_validation
+
+  - id: document_sharding
+    name: Document Sharding for Development
+    steps:
+      - notification: "Switch to IDE for sharding phase"
+        type: user_action_required
+        message: "Copy docs/prd.md and docs/architecture.md to your ERPNext app"
+      
+      - agent: erpnext-product-owner
+        task: shard-doc
+        input: "docs/prd.md"
+        output: "docs/epics/"
+        description: "Shard PRD into manageable epics"
+      
+      - agent: erpnext-product-owner
+        task: shard-doc
+        input: "docs/architecture.md"
+        output: "docs/stories/"
+        description: "Shard architecture into technical stories"
+      
+      - checkpoint: sharding_complete
+        validation:
+          - "Epics created in docs/epics/"
+          - "Stories aligned with epics"
+          - "Technical requirements preserved"
+          - "Dependencies identified"
+
+outputs:
+  - path: docs/prd.md
+    description: "Product Requirements Document with FRs, NFRs, and ERPNext specifics"
+  
+  - path: docs/architecture.md
+    description: "Technical architecture with DocTypes, APIs, and integrations"
+  
+  - path: docs/epics/
+    description: "Sharded epics ready for sprint planning"
+  
+  - path: docs/stories/
+    description: "Initial story drafts for development"
+  
+  - path: docs/qa/assessments/
+    description: "Risk profiles and test strategies (if created)"
+
+handoff:
+  to: bmad-development-workflow
+  message: "Planning complete. Ready for Scrum Master to begin development cycle."
+  requirements:
+    - "PRD and Architecture documents complete"
+    - "Documents sharded into epics/stories"
+    - "All artifacts in IDE project"
+    - "Frappe-first principles validated"
+
+workflow_rules:
+  - "Enforce Frappe-first principles throughout"
+  - "Block any external library usage when Frappe provides equivalent"
+  - "Validate all DocType relationships"
+  - "Ensure API whitelisting patterns"
+  - "Consider multi-app compatibility (docflow, n8n_integration)"
+  - "Maintain ERPNext v16 compatibility"

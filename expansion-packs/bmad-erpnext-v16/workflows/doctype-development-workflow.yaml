@@ -1,0 +1,355 @@
+name: doctype-development-workflow
+description: Complete ERPNext DocType development workflow with all validations
+version: 1.0.0
+purpose: |
+  Comprehensive workflow for creating and modifying DocTypes in ERPNext,
+  ensuring proper structure, relationships, permissions, and controller methods
+
+activation_triggers:
+  - doctype_creation_request
+  - doctype_modification_request
+  - field_addition_request
+  - relationship_setup_request
+
+stages:
+  - name: doctype_requirements_analysis
+    description: Analyze business requirements for DocType
+    steps:
+      - action: identify_doctype_purpose
+        params:
+          determine:
+            - business_entity_type  # Master, Transaction, Setup, System
+            - data_volume_expected
+            - user_roles_involved
+            - workflow_requirements
+            
+      - action: map_field_requirements
+        params:
+          field_analysis:
+            - required_fields
+            - optional_fields
+            - computed_fields
+            - linked_fields
+            - attachment_fields
+            
+      - action: identify_relationships
+        params:
+          relationship_types:
+            - parent_doctypes  # Child Table relationships
+            - linked_doctypes  # Link field relationships
+            - dynamic_links    # Dynamic Link fields
+            - related_doctypes # Business relationships
+
+  - name: erpnext_doctype_validation
+    description: Validate DocType against ERPNext standards
+    steps:
+      - action: validate_naming_convention
+        params:
+          rules:
+            - PascalCase for DocType name
+            - snake_case for field names
+            - No spaces in DocType name
+            - Meaningful business names
+            
+      - action: check_existing_doctypes
+        params:
+          prevent_duplicates:
+            - exact_name_match
+            - similar_functionality
+            - overlapping_fields
+            
+      - action: validate_field_types
+        params:
+          use_appropriate_types:
+            - Link for relationships (not Data)
+            - Currency for money (not Float)
+            - Date/Datetime appropriately
+            - Check for attachments
+            - Table for child records
+
+  - name: doctype_structure_design
+    description: Design complete DocType structure
+    steps:
+      - action: define_doctype_properties
+        params:
+          properties:
+            - module: "${module_name}"
+            - is_submittable: "${true_if_transaction}"
+            - track_changes: true
+            - track_seen: "${true_if_important}"
+            - is_tree: "${true_if_hierarchical}"
+            - naming_rule: "${autoincrement|field|expression}"
+            
+      - action: design_field_structure
+        params:
+          field_groups:
+            - basic_info_section
+            - details_section
+            - settings_section
+            - system_fields_readonly
+          field_properties:
+            - label
+            - fieldtype
+            - options  # For Link/Select fields
+            - mandatory
+            - unique
+            - read_only
+            - hidden
+            - default
+            - depends_on
+            - fetch_from  # For auto-population
+            
+      - action: setup_permissions
+        params:
+          role_permissions:
+            - role: "${role_name}"
+              read: true
+              write: true
+              create: true
+              delete: false
+              submit: "${if_submittable}"
+              cancel: "${if_submittable}"
+              
+      - action: define_list_settings
+        params:
+          list_view:
+            - fields_to_show
+            - default_filters
+            - default_sort
+          search_fields: ["name", "${primary_fields}"]
+          title_field: "${display_field}"
+
+  - name: controller_implementation
+    description: Implement Python controller methods
+    steps:
+      - action: create_controller_structure
+        params:
+          controller_path: "${app}/${module}/doctype/${doctype}/${doctype}.py"
+          base_class: "from frappe.model.document import Document"
+          
+      - action: implement_validation_logic
+        params:
+          methods:
+            - validate: "Called before save"
+            - before_save: "Final changes before save"
+            - after_insert: "After new record created"
+            - before_submit: "Validation before submit"
+            - on_submit: "Actions on submit"
+            - on_cancel: "Reversal logic"
+            - on_trash: "Cleanup on delete"
+            
+      - action: add_business_logic
+        params:
+          common_patterns:
+            - auto_naming_logic
+            - status_management
+            - workflow_transitions
+            - calculations_and_totals
+            - linked_document_updates
+            - notification_triggers
+            
+      - action: implement_hooks
+        params:
+          doctype_hooks:
+            - autoname: "Custom naming logic"
+            - validate: "Validation rules"
+            - on_update: "Post-save actions"
+            - on_change: "Track changes"
+
+  - name: api_endpoint_creation
+    description: Create API endpoints for DocType
+    steps:
+      - action: create_whitelisted_methods
+        params:
+          api_pattern: |
+            @frappe.whitelist()
+            def get_${doctype}_list(filters=None):
+                if not frappe.has_permission("${DocType}", "read"):
+                    frappe.throw(_("No permission"))
+                return frappe.get_all("${DocType}", filters=filters)
+                
+      - action: implement_crud_apis
+        params:
+          standard_apis:
+            - get_list
+            - get_detail
+            - create_record
+            - update_record
+            - delete_record
+            - bulk_operations
+            
+      - action: add_custom_apis
+        params:
+          business_specific:
+            - calculate_totals
+            - generate_report
+            - send_notifications
+            - trigger_workflows
+
+  - name: frontend_integration
+    description: Create frontend components for DocType
+    steps:
+      - action: create_list_view_customization
+        params:
+          list_js_path: "${doctype}_list.js"
+          customizations:
+            - custom_buttons
+            - bulk_actions
+            - filters
+            - formatters
+            
+      - action: create_form_view_customization
+        params:
+          form_js_path: "${doctype}.js"
+          customizations:
+            - custom_buttons
+            - field_interactions
+            - dynamic_fields
+            - validation_rules
+            
+      - action: setup_print_format
+        params:
+          print_format:
+            - header_section
+            - detail_table
+            - footer_section
+            - terms_conditions
+
+  - name: workflow_integration
+    description: Integrate with ERPNext workflow if needed
+    steps:
+      - action: check_workflow_requirement
+        conditional: "${is_submittable or needs_approval}"
+        
+      - action: create_workflow_states
+        params:
+          states:
+            - Draft
+            - Pending Approval
+            - Approved
+            - Rejected
+            - Cancelled
+            
+      - action: define_transitions
+        params:
+          transitions:
+            - from_state: Draft
+              to_state: Pending Approval
+              action: Submit for Approval
+              allowed_roles: ["User"]
+              
+      - action: setup_email_alerts
+        params:
+          alerts_on:
+            - state_change
+            - approval_request
+            - rejection
+
+  - name: testing_setup
+    description: Create tests for DocType
+    steps:
+      - action: create_test_records
+        params:
+          test_path: "test_${doctype}.py"
+          test_records: "test_records.json"
+          
+      - action: implement_unit_tests
+        params:
+          test_methods:
+            - test_creation
+            - test_validation
+            - test_permissions
+            - test_workflow
+            - test_calculations
+            - test_relationships
+            
+      - action: create_integration_tests
+        params:
+          test_scenarios:
+            - full_lifecycle_test
+            - api_endpoint_tests
+            - permission_tests
+            - performance_tests
+
+  - name: migration_and_patches
+    description: Handle migrations and patches if modifying existing
+    steps:
+      - action: check_migration_needed
+        conditional: "${is_modification}"
+        
+      - action: create_migration_patch
+        params:
+          patch_operations:
+            - add_new_fields
+            - modify_field_types
+            - update_existing_data
+            - rebuild_permissions
+            
+      - action: test_migration
+        params:
+          test_on:
+            - development_site
+            - staging_site
+
+  - name: documentation
+    description: Generate DocType documentation
+    steps:
+      - action: generate_field_documentation
+        params:
+          document:
+            - field_purposes
+            - validation_rules
+            - relationships
+            - business_logic
+            
+      - action: create_user_guide
+        params:
+          sections:
+            - how_to_create
+            - field_descriptions
+            - workflow_process
+            - common_scenarios
+            
+      - action: document_apis
+        params:
+          api_docs:
+            - endpoint_urls
+            - parameters
+            - response_formats
+            - examples
+
+outputs:
+  - doctype_name
+  - module_location
+  - controller_path
+  - api_endpoints
+  - test_files
+  - documentation_path
+  - migration_patches
+
+validation_points:
+  - naming_convention_valid
+  - field_types_appropriate
+  - permissions_configured
+  - controller_methods_implemented
+  - apis_whitelisted
+  - tests_passing
+  - documentation_complete
+
+error_handling:
+  - on_duplicate_doctype: suggest_alternative_name
+  - on_invalid_field_type: recommend_correct_type
+  - on_permission_error: fix_permission_structure
+  - on_test_failure: debug_and_fix
+
+best_practices_enforced:
+  - Always use Link fields for relationships
+  - Implement proper permission checks
+  - Add field descriptions
+  - Use fetch_from for auto-population
+  - Implement comprehensive validation
+  - Create proper indexes for search
+  - Use frappe.db methods (not raw SQL)
+  - Follow ERPNext naming conventions
+  - Add translation keys for labels
+  - Implement proper error handling

@@ -1,0 +1,424 @@
+# Quality Gates Definition
+# Master configuration for all quality gates in the ERPNext v16 expansion pack
+# MANDATORY for all agents and workflows
+
+name: quality-gates-definition
+description: Comprehensive quality gate system ensuring code quality, testing, and compliance
+version: 1.0.0
+status: ACTIVE AND ENFORCED
+applies_to: ALL agents, tasks, and workflows in bmad-erpnext-v16
+
+# CORE PRINCIPLES
+core_principles:
+  - NO_CODE_WITHOUT_TESTS: All code must have accompanying tests
+  - STRUCTURE_FIRST: App structure must follow ERPNext patterns
+  - FRAPPE_ONLY: Only Frappe framework features allowed
+  - VERIFICATION_REQUIRED: Independent verification for all critical changes
+  - DOCUMENTATION_MANDATORY: All changes must be documented
+
+# GATE CATEGORIES
+gate_categories:
+  pre_development:
+    description: Gates before any development begins
+    mandatory: true
+    gates:
+      - context_detection
+      - structure_requirements
+      - dependency_analysis
+      - test_strategy
+  
+  during_development:
+    description: Gates during active development
+    mandatory: true
+    gates:
+      - import_validation
+      - frappe_compliance
+      - incremental_testing
+      - structure_adherence
+  
+  post_development:
+    description: Gates after development completion
+    mandatory: true
+    gates:
+      - full_test_suite
+      - structure_validation
+      - documentation_completeness
+      - cross_verification
+  
+  final_gates:
+    description: Final gates before release/handoff
+    mandatory: true
+    gates:
+      - eva_thorne_compliance
+      - integration_testing
+      - performance_validation
+      - security_review
+
+# DETAILED GATE DEFINITIONS
+quality_gates:
+  # PRE-DEVELOPMENT GATES
+  context_detection:
+    stage: pre_development
+    description: Detect and validate work context
+    enforcer: universal-context-detection-workflow
+    criteria:
+      - context_type_identified: [TROUBLESHOOTING, NEW_DEVELOPMENT, ENHANCEMENT, MIGRATION]
+      - requirements_documented: true
+      - success_criteria_defined: true
+    failure_action: CANNOT_PROCEED
+  
+  structure_requirements:
+    stage: pre_development
+    description: Validate ERPNext app structure requirements
+    enforcer: eva-thorne-compliance-validator
+    reference: ERPNEXT-APP-STRUCTURE-PATTERNS.md
+    criteria:
+      - three_layer_architecture_understood: true
+      - import_patterns_reviewed: true
+      - doctype_naming_conventions_clear: true
+    failure_action: EDUCATION_REQUIRED
+  
+  dependency_analysis:
+    stage: pre_development
+    description: Analyze existing dependencies and impacts
+    enforcer: development-coordinator
+    task: analyze-app-dependencies.md
+    criteria:
+      - doctype_relationships_mapped: true
+      - import_dependencies_analyzed: true
+      - business_logic_understood: true
+      - workflow_dependencies_identified: true
+    failure_action: ANALYSIS_INCOMPLETE
+  
+  test_strategy:
+    stage: pre_development
+    description: Define comprehensive test strategy
+    enforcer: testing-specialist
+    criteria:
+      - test_scope_defined: true
+      - test_cases_planned: true
+      - acceptance_criteria_established: true
+      - test_data_strategy_defined: true
+    failure_action: STRATEGY_REQUIRED
+
+  # DURING-DEVELOPMENT GATES
+  import_validation:
+    stage: during_development
+    description: Validate all imports follow correct patterns
+    enforcer: frappe-compliance-validator
+    criteria:
+      - no_triple_nesting_imports: true
+      - no_direct_doctype_imports: true
+      - frappe_methods_used: true
+      - no_external_libraries: true
+    checks:
+      - pattern: "from app_name.app_name.api"
+        allowed: false
+        correct: "from app_name.api"
+      - pattern: "import requests"
+        allowed: false
+        correct: "frappe.make_get_request()"
+      - pattern: "import unittest"
+        allowed: false
+        correct: "frappe.tests.utils.FrappeTestCase"
+    failure_action: CODE_CORRECTION_REQUIRED
+  
+  frappe_compliance:
+    stage: during_development
+    description: Ensure Frappe-first principles
+    enforcer: frappe-compliance-validator
+    criteria:
+      - whitelist_decorators_present: true
+      - permission_checks_implemented: true
+      - frappe_methods_only: true
+      - no_raw_sql: true
+    validations:
+      - "@frappe.whitelist() on all APIs"
+      - "frappe.has_permission() checks"
+      - "frappe.get_doc() instead of direct imports"
+      - "frappe.db methods instead of SQL"
+    failure_action: FRAPPE_VIOLATIONS_FOUND
+  
+  incremental_testing:
+    stage: during_development
+    description: Test each component as developed
+    enforcer: testing-specialist
+    criteria:
+      - unit_tests_passing: true
+      - no_regression_introduced: true
+      - edge_cases_tested: true
+    failure_action: TESTS_MUST_PASS
+  
+  structure_adherence:
+    stage: during_development
+    description: Maintain proper app structure
+    enforcer: eva-thorne-compliance-validator
+    criteria:
+      - files_in_correct_directories: true
+      - no_frontend_directory: true
+      - proper_module_nesting: true
+      - child_tables_suffixed: true
+    validations:
+      - "DocTypes in app-name/app-name/doctype/"
+      - "APIs in app-name/api/"
+      - "Vue components in app-name/public/js/"
+      - "Child tables end with _ct"
+    failure_action: STRUCTURE_VIOLATION
+
+  # POST-DEVELOPMENT GATES
+  full_test_suite:
+    stage: post_development
+    description: Execute comprehensive test suite
+    enforcer: testing-specialist
+    criteria:
+      - all_unit_tests_pass: true
+      - integration_tests_pass: true
+      - performance_tests_pass: true
+      - security_tests_pass: true
+    commands:
+      - "bench --site [site] run-tests --app [app]"
+      - "bench --site [site] doctor"
+    minimum_coverage: 80
+    failure_action: TESTS_REQUIRED
+  
+  structure_validation:
+    stage: post_development
+    description: Final structure compliance check
+    enforcer: eva-thorne-compliance-validator
+    criteria:
+      - complete_structure_scan: true
+      - no_violations_found: true
+      - imports_validated: true
+      - workspace_configuration_valid: true
+    failure_action: STRUCTURE_CORRECTIONS_NEEDED
+  
+  documentation_completeness:
+    stage: post_development
+    description: Verify documentation is complete
+    enforcer: documentation-specialist
+    criteria:
+      - api_documentation_complete: true
+      - doctype_documentation_exists: true
+      - user_guide_updated: true
+      - changelog_maintained: true
+    failure_action: DOCUMENTATION_INCOMPLETE
+  
+  cross_verification:
+    stage: post_development
+    description: Independent verification by another agent
+    enforcer: testing-specialist
+    criteria:
+      - independent_review_completed: true
+      - no_critical_issues_found: true
+      - recommendations_addressed: true
+    failure_action: VERIFICATION_FAILED
+
+  # FINAL GATES
+  eva_thorne_compliance:
+    stage: final_gates
+    description: Final compliance validation
+    enforcer: frappe-compliance-validator
+    criteria:
+      - frappe_framework_compliance: true
+      - erpnext_standards_met: true
+      - no_anti_patterns_detected: true
+      - best_practices_followed: true
+    failure_action: COMPLIANCE_VIOLATIONS
+  
+  integration_testing:
+    stage: final_gates
+    description: Test integration with existing systems
+    enforcer: testing-specialist
+    criteria:
+      - multi_app_compatibility: true
+      - api_integration_tested: true
+      - workflow_integration_verified: true
+      - data_flow_validated: true
+    failure_action: INTEGRATION_ISSUES
+  
+  performance_validation:
+    stage: final_gates
+    description: Validate performance metrics
+    enforcer: testing-specialist
+    criteria:
+      - response_time_acceptable: true
+      - memory_usage_optimal: true
+      - database_queries_efficient: true
+      - no_performance_regression: true
+    thresholds:
+      api_response_time: 2000ms
+      page_load_time: 3000ms
+      memory_increase: 10%
+    failure_action: PERFORMANCE_ISSUES
+  
+  security_review:
+    stage: final_gates
+    description: Security validation
+    enforcer: testing-specialist
+    criteria:
+      - input_validation_present: true
+      - authentication_verified: true
+      - authorization_tested: true
+      - no_security_vulnerabilities: true
+    failure_action: SECURITY_RISKS
+
+# HANDOFF INTEGRATION
+handoff_integration:
+  pre_handoff_requirements:
+    - all_current_stage_gates_passed: true
+    - no_outstanding_issues: true
+    - documentation_updated: true
+    - tests_passing: true
+  
+  handoff_validation_workflow:
+    1_initiate_handoff:
+      actor: development-coordinator
+      action: validate_handoff_readiness
+    
+    2_run_quality_gates:
+      actor: system
+      action: execute_applicable_gates
+    
+    3_verification:
+      actor: testing-specialist
+      action: verify_gate_results
+    
+    4_structure_check:
+      actor: eva-thorne-compliance-validator
+      action: validate_structure_compliance
+    
+    5_decision:
+      condition: all_gates_passed
+      success: proceed_with_handoff
+      failure: return_to_originator
+  
+  handoff_blocking_conditions:
+    - structure_violations
+    - failing_tests
+    - missing_documentation
+    - frappe_compliance_issues
+    - security_vulnerabilities
+
+# ENFORCEMENT MECHANISMS
+enforcement:
+  automatic_checks:
+    enabled: true
+    frequency: EVERY_HANDOFF
+    blocking: true
+  
+  manual_override:
+    allowed: false
+    exception_process: escalate_to_product_owner
+  
+  violation_tracking:
+    log_violations: true
+    track_patterns: true
+    alert_on_repeated_violations: true
+  
+  escalation_path:
+    level_1: return_to_developer
+    level_2: development_coordinator_review
+    level_3: product_owner_intervention
+    level_4: work_stoppage
+
+# METRICS AND MONITORING
+metrics:
+  track:
+    - gate_pass_rate_by_type
+    - average_attempts_to_pass
+    - time_spent_at_each_gate
+    - common_failure_reasons
+    - developer_improvement_trends
+  
+  alerts:
+    - gate_failure_rate_above: 30%
+    - repeated_failures_same_gate: 3
+    - escalation_triggered: true
+    - quality_degradation_detected: true
+  
+  reporting:
+    - daily_quality_summary
+    - weekly_gate_analytics
+    - monthly_quality_trends
+    - developer_scorecards
+
+# INTEGRATION WITH WORKFLOWS
+workflow_integration:
+  mandatory_workflows:
+    - universal-context-detection-workflow.yaml
+    - quality-gate-enforcement-workflow.yaml
+    - coordination-workflow.yaml
+  
+  workflow_injection_points:
+    pre_work: universal_context_detection
+    during_work: incremental_validation
+    post_work: comprehensive_gates
+    handoff: handoff_validation
+  
+  workflow_enforcement:
+    cannot_skip: true
+    must_pass_to_proceed: true
+    automatic_invocation: true
+
+# ACCOUNTABILITY
+accountability:
+  gate_ownership:
+    structure: eva-thorne-compliance-validator
+    testing: testing-specialist
+    frappe_compliance: frappe-compliance-validator
+    coordination: development-coordinator
+    final_approval: erpnext-product-owner
+  
+  sign_off_requirements:
+    developer: work_complete_declaration
+    tester: tests_passed_confirmation
+    validator: compliance_verified
+    coordinator: handoff_approved
+  
+  audit_trail:
+    maintain_complete_history: true
+    track_all_decisions: true
+    document_failure_reasons: true
+    maintain_correction_records: true
+
+# SUCCESS CRITERIA
+success_criteria:
+  development_complete:
+    - all_gates_passed: true
+    - no_outstanding_issues: true
+    - documentation_complete: true
+    - tests_comprehensive: true
+    - structure_compliant: true
+  
+  handoff_ready:
+    - current_stage_gates_passed: true
+    - no_blocking_issues: true
+    - verification_completed: true
+    - next_agent_requirements_met: true
+  
+  release_ready:
+    - all_final_gates_passed: true
+    - performance_validated: true
+    - security_verified: true
+    - integration_tested: true
+    - documentation_finalized: true
+
+# CONTINUOUS IMPROVEMENT
+continuous_improvement:
+  feedback_collection:
+    - developer_feedback_on_gates
+    - gate_effectiveness_analysis
+    - false_positive_tracking
+    - process_improvement_suggestions
+  
+  gate_optimization:
+    - review_frequency: monthly
+    - adjustment_criteria: effectiveness_metrics
+    - stakeholder_input: required
+    - pilot_new_gates: controlled_testing
+  
+  training_and_education:
+    - gate_failure_patterns_training
+    - best_practices_documentation
+    - success_pattern_sharing
+    - regular_refresher_sessions

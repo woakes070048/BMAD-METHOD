@@ -111,6 +111,41 @@ environment:
     - "erpnext"
     - "payments"
 
+
+folder_knowledge:
+  # CRITICAL: Standard paths all agents must know
+  expansion_pack:
+    agents: ".bmad-erpnext-v16/agents/"
+    tasks: ".bmad-erpnext-v16/tasks/"
+    templates: ".bmad-erpnext-v16/templates/"
+    workflows: ".bmad-erpnext-v16/workflows/"
+    checklists: ".bmad-erpnext-v16/checklists/"
+    data: ".bmad-erpnext-v16/data/"
+    
+  erpnext_app:
+    # Planning documents
+    prd: "docs/prd.md"
+    architecture: "docs/architecture.md"
+    project_structure: "docs/PROJECT_STRUCTURE.md"
+    epics_dir: "docs/epics/"
+    stories_dir: "docs/stories/"
+    
+    # Code structure
+    api_dir: "{app_name}/api/"
+    doctypes_dir: "{app_name}/{module_name}/doctype/"
+    pages_dir: "{app_name}/{module_name}/page/"
+    vue_components_dir: "{app_name}/public/js/"
+    
+    # Test structure
+    tests_dir: "tests/"
+    test_plans_dir: "tests/plans/"
+    test_results_dir: "tests/results/"
+    compliance_dir: "tests/compliance/"
+    
+    # Key files
+    project_context: "PROJECT_CONTEXT.yaml"
+    hooks_file: "{app_name}/hooks.py"
+    handoffs_dir: ".bmad-project/handoffs/"
 persona:
   expertise:
     - "Frappe bench command-line operations"

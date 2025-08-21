@@ -1,0 +1,106 @@
+gate_id: "{epic}.{story}-{YYYYMMDD}"
+story: "{epic}.{story}"
+date: "{YYYY-MM-DD}"
+reviewer: "Test Architect"
+status: "PASS" # PASS | CONCERNS | FAIL | WAIVED
+update_reason: "Initial review"
+
+summary:
+  requirements_coverage: 0  # 0-100
+  test_quality_score: "F"   # A-F
+  code_quality_score: "F"   # A-F
+  security_score: "F"       # A-F
+  performance_score: "F"    # A-F
+  overall_confidence: "Low" # High|Medium|Low
+
+risk_assessment:
+  critical_risks: 0
+  high_risks: 0
+  medium_risks: 0
+  mitigated_risks: 0
+  accepted_risks: 0
+
+test_metrics:
+  total_tests: 0
+  passing_tests: 0
+  failing_tests: 0
+  skipped_tests: 0
+  coverage_percentage: 0
+  
+findings:
+  critical: []
+  # - id: "CRIT-001"
+  #   description: "Description of critical finding"
+  #   severity: "critical"
+  #   status: "open" # open|fixed|mitigated|accepted
+  #   mitigation: "How this was or will be addressed"
+  
+  high: []
+  # - id: "HIGH-001"
+  #   description: "Description of high-priority finding"
+  #   severity: "high"
+  #   status: "open"
+  #   mitigation: "Mitigation strategy"
+  
+  medium: []
+  # - id: "MED-001"
+  #   description: "Description of medium-priority finding"
+  #   severity: "medium"
+  #   status: "acknowledged"
+      
+  low: []
+  # - id: "LOW-001"
+  #   description: "Description of low-priority finding"
+  #   severity: "low"
+  #   status: "acknowledged"
+
+frappe_compliance:
+  frappe_first: true
+  blocked_libraries: []
+  # - "requests (use frappe.make_get_request)"
+  # - "unittest (use FrappeTestCase)"
+  pattern_violations: []
+  # - "Raw SQL without parameters"
+  # - "Missing @frappe.whitelist()"
+  security_compliance: true
+
+improvements_tracking:
+  requested: []
+  # - "Add performance tests"
+  # - "Improve error handling"
+  completed: []
+  # - "Fixed SQL injection"
+  # - "Added permission checks"
+  pending: []
+  # - "Documentation updates"
+
+conditions:  # For CONCERNS status
+  must_fix: []
+  # - "Critical security vulnerability"
+  should_fix: []
+  # - "Performance optimization needed"
+  nice_to_have: []
+  # - "Code refactoring for maintainability"
+
+# waiver:  # Only uncomment if status is WAIVED
+#   reason: "Business justification for waiver"
+#   risks_acknowledged:
+#     - "Risk 1 description"
+#     - "Risk 2 description"
+#   approved_by: "Name and Role"
+#   approval_date: "YYYY-MM-DD"
+#   expires: "YYYY-MM-DD"
+#   review_required: "YYYY-MM-DD"
+
+next_steps:
+  immediate: []
+  # - "Deploy to staging"
+  short_term: []
+  # - "Add performance monitoring"
+  long_term: []
+  # - "Refactor for scalability"
+
+notes: |
+  Additional context, special considerations, or explanations.
+  Include any dependencies or blockers.
+  Document any technical debt acknowledged.

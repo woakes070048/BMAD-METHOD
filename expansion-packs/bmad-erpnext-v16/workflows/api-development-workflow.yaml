@@ -1,0 +1,319 @@
+name: api-development-workflow
+description: ERPNext-optimized API development workflow with security and performance focus
+version: 1.0.0
+purpose: |
+  Complete workflow for developing secure, performant APIs in ERPNext
+  following Frappe framework patterns and best practices
+
+activation_triggers:
+  - api_endpoint_creation
+  - rest_api_request
+  - webhook_setup
+  - external_integration
+
+stages:
+  - name: api_requirements
+    description: Define API requirements and specifications
+    steps:
+      - action: identify_api_purpose
+        params:
+          api_types:
+            - internal_api  # For frontend consumption
+            - rest_api      # For external systems
+            - webhook       # For event notifications
+            - rpc_method    # For frappe.call()
+            
+      - action: define_api_contract
+        params:
+          specifications:
+            - endpoint_url
+            - http_methods  # GET, POST, PUT, DELETE
+            - request_format
+            - response_format
+            - error_responses
+            - rate_limits
+            
+      - action: identify_consumers
+        params:
+          consumer_types:
+            - vue_frontend
+            - mobile_app
+            - third_party_system
+            - internal_service
+
+  - name: security_design
+    description: Design security measures for API
+    steps:
+      - action: setup_authentication
+        params:
+          auth_methods:
+            - token_based  # API keys
+            - oauth2       # For external apps
+            - session      # For logged-in users
+            
+      - action: define_permissions
+        params:
+          permission_checks: |
+            @frappe.whitelist()
+            def api_method():
+                # MANDATORY: Permission check
+                if not frappe.has_permission("DocType", "read"):
+                    frappe.throw(_("Insufficient permissions"))
+                    
+      - action: plan_input_validation
+        params:
+          validation_rules:
+            - sanitize_inputs
+            - validate_data_types
+            - check_required_fields
+            - prevent_sql_injection
+            - validate_business_rules
+
+  - name: implementation
+    description: Implement API with ERPNext patterns
+    steps:
+      - action: create_api_structure
+        params:
+          file_location: "${app}/${module}/api.py"
+          alternative: "${app}/api/${module}/${endpoint}.py"
+          
+      - action: implement_endpoint
+        params:
+          template: |
+            import frappe
+            from frappe import _
+            from frappe.utils import cint, flt, now
+            
+            @frappe.whitelist()
+            def ${method_name}(**kwargs):
+                """
+                ${api_description}
+                
+                Args:
+                    ${param_list}
+                
+                Returns:
+                    dict: ${return_description}
+                """
+                try:
+                    # Validate permissions
+                    ${permission_check}
+                    
+                    # Validate inputs
+                    ${input_validation}
+                    
+                    # Business logic
+                    ${business_logic}
+                    
+                    # Return structured response
+                    return {
+                        "success": True,
+                        "data": result,
+                        "message": _("${success_message}")
+                    }
+                    
+                except Exception as e:
+                    frappe.log_error(title="${method_name} Error")
+                    return {
+                        "success": False,
+                        "message": str(e)
+                    }
+                    
+      - action: implement_crud_operations
+        params:
+          standard_methods:
+            - get_list: "Paginated list with filters"
+            - get_single: "Single record by ID"
+            - create: "Create new record"
+            - update: "Update existing record"
+            - delete: "Soft/hard delete"
+            - bulk_update: "Batch operations"
+
+  - name: frappe_integration
+    description: Integrate with Frappe framework features
+    steps:
+      - action: use_frappe_utilities
+        params:
+          utilities:
+            - frappe.db: "Database operations"
+            - frappe.cache: "Response caching"
+            - frappe.enqueue: "Background jobs"
+            - frappe.rate_limiter: "Rate limiting"
+            
+      - action: implement_pagination
+        params:
+          pattern: |
+            limit_start = cint(kwargs.get('limit_start', 0))
+            limit_page_length = cint(kwargs.get('limit_page_length', 20))
+            
+            data = frappe.get_all(
+                "DocType",
+                filters=filters,
+                fields=fields,
+                limit_start=limit_start,
+                limit_page_length=limit_page_length,
+                order_by="creation desc"
+            )
+            
+      - action: add_response_caching
+        params:
+          cache_pattern: |
+            cache_key = f"api_response_{method}_{user}"
+            cached = frappe.cache().get_value(cache_key)
+            if cached:
+                return cached
+            # ... compute response ...
+            frappe.cache().set_value(cache_key, response, expires_in_sec=300)
+
+  - name: error_handling
+    description: Implement comprehensive error handling
+    steps:
+      - action: setup_error_classes
+        params:
+          error_types:
+            - ValidationError
+            - PermissionError
+            - NotFoundError
+            - RateLimitError
+            
+      - action: implement_error_responses
+        params:
+          error_format: |
+            {
+                "success": false,
+                "error": {
+                    "type": "ValidationError",
+                    "message": "Human readable message",
+                    "details": {},
+                    "timestamp": "2024-01-01 12:00:00"
+                }
+            }
+            
+      - action: setup_error_logging
+        params:
+          logging: |
+            frappe.log_error(
+                message=frappe.get_traceback(),
+                title=f"API Error: {method_name}",
+                reference_doctype="Error Log"
+            )
+
+  - name: performance_optimization
+    description: Optimize API performance
+    steps:
+      - action: optimize_database_queries
+        params:
+          techniques:
+            - use_get_all_with_fields  # Don't fetch all columns
+            - batch_operations         # Reduce DB calls
+            - proper_indexing         # Add DB indexes
+            - avoid_n_plus_one       # Use single query
+            
+      - action: implement_lazy_loading
+        params:
+          pattern: |
+            # Load only required data initially
+            basic_data = get_basic_info()
+            # Load details only if requested
+            if include_details:
+                basic_data["details"] = get_detailed_info()
+                
+      - action: setup_rate_limiting
+        params:
+          configuration: |
+            from frappe.rate_limiter import rate_limit
+            
+            @frappe.whitelist()
+            @rate_limit(limit=100, seconds=60)  # 100 requests per minute
+            def api_method():
+                pass
+
+  - name: testing
+    description: Create comprehensive API tests
+    steps:
+      - action: create_unit_tests
+        params:
+          test_file: "test_${module}_api.py"
+          test_cases:
+            - test_authentication
+            - test_permissions
+            - test_valid_inputs
+            - test_invalid_inputs
+            - test_edge_cases
+            - test_rate_limiting
+            
+      - action: create_integration_tests
+        params:
+          scenarios:
+            - full_crud_cycle
+            - concurrent_requests
+            - large_data_sets
+            - error_conditions
+            
+      - action: performance_testing
+        params:
+          metrics:
+            - response_time
+            - throughput
+            - concurrent_users
+            - resource_usage
+
+  - name: documentation
+    description: Generate API documentation
+    steps:
+      - action: create_api_docs
+        params:
+          format: "OpenAPI/Swagger"
+          sections:
+            - authentication
+            - endpoints
+            - request_examples
+            - response_examples
+            - error_codes
+            - rate_limits
+            
+      - action: create_postman_collection
+        params:
+          include:
+            - all_endpoints
+            - example_requests
+            - test_scripts
+            - environment_variables
+            
+      - action: write_integration_guide
+        params:
+          topics:
+            - getting_started
+            - authentication_setup
+            - common_use_cases
+            - troubleshooting
+
+outputs:
+  - api_endpoints
+  - documentation_url
+  - postman_collection
+  - test_results
+  - performance_metrics
+
+validation_checklist:
+  - whitelist_decorator_present
+  - permission_checks_implemented
+  - input_validation_complete
+  - error_handling_comprehensive
+  - response_format_consistent
+  - caching_implemented
+  - rate_limiting_configured
+  - tests_passing
+  - documentation_complete
+
+best_practices:
+  - Always use @frappe.whitelist()
+  - Always check permissions
+  - Return consistent JSON structure
+  - Use frappe.db methods (not raw SQL)
+  - Implement proper pagination
+  - Cache expensive operations
+  - Log all errors
+  - Version your APIs
+  - Use meaningful HTTP status codes
+  - Document all endpoints

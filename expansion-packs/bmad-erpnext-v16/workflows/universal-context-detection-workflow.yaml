@@ -195,7 +195,75 @@ stages:
       fail_action: "CANNOT_PROCEED_NON_FRAPPE_PATTERNS"
       success_action: "PROCEED_TO_SAFETY_INITIALIZATION"
 
-  # STAGE 4: SAFETY PROTOCOL INITIALIZATION (Cannot Skip)
+  # STAGE 4: QUALITY GATE INITIALIZATION (Cannot Skip)
+  - name: quality_gate_initialization
+    description: "Initialize quality gates based on context"
+    mandatory: true
+    can_skip: false
+    
+    substages:
+      - name: load_quality_gate_definitions
+        description: "Load quality gate system"
+        actions:
+          - load_gates: "quality-gates-definition.yaml"
+          - load_checklist: "quality-gate-checklist.md"
+          - load_enforcement: "quality-gate-enforcement-workflow.yaml"
+          - verify_structure_patterns: "ERPNEXT-APP-STRUCTURE-PATTERNS.md"
+      
+      - name: select_context_gates
+        description: "Select quality gates for detected context"
+        context_branches:
+          TROUBLESHOOTING:
+            required_gates:
+              - dependency_analysis
+              - import_validation
+              - frappe_compliance
+              - incremental_testing
+              - full_test_suite
+          
+          NEW_DEVELOPMENT:
+            required_gates:
+              - structure_requirements
+              - test_strategy
+              - import_validation
+              - frappe_compliance
+              - structure_adherence
+              - full_test_suite
+              - documentation_completeness
+          
+          ENHANCEMENT:
+            required_gates:
+              - dependency_analysis
+              - import_validation
+              - frappe_compliance
+              - incremental_testing
+              - full_test_suite
+              - integration_testing
+          
+          MIGRATION:
+            required_gates:
+              - structure_requirements
+              - dependency_analysis
+              - import_validation
+              - frappe_compliance
+              - structure_adherence
+              - full_test_suite
+              - integration_testing
+      
+      - name: initialize_gate_tracking
+        description: "Setup quality gate tracking"
+        actions:
+          - create_gate_checklist: "echo '## Quality Gates for [CONTEXT_TYPE]' >> SESSION-CHANGELOG.md"
+          - list_required_gates: "echo 'Required gates: [gates]' >> SESSION-CHANGELOG.md"
+          - setup_gate_metrics: "initialize gate pass/fail tracking"
+          - establish_gate_enforcement: "activate mandatory gate checks"
+
+    decision_gate:
+      condition: "quality_gates_loaded AND gates_selected"
+      fail_action: "QUALITY_SYSTEM_ERROR"
+      success_action: "PROCEED_TO_SAFETY_INITIALIZATION"
+
+  # STAGE 5: SAFETY PROTOCOL INITIALIZATION (Cannot Skip)
   - name: safety_initialization
     description: "Initialize safety protocols appropriate to context"
     mandatory: true
@@ -209,6 +277,7 @@ stages:
           - setup_panic_detection: "activate panic mode detection"
           - establish_attempt_tracking: "initialize attempt counter at 0"
           - create_checkpoint: "create restoration point if applicable"
+          - link_quality_gates: "integrate quality gate enforcement"
       
       - name: document_safety_plan
         description: "Document safety approach for this context"
@@ -219,6 +288,7 @@ stages:
               - "One change at a time"
               - "Comprehensive rollback capability"
               - "Impact assessment before changes"
+              - "Quality gates at each fix"
           
           NEW_DEVELOPMENT:
             safety_focus:
@@ -226,6 +296,7 @@ stages:
               - "Incremental development approach"
               - "Continuous validation"
               - "Documentation as you go"
+              - "Structure compliance throughout"
           
           ENHANCEMENT:
             safety_focus:
@@ -233,6 +304,7 @@ stages:
               - "Backwards compatibility preservation"
               - "Incremental improvement approach"
               - "Regression testing"
+              - "Integration testing for changes"
           
           MIGRATION:
             safety_focus:
@@ -240,6 +312,7 @@ stages:
               - "Incremental transformation"
               - "Continuous validation"
               - "Fallback strategy"
+              - "Data integrity verification"
       
       - name: activate_monitoring
         description: "Activate appropriate monitoring for context"
@@ -247,9 +320,10 @@ stages:
           - enable_panic_detection: "context-appropriate panic triggers"
           - setup_progress_tracking: "milestone-based progress tracking"
           - establish_escalation: "clear escalation paths"
+          - activate_gate_monitoring: "track quality gate completion"
 
     decision_gate:
-      condition: "safety_initialized AND monitoring_active"
+      condition: "safety_initialized AND monitoring_active AND quality_gates_ready"
       fail_action: "CANNOT_PROCEED_SAFELY"
       success_action: "CONTEXT_DETECTION_COMPLETE"
 
@@ -280,6 +354,7 @@ workflow_outputs:
   - detected_context_type: "TROUBLESHOOTING|NEW_DEVELOPMENT|ENHANCEMENT|MIGRATION"
   - gathered_context_info: "context-specific information collected"
   - safety_status: "safety protocols initialized and active"
+  - quality_gates_selected: "list of required quality gates for context"
   - session_id: "unique session identifier for tracking"
   - changelog_file: "path to session changelog file"
 
@@ -289,3 +364,7 @@ integration:
   must_execute_before: ["ALL_OTHER_WORKFLOWS"]
   cannot_be_skipped: true
   universal_application: true
+  quality_gate_integration:
+    definition_file: "quality-gates-definition.yaml"
+    enforcement_workflow: "quality-gate-enforcement-workflow.yaml"
+    checklist: "quality-gate-checklist.md"

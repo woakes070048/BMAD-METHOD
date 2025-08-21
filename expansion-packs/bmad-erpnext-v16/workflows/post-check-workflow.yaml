@@ -1,0 +1,230 @@
+name: post-check-workflow
+description: Post-execution validation workflow to ensure quality and completeness
+version: 1.0.0
+activation_triggers:
+  - after_code_creation
+  - after_code_modification
+  - after_feature_implementation
+  - before_commit
+  - after_deployment
+
+stages:
+  - name: functionality_verification
+    description: Verify that implementation works as expected
+    steps:
+      - action: check_basic_functionality
+        params:
+          verify:
+            - feature_works
+            - no_runtime_errors
+            - expected_behavior
+      
+      - action: validate_requirements_met
+        params:
+          check:
+            - all_acceptance_criteria
+            - business_objectives
+            - technical_specifications
+      
+      - action: test_edge_cases
+        params:
+          scenarios:
+            - empty_data
+            - invalid_input
+            - boundary_conditions
+            - concurrent_access
+
+  - name: regression_testing
+    description: Ensure no existing functionality is broken
+    steps:
+      - action: run_unit_tests
+        params:
+          execute:
+            - existing_tests
+            - new_tests
+            - integration_tests
+      
+      - action: check_related_features
+        params:
+          validate:
+            - dependent_modules
+            - api_compatibility
+            - ui_functionality
+      
+      - action: verify_database_integrity
+        params:
+          check:
+            - migration_success
+            - data_consistency
+            - constraint_violations
+
+  - name: quality_assessment
+    description: Assess code quality and maintainability
+    steps:
+      - action: code_quality_check
+        params:
+          evaluate:
+            - code_complexity
+            - duplication
+            - naming_conventions
+            - documentation
+      
+      - action: review_error_handling
+        params:
+          verify:
+            - try_catch_blocks
+            - error_messages
+            - logging_implementation
+            - recovery_mechanisms
+      
+      - action: check_best_practices
+        params:
+          validate:
+            - frappe_patterns
+            - erpnext_conventions
+            - security_practices
+            - performance_optimizations
+
+  - name: performance_validation
+    description: Validate performance impact
+    steps:
+      - action: measure_response_times
+        params:
+          benchmark:
+            - api_endpoints
+            - page_loads
+            - report_generation
+            - background_jobs
+      
+      - action: check_resource_usage
+        params:
+          monitor:
+            - memory_consumption
+            - cpu_usage
+            - database_queries
+            - cache_efficiency
+      
+      - action: compare_benchmarks
+        params:
+          evaluate:
+            - before_vs_after
+            - acceptable_thresholds
+            - scalability_metrics
+
+  - name: security_validation
+    description: Final security checks
+    steps:
+      - action: verify_permissions
+        params:
+          test:
+            - role_based_access
+            - data_visibility
+            - api_authentication
+      
+      - action: check_vulnerabilities
+        params:
+          scan_for:
+            - injection_points
+            - exposed_data
+            - insecure_configurations
+      
+      - action: audit_logs_check
+        params:
+          verify:
+            - activity_logging
+            - error_tracking
+            - security_events
+
+  - name: documentation_check
+    description: Ensure documentation is complete
+    steps:
+      - action: verify_code_documentation
+        params:
+          check:
+            - function_docstrings
+            - class_documentation
+            - inline_comments
+      
+      - action: validate_api_documentation
+        params:
+          ensure:
+            - endpoint_descriptions
+            - parameter_documentation
+            - response_examples
+      
+      - action: check_user_documentation
+        params:
+          verify:
+            - feature_guides
+            - configuration_docs
+            - troubleshooting_info
+
+  - name: improvement_identification
+    description: Identify areas for improvement
+    steps:
+      - action: suggest_optimizations
+        params:
+          identify:
+            - performance_improvements
+            - code_refactoring
+            - better_patterns
+      
+      - action: recommend_additional_tests
+        params:
+          suggest:
+            - missing_test_cases
+            - integration_tests
+            - performance_tests
+      
+      - action: propose_enhancements
+        params:
+          consider:
+            - user_experience
+            - maintainability
+            - future_extensibility
+
+  - name: final_validation
+    description: Final checks and report generation
+    steps:
+      - action: compile_test_results
+        params:
+          gather:
+            - test_coverage
+            - passing_tests
+            - failing_tests
+      
+      - action: generate_quality_report
+        params:
+          include:
+            - functionality_status
+            - quality_metrics
+            - performance_data
+            - security_findings
+      
+      - action: make_recommendation
+        params:
+          outcomes:
+            - ready_for_production
+            - ready_with_minor_fixes
+            - needs_improvements
+            - critical_issues_found
+
+outputs:
+  - validation_report
+  - test_results
+  - performance_metrics
+  - security_findings
+  - improvement_suggestions
+  - deployment_readiness
+
+error_handling:
+  - on_test_failure: document_and_report
+  - on_regression: rollback_recommendation
+  - on_security_issue: immediate_escalation
+  - on_performance_degradation: optimization_required
+
+integration_points:
+  - post_check_agent: Primary executor
+  - testing_specialist: Test execution
+  - erpnext_qa_lead: Quality review
+  - diagnostic_specialist: Issue investigation

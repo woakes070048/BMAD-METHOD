@@ -150,11 +150,12 @@ stages:
       fail_action: "REVISE_PLAN"
       success_action: "PROCEED_TO_IMPLEMENTATION"
 
-  # STAGE 4: CONTROLLED IMPLEMENTATION (With Panic Detection)
+  # STAGE 4: CONTROLLED IMPLEMENTATION WITH QUALITY GATES (With Panic Detection)
   - name: controlled_implementation
-    description: "Execute coordination plan with safety monitoring"
+    description: "Execute coordination plan with safety monitoring and quality gate enforcement"
     panic_detection: true
     attempt_limit: 3
+    quality_gate_enforcement: mandatory
     
     substages:
       - name: pre_implementation_setup
@@ -163,19 +164,41 @@ stages:
           - initialize_changelog: "create detailed coordination log"
           - backup_current_state: "preserve current coordination state"
           - verify_agent_availability: "ensure all assigned agents are ready"
+          - load_quality_gates: "initialize quality-gates-definition.yaml"
+          - prepare_gate_checklist: "setup quality-gate-checklist.md tracking"
       
-      - name: coordination_execution
-        description: "Execute planned agent coordination"
+      - name: coordination_execution_with_gates
+        description: "Execute planned agent coordination with quality gates"
         safety_checks:
           - one_handoff_at_time: true
           - validate_each_handoff: true
+          - quality_gates_before_handoff: true
           - document_coordination: true
         
         actions:
           - initiate_agent_assignments: "start assigned agents on their tasks"
           - monitor_coordination: "track agent progress and coordination"
-          - manage_handoffs: "facilitate information transfer between agents"
+          - enforce_quality_gates: "run quality-gate-enforcement-workflow before handoffs"
+          - manage_handoffs: "facilitate information transfer ONLY after gates pass"
           - handle_conflicts: "resolve agent conflicts and coordination issues"
+        
+        quality_gate_process:
+          before_handoff:
+            - execute: "quality-gate-enforcement-workflow.yaml"
+            - validate_structure: "Eva Thorne compliance check"
+            - run_tests: "testing-specialist verification"
+            - check_documentation: "verify docs updated"
+          
+          handoff_criteria:
+            - all_gates_passed: true
+            - tests_passing: true
+            - structure_compliant: true
+            - documentation_complete: true
+          
+          failure_handling:
+            - block_handoff: "prevent handoff if gates fail"
+            - return_to_agent: "send work back with specific issues"
+            - document_failures: "log gate failures in changelog"
       
       - name: coordination_monitoring
         description: "Monitor ongoing coordination effectiveness"
@@ -267,14 +290,39 @@ success_criteria:
   - coordination_efficiency_above_85_percent: true
   - zero_critical_handoff_failures: true
   - all_agents_performing_effectively: true
+  - all_quality_gates_passed: true
   - documentation_complete: true
   - cross_verification_passed: true
 
+# QUALITY GATE INTEGRATION
+quality_gate_integration:
+  enforcement_level: mandatory
+  gate_workflows:
+    - quality-gate-enforcement-workflow.yaml
+    - testing-execution-workflow.yaml
+  
+  handoff_gates:
+    pre_handoff:
+      - structure_validation
+      - import_pattern_check
+      - test_execution
+      - documentation_check
+    
+    post_handoff:
+      - receiving_agent_verification
+      - integration_check
+  
+  gate_failure_protocol:
+    first_failure: return_to_originator
+    second_failure: escalate_to_coordinator
+    third_failure: escalate_to_product_owner
+
 # INTEGRATION POINTS
 integration:
-  prerequisite_workflows: []
+  prerequisite_workflows: ["universal-context-detection-workflow"]
   dependent_workflows: ["all_agent_workflows"]
-  notification_targets: ["erpnext-product-owner", "erpnext-architect"]
+  quality_gate_workflows: ["quality-gate-enforcement-workflow"]
+  notification_targets: ["erpnext-product-owner", "erpnext-architect", "testing-specialist"]
   
 # METRICS AND MONITORING
 metrics:

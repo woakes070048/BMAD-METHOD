@@ -1,238 +1,190 @@
-# Task Assignment Template for ERPNext Development Coordination
-# Used by main-dev-coordinator for systematic task assignment and tracking
+# Task Assignment Template
+# Used by development-coordinator for assigning tasks to agents
 
-task_assignment:
-  metadata:
-    assignment_id: "TASK-{YYYY}-{MM}-{DD}-{SEQ}"
-    created_date: "{timestamp}"
-    coordinator: "{coordinator_name}"
-    project: "{project_name}"
-    sprint: "{sprint_number}"
-    
-  task_details:
-    title: "{task_title}"
-    description: |
-      {detailed_task_description}
-    
-    type: # Select one
-      - "feature_development"
-      - "bug_fix"
-      - "enhancement"
-      - "refactoring"
-      - "documentation"
-      - "testing"
-      - "deployment"
-      - "migration"
-      - "integration"
-    
-    category: # Based on task-routing-guidelines.md
-      - "doctype_tasks"
-      - "business_logic_tasks"
-      - "frontend_tasks"
-      - "api_tasks"
-      - "integration_tasks"
-      - "testing_tasks"
-      - "deployment_tasks"
-    
-    complexity: # Determines assignment strategy
-      low: # < 4 hours
-        description: "Single agent, standard patterns"
-        assignment_type: "individual"
-      medium: # 4-16 hours
-        description: "May need consultation"
-        assignment_type: "primary_with_support"
-      high: # > 16 hours
-        description: "Multi-agent collaboration"
-        assignment_type: "team"
-    
-    priority: # Based on priority matrix
-      level: "P0 | P1 | P2 | P3"
-      business_impact: "critical | high | medium | low"
-      technical_dependency: "blocking | dependent | independent"
-      deadline: "{date}"
-      
-  requirements:
-    functional:
-      - "{requirement_1}"
-      - "{requirement_2}"
-    
-    technical:
-      - "{technical_requirement_1}"
-      - "{technical_requirement_2}"
-    
-    prerequisites:
-      completed_tasks:
-        - "{task_id_1}"
-        - "{task_id_2}"
-      
-      required_knowledge:
-        - "{knowledge_area_1}"
-        - "{knowledge_area_2}"
-      
-      environment_setup:
-        - "{setup_requirement_1}"
-        - "{setup_requirement_2}"
-    
-    dependencies:
-      doctypes:
-        - "{doctype_name}"
-      
-      modules:
-        - "{module_name}"
-      
-      external_systems:
-        - "{system_name}"
-      
-      apis:
-        - "{api_endpoint}"
-        
-  agent_assignment:
-    primary_agent:
-      role: "{agent_role}" # e.g., doctype-designer, api-developer
-      name: "{agent_identifier}"
-      rationale: "{why_this_agent}"
-      
-    secondary_agents: # For consultation or support
-      - role: "{support_agent_role}"
-        name: "{support_agent_identifier}"
-        involvement: "consultation | review | pair_programming"
-        
-    escalation_path:
-      level_1: "{domain_expert}"
-      level_2: "{cross_domain_coordinator}"
-      level_3: "{strategic_decision_maker}"
-      
-  execution_plan:
-    estimated_effort:
-      hours: "{number}"
-      story_points: "{points}"
-      
-    timeline:
-      start_date: "{date}"
-      target_completion: "{date}"
-      milestones:
-        - date: "{date}"
-          deliverable: "{milestone_description}"
-          
-    approach:
-      methodology: "{approach_description}"
-      tools_required:
-        - "{tool_1}"
-        - "{tool_2}"
-      
-      resources_needed:
-        - "{resource_1}"
-        - "{resource_2}"
-        
-  success_criteria:
-    acceptance_criteria:
-      - "{criterion_1}"
-      - "{criterion_2}"
-      - "{criterion_3}"
-    
-    validation_method:
-      - "code_review"
-      - "unit_tests"
-      - "integration_tests"
-      - "user_acceptance"
-      - "performance_benchmarks"
-    
-    quality_metrics:
-      code_coverage: "{percentage}"
-      performance_target: "{metric}"
-      security_compliance: "{standard}"
-      
-  communication:
-    reporting_frequency: "daily | on_completion | on_blocker"
-    
-    update_format:
-      progress: "{template}"
-      blockers: "{template}"
-      completion: "{template}"
-    
-    stakeholders:
-      - role: "{stakeholder_role}"
-        notification_events:
-          - "assignment"
-          - "progress_update"
-          - "blocker"
-          - "completion"
-          
-  handoff_preparation:
-    when_required: # Conditions for handoff
-      - "primary_agent_unavailable"
-      - "expertise_needed"
-      - "task_completion"
-      - "escalation_triggered"
-    
-    documentation_required:
-      - "work_completed"
-      - "current_state"
-      - "known_issues"
-      - "next_steps"
-      - "testing_status"
-    
-    handoff_to: "{next_agent_or_team}"
-    
-  tracking:
-    status: "assigned | in_progress | blocked | review | completed"
-    
-    progress_log:
-      - timestamp: "{datetime}"
-        update: "{progress_description}"
-        agent: "{agent_name}"
-        
-    blockers:
-      - identified_at: "{datetime}"
-        description: "{blocker_description}"
-        resolution_strategy: "{strategy}"
-        resolved_at: "{datetime}"
-        
-    time_tracking:
-      actual_hours: "{number}"
-      variance: "{actual_vs_estimated}"
-      
-  outcomes:
-    deliverables:
-      - type: "{deliverable_type}"
-        location: "{path_or_reference}"
-        description: "{what_was_delivered}"
-    
-    documentation:
-      - type: "technical | user | api"
-        location: "{documentation_path}"
-    
-    lessons_learned:
-      - what_went_well: "{description}"
-      - what_could_improve: "{description}"
-      - recommendations: "{future_improvements}"
-      
-  integration_points:
-    with_existing_apps:
-      docflow:
-        required: "yes | no"
-        integration_type: "{description}"
-        
-      n8n_integration:
-        required: "yes | no"
-        webhooks: []
-        triggers: []
-        
-    multi_app_considerations:
-      - app_name: "{app}"
-        impact: "{description}"
-        coordination_needed: "{what_coordination}"
-        
-# Usage Instructions:
-# 1. Copy this template for each task assignment
-# 2. Fill in all placeholders marked with {}
-# 3. Select appropriate options from lists
-# 4. Ensure alignment with task-routing-guidelines.md
-# 5. Track progress through the task lifecycle
-# 6. Use for handoff preparation when needed
+name: task-assignment-template
+version: 1.0.0
+description: Template for assigning tasks to specialized agents with quality gate requirements
 
-# Related Documents:
-# - task-routing-guidelines.md
-# - handoff-template.yaml
-# - erpnext-technical-preferences.md
-# - PRD-TO-TASKS-GUIDE.md
+# ASSIGNMENT STRUCTURE
+assignment:
+  # Task identification
+  task_id: "TASK-{timestamp}"
+  task_type: "[TROUBLESHOOTING|NEW_DEVELOPMENT|ENHANCEMENT|MIGRATION]"
+  priority: "[HIGH|MEDIUM|LOW]"
+  
+  # Task details
+  task_description: |
+    ## Task Summary
+    [Brief description of what needs to be done]
+    
+    ## Context
+    [Background information and why this task is needed]
+    
+    ## Success Criteria
+    [What constitutes successful completion]
+  
+  # Agent assignment
+  assigned_to:
+    primary_agent: "[agent-id]"
+    support_agents: []
+    reviewer: "[reviewer-agent-id]"
+  
+  # Quality requirements
+  quality_gates_required:
+    pre_work:
+      - context_detection
+      - dependency_analysis
+      - test_strategy
+    
+    during_work:
+      - import_validation
+      - frappe_compliance
+      - incremental_testing
+      - structure_adherence
+    
+    post_work:
+      - full_test_suite
+      - structure_validation
+      - documentation_completeness
+      - cross_verification
+  
+  # Dependencies
+  dependencies:
+    prerequisite_tasks: []
+    required_resources:
+      - tasks: []
+      - templates: []
+      - checklists: []
+      - data: []
+    
+    blocking_tasks: []
+    blocked_by: []
+  
+  # Timeline
+  timeline:
+    assigned_date: "[ISO-8601 timestamp]"
+    expected_start: "[ISO-8601 timestamp]"
+    expected_completion: "[ISO-8601 timestamp]"
+    actual_start: null
+    actual_completion: null
+  
+  # Constraints
+  constraints:
+    frappe_first_required: true
+    multi_app_compatibility: ["frappe", "erpnext", "docflow", "n8n_integration"]
+    performance_requirements:
+      api_response_time: "< 2s"
+      page_load_time: "< 3s"
+    security_requirements:
+      authentication_required: true
+      permission_checks: true
+      input_validation: true
+
+# HANDOFF PREPARATION
+handoff_requirements:
+  from_agent: null
+  to_agent: "[next-agent-id]"
+  
+  deliverables:
+    code_artifacts: []
+    documentation: []
+    test_results: []
+    known_issues: []
+  
+  quality_gate_status:
+    gates_passed: []
+    gates_failed: []
+    gates_pending: []
+  
+  next_steps: |
+    [Clear instructions for the next agent]
+
+# TRACKING
+tracking:
+  status: "[PENDING|ASSIGNED|IN_PROGRESS|BLOCKED|TESTING|REVIEW|COMPLETED]"
+  
+  progress_updates: []
+  # Example update:
+  # - timestamp: "2024-01-15T10:30:00Z"
+  #   agent: "api-developer"
+  #   message: "Completed API endpoints, starting tests"
+  #   progress_percentage: 60
+  
+  blockers: []
+  # Example blocker:
+  # - timestamp: "2024-01-15T11:00:00Z"
+  #   description: "Missing DocType dependency"
+  #   blocking_agent: "doctype-designer"
+  #   resolution_required: "Need Customer DocType completed first"
+  
+  quality_gate_results: []
+  # Example result:
+  # - gate: "import_validation"
+  #   status: "PASSED"
+  #   timestamp: "2024-01-15T12:00:00Z"
+  #   validator: "frappe-compliance-validator"
+
+# ESCALATION
+escalation:
+  triggers:
+    - missed_deadline
+    - quality_gate_failures_exceeding: 3
+    - blocked_duration_exceeding: "2 hours"
+  
+  escalation_path:
+    level_1: "development-coordinator"
+    level_2: "erpnext-product-owner"
+    level_3: "erpnext-architect"
+  
+  notifications:
+    on_assignment: ["assigned_agent"]
+    on_completion: ["requester", "next_agent"]
+    on_blocking: ["coordinator", "blocked_agent"]
+    on_escalation: ["escalation_target", "product_owner"]
+
+# VALIDATION RULES
+validation:
+  required_fields:
+    - task_description
+    - assigned_to.primary_agent
+    - quality_gates_required
+    - timeline.expected_completion
+  
+  agent_capability_check: true
+  resource_availability_check: true
+  dependency_resolution_check: true
+
+# USAGE INSTRUCTIONS
+usage:
+  create_assignment: |
+    1. Copy this template
+    2. Fill in all required fields
+    3. Validate agent capability matches task requirements
+    4. Set quality gates based on task type
+    5. Define clear success criteria
+    6. Establish timeline with buffer
+  
+  track_progress: |
+    1. Update status as work progresses
+    2. Log progress updates regularly
+    3. Document any blockers immediately
+    4. Record quality gate results
+  
+  prepare_handoff: |
+    1. Ensure all quality gates passed
+    2. Document deliverables clearly
+    3. List any known issues
+    4. Provide clear next steps
+    5. Update handoff_requirements section
+
+# INTEGRATION
+integration:
+  workflows:
+    - coordination-workflow.yaml
+    - quality-gate-enforcement-workflow.yaml
+  
+  triggers:
+    on_creation: "notify_assigned_agent"
+    on_update: "update_tracking_metrics"
+    on_completion: "trigger_quality_gates"
+    on_handoff: "validate_handoff_requirements"

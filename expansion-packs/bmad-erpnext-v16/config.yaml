@@ -151,12 +151,12 @@ agents:
     - "api-architect"
     - "pwa-specialist"
     - "app-scaffold-coordinator"
-    - "erpnext-app-cleaner"
+    - "code-cleanup-specialist"
   project_management:
     - "erpnext-product-owner"
     - "erpnext-scrum-master"
     - "erpnext-qa-lead"
-    - "main-dev-coordinator"
+    - "development-coordinator"
   frontend:
     - "vue-spa-architect"
     - "frappe-ui-developer"
@@ -171,23 +171,20 @@ agents:
     - "workspace-architect"
   business_analysis:
     - "business-analyst"
-    - "n8n-workflow-analyst"
-    - "airtable-analyzer"
-  automation:
-    - "n8n-workflow-analyst"
-    - "workflow-converter"
-    - "trigger-mapper"
-  migration:
-    - "airtable-analyzer"
-    - "workflow-converter"
-    - "business-analyst"
+  quality_control:
+    - "pre-check-agent"
+    - "post-check-agent"
+  requirements:
+    - "prd-generator"
+  structure_management:
+    - "structure-manager"
   utilities:
     - "jinja-template-specialist"
     - "app-scaffold-coordinator"
-    - "erpnext-app-cleaner"
+    - "code-cleanup-specialist"
   compliance:
     - "frappe-compliance-validator"
-    - "app-structure-validator"
+    - "structure-compliance-agent"
   debugging:
     - "diagnostic-specialist"
     - "refactoring-expert"
@@ -196,7 +193,7 @@ agents:
   auditing:
     - "app-auditor"
   orchestration:
-    - "bmad-orchestrator"
+    - "workflow-orchestrator"
   
 agent_teams:
   modern_app_team:
@@ -645,6 +642,44 @@ integration:
 
 # CUSTOMIZE THESE SETTINGS FOR YOUR PREFERENCES
 settings:
+  # BMAD Method alignment
+  bmad_method:
+    planning_workflow: bmad-planning-workflow
+    development_workflow: bmad-development-workflow
+    enforce_frappe_first: true
+    block_external_libraries: true
+    
+  # Environment mode controls
+  environment:
+    mode: development          # Options: development, production
+    enforce_modern_patterns: true
+    prevent_legacy_functions: true
+    erpnext_version: "v16"
+    frappe_framework: true
+    
+  # Structure enforcement settings
+  structure:
+    max_file_lines: 500        # Preferred maximum lines per file
+    enforce_directory_rules: true
+    refactor_threshold: 1000  # Files exceeding this will be refactored
+    doctype_naming: PascalCase
+    api_pattern: "@frappe.whitelist()"
+    
+  # Review and validation settings
+  review:
+    require_pre_check: false   # Optional in BMAD Method
+    require_post_check: false  # Optional in BMAD Method
+    test_architect_review: recommended
+    risk_assessment_threshold: 6
+    
+  # Quality gates configuration
+  quality_gates:
+    enabled: true
+    advisory_only: true       # Gates are advisory, not blocking
+    require_coverage: 70      # Minimum test coverage
+    critical_path_coverage: 100
+    security_coverage: 100
+    
   development:
     auto_reload: true
     debug_mode: true           # Set to false for production

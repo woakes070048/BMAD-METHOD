@@ -1,0 +1,291 @@
+id: bmad-development-workflow
+name: BMAD Method ERPNext Development Cycle
+type: workflow
+description: Core development workflow for ERPNext following BMAD Method
+version: 1.0.0
+
+metadata:
+  priority: primary
+  category: development
+  execution_mode: iterative
+  target_agents:
+    - erpnext-scrum-master
+    - erpnext-test-architect
+    - erpnext-product-owner
+    - doctype-designer
+    - api-developer
+    - vue-spa-architect
+    - testing-specialist
+    - development-coordinator
+  when_to_use: "Use after planning phase for story implementation"
+
+cycle:
+  - id: story_preparation
+    name: Story Preparation Phase
+    steps:
+      - agent: erpnext-scrum-master
+        task: review-previous-notes
+        description: "Review notes from previous story development and QA feedback"
+      
+      - agent: erpnext-scrum-master
+        task: draft-story
+        input: "Sharded epic + Architecture"
+        description: "Draft next story from sharded epic with technical details"
+      
+      - decision: high_risk_story
+        condition: "Story involves critical DocTypes, permissions, or integrations"
+        true_path:
+          - agent: erpnext-test-architect
+            task: risk-profile
+            description: "Assess risks and create mitigation strategies"
+          
+          - agent: erpnext-test-architect
+            task: test-design
+            description: "Create test strategy based on identified risks"
+          
+          - checkpoint: test_strategy_created
+            validation:
+              - "Risks documented with scores"
+              - "Test scenarios defined"
+              - "Coverage requirements specified"
+        false_path:
+          continue: true
+
+  - id: story_validation
+    name: Story Validation (Optional)
+    optional: true
+    steps:
+      - decision: po_validation_requested
+        true_path:
+          agent: erpnext-product-owner
+          task: validate-story-draft
+          description: "Validate story against PRD, architecture, and Frappe standards"
+          validation:
+            - "Acceptance criteria clear"
+            - "DocType requirements specified"
+            - "API patterns follow @frappe.whitelist()"
+            - "No external libraries when Frappe has equivalent"
+        false_path:
+          continue: true
+
+  - id: user_approval
+    name: User Story Approval
+    steps:
+      - checkpoint: user_approval_gate
+        type: user_decision
+        options:
+          approved: continue_to_development
+          needs_changes: loop_back_to_story_preparation
+        message: "Review story and approve for development"
+
+  - id: development_execution
+    name: Development Implementation
+    steps:
+      - agent: development-coordinator
+        task: route-task
+        description: "Analyze story and route to appropriate specialists"
+      
+      - parallel_execution:
+          doctype_work:
+            condition: "if_doctype_required"
+            agent: doctype-designer
+            task: implement-doctype
+            validation:
+              - "Uses Frappe field types"
+              - "Link fields for relationships"
+              - "Proper permissions setup"
+          
+          api_work:
+            condition: "if_api_required"
+            agent: api-developer
+            task: implement-api
+            validation:
+              - "@frappe.whitelist() decorator used"
+              - "Permission checks implemented"
+              - "Uses frappe.db methods (not raw SQL)"
+          
+          frontend_work:
+            condition: "if_frontend_required"
+            agent: vue-spa-architect
+            task: implement-frontend
+            validation:
+              - "Native Vue patterns (no /frontend/)"
+              - "Bundle.js entry points"
+              - "SetVueGlobals() used"
+              - "Frappe UI components"
+      
+      - agent: testing-specialist
+        task: implement-tests
+        description: "Create FrappeTestCase-based tests"
+        validation:
+          - "Uses FrappeTestCase (not pytest/unittest)"
+          - "Tests permissions"
+          - "Tests DocType validations"
+          - "Tests API endpoints"
+
+  - id: mid_development_qa
+    name: Mid-Development QA (Optional)
+    optional: true
+    recommended_for: "Complex stories"
+    steps:
+      - decision: mid_dev_check_needed
+        true_path:
+          - agent: erpnext-test-architect
+            task: trace-requirements
+            description: "Verify test coverage for acceptance criteria"
+          
+          - agent: erpnext-test-architect
+            task: nfr-assess
+            description: "Check security, performance, reliability, maintainability"
+          
+          - condition: gaps_identified
+            true_path:
+              agent: development-coordinator
+              task: address-gaps
+              description: "Route gap fixes to appropriate specialists"
+        false_path:
+          continue: true
+
+  - id: development_validation
+    name: Development Validation
+    steps:
+      - agent: testing-specialist
+        task: run-all-validations
+        commands:
+          - "bench --site [site] run-tests --app [app]"
+          - "bench --site [site] migrate --dry-run"
+          - "bench build --app [app]"
+          - "bench --site [site] clear-cache"
+      
+      - checkpoint: ready_for_review
+        validation:
+          - "All tests passing"
+          - "No console errors"
+          - "Migrations clean"
+          - "Assets built successfully"
+      
+      - agent: development-coordinator
+        task: add-dev-notes
+        description: "Document implementation decisions and changes"
+
+  - id: quality_review
+    name: Quality Review Phase
+    steps:
+      - decision: user_verification
+        options:
+          request_qa_review:
+            - agent: erpnext-test-architect
+              task: review-story
+              description: "Comprehensive test architecture review"
+              outputs:
+                - "Requirements traceability matrix"
+                - "Test level analysis"
+                - "Coverage assessment"
+                - "Active refactoring (when safe)"
+                - "Quality gate decision"
+            
+            - agent: erpnext-test-architect
+              task: test-architecture-analysis
+              description: "Analyze and improve test architecture"
+            
+            - decision: qa_decision
+              options:
+                needs_dev_work: loop_back_to_development_execution
+                approved: continue_to_finalization
+          
+          approve_without_qa:
+            validation_required:
+              - "Verify ALL regression tests passing"
+              - "Verify linting passing"
+              - "Verify Frappe-first compliance"
+            continue_to: finalization
+          
+          needs_fixes: loop_back_to_development_execution
+
+  - id: finalization
+    name: Story Finalization
+    steps:
+      - critical_checkpoint: commit_changes
+        type: mandatory_user_action
+        message: "COMMIT YOUR CHANGES BEFORE PROCEEDING!"
+        commands:
+          - "git add ."
+          - "git commit -m 'feat: [story description]'"
+      
+      - decision: gate_update_needed
+        condition: "if_qa_review_performed"
+        true_path:
+          agent: erpnext-test-architect
+          task: gate
+          description: "Update quality gate status"
+          outputs:
+            - "docs/qa/gates/{epic}.{story}-{slug}.yml"
+        false_path:
+          continue: true
+      
+      - checkpoint: story_complete
+        actions:
+          - "Mark story as DONE"
+          - "Update story status in docs/stories/"
+          - "Add to completed stories log"
+
+  - id: cycle_continuation
+    name: Continue to Next Story
+    steps:
+      - loop_back_to: story_preparation
+        with_context:
+          - "Previous story completion notes"
+          - "QA feedback and improvements"
+          - "Lessons learned"
+
+validation_rules:
+  frappe_first:
+    - "No import requests - use frappe.make_get_request()"
+    - "No raw SQL - use frappe.db methods"
+    - "No Celery - use frappe.enqueue()"
+    - "No direct Redis - use frappe.cache()"
+    - "No WebSocket libs - use frappe.publish_realtime()"
+    - "No Jinja2 direct - use frappe.render_template()"
+    - "No external PDF libs - use frappe.utils.get_pdf()"
+    - "No unittest/pytest - use FrappeTestCase"
+  
+  erpnext_patterns:
+    - "DocTypes use PascalCase"
+    - "Link fields for relationships"
+    - "Controller methods in Python files"
+    - "Permissions with frappe.has_permission()"
+    - "Errors with frappe.throw()"
+  
+  frontend_patterns:
+    - "No /frontend/ directory"
+    - "Use public/js/ for Vue components"
+    - "Bundle.js entry points"
+    - "SetVueGlobals() for Frappe integration"
+    - "Pinia for state management"
+
+outputs:
+  - path: "docs/stories/{epic}.{story}.md"
+    description: "Completed story with all sections filled"
+  
+  - path: "docs/qa/assessments/"
+    description: "Risk profiles, test designs, traces, NFR assessments"
+  
+  - path: "docs/qa/gates/"
+    description: "Quality gate decisions"
+  
+  - path: "[app]/[module]/doctype/"
+    description: "Implemented DocTypes"
+  
+  - path: "[app]/api/"
+    description: "Implemented API endpoints"
+  
+  - path: "[app]/public/js/"
+    description: "Vue components and bundles"
+  
+  - path: "[app]/tests/"
+    description: "FrappeTestCase-based tests"
+
+handoff:
+  to: erpnext-scrum-master
+  message: "Story complete. Ready for next story in epic."
+  cycle: continuous_until_epic_complete

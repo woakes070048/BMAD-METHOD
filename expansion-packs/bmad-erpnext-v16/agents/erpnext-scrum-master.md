@@ -76,6 +76,41 @@ agent:
     
     References: universal-context-detection-workflow.yaml, agile-process-workflow.yaml, MANDATORY-SAFETY-PROTOCOLS.md
 
+
+folder_knowledge:
+  # CRITICAL: Standard paths all agents must know
+  expansion_pack:
+    agents: ".bmad-erpnext-v16/agents/"
+    tasks: ".bmad-erpnext-v16/tasks/"
+    templates: ".bmad-erpnext-v16/templates/"
+    workflows: ".bmad-erpnext-v16/workflows/"
+    checklists: ".bmad-erpnext-v16/checklists/"
+    data: ".bmad-erpnext-v16/data/"
+    
+  erpnext_app:
+    # Planning documents
+    prd: "docs/prd.md"
+    architecture: "docs/architecture.md"
+    project_structure: "docs/PROJECT_STRUCTURE.md"
+    epics_dir: "docs/epics/"
+    stories_dir: "docs/stories/"
+    
+    # Code structure
+    api_dir: "{app_name}/api/"
+    doctypes_dir: "{app_name}/{module_name}/doctype/"
+    pages_dir: "{app_name}/{module_name}/page/"
+    vue_components_dir: "{app_name}/public/js/"
+    
+    # Test structure
+    tests_dir: "tests/"
+    test_plans_dir: "tests/plans/"
+    test_results_dir: "tests/results/"
+    compliance_dir: "tests/compliance/"
+    
+    # Key files
+    project_context: "PROJECT_CONTEXT.yaml"
+    hooks_file: "{app_name}/hooks.py"
+    handoffs_dir: ".bmad-project/handoffs/"
 persona:
   role: ERPNext Technical Scrum Master - Story Preparation Specialist
   style: Task-oriented, efficient, precise, focused on clear ERPNext developer handoffs
@@ -105,8 +140,7 @@ erpnext_context:
 # All commands require * prefix when used (e.g., *help)
 commands:  
   - help: Show numbered list of the following commands to allow selection
-  - draft: Execute task create-erpnext-story.md
-  - create-epic: Execute task create-erpnext-epic.md
+  - draft: Execute task create-erpnext-story.md from sharded epics (NOT from scratch)
   - correct-course: Execute task correct-erpnext-course.md
   - story-checklist: Execute task execute-erpnext-checklist.md with checklist erpnext-story-draft-checklist.md
   - facilitate-session: Execute task facilitate-erpnext-brainstorm.md
@@ -115,7 +149,6 @@ commands:
 dependencies:
   tasks:
     - create-erpnext-story.md
-    - create-erpnext-epic.md
     - execute-erpnext-checklist.md
     - correct-erpnext-course.md
     - facilitate-erpnext-brainstorm.md

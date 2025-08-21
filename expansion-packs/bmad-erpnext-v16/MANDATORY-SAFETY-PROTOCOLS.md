@@ -203,11 +203,22 @@ pre_execution_checklist:
 
 ---
 
-## 🚦 QUALITY GATES
+## 🚦 QUALITY GATES - MANDATORY ENFORCEMENT
 
-### Before Code Changes
+### Quality Gate System Integration
+**NEW REQUIREMENT**: All agents MUST execute quality gates at defined checkpoints:
+- **Definition**: quality-gates-definition.yaml
+- **Enforcement**: quality-gate-enforcement-workflow.yaml
+- **Checklist**: quality-gate-checklist.md
+- **Testing**: testing-execution-workflow.yaml
+
+### Before Code Changes - Pre-Development Gates
 ```bash
 # MUST PASS ALL
+✓ Context detection completed (universal-context-detection-workflow)
+✓ Structure requirements reviewed (ERPNEXT-APP-STRUCTURE-PATTERNS.md)
+✓ Dependencies analyzed (analyze-app-dependencies task)
+✓ Test strategy defined
 ✓ Can explain the problem
 ✓ Can explain why it's happening
 ✓ Can explain how fix addresses cause
@@ -215,14 +226,49 @@ pre_execution_checklist:
 ✓ Have rollback plan
 ```
 
-### After Code Changes
+### During Development - Active Gates
+```bash
+# CONTINUOUS VALIDATION
+✓ Import patterns validated (no forbidden imports)
+✓ Frappe-first compliance (no external libraries)
+✓ Incremental testing (tests written and passing)
+✓ Structure adherence (files in correct locations)
+```
+
+### Before Handoff - Quality Gate Enforcement
+```bash
+# MANDATORY BEFORE ANY HANDOFF
+✓ Execute quality-gate-enforcement-workflow
+✓ Structure validation by Eva Thorne
+✓ Test execution by testing-specialist
+✓ Documentation updated
+✓ All gates passed
+```
+
+### After Code Changes - Post-Development Gates
 ```bash
 # MUST VERIFY ALL
+✓ Full test suite executed and passing
+✓ Structure validation complete
+✓ Documentation complete
+✓ Cross-verification done
 ✓ Original problem fixed
 ✓ No new errors introduced
 ✓ Related features still work
 ✓ Changes documented
 ✓ Can explain to others
+```
+
+### Handoff Protocol with Quality Gates
+```yaml
+handoff_requirements:
+  1_initiate: Development coordinator validates readiness
+  2_quality_gates: Execute quality-gate-enforcement-workflow
+  3_structure: Eva Thorne validates compliance
+  4_testing: Testing specialist verifies all tests
+  5_decision: 
+    - if_passed: Proceed with handoff
+    - if_failed: Return to originator with issues
 ```
 
 ---

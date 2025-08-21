@@ -1,0 +1,103 @@
+# Agent Folder Knowledge Template
+# MANDATORY: Add this to EVERY agent configuration
+# This ensures all agents know exactly where files are located
+
+folder_knowledge:
+  # CRITICAL: How to access expansion pack resources
+  # These are accessed via symlink from within ERPNext app
+  expansion_pack:
+    # Resource directories (relative to .bmad-erpnext-v16 symlink)
+    agents: ".bmad-erpnext-v16/agents/"
+    tasks: ".bmad-erpnext-v16/tasks/"
+    templates: ".bmad-erpnext-v16/templates/"
+    workflows: ".bmad-erpnext-v16/workflows/"
+    checklists: ".bmad-erpnext-v16/checklists/"
+    data: ".bmad-erpnext-v16/data/"
+    utils: ".bmad-erpnext-v16/utils/"
+    
+    # Key files
+    universal_structure: ".bmad-erpnext-v16/UNIVERSAL-FOLDER-STRUCTURE.md"
+    file_reference_system: ".bmad-erpnext-v16/FILE-REFERENCE-SYSTEM.md"
+    claude_guide: ".bmad-erpnext-v16/CLAUDE.md"
+    
+  # CRITICAL: ERPNext app structure
+  # These are relative to app root (/home/frappe/frappe-bench/apps/{app_name}/)
+  erpnext_app:
+    # Planning documents (BMAD-specific)
+    prd: "docs/prd.md"
+    architecture: "docs/architecture.md"
+    project_structure: "docs/PROJECT_STRUCTURE.md"
+    epics_dir: "docs/epics/"
+    stories_dir: "docs/stories/"
+    planning_dir: "docs/planning/"
+    
+    # Code structure
+    api_dir: "{app_name}/api/"
+    doctypes_dir: "{app_name}/{module_name}/doctype/"
+    pages_dir: "{app_name}/{module_name}/page/"
+    reports_dir: "{app_name}/{module_name}/report/"
+    workflows_dir: "{app_name}/{module_name}/workflow/"
+    print_formats_dir: "{app_name}/{module_name}/print_format/"
+    
+    # Frontend structure
+    vue_components_dir: "{app_name}/public/js/"
+    vue_bundles_pattern: "{app_name}/public/js/*.bundle.js"
+    css_dir: "{app_name}/public/css/"
+    
+    # Testing structure
+    tests_dir: "tests/"
+    test_plans_dir: "tests/plans/"
+    test_results_dir: "tests/results/"
+    coverage_dir: "tests/coverage/"
+    compliance_dir: "tests/compliance/"
+    
+    # Configuration files
+    hooks_file: "{app_name}/hooks.py"
+    modules_file: "{app_name}/modules.txt"
+    patches_file: "{app_name}/patches.txt"
+    
+    # BMAD project files
+    project_context: "PROJECT_CONTEXT.yaml"
+    bmad_project_dir: ".bmad-project/"
+    handoffs_dir: ".bmad-project/handoffs/"
+    session_logs_dir: ".bmad-project/session-logs/"
+    quality_reports_dir: ".bmad-project/quality-reports/"
+    
+    # Marker files
+    bmad_init_marker: ".bmad-init"
+    
+  # File discovery rules
+  file_discovery_rules:
+    - "ALWAYS check PROJECT_CONTEXT.yaml first for file registry"
+    - "Use .bmad-erpnext-v16/ symlink for expansion pack resources"
+    - "Follow UNIVERSAL-FOLDER-STRUCTURE.md for all paths"
+    - "Never use relative paths from unknown locations"
+    - "Update PROJECT_CONTEXT.yaml when creating new files"
+    
+  # Path resolution helpers
+  path_resolution:
+    # How to determine app_name and module_name
+    get_app_name: "Read from PROJECT_CONTEXT.yaml -> project_context.app_name"
+    get_module_name: "Read from PROJECT_CONTEXT.yaml -> project_context.module_name"
+    get_app_root: "Read from PROJECT_CONTEXT.yaml -> project_context.paths.app_root"
+    
+  # Standard file patterns
+  file_patterns:
+    doctype_files: "{doctype_name}.json, {doctype_name}.py, {doctype_name}.js"
+    api_files: "@frappe.whitelist() decorated methods in {resource}.py"
+    vue_entry_points: "*.bundle.js files in public/js/"
+    test_files: "test_{component}.py in tests/"
+    epic_files: "epic-{number}-{name}.md in docs/epics/"
+    story_files: "story-{number}-{name}.md in docs/stories/"
+    
+  # Validation commands
+  validation:
+    check_structure: "ls -la .bmad-erpnext-v16 # Verify symlink exists"
+    check_context: "cat PROJECT_CONTEXT.yaml # Verify context file"
+    check_folders: "find . -type d -name 'docs' -o -name 'tests' # Verify folders"
+    
+# Usage in agent configuration:
+# 1. Copy this entire folder_knowledge section
+# 2. Add it to the agent's YAML configuration
+# 3. Agent can now resolve any file path deterministically
+# 4. No searching or guessing required

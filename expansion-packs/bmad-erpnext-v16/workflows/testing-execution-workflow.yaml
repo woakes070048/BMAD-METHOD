@@ -1,0 +1,486 @@
+# Testing Execution Workflow
+# Comprehensive testing workflow for ERPNext applications
+# Referenced by testing-specialist agent
+
+name: testing-execution-workflow
+description: Systematic testing execution workflow ensuring comprehensive validation of ERPNext applications
+version: 1.0.0
+agent_assignments:
+  primary: testing-specialist
+  support: [frappe-compliance-validator, development-coordinator]
+  verification: erpnext-qa-lead
+
+# INTEGRATION
+integrations:
+  quality_gates: quality-gates-definition.yaml
+  safety_protocols: MANDATORY-SAFETY-PROTOCOLS.md
+  test_patterns: testing-patterns.yaml
+  prerequisite: universal-context-detection-workflow.yaml
+
+# TESTING PHILOSOPHY
+testing_philosophy:
+  principles:
+    - TEST_FIRST: Write tests before or with code
+    - COMPREHENSIVE_COVERAGE: Test all paths and scenarios
+    - ISOLATION: Each test independent and repeatable
+    - AUTOMATION: Automate wherever possible
+    - CONTINUOUS: Test continuously during development
+
+stages:
+  # STAGE 1: TEST PLANNING AND SETUP
+  - name: test_planning
+    description: "Plan comprehensive testing strategy based on context"
+    mandatory: true
+    
+    substages:
+      - name: analyze_test_scope
+        description: "Determine what needs testing"
+        actions:
+          - identify_components: "List all components requiring tests"
+          - assess_risk_areas: "Identify high-risk functionality"
+          - determine_test_types: "Select appropriate test types"
+          - estimate_effort: "Estimate testing time and resources"
+      
+      - name: context_specific_planning
+        description: "Create context-appropriate test plan"
+        context_branches:
+          TROUBLESHOOTING:
+            test_focus:
+              - regression_testing: "Ensure fix doesn't break existing"
+              - targeted_testing: "Focus on problem area"
+              - stability_testing: "Verify system stability"
+              - edge_case_testing: "Test boundary conditions"
+          
+          NEW_DEVELOPMENT:
+            test_focus:
+              - unit_testing: "Test individual components"
+              - integration_testing: "Test component interactions"
+              - functional_testing: "Validate requirements"
+              - acceptance_testing: "Verify user stories"
+          
+          ENHANCEMENT:
+            test_focus:
+              - backward_compatibility: "Ensure existing features work"
+              - performance_testing: "Validate improvements"
+              - integration_testing: "Test with existing system"
+              - user_acceptance: "Validate enhancement value"
+          
+          MIGRATION:
+            test_focus:
+              - data_integrity: "Validate data migration"
+              - functionality_preservation: "Ensure features work"
+              - performance_comparison: "Compare before/after"
+              - rollback_testing: "Test rollback procedures"
+      
+      - name: prepare_test_environment
+        description: "Setup testing environment"
+        actions:
+          - create_test_site: "bench new-site test-site"
+          - install_apps: "bench --site test-site install-app [apps]"
+          - setup_test_data: "Create test fixtures and scenarios"
+          - configure_settings: "Setup test configurations"
+    
+    decision_gate:
+      condition: "test_plan_complete AND environment_ready"
+      fail_action: "CLARIFY_TEST_REQUIREMENTS"
+      success_action: "PROCEED_TO_UNIT_TESTING"
+
+  # STAGE 2: UNIT TESTING
+  - name: unit_testing
+    description: "Execute comprehensive unit tests"
+    mandatory: true
+    
+    substages:
+      - name: doctype_unit_tests
+        description: "Test DocType functionality"
+        test_areas:
+          - validation_logic:
+              - "Field validations"
+              - "Business rules"
+              - "Mandatory fields"
+              - "Value constraints"
+          
+          - controller_methods:
+              - "before_save()"
+              - "validate()"
+              - "on_submit()"
+              - "on_cancel()"
+          
+          - permissions:
+              - "Role-based access"
+              - "Field-level permissions"
+              - "Document permissions"
+          
+          - calculations:
+              - "Total calculations"
+              - "Tax computations"
+              - "Currency conversions"
+        
+        test_pattern: |
+          class TestDocType(FrappeTestCase):
+              def test_validation(self):
+                  doc = frappe.get_doc({
+                      "doctype": "DocType Name",
+                      "field": "value"
+                  })
+                  self.assertRaises(ValidationError, doc.save)
+      
+      - name: api_unit_tests
+        description: "Test API endpoints"
+        test_areas:
+          - authentication:
+              - "Login required"
+              - "Permission checks"
+              - "Token validation"
+          
+          - input_validation:
+              - "Required parameters"
+              - "Data types"
+              - "Value ranges"
+          
+          - business_logic:
+              - "Correct calculations"
+              - "Proper data handling"
+              - "Error conditions"
+          
+          - response_format:
+              - "JSON structure"
+              - "Status codes"
+              - "Error messages"
+        
+        test_command: "bench --site test-site run-tests --app [app] --module api"
+      
+      - name: utility_unit_tests
+        description: "Test utility functions"
+        test_areas:
+          - data_transformation: "Formatting and conversion"
+          - validation_helpers: "Input validation utilities"
+          - calculation_helpers: "Mathematical operations"
+          - date_utilities: "Date/time operations"
+    
+    decision_gate:
+      condition: "unit_tests_passing AND coverage_adequate"
+      fail_action: "FIX_UNIT_TEST_FAILURES"
+      success_action: "PROCEED_TO_INTEGRATION_TESTING"
+
+  # STAGE 3: INTEGRATION TESTING
+  - name: integration_testing
+    description: "Test component interactions and integrations"
+    mandatory: true
+    
+    substages:
+      - name: doctype_integration
+        description: "Test DocType relationships"
+        test_areas:
+          - linked_doctypes: "Test Link field relationships"
+          - child_tables: "Test parent-child interactions"
+          - workflow_integration: "Test workflow transitions"
+          - event_triggers: "Test doc_events hooks"
+      
+      - name: multi_app_integration
+        description: "Test cross-app functionality"
+        validations:
+          - frappe_erpnext: "Core framework integration"
+          - custom_app_interaction: "Custom app dependencies"
+          - docflow_integration: "Workflow app integration"
+          - n8n_integration: "Automation integration"
+        
+        test_command: "bench --site test-site run-tests --integration"
+      
+      - name: api_integration
+        description: "Test API interactions"
+        test_scenarios:
+          - sequential_calls: "Test API call sequences"
+          - concurrent_requests: "Test parallel requests"
+          - error_propagation: "Test error handling chains"
+          - transaction_integrity: "Test data consistency"
+      
+      - name: frontend_backend_integration
+        description: "Test Vue-Frappe integration"
+        validations:
+          - data_binding: "Vue component data sync"
+          - api_calls: "frappe.call() functionality"
+          - real_time_updates: "frappe.publish_realtime()"
+          - file_uploads: "File handling integration"
+    
+    decision_gate:
+      condition: "integrations_working AND no_conflicts"
+      fail_action: "RESOLVE_INTEGRATION_ISSUES"
+      success_action: "PROCEED_TO_FUNCTIONAL_TESTING"
+
+  # STAGE 4: FUNCTIONAL TESTING
+  - name: functional_testing
+    description: "Test business functionality and requirements"
+    mandatory: true
+    
+    substages:
+      - name: business_process_testing
+        description: "Test complete business workflows"
+        scenarios:
+          - happy_path: "Normal successful flow"
+          - alternative_paths: "Valid variations"
+          - error_paths: "Error conditions"
+          - edge_cases: "Boundary conditions"
+      
+      - name: user_story_validation
+        description: "Validate user story implementation"
+        validations:
+          - acceptance_criteria: "All criteria met"
+          - user_workflows: "User can complete tasks"
+          - data_integrity: "Data saved correctly"
+          - ui_functionality: "Interface works as expected"
+      
+      - name: permission_testing
+        description: "Test access control"
+        test_matrix:
+          - role_based: "Test each role's access"
+          - field_level: "Test field permissions"
+          - document_level: "Test document permissions"
+          - api_level: "Test API permissions"
+      
+      - name: data_validation_testing
+        description: "Test data integrity"
+        validations:
+          - required_fields: "Mandatory field enforcement"
+          - data_types: "Type validation"
+          - value_constraints: "Range and format validation"
+          - referential_integrity: "Link field validation"
+    
+    decision_gate:
+      condition: "functionality_verified AND requirements_met"
+      fail_action: "ADDRESS_FUNCTIONAL_GAPS"
+      success_action: "PROCEED_TO_PERFORMANCE_TESTING"
+
+  # STAGE 5: PERFORMANCE TESTING
+  - name: performance_testing
+    description: "Validate performance metrics"
+    mandatory: false
+    skip_for: [TROUBLESHOOTING]
+    
+    substages:
+      - name: response_time_testing
+        description: "Measure response times"
+        benchmarks:
+          - api_endpoints: "< 2 seconds"
+          - page_loads: "< 3 seconds"
+          - report_generation: "< 5 seconds"
+          - bulk_operations: "< 10 seconds"
+      
+      - name: load_testing
+        description: "Test under load"
+        scenarios:
+          - normal_load: "Expected user count"
+          - peak_load: "Maximum expected users"
+          - stress_test: "Beyond expected capacity"
+        
+        metrics:
+          - response_times: "Track degradation"
+          - error_rates: "Monitor failures"
+          - throughput: "Requests per second"
+          - resource_usage: "CPU/Memory"
+      
+      - name: database_performance
+        description: "Database query optimization"
+        checks:
+          - query_efficiency: "No N+1 queries"
+          - index_usage: "Proper indexes used"
+          - transaction_time: "Quick transactions"
+          - lock_contention: "Minimal locking"
+      
+      - name: memory_testing
+        description: "Memory usage validation"
+        validations:
+          - memory_leaks: "No memory leaks"
+          - garbage_collection: "Proper cleanup"
+          - cache_efficiency: "Effective caching"
+          - resource_limits: "Within limits"
+    
+    decision_gate:
+      condition: "performance_acceptable OR not_required"
+      fail_action: "OPTIMIZE_PERFORMANCE"
+      success_action: "PROCEED_TO_SECURITY_TESTING"
+
+  # STAGE 6: SECURITY TESTING
+  - name: security_testing
+    description: "Validate security implementation"
+    mandatory: true
+    
+    substages:
+      - name: authentication_testing
+        description: "Test authentication mechanisms"
+        validations:
+          - login_security: "Secure login process"
+          - session_management: "Proper session handling"
+          - password_policies: "Strong password enforcement"
+          - multi_factor: "2FA if implemented"
+      
+      - name: authorization_testing
+        description: "Test access control"
+        test_cases:
+          - privilege_escalation: "Cannot elevate privileges"
+          - unauthorized_access: "Cannot access restricted data"
+          - api_authorization: "API permission enforcement"
+          - field_level_security: "Field access control"
+      
+      - name: input_validation_testing
+        description: "Test input sanitization"
+        attack_vectors:
+          - sql_injection: "SQL injection prevention"
+          - xss_attacks: "Cross-site scripting prevention"
+          - csrf_protection: "CSRF token validation"
+          - file_upload_security: "File type validation"
+      
+      - name: data_security_testing
+        description: "Test data protection"
+        validations:
+          - encryption: "Sensitive data encrypted"
+          - data_masking: "PII properly masked"
+          - audit_trails: "Actions logged"
+          - data_retention: "Proper data lifecycle"
+    
+    decision_gate:
+      condition: "no_security_vulnerabilities"
+      fail_action: "FIX_SECURITY_ISSUES"
+      success_action: "PROCEED_TO_REGRESSION_TESTING"
+
+  # STAGE 7: REGRESSION TESTING
+  - name: regression_testing
+    description: "Ensure existing functionality still works"
+    mandatory: true
+    
+    substages:
+      - name: automated_regression
+        description: "Run automated regression suite"
+        test_suite:
+          command: "bench --site test-site run-tests --app [all_apps]"
+          coverage_requirement: 80
+          critical_paths: 100
+      
+      - name: manual_regression
+        description: "Manual testing of critical flows"
+        test_areas:
+          - core_workflows: "Main business processes"
+          - integration_points: "App interactions"
+          - user_interfaces: "UI functionality"
+          - reports: "Report generation"
+      
+      - name: backward_compatibility
+        description: "Test compatibility"
+        validations:
+          - api_compatibility: "APIs still work"
+          - data_compatibility: "Data structures compatible"
+          - workflow_compatibility: "Workflows function"
+          - customization_compatibility: "Customizations work"
+    
+    decision_gate:
+      condition: "no_regressions_found"
+      fail_action: "FIX_REGRESSIONS"
+      success_action: "PROCEED_TO_FINAL_VALIDATION"
+
+  # STAGE 8: FINAL VALIDATION AND REPORTING
+  - name: final_validation
+    description: "Final test validation and reporting"
+    mandatory: true
+    
+    substages:
+      - name: test_summary_generation
+        description: "Generate comprehensive test report"
+        report_sections:
+          - executive_summary: "High-level results"
+          - test_coverage: "Coverage metrics"
+          - test_results: "Detailed results"
+          - issues_found: "Bugs and issues"
+          - recommendations: "Improvement suggestions"
+      
+      - name: quality_metrics_calculation
+        description: "Calculate quality metrics"
+        metrics:
+          - test_pass_rate: "Percentage passed"
+          - code_coverage: "Code coverage percentage"
+          - defect_density: "Bugs per module"
+          - test_effectiveness: "Bugs found vs escaped"
+      
+      - name: sign_off_preparation
+        description: "Prepare for test sign-off"
+        deliverables:
+          - test_report: "Complete test documentation"
+          - test_evidence: "Test execution evidence"
+          - known_issues: "List of known issues"
+          - risk_assessment: "Remaining risks"
+    
+    decision_gate:
+      condition: "testing_complete AND quality_acceptable"
+      fail_action: "ADDRESS_REMAINING_ISSUES"
+      success_action: "TESTING_COMPLETE"
+
+# TEST FAILURE HANDLING
+failure_handling:
+  test_failure_response:
+    immediate_actions:
+      - stop_testing: "Pause test execution"
+      - document_failure: "Record failure details"
+      - analyze_impact: "Assess failure impact"
+    
+    correction_process:
+      - identify_root_cause: "Find why test failed"
+      - fix_issue: "Correct the problem"
+      - rerun_test: "Verify fix works"
+      - regression_check: "Ensure no new issues"
+    
+    escalation_path:
+      attempt_1: "Developer fixes"
+      attempt_2: "Senior developer review"
+      attempt_3: "Team lead intervention"
+      final: "Product owner decision"
+
+# SUCCESS CRITERIA
+success_criteria:
+  mandatory_criteria:
+    - all_unit_tests_pass: true
+    - integration_tests_pass: true
+    - security_tests_pass: true
+    - no_regressions: true
+  
+  quality_criteria:
+    - code_coverage: ">= 80%"
+    - critical_path_coverage: "100%"
+    - performance_acceptable: true
+    - documentation_complete: true
+
+# METRICS AND REPORTING
+metrics:
+  execution_metrics:
+    - total_tests_executed
+    - tests_passed
+    - tests_failed
+    - tests_skipped
+    - execution_time
+  
+  quality_metrics:
+    - code_coverage_percentage
+    - branch_coverage_percentage
+    - defects_found
+    - defect_severity_distribution
+  
+  performance_metrics:
+    - average_response_time
+    - peak_response_time
+    - throughput
+    - resource_utilization
+
+# AUTOMATION REQUIREMENTS
+automation:
+  continuous_integration:
+    - trigger: "On code commit"
+    - run: "Unit and integration tests"
+    - report: "Test results to developer"
+  
+  nightly_regression:
+    - trigger: "Daily at midnight"
+    - run: "Full regression suite"
+    - report: "Results to team"
+  
+  pre_deployment:
+    - trigger: "Before deployment"
+    - run: "Complete test suite"
+    - gate: "Block if tests fail"

@@ -1,0 +1,421 @@
+# Quality Gate Enforcement Workflow
+# MANDATORY workflow for all agents before code submission or handoff
+# Integrates with quality-gates-definition.yaml
+
+name: quality-gate-enforcement-workflow
+description: Mandatory quality gate enforcement ensuring all code meets standards before handoff or submission
+version: 1.0.0
+agent_assignments:
+  primary: ALL_AGENTS
+  coordinators: [development-coordinator]
+  validators: [testing-specialist, frappe-compliance-validator]
+  final_approver: erpnext-product-owner
+
+# MANDATORY ENFORCEMENT
+universal_application: true
+cannot_skip: true
+blocks_handoff: true
+blocks_submission: true
+
+# INTEGRATION
+integrations:
+  quality_gates: quality-gates-definition.yaml
+  structure_patterns: ERPNEXT-APP-STRUCTURE-PATTERNS.md
+  safety_protocols: MANDATORY-SAFETY-PROTOCOLS.md
+  prerequisite: universal-context-detection-workflow.yaml
+
+stages:
+  # STAGE 1: CONTEXT-AWARE GATE SELECTION
+  - name: gate_selection
+    description: "Select appropriate quality gates based on context and work type"
+    mandatory: true
+    
+    substages:
+      - name: retrieve_context
+        description: "Get context from universal workflow"
+        actions:
+          - get_context_type: "retrieve from SESSION-CHANGELOG.md"
+          - identify_work_scope: "determine what was changed/created"
+          - assess_risk_level: "evaluate impact and risk"
+      
+      - name: select_applicable_gates
+        description: "Choose gates based on context"
+        context_branches:
+          TROUBLESHOOTING:
+            required_gates:
+              - dependency_analysis
+              - import_validation
+              - frappe_compliance
+              - incremental_testing
+              - full_test_suite
+          
+          NEW_DEVELOPMENT:
+            required_gates:
+              - structure_requirements
+              - test_strategy
+              - import_validation
+              - frappe_compliance
+              - structure_adherence
+              - full_test_suite
+              - documentation_completeness
+          
+          ENHANCEMENT:
+            required_gates:
+              - dependency_analysis
+              - import_validation
+              - frappe_compliance
+              - incremental_testing
+              - full_test_suite
+              - integration_testing
+          
+          MIGRATION:
+            required_gates:
+              - structure_requirements
+              - dependency_analysis
+              - import_validation
+              - frappe_compliance
+              - structure_adherence
+              - full_test_suite
+              - integration_testing
+      
+      - name: prepare_gate_checklist
+        description: "Create checklist of gates to execute"
+        actions:
+          - create_gate_list: "document required gates"
+          - set_gate_order: "establish execution sequence"
+          - define_success_criteria: "set pass/fail criteria"
+    
+    decision_gate:
+      condition: "gates_selected AND checklist_prepared"
+      fail_action: "CANNOT_DETERMINE_GATES"
+      success_action: "PROCEED_TO_STRUCTURE_VALIDATION"
+
+  # STAGE 2: STRUCTURE VALIDATION GATE
+  - name: structure_validation_gate
+    description: "Validate ERPNext app structure compliance"
+    mandatory: true
+    validator: eva-thorne-compliance-validator
+    
+    substages:
+      - name: structure_compliance_check
+        description: "Check app structure against patterns"
+        validations:
+          - directory_structure:
+              check: "3-layer architecture compliance"
+              validate:
+                - "Root level has no Python files"
+                - "hooks.py at package layer"
+                - "DocTypes in module layer"
+                - "No /frontend/ directory exists"
+          
+          - file_placement:
+              check: "Files in correct locations"
+              validate:
+                - "APIs in app-name/api/"
+                - "DocTypes in app-name/app-name/doctype/"
+                - "Vue components in public/js/"
+                - "Tests with their components"
+          
+          - naming_conventions:
+              check: "Proper naming patterns"
+              validate:
+                - "Child tables end with _ct"
+                - "Python files use snake_case"
+                - "Vue components use PascalCase"
+                - "DocTypes use PascalCase"
+      
+      - name: import_pattern_validation
+        description: "Validate import patterns"
+        validations:
+          - forbidden_patterns:
+              - "from app_name.app_name.api"
+              - "from app_name.app_name.doctype.*.* import"
+              - "import requests"
+              - "import unittest"
+          
+          - required_patterns:
+              - "from app_name.api"
+              - "frappe.get_doc() for DocTypes"
+              - "frappe.make_get_request() for HTTP"
+              - "FrappeTestCase for tests"
+      
+      - name: workspace_validation
+        description: "Validate workspace configuration"
+        checks:
+          - "Only parent DocTypes in workspace"
+          - "No child tables referenced"
+          - "Proper link structure"
+    
+    decision_gate:
+      condition: "structure_compliant AND imports_valid"
+      fail_action: "STRUCTURE_CORRECTIONS_REQUIRED"
+      success_action: "PROCEED_TO_CODE_QUALITY"
+
+  # STAGE 3: CODE QUALITY AND COMPLIANCE GATE
+  - name: code_quality_gate
+    description: "Validate code quality and Frappe compliance"
+    mandatory: true
+    validator: frappe-compliance-validator
+    
+    substages:
+      - name: frappe_first_validation
+        description: "Ensure Frappe-first principles"
+        validations:
+          - api_compliance:
+              - "@frappe.whitelist() on all endpoints"
+              - "frappe.has_permission() checks present"
+              - "Proper error handling with frappe.throw()"
+          
+          - database_compliance:
+              - "frappe.db methods used"
+              - "No raw SQL queries"
+              - "Proper transaction handling"
+          
+          - framework_usage:
+              - "frappe.enqueue() for async"
+              - "frappe.cache() for caching"
+              - "frappe.sendmail() for emails"
+              - "hooks.py for scheduling"
+      
+      - name: code_quality_metrics
+        description: "Assess code quality metrics"
+        checks:
+          - complexity: "Cyclomatic complexity < 10"
+          - duplication: "No significant duplication"
+          - documentation: "Docstrings present"
+          - error_handling: "Comprehensive error handling"
+      
+      - name: security_validation
+        description: "Security checks"
+        validations:
+          - "Input validation present"
+          - "No hardcoded credentials"
+          - "Proper authentication checks"
+          - "SQL injection prevention"
+    
+    decision_gate:
+      condition: "frappe_compliant AND quality_acceptable AND secure"
+      fail_action: "CODE_IMPROVEMENTS_REQUIRED"
+      success_action: "PROCEED_TO_TESTING"
+
+  # STAGE 4: TESTING GATE
+  - name: testing_gate
+    description: "Comprehensive testing validation"
+    mandatory: true
+    validator: testing-specialist
+    attempt_limit: 3
+    
+    substages:
+      - name: test_execution
+        description: "Execute all required tests"
+        test_suites:
+          - unit_tests:
+              command: "bench --site [site] run-tests --app [app] --module [module]"
+              required_coverage: 80
+          
+          - integration_tests:
+              command: "bench --site [site] run-tests --app [app] --integration"
+              validate_multi_app: true
+          
+          - api_tests:
+              validate: "All API endpoints tested"
+              check_permissions: true
+          
+          - frontend_tests:
+              validate: "Vue components tested"
+              check_user_interactions: true
+      
+      - name: test_coverage_validation
+        description: "Validate test coverage"
+        requirements:
+          - minimum_coverage: 80
+          - critical_paths_covered: 100
+          - edge_cases_tested: true
+          - error_scenarios_tested: true
+      
+      - name: performance_testing
+        description: "Performance validation"
+        benchmarks:
+          - api_response: "< 2000ms"
+          - page_load: "< 3000ms"
+          - database_queries: "optimized"
+          - memory_usage: "acceptable"
+    
+    panic_detection:
+      triggers:
+        - "Test failures > 30%"
+        - "Coverage dropping"
+        - "Performance regression"
+      response: "STOP_AND_FIX"
+    
+    decision_gate:
+      condition: "all_tests_passing AND coverage_met AND performance_acceptable"
+      fail_action: "FIX_FAILING_TESTS"
+      success_action: "PROCEED_TO_DOCUMENTATION"
+
+  # STAGE 5: DOCUMENTATION GATE
+  - name: documentation_gate
+    description: "Ensure comprehensive documentation"
+    mandatory: true
+    
+    substages:
+      - name: code_documentation
+        description: "Verify code documentation"
+        requirements:
+          - "Docstrings for all functions/classes"
+          - "Complex logic explained"
+          - "API documentation complete"
+          - "Configuration documented"
+      
+      - name: user_documentation
+        description: "Verify user documentation"
+        requirements:
+          - "Feature documentation exists"
+          - "User guides updated"
+          - "Admin guides present"
+          - "Troubleshooting documented"
+      
+      - name: technical_documentation
+        description: "Verify technical documentation"
+        requirements:
+          - "Architecture documented"
+          - "Database schema explained"
+          - "Integration points described"
+          - "Deployment instructions present"
+    
+    decision_gate:
+      condition: "documentation_complete"
+      fail_action: "DOCUMENTATION_REQUIRED"
+      success_action: "PROCEED_TO_FINAL_VALIDATION"
+
+  # STAGE 6: FINAL VALIDATION AND APPROVAL
+  - name: final_validation
+    description: "Final comprehensive validation before handoff/submission"
+    mandatory: true
+    
+    substages:
+      - name: cross_verification
+        description: "Independent verification"
+        validators:
+          - testing_specialist: "Test results verification"
+          - frappe_compliance_validator: "Framework compliance"
+          - eva_thorne: "Structure validation"
+      
+      - name: integration_validation
+        description: "Validate system integration"
+        checks:
+          - "Multi-app compatibility verified"
+          - "No breaking changes introduced"
+          - "Backward compatibility maintained"
+          - "Data migrations tested"
+      
+      - name: final_quality_assessment
+        description: "Overall quality assessment"
+        criteria:
+          - "All gates passed"
+          - "No critical issues"
+          - "Performance acceptable"
+          - "Security validated"
+          - "Documentation complete"
+      
+      - name: handoff_preparation
+        description: "Prepare for handoff if applicable"
+        actions:
+          - create_handoff_report: "Document what was done"
+          - list_deliverables: "Enumerate all outputs"
+          - note_dependencies: "Document requirements"
+          - provide_next_steps: "Guide for next agent"
+    
+    decision_gate:
+      condition: "all_validations_passed AND handoff_ready"
+      fail_action: "ADDRESS_REMAINING_ISSUES"
+      success_action: "GATES_PASSED"
+
+# GATE FAILURE HANDLING
+failure_handling:
+  structure_violations:
+    action: "BLOCK_PROGRESS"
+    correction: "Fix structure before proceeding"
+    validator: eva-thorne-compliance-validator
+  
+  import_violations:
+    action: "BLOCK_PROGRESS"
+    correction: "Fix import patterns"
+    validator: frappe-compliance-validator
+  
+  test_failures:
+    action: "INCREMENT_ATTEMPT"
+    max_attempts: 3
+    escalation: development-coordinator
+  
+  documentation_missing:
+    action: "BLOCK_HANDOFF"
+    correction: "Complete documentation"
+    validator: documentation-specialist
+
+# HANDOFF INTEGRATION
+handoff_integration:
+  pre_handoff_execution:
+    automatic: true
+    blocking: true
+    must_pass_all_gates: true
+  
+  handoff_report_generation:
+    include:
+      - gates_executed
+      - test_results
+      - coverage_metrics
+      - performance_benchmarks
+      - issues_addressed
+      - remaining_tasks
+  
+  next_agent_notification:
+    provide:
+      - work_completed
+      - test_status
+      - documentation_links
+      - known_issues
+      - dependencies
+
+# SUCCESS CRITERIA
+success_criteria:
+  all_gates_passed: true
+  no_blocking_issues: true
+  tests_comprehensive: true
+  documentation_complete: true
+  structure_compliant: true
+  frappe_compliant: true
+  performance_acceptable: true
+  security_validated: true
+
+# METRICS AND TRACKING
+metrics:
+  track_per_execution:
+    - total_gates_executed
+    - gates_passed_first_attempt
+    - gates_requiring_correction
+    - time_per_gate
+    - total_execution_time
+  
+  track_overall:
+    - gate_pass_rate
+    - common_failure_points
+    - average_correction_time
+    - developer_improvement
+
+# ENFORCEMENT
+enforcement:
+  mandatory_for:
+    - all_code_changes
+    - all_handoffs
+    - all_submissions
+    - all_deployments
+  
+  cannot_bypass: true
+  override_requires: product_owner_approval
+  
+  automatic_triggers:
+    - on_handoff_request
+    - on_pr_creation
+    - on_deployment_request
+    - on_completion_declaration
